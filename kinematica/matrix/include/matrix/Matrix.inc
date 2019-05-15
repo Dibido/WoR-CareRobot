@@ -139,6 +139,14 @@ bool Matrix<T, M, N>::operator==(const Matrix<T, M, N>& rhs) const
  *
  */
 template <class T, std::size_t M, std::size_t N>
+bool Matrix<T, M, N>::operator!=(const Matrix<T, M, N>& rhs) const
+{
+  return !operator==(rhs);
+}
+/**
+ *
+ */
+template <class T, std::size_t M, std::size_t N>
 template <class T2>
 Matrix<T, M, N>& Matrix<T, M, N>::operator*=(const T2& scalar)
 {

@@ -2,23 +2,9 @@
 #include <limits>
 #include <string>
 
-// See the comments in Main.cpp
-// @http://www.boost.org/doc/libs/1_68_0/libs/test/doc/html/boost_test/adv_scenarios/shared_lib_customizations/entry_point.html
-//#define BOOST_TEST_MODULE MatrixTestModule
-//#define BOOST_TEST_DYN_LINK
-//#define BOOST_TEST_NO_MAIN
+#include "gtest/gtest.h"
 
-// Only one of the following 3 includes may be active!
-
-// For the header only version
-//#include <boost/test/included/unit_test.hpp>
-// For the static library version
-//#include <boost/test/unit_test.hpp>
-// For the dynamic library version
-#include <boost/test/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(MatrixConstructors)
-BOOST_AUTO_TEST_CASE(DefaultContructor)
+TEST(MatrixConstructors,DefaultContructor)
 {
   std::string m0_as_string(
       "Matrix<3,3>\n"
@@ -28,7 +14,7 @@ BOOST_AUTO_TEST_CASE(DefaultContructor)
       "0.000000,0.000000,0.000000,\n"
       "}");
   Matrix<double, 3, 3> m0;
-  BOOST_CHECK_EQUAL(m0_as_string, m0.to_string());
+  EXPECT_EQ(m0_as_string, m0.to_string());
 
   std::string m1_as_string(
       "Matrix<3,3>\n"
@@ -38,9 +24,9 @@ BOOST_AUTO_TEST_CASE(DefaultContructor)
       "1.000000,1.000000,1.000000,\n"
       "}");
   Matrix<double, 3, 3> m1(1);
-  BOOST_CHECK_EQUAL(m1_as_string, m1.to_string());
+  EXPECT_EQ(m1_as_string, m1.to_string());
 }
-BOOST_AUTO_TEST_CASE(LinearConstructor)
+TEST(MatrixConstructors, LinearConstructor)
 {
   std::string m0_as_string(
       "Matrix<3,3>\n"
@@ -50,9 +36,9 @@ BOOST_AUTO_TEST_CASE(LinearConstructor)
       "7.000000,8.000000,9.000000,\n"
       "}");
   Matrix<double, 3, 3> m0{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-  BOOST_CHECK_EQUAL(m0_as_string, m0.to_string());
+  EXPECT_EQ(m0_as_string, m0.to_string());
 }
-BOOST_AUTO_TEST_CASE(ArrayListConstructor)
+TEST(MatrixConstructors, ArrayListConstructor)
 {
   std::string m0_as_string(
       "Matrix<3,3>\n"
@@ -62,9 +48,9 @@ BOOST_AUTO_TEST_CASE(ArrayListConstructor)
       "7.000000,8.000000,9.000000,\n"
       "}");
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-  BOOST_CHECK_EQUAL(m0_as_string, m0.to_string());
+  EXPECT_EQ(m0_as_string, m0.to_string());
 }
-BOOST_AUTO_TEST_CASE(CopyConstructor)
+TEST(MatrixConstructors, CopyConstructor)
 {
   std::string m0_as_string(
       "Matrix<3,3>\n"
@@ -77,45 +63,42 @@ BOOST_AUTO_TEST_CASE(CopyConstructor)
 
   Matrix<double, 3, 3> m1 = m0;
 
-  BOOST_CHECK_EQUAL(m0.to_string(), m1.to_string());
+  EXPECT_EQ(m0.to_string(), m1.to_string());
 
-  BOOST_CHECK_EQUAL(m0, m1);
+  EXPECT_EQ(m0, m1);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(MatrixElementAccess)
-BOOST_AUTO_TEST_CASE(At)
+
+TEST(MatrixElementAccess,At)
 {
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-  BOOST_CHECK_THROW(m0.at(m0.getRows() + 1), std::out_of_range);
+  EXPECT_THROW(m0.at(m0.getRows() + 1), std::out_of_range);
 
-  BOOST_CHECK_THROW(m0.at(m0.getRows(), m0.getColumns() + 1),
+  EXPECT_THROW(m0.at(m0.getRows(), m0.getColumns() + 1),
                     std::out_of_range);
 
-  BOOST_CHECK_NO_THROW(m0[m0.getRows() + 1]);
+  EXPECT_NO_THROW(m0[m0.getRows() + 1]);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(MatrixOperators)
-BOOST_AUTO_TEST_CASE(AssignmentOperator)
+TEST(MatrixOperators,AssignmentOperator)
 {
   Matrix<double, 3, 3> m0;
   Matrix<double, 3, 3> m1{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   m0 = m1;
-  BOOST_CHECK_EQUAL(m0, m1);
+  EXPECT_EQ(m0, m1);
 }
-BOOST_AUTO_TEST_CASE(ComparisonOperator)
+TEST(MatrixOperators,ComparisonOperator)
 {
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m1{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-  BOOST_CHECK_EQUAL(m0, m1);
+  EXPECT_EQ(m0, m1);
 
   Matrix<double, 3, 3> m2{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m3{ { 9, 8, 7 }, { 6, 5, 4 }, { 3, 2, 1 } };
-  BOOST_CHECK_NE(m2, m3);
+  EXPECT_NE(m2, m3);
 }
-BOOST_AUTO_TEST_CASE(ScalarMultiplication)
+TEST(MatrixOperators,ScalarMultiplication)
 {
   Matrix<double, 3, 3> m0 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
@@ -123,12 +106,12 @@ BOOST_AUTO_TEST_CASE(ScalarMultiplication)
                            { 4 * 2, 5 * 2, 6 * 2 },
                            { 7 * 2, 8 * 2, 9 * 2 } };
 
-  BOOST_CHECK_EQUAL(m2, m1 * 2);
-  BOOST_CHECK_EQUAL(m0, m1);
-  BOOST_CHECK_EQUAL(m2, m1 *= 2);
-  BOOST_CHECK_EQUAL(m2, m1);
+  EXPECT_EQ(m2, m1 * 2);
+  EXPECT_EQ(m0, m1);
+  EXPECT_EQ(m2, m1 *= 2);
+  EXPECT_EQ(m2, m1);
 }
-BOOST_AUTO_TEST_CASE(ScalarDivision)
+TEST(MatrixOperators,ScalarDivision)
 {
   Matrix<double, 3, 3> m0{ { 1 * 2, 2 * 2, 3 * 2 },
                            { 4 * 2, 5 * 2, 6 * 2 },
@@ -138,12 +121,12 @@ BOOST_AUTO_TEST_CASE(ScalarDivision)
                            { 7 * 2, 8 * 2, 9 * 2 } };
   Matrix<double, 3, 3> m2 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-  BOOST_CHECK_EQUAL(m2, m1 / 2);
-  BOOST_CHECK_EQUAL(m0, m1);
-  BOOST_CHECK_EQUAL(m2, m1 /= 2);
-  BOOST_CHECK_EQUAL(m2, m1);
+  EXPECT_EQ(m2, m1 / 2);
+  EXPECT_EQ(m0, m1);
+  EXPECT_EQ(m2, m1 /= 2);
+  EXPECT_EQ(m2, m1);
 }
-BOOST_AUTO_TEST_CASE(MatrixAddition)
+TEST(MatrixOperators,MatrixAddition)
 {
   Matrix<double, 3, 3> m0 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
@@ -151,12 +134,12 @@ BOOST_AUTO_TEST_CASE(MatrixAddition)
                            { 4 * 2, 5 * 2, 6 * 2 },
                            { 7 * 2, 8 * 2, 9 * 2 } };
 
-  BOOST_CHECK_EQUAL(m2, m0 + m1);
-  BOOST_CHECK_EQUAL(m0, m1);
-  BOOST_CHECK_EQUAL(m2, m1 += m0);
-  BOOST_CHECK_EQUAL(m2, m1);
+  EXPECT_EQ(m2, m0 + m1);
+  EXPECT_EQ(m0, m1);
+  EXPECT_EQ(m2, m1 += m0);
+  EXPECT_EQ(m2, m1);
 }
-BOOST_AUTO_TEST_CASE(MatrixSubtraction)
+TEST(MatrixOperators,MatrixSubtraction)
 {
   Matrix<double, 3, 3> m0{ { 1 * 2, 2 * 2, 3 * 2 },
                            { 4 * 2, 5 * 2, 6 * 2 },
@@ -164,25 +147,25 @@ BOOST_AUTO_TEST_CASE(MatrixSubtraction)
   Matrix<double, 3, 3> m1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m2 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-  BOOST_CHECK_EQUAL(m2, m0 - m1);
-  BOOST_CHECK_EQUAL(m2, m0 -= m1);
+  EXPECT_EQ(m2, m0 - m1);
+  EXPECT_EQ(m2, m0 -= m1);
 }
-BOOST_AUTO_TEST_CASE(MatrixMatrixMultiplication)
+TEST(MatrixOperators,MatrixMatrixMultiplication)
 {
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m1{ { 30, 36, 42 }, { 66, 81, 96 }, { 102, 126, 150 } };
 
-  BOOST_CHECK_EQUAL(m1, m0 * m0);
+  EXPECT_EQ(m1, m0 * m0);
 }
-BOOST_AUTO_TEST_CASE(MatrixColumnVectorMultiplication)
+TEST(MatrixOperators,MatrixColumnVectorMultiplication)
 {
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 1> m1{ { { 1 } }, { { 2 } }, { { 3 } } };
   Matrix<double, 3, 1> m2{ { { 14 } }, { { 32 } }, { { 50 } } };
 
-  BOOST_CHECK_EQUAL(m2, m0 * m1);
+  EXPECT_EQ(m2, m0 * m1);
 }
-BOOST_AUTO_TEST_CASE(MatrixRowVectorMultiplication)
+TEST(MatrixOperators,MatrixRowVectorMultiplication)
 {
   Matrix<double, 1, 3> m0; //{{1},{2},{3}};
   m0.at(0, 0) = 1;
@@ -195,34 +178,30 @@ BOOST_AUTO_TEST_CASE(MatrixRowVectorMultiplication)
   Matrix<double, 1, 1> m2;
   m2.at(0, 0) = 14;
 
-  BOOST_CHECK_EQUAL(m2, m0 * m1);
+  EXPECT_EQ(m2, m0 * m1);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE(MatrixFunctions)
-BOOST_AUTO_TEST_CASE(MatrixTranspose)
+TEST(MatrixFunctions,MatrixTranspose)
 {
   // See https://en.wikipedia.org/wiki/Transpose
   Matrix<double, 3, 3> m0{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
   Matrix<double, 3, 3> m1{ { 9, 8, 7 }, { 6, 5, 4 }, { 3, 2, 1 } };
 
-  BOOST_CHECK_EQUAL(m0, m0.transpose().transpose());
-  BOOST_CHECK_EQUAL((m0 + m1).transpose(), m0.transpose() + m1.transpose());
-  BOOST_CHECK_EQUAL((m0 * 4.0).transpose(), m0.transpose() * 4.0);
+  EXPECT_EQ(m0, m0.transpose().transpose());
+  EXPECT_EQ((m0 + m1).transpose(), m0.transpose() + m1.transpose());
+  EXPECT_EQ((m0 * 4.0).transpose(), m0.transpose() * 4.0);
 }
-BOOST_AUTO_TEST_CASE(MatrixIdentity)
+TEST(MatrixFunctions,MatrixIdentity)
 {
   Matrix<double, 3, 3> m0{ { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } };
   Matrix<double, 3, 3> m1{ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-  BOOST_CHECK_EQUAL(m0, m1.identity());
-  BOOST_CHECK_EQUAL(m1, m1 * m1.identity());
-  BOOST_CHECK_EQUAL(m1, m1.identity() * m1);
+  EXPECT_EQ(m0, m1.identity());
+  EXPECT_EQ(m1, m1 * m1.identity());
+  EXPECT_EQ(m1, m1.identity() * m1);
 }
-// @See
-// https://www.boost.org/doc/libs/1_68_0/libs/test/doc/html/boost_test/testing_tools/extended_comparison/floating_point.html
-BOOST_AUTO_TEST_CASE(MatrixGauss, *boost::unit_test::tolerance(0.00001))
+
+TEST(MatrixFunctions,MatrixGauss)
 {
   Matrix<double, 3, 4> m0{ { 0, 1, 1, 5 }, { 3, 2, 2, 13 }, { 1, -1, 3, 8 } };
   Matrix<double, 3, 4> m1(m0.gauss());
@@ -231,11 +210,11 @@ BOOST_AUTO_TEST_CASE(MatrixGauss, *boost::unit_test::tolerance(0.00001))
   double b = m1.at(1, 3) - m1.at(1, 2) * c;
   double a = m1.at(0, 3) - m1.at(0, 1) * b - m1.at(0, 2) * c;
 
-  BOOST_TEST(a == 1.0);
-  BOOST_TEST(b == 2.0);
-  BOOST_TEST(c == 3.0);
+  EXPECT_NEAR(a, 1.0,0.00001);
+  EXPECT_NEAR(b, 2.0,0.00001);
+  EXPECT_NEAR(c, 3.0,0.00001);
 }
-BOOST_AUTO_TEST_CASE(MatrixGauss2, *boost::unit_test::tolerance(0.00001))
+TEST(MatrixFunctions,MatrixGauss2)
 {
   Matrix<double, 3, 4> m0{ { 1, 3, 1, 9 }, { 1, 1, -1, 1 }, { 3, 11, 5, 35 } };
   Matrix<double, 3, 4> m1(m0.gauss());
@@ -244,48 +223,48 @@ BOOST_AUTO_TEST_CASE(MatrixGauss2, *boost::unit_test::tolerance(0.00001))
   double b = m1.at(1, 3) - m1.at(1, 2) * c;
   double a = m1.at(0, 3) - m1.at(0, 1) * b - m1.at(0, 2) * c;
 
-  BOOST_TEST(a == -3.0);
-  BOOST_TEST(b == 4.0);
-  BOOST_TEST(c == 0);
+  EXPECT_NEAR(a, -3.0, 0.00001);
+  EXPECT_NEAR(b,  4.0, 0.00001);
+  EXPECT_NEAR(c,    0, 0.00001);
 }
-BOOST_AUTO_TEST_CASE(MatrixGaussJordan)
+TEST(MatrixFunctions,MatrixGaussJordan)
 {
   Matrix<double, 3, 4> m0{ { 0, 1, 1, 5 }, { 3, 2, 2, 13 }, { 1, -1, 3, 8 } };
   Matrix<double, 3, 4> m1{ { 1, 0, 0, 1 }, { 0, 1, 0, 2 }, { 0, 0, 1, 3 } };
-  // BOOST_CHECK_EQUAL(m0.gaussJordan(),m1);
-  BOOST_CHECK_EQUAL(true, equals(m0.gaussJordan(), m1,
+  // EXPECT_EQ(m0.gaussJordan(),m1);
+  EXPECT_EQ(true, equals(m0.gaussJordan(), m1,
                                  std::numeric_limits<double>::epsilon(), 100));
 }
-BOOST_AUTO_TEST_CASE(MatrixSolve)
+TEST(MatrixFunctions,MatrixSolve)
 {
   Matrix<double, 3, 4> m0{ { 0, 1, 1, 5 }, { 3, 2, 2, 13 }, { 1, -1, 3, 8 } };
   Matrix<double, 3, 1> m1{ { { 1 } }, { { 2 } }, { { 3 } } };
 
   // The following test fails because of rounding errors, use equals
-  // instead. BOOST_CHECK_EQUAL(m0.solve(),m1);
+  // instead. EXPECT_EQ(m0.solve(),m1);
 
-  BOOST_CHECK_EQUAL(true, equals(m0.solve(), m1,
+  EXPECT_EQ(true, equals(m0.solve(), m1,
                                  std::numeric_limits<double>::epsilon(), 100));
 }
-BOOST_AUTO_TEST_CASE(MatrixInverse)
+TEST(MatrixFunctions,MatrixInverse)
 {
   Matrix<double, 3, 3> m0{ { 1, 2, 0 }, { 1, 0, 1 }, { 2, 2, 2 } };
 
-  BOOST_CHECK_EQUAL(m0.identity(), m0 * m0.inverse());
-  BOOST_CHECK_EQUAL(m0.identity(), m0.inverse() * m0);
+  EXPECT_EQ(m0.identity(), m0 * m0.inverse());
+  EXPECT_EQ(m0.identity(), m0.inverse() * m0);
 
   Matrix<double, 3, 3> m1{ { 1, 2, 3 }, { 0, 1, 5 }, { 5, 6, 0 } };
 
   // The following tests fail because of rounding errors, use equals
-  // instead. BOOST_CHECK_EQUAL( m1.identity(),m1*m1.inverse());
-  // BOOST_CHECK_EQUAL( m1.identity(),m1.inverse()*m1);
+  // instead. EXPECT_EQ( m1.identity(),m1*m1.inverse());
+  // EXPECT_EQ( m1.identity(),m1.inverse()*m1);
 
-  BOOST_CHECK_EQUAL(true, equals(m1.identity(), m1 * m1.inverse(),
+  EXPECT_EQ(true, equals(m1.identity(), m1 * m1.inverse(),
                                  std::numeric_limits<double>::epsilon(), 100));
-  BOOST_CHECK_EQUAL(true, equals(m1.identity(), m1.inverse() * m1,
+  EXPECT_EQ(true, equals(m1.identity(), m1.inverse() * m1,
                                  std::numeric_limits<double>::epsilon(), 100));
 }
-BOOST_AUTO_TEST_CASE(MatrixPseudoInverse)
+TEST(MatrixFunctions,MatrixPseudoInverse)
 {
   Matrix<double, 3, 5> m0{ { -1, 8, 2, 8, 7 },
                            { 5, 6, -5, 7, 2 },
@@ -293,23 +272,22 @@ BOOST_AUTO_TEST_CASE(MatrixPseudoInverse)
 
   auto test = m0 * m0.pseudoInverse();
 
-  BOOST_CHECK_EQUAL(true, equals(test.identity(), test,
+  EXPECT_EQ(true, equals(test.identity(), test,
                                  std::numeric_limits<double>::epsilon(), 100));
 }
-BOOST_AUTO_TEST_CASE(MatrixColumnVectorEquality)
+TEST(MatrixFunctions,MatrixColumnVectorEquality)
 {
   Matrix<double, 3, 1> m0{ { { 1 } }, { { 2 } }, { { 3 } } };
   Matrix<double, 3, 1> m1{ { { 1 } }, { { 2 } }, { { 3 } } };
 
-  BOOST_CHECK_EQUAL(true,
+  EXPECT_EQ(true,
                     equals(m0, m1 /*,std::numeric_limits<double>::epsilon()*/));
 }
-BOOST_AUTO_TEST_CASE(MatrixRowVectorEquality)
+TEST(MatrixFunctions,MatrixRowVectorEquality)
 {
   Matrix<double, 1, 3> m0{ { 1, 2, 3 } };
   Matrix<double, 1, 3> m1{ { 1, 2, 3 } };
 
-  BOOST_CHECK_EQUAL(true,
+  EXPECT_EQ(true,
                     equals(m0, m1 /*,std::numeric_limits<double>::epsilon()*/));
 }
-BOOST_AUTO_TEST_SUITE_END()
