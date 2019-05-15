@@ -1,5 +1,5 @@
-#ifndef KINEMATICS_JACOBIANMATRIX_HPP
-#define KINEMATICS_JACOBIANMATRIX_HPP
+#ifndef KINEMATICS_JACOBIMATRIX_HPP
+#define KINEMATICS_JACOBIMATRIX_HPP
 #include <cmath>
 namespace kinematics
 {
@@ -887,6 +887,4 @@ std::pow((Ct1*(Ct2*(Ct3*(Ct4*(St5*St7+Ct5*Ct6*Ct7)-Ct7*St4*St6)-St3*(Ct6*Ct7*St5
     }
 
 } // namespace kinematics
-#endif // KINEMATICS_JACOBIANMATRIX_HPP
-
-
+#endif // KINEMATICS_JACOBIMATRIX_HPP

@@ -11,37 +11,31 @@ Denavit : matrix(
     [0, 0, 0, 1]);
 
 /*
-J1 : subst([theta=t_1, alpha=al_1, a=a_1, d=d_1],  Denavit);
-J2 : subst([theta=t_2, alpha=al_2, a=a_2, d=d_2],  Denavit);
-J3 : subst([theta=t_3, alpha=al_3, a=a_3, d=d_3],  Denavit);
-J4 : subst([theta=t_4, alpha=al_4, a=a_4, d=d_4],  Denavit);
-J5 : subst([theta=t_5, alpha=al_5, a=a_5, d=d_5],  Denavit);
-J6 : subst([theta=t_6, alpha=al_6, a=a_6, d=d_6],  Denavit);
-J7 : subst([theta=t_7, alpha=al_7, a=a_7, d=d_7],  Denavit);
-FL : subst([theta=0,   alpha=0,   a=0,   d=d_fl], Denavit);
+J1 : subst([theta=t_1, alpha=al_1, a=a_1, d=d_1], Denavit);
+J2 : subst([theta=t_2, alpha=al_2, a=a_2, d=d_2], Denavit);
+J3 : subst([theta=t_3, alpha=al_3, a=a_3, d=d_3], Denavit);
+J4 : subst([theta=t_4, alpha=al_4, a=a_4, d=d_4], Denavit);
+J5 : subst([theta=t_5, alpha=al_5, a=a_5, d=d_5], Denavit);
+J6 : subst([theta=t_6, alpha=al_6, a=a_6, d=d_6], Denavit);
+J7 : subst([theta=t_7, alpha=al_7, a=a_7, d=d_7], Denavit);
+FL : subst([theta=0,   alpha=0,    a=0,  d=d_fl], Denavit);
 */
-J1 : subst([theta=t_1, alpha=0,      a=0, d=0.333],  Denavit);
-J2 : subst([theta=t_2, alpha=-%pi/2, a=0, d=0],  Denavit);
-J3 : subst([theta=t_3, alpha=%pi/2,  a=0, d=0.316],  Denavit);
-J4 : subst([theta=t_4, alpha=%pi/2,  a=0.0825,  d=0],  Denavit);
-J5 : subst([theta=t_5, alpha=-%pi/2, a=-0.0825, d=0.384],  Denavit);
-J6 : subst([theta=t_6, alpha=%pi/2,  a=0    ,   d=0],  Denavit);
-J7 : subst([theta=t_7, alpha=%pi/2,  a=0.088,   d=0],  Denavit);
-FL : subst([theta=0,   alpha=0,      a=0,       d=0.107], Denavit);
+J1 : subst([theta=t_1, alpha=0, a=0, d=0.333], Denavit);
+J2 : subst([theta=t_2, alpha=-%pi/2, a=0, d=0], Denavit);
+J3 : subst([theta=t_3, alpha=%pi/2, a=0, d=0.316],  Denavit);
+J4 : subst([theta=t_4, alpha=%pi/2, a=0.0825, d=0],  Denavit);
+J5 : subst([theta=t_5, alpha=-%pi/2, a=-0.0825, d=0.384], Denavit);
+J6 : subst([theta=t_6, alpha=%pi/2, a=0, d=0], Denavit);
+J7 : subst([theta=t_7, alpha=%pi/2, a=0.088, d=0],  Denavit);
+FL : subst([theta=0,   alpha=0, a=0, d=0.107], Denavit);
 
 T : J1 . J2 . J3 . J4 . J5 . J6 . J7 . FL;
 
-/* 
-yaw = alpha
-pitch = beta
-roll = gamma
-*/
+yaw: atan2(T[2][1], T[1][1]);
+pitch: atan2(-T[3][1], sqrt(T[3][2]*T[3][2] + T[3][3]*T[3][3]));
+roll: atan2(T[3][2], T[3][3]);
 
-alpha2: atan2(T[2][1], T[1][1]);
-beta2: atan2(-T[3][1], sqrt(T[3][2]*T[3][2] + T[3][3]*T[3][3]));
-gamma2: atan2(T[3][2], T[3][3]);
-
-TransformationABG : [T[1][4], T[2][4], T[3][4], alpha2, beta2, gamma2];
+TransformationABG : [T[1][4], T[2][4], T[3][4], yaw, pitch, roll];
 
 Jacobian : jacobian(TransformationABG, [t_1, t_2, t_3, t_4, t_5, t_6, t_7]);
 JacobianSubstituted : subst([
