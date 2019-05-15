@@ -24,6 +24,7 @@
   <author email="WM.vanUum@student.han.nl">Wouter  van  Uum </author>
   <author email="YS.Will@student.han.nl">Yori  Will </author>
 
+  <test_depend>rosunit</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>roscpp</build_depend>

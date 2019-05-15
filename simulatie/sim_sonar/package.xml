@@ -10,6 +10,7 @@
 
   <license>BSD</license>
 
+  <test_depend>rosunit</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>gazebo_msgs</build_depend>
   <build_depend>gazebo_plugins</build_depend>

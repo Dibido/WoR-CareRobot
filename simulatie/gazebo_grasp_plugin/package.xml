@@ -28,6 +28,7 @@
 
   <!-- The *_depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
+  <test_depend>rosunit</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>gazebo</build_depend>
