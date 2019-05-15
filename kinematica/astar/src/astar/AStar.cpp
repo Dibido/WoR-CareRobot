@@ -141,43 +141,10 @@ namespace astar
             if (!(*insertResult1.first).first.equalPoint(neighbour))
             {
               std::ostringstream os;
-              os << "**"
-                    "* "
-                    "(*"
-                    "in"
-                    "se"
-                    "rt"
-                    "Re"
-                    "su"
-                    "lt"
-                    "1."
-                    "fi"
-                    "rs"
-                    "t)"
-                    ".f"
-                    "ir"
-                    "st"
-                    " !"
-                    "= "
-                    "ne"
-                    "ig"
-                    "hb"
-                    "ou"
-                    "r:"
-                    "\n"
-                    "\t"
-                    "\t"
-                 << (*insertResult1.first).first
-                 << " <"
-                    "- "
-                 << (*insertResult1.first).second
-                 << "\n"
-                    "\t"
-                    "\t"
-                 << neighbour
-                 << " <"
-                    "- "
-                 << current;
+              os << "*** (*insertResult1.first).first != neighbour:\n\t\t"
+                 << (*insertResult1.first).first << " <- "
+                 << (*insertResult1.first).second << "\n\t\t" << neighbour
+                 << " <- " << current;
               throw std::runtime_error(os.str());
             }
 
