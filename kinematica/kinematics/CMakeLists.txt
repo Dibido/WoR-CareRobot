@@ -208,11 +208,4 @@ target_link_libraries(lib_kinematics
     ${catkin_LIBRARIES}
 )
 
-add_executable(denavit_hartenberg_3d src/denavit_hartenberg_3d.cpp 
-)
-add_dependencies(denavit_hartenberg_3d ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(denavit_hartenberg_3d lib_kinematics ${catkin_LIBRARIES})
-
-
 

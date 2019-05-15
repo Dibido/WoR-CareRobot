@@ -1,0 +1,107 @@
+
+/*
+Author: Emiel Bosman
+Transformation Matrix function,
+Based on J. Craig, Robotics and Control 3rd Edition
+*/
+Denavit : matrix(
+    [cos(theta), -sin(theta), 0, a],
+    [sin(theta)*cos(alpha), cos(theta) * cos(alpha) , -sin(alpha) , -sin(alpha)*d],
+    [sin(theta)*sin(alpha), cos(theta)*sin(alpha), cos(alpha), cos(alpha) * d],
+    [0, 0, 0, 1]);
+
+/*
+J1 : subst([theta=t_1, alpha=al_1, a=a_1, d=d_1],  Denavit);
+J2 : subst([theta=t_2, alpha=al_2, a=a_2, d=d_2],  Denavit);
+J3 : subst([theta=t_3, alpha=al_3, a=a_3, d=d_3],  Denavit);
+J4 : subst([theta=t_4, alpha=al_4, a=a_4, d=d_4],  Denavit);
+J5 : subst([theta=t_5, alpha=al_5, a=a_5, d=d_5],  Denavit);
+J6 : subst([theta=t_6, alpha=al_6, a=a_6, d=d_6],  Denavit);
+J7 : subst([theta=t_7, alpha=al_7, a=a_7, d=d_7],  Denavit);
+FL : subst([theta=0,   alpha=0,   a=0,   d=d_fl], Denavit);
+*/
+J1 : subst([theta=t_1, alpha=0,      a=0, d=0.333],  Denavit);
+J2 : subst([theta=t_2, alpha=-%pi/2, a=0, d=0],  Denavit);
+J3 : subst([theta=t_3, alpha=%pi/2,  a=0, d=0.316],  Denavit);
+J4 : subst([theta=t_4, alpha=%pi/2,  a=0.0825,  d=0],  Denavit);
+J5 : subst([theta=t_5, alpha=-%pi/2, a=-0.0825, d=0.384],  Denavit);
+J6 : subst([theta=t_6, alpha=%pi/2,  a=0    ,   d=0],  Denavit);
+J7 : subst([theta=t_7, alpha=%pi/2,  a=0.088,   d=0],  Denavit);
+FL : subst([theta=0,   alpha=0,      a=0,       d=0.107], Denavit);
+
+T : J1 . J2 . J3 . J4 . J5 . J6 . J7 . FL;
+
+/* 
+yaw = alpha
+pitch = beta
+roll = gamma
+*/
+
+alpha2: atan2(T[2][1], T[1][1]);
+beta2: atan2(-T[3][1], sqrt(T[3][2]*T[3][2] + T[3][3]*T[3][3]));
+gamma2: atan2(T[3][2], T[3][3]);
+
+TransformationABG : [T[1][4], T[2][4], T[3][4], alpha2, beta2, gamma2];
+
+Jacobian : jacobian(TransformationABG, [t_1, t_2, t_3, t_4, t_5, t_6, t_7]);
+JacobianSubstituted : subst([
+    cos(t_1)=Ct1, cos(t_2)=Ct2, cos(t_3)=Ct3, cos(t_4)=Ct4, cos(t_5)=Ct5, cos(t_6)=Ct6, cos(t_7)=Ct7,
+    sin(t_1)=St1, sin(t_2)=St2, sin(t_3)=St3, sin(t_4)=St4, sin(t_5)=St5, sin(t_6)=St6, sin(t_7)=St7,
+    cos(al_1)=Cal1, cos(al_2)=Cal2, cos(al_3)=Cal3, cos(al_4)=Cal4, cos(al_5)=Cal5, cos(al_6)=Cal6, cos(al_7)=Cal7,
+    sin(al_1)=Sal1, sin(al_2)=Sal2, sin(al_3)=Sal3, sin(al_4)=Sal4, sin(al_5)=Sal5, sin(al_6)=Sal6, sin(al_7)=Sal7
+    ],Jacobian
+);
+
+/*
+stringout("ForwardKinematics", TransformationABG);
+stringout("JacobianMatrix", Jacobian);
+stringout("JacobianSubstituted", JacobianSubstituted);
+*/
+
+stringout ("J11", JacobianSubstituted[1][1]);
+stringout ("J12", JacobianSubstituted[1][2]);
+stringout ("J13", JacobianSubstituted[1][3]);
+stringout ("J14", JacobianSubstituted[1][4]);
+stringout ("J15", JacobianSubstituted[1][5]);
+stringout ("J16", JacobianSubstituted[1][6]);
+stringout ("J17", JacobianSubstituted[1][7]);
+
+stringout ("J21", JacobianSubstituted[2][1]);
+stringout ("J22", JacobianSubstituted[2][2]);
+stringout ("J23", JacobianSubstituted[2][3]);
+stringout ("J24", JacobianSubstituted[2][4]);
+stringout ("J25", JacobianSubstituted[2][5]);
+stringout ("J26", JacobianSubstituted[2][6]);
+stringout ("J27", JacobianSubstituted[2][7]);
+
+stringout ("J31", JacobianSubstituted[3][1]);
+stringout ("J32", JacobianSubstituted[3][2]);
+stringout ("J33", JacobianSubstituted[3][3]);
+stringout ("J34", JacobianSubstituted[3][4]);
+stringout ("J35", JacobianSubstituted[3][5]);
+stringout ("J36", JacobianSubstituted[3][6]);
+stringout ("J37", JacobianSubstituted[3][7]);
+
+stringout ("J41", JacobianSubstituted[4][1]);
+stringout ("J42", JacobianSubstituted[4][2]);
+stringout ("J43", JacobianSubstituted[4][3]);
+stringout ("J44", JacobianSubstituted[4][4]);
+stringout ("J45", JacobianSubstituted[4][5]);
+stringout ("J46", JacobianSubstituted[4][6]);
+stringout ("J47", JacobianSubstituted[4][7]);
+
+stringout ("J51", JacobianSubstituted[5][1]);
+stringout ("J52", JacobianSubstituted[5][2]);
+stringout ("J53", JacobianSubstituted[5][3]);
+stringout ("J54", JacobianSubstituted[5][4]);
+stringout ("J55", JacobianSubstituted[5][5]);
+stringout ("J56", JacobianSubstituted[5][6]);
+stringout ("J57", JacobianSubstituted[5][7]);
+
+stringout ("J61", JacobianSubstituted[6][1]);
+stringout ("J62", JacobianSubstituted[6][2]);
+stringout ("J63", JacobianSubstituted[6][3]);
+stringout ("J64", JacobianSubstituted[6][4]);
+stringout ("J65", JacobianSubstituted[6][5]);
+stringout ("J66", JacobianSubstituted[6][6]);
+stringout ("J67", JacobianSubstituted[6][7]);

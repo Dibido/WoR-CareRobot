@@ -43,7 +43,7 @@ namespace kinematics
    * @return true
    * @return false
    */
-  inline bool transformYPREquals(const Matrix<double, 6, 1>& lhs,
+  inline bool transformationMatrixEquals(const Matrix<double, 6, 1>& lhs,
                                  const Matrix<double, 6, 1>& rhs,
                                  double posEpsilon,
                                  double radEpsilon)
