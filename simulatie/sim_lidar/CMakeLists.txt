@@ -7,14 +7,15 @@ find_package(catkin REQUIRED COMPONENTS
     gazebo_ros
 )
 
-find_package(gazebo REQUIRED)
-
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
   unit_test_framework
+  regex
+  signals
 )
 
+find_package(gazebo REQUIRED)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)

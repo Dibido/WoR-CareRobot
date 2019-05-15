@@ -13,13 +13,15 @@ find_package(catkin REQUIRED COMPONENTS
 	message_generation
 )
 
-find_package(Gazebo REQUIRED)
-
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
   unit_test_framework
+  regex
+  signals
 )
+
+find_package(Gazebo REQUIRED)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)

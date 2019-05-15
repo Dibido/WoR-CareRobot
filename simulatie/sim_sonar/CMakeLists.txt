@@ -3,8 +3,6 @@ project(sim_sonar)
 
 add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
 
-find_package(Gazebo REQUIRED)
-
 find_package(catkin REQUIRED COMPONENTS
     gazebo_msgs
     gazebo_plugins
@@ -18,7 +16,11 @@ find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
   unit_test_framework
+  regex
+  signals
 )
+
+find_package(Gazebo REQUIRED)
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
