@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://al5d</uri>
+    </include>
+
+    <physics type='ode'>
+      <max_step_size>0.02</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>50</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+
+  </world>
+</sdf>
