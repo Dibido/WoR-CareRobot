@@ -179,7 +179,7 @@ CMakeLists.txt.user*
 *.includes
 
 # Project configuration settings like predefined Macros
-*.config
+#*.config
 
 # Qt Creator settings
 *.creator
