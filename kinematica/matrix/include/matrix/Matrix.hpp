@@ -244,14 +244,6 @@ class Matrix
  *
  */
 template <typename T, std::size_t M, std::size_t N>
-inline bool operator==(const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs)
-{
-  return lhs.matrix == rhs.matrix;
-}
-/**
- *
- */
-template <typename T, std::size_t M, std::size_t N>
 inline std::ostream& operator<<(std::ostream& stream,
                                 const Matrix<T, M, N>& aMatrix)
 {
