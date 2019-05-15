@@ -207,5 +207,3 @@ add_library(lib_kinematics
 target_link_libraries(lib_kinematics
     ${catkin_LIBRARIES}
 )
-
-

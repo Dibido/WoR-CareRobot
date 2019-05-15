@@ -18,6 +18,7 @@ namespace kinematics
   const double IK_POS_EPSILON = 0.000001;
   const double IK_RAD_EPSILON = M_PI / 180 * 5;
   const std::size_t IK_MAX_ITERATIONS = 100;
+  const std::size_t DH_TRANSFORM_POS_RAD_SPLIT = 3;
 
   /**
    * @brief Calculates End Effector position and Configuration using

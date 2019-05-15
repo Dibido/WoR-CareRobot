@@ -35,27 +35,31 @@ namespace kinematics
   /**
    * @brief Checks if TransformationMatrices with both positional and rotational
    * values are equal to each other
-   *  Matrices are assumed to be of form : [pos, pos, pos, rad, rad, rad]
+   * Matrices are assumed to be of form : [pos, .... , pos, rad, .... , rad]
    * @param lhs
    * @param rhs
-   * @param posEpsilon Epsilon to use for the first three positional values
-   * @param radEpsilon Epsilon to use for the last three rotational values
+   * @param posEpsilon Epsilon to use for the left positional values
+   * @param radEpsilon Epsilon to use for the right rotational values
+   * @param epsilonSplit Index at which to change which epsilon to use
    * @return true
    * @return false
    */
-  inline bool transformationMatrixEquals(const Matrix<double, 6, 1>& lhs,
-                                 const Matrix<double, 6, 1>& rhs,
+  template <std::size_t M>
+  inline bool transformationMatrixEquals(const Matrix<double, M, 1>& lhs,
+                                 const Matrix<double, M, 1>& rhs,
                                  double posEpsilon,
-                                 double radEpsilon)
+                                 double radEpsilon,
+                                 std::size_t epsilonSplit)
   {
-    for (unsigned char i = 0; i < 3; ++i)
+    assert(M > epsilonSplit);
+    for (std::size_t i = 0; i < epsilonSplit; ++i)
     {
       if (doubleEquals(lhs[i][0], rhs[i][0], posEpsilon) == false)
       {
         return false;
       }
     }
-    for (unsigned char i = 3; i < 6; ++i)
+    for (std::size_t i = epsilonSplit; i < M; ++i)
     {
       if (doubleEquals(lhs[i][0], rhs[i][0], radEpsilon) == false)
       {

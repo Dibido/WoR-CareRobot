@@ -33,7 +33,7 @@ namespace kinematics
     double beta = IK_BETA;
     std::size_t it = 0;
     while (transformationMatrixEquals(goal, virtualEndPoint, IK_POS_EPSILON,
-                                      IK_RAD_EPSILON) == false)
+                                      IK_RAD_EPSILON, DH_TRANSFORM_POS_RAD_SPLIT) == false)
     {
       ++it;
       if (it > IK_MAX_ITERATIONS)
