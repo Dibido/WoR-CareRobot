@@ -63,9 +63,7 @@ class Matrix
   /**
    * Dtor
    */
-  virtual ~Matrix()
-  {
-  }
+  virtual ~Matrix() = default;
   //@}
   /**
    * @name Dimension access

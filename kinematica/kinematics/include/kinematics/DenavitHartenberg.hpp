@@ -7,11 +7,6 @@
 #include <matrix/Matrix.hpp>
 #include <vector>
 
-const double DEG_45 = M_PI / 4;
-const double DEG_90 = M_PI / 2;
-const double DEG_180 = M_PI;
-const double DEG_270 = DEG_90 + DEG_180;
-
 namespace kinematics
 {
   const double IK_BETA = 0.3;
