@@ -1,0 +1,10 @@
+<launch>
+    <node name="sonar_interpreter" pkg="sonar_interpreter" type="sonar_interpreter_node" required="true" output="screen">
+        <param name="sonarTopicName" value="/sensor/sonar" />
+        <param name="speedTopicName" value="object_speed" />
+    </node>
+    <arg name="serial_port" default="/dev/ttyACM0" />
+   <include file="$(find sen_sonar)/launch/launch.launch">
+       <arg name="serial" value="$(arg serial_port)" />
+   </include>
+</launch>

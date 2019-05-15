@@ -1,0 +1,40 @@
+<sdf version="1.0">
+    <world name="default">
+        <!-- A global light source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- A ground plane -->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+        <include>
+            <uri>model://lidar_model</uri>
+        </include>
+
+        <model name="test_box">
+            <pose>0 2 0.5 0 0 0</pose>
+            <static>true</static>
+            <link name="link_box">
+                <collision name="collision_box">
+                    <geometry>
+                    <box>
+                        <size>1 1 1</size>
+                    </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_box">
+                    <geometry>
+                    <box>
+                        <size>1 1 1</size>
+                    </box>
+                    </geometry>
+                </visual>
+            </link>
+        </model>
+    </world>
+</sdf>
+
+

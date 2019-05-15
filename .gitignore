@@ -69,7 +69,7 @@ local.properties
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
-*.launch
+#*.launch
 
 # PyDev specific (Python IDE for Eclipse)
 *.pydevproject
@@ -179,7 +179,7 @@ CMakeLists.txt.user*
 *.includes
 
 # Project configuration settings like predefined Macros
-*.config
+#*.config
 
 # Qt Creator settings
 *.creator
