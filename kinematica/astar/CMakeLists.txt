@@ -3,7 +3,7 @@ project(astar)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
-set(CMAKE_CXX_FLAGS "-std=c++14 -O0 -g3 -pg -ftest-coverage -fprofile-arcs -Wall -Wextra -Wconversion -fmessage-length=0 -no-pie")
+set(CMAKE_CXX_FLAGS "-O0 -g3 -pg -ftest-coverage -fprofile-arcs -Wall -Wextra -Wconversion -fmessage-length=0 -no-pie")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -210,5 +210,4 @@ src/astar/Graph.cpp
 )
 
 target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY}
-                      ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+                      ${Boost_SYSTEM_LIBRARY})

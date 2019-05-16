@@ -48,7 +48,7 @@ namespace astar
   std::vector<Edge> AStar::getNeighbourConnections(const Vertex& aVertex)
   {
     std::vector<Edge> connections;
-    const std::vector<Vertex>& neighbours = graph->calculateNeigbours(aVertex);
+    const std::vector<Vertex>& neighbours = graph->calculateNeighbours(aVertex);
     for (const Vertex& vertex : neighbours)
     {
       connections.push_back(Edge(aVertex, vertex));

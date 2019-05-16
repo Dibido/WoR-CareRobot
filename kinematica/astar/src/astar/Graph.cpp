@@ -34,15 +34,15 @@ namespace astar
     mObstacles.clear();
   }
 
-  std::vector<Vertex> Graph::calculateNeigbours(const Vertex& aVertex)
+  std::vector<Vertex> Graph::calculateNeighbours(const Vertex& aVertex)
   {
-
-    static short lXOffset[] = { 0,          cStep,      cStep,      cStep, 0,
-                                -1 * cStep, -1 * cStep, -1 * cStep, 0 };
-    static short lYOffset[] = { cStep,      cStep,      0,
-                                -1 * cStep, -1 * cStep, -1 * cStep,
-                                0,          cStep,      0 };
-    static short lZOffset[] = { -1 * cStep, 0, cStep };
+    const static short lXOffset[] = { 0,          cStep,      cStep,
+                                      cStep,      0,          -1 * cStep,
+                                      -1 * cStep, -1 * cStep, 0 };
+    const static short lYOffset[] = { cStep,      cStep,      0,
+                                      -1 * cStep, -1 * cStep, -1 * cStep,
+                                      0,          cStep,      0 };
+    const static short lZOffset[] = { -1 * cStep, 0, cStep };
 
     std::vector<Vertex> lNeighbours;
     Vertex lDifference =

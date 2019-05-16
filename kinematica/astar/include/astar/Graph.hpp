@@ -20,14 +20,12 @@ namespace astar
   const uint8_t cNrOfNeighbours = 9;
   const uint8_t cNrOfDimensionLayers = 3;
   /**
+   * @brief The graph is builded in Centimeters
+   *
    * @author Gianni Monteban
    */
   class Graph
   {
-      private:
-    std::vector<obstacle::Obstacle> mObstacles;
-    Vertex mEndPoint;
-
       public:
     /**
      * @brief Construct a new Graph object
@@ -71,6 +69,7 @@ namespace astar
     /**
      * @brief remove all obstacles
      *
+     * @author Gianni Monteban
      */
     void removeAllObstacles();
 
@@ -82,7 +81,11 @@ namespace astar
      *
      * @author Gianni Monteban
      */
-    std::vector<Vertex> calculateNeigbours(const Vertex& aVertex);
+    std::vector<Vertex> calculateNeighbours(const Vertex& aVertex);
+
+      private:
+    std::vector<obstacle::Obstacle> mObstacles;
+    Vertex mEndPoint;
   };
 
 } // namespace astar

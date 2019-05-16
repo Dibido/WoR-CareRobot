@@ -9,7 +9,7 @@ namespace astar
     /**
      *
      */
-    Vertex(unsigned long anX, unsigned long anY, unsigned long anZ)
+    Vertex(long anX, long anY, long anZ)
         : x(anX), y(anY), z(anZ), actualCost(0.0), heuristicCost(0.0)
     {
     }

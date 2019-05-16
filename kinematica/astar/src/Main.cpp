@@ -5,14 +5,14 @@
 
 int main()
 {
-  std::shared_ptr<astar::Graph> graph = std::make_shared<astar::Graph>();
-  astar::AStar astar(graph);
+  std::shared_ptr<astar::Graph> lGraph = std::make_shared<astar::Graph>();
+  astar::AStar astar(lGraph);
 
-  astar::Path p =
-      astar.search(astar::Vertex(0, 0, 0), astar::Vertex(25, 16, -200));
-  for (astar::Vertex v : p)
+  astar::Path lP =
+      astar.search(astar::Vertex(0, 0, 0), astar::Vertex(66, 38, -200));
+  for (const astar::Vertex& lV : lP)
   {
-    std::cout << v << std::endl;
+    std::cout << lV << std::endl;
   }
   return 0;
 }
