@@ -19,8 +19,7 @@ namespace astar
   const short STEP = 10;
   const short NR_OF_NEIGHBOURS = 9;
   /**
-   * @brief
-   *
+   * @author Gianni Monteban
    */
   class Graph
   {
@@ -31,48 +30,56 @@ namespace astar
       public:
     /**
      * @brief Construct a new Graph object
-     *
+     * @author Gianni Monteban
      */
     Graph();
 
     /**
      * @brief Destroy the Graph object
-     *
+     * @author Gianni Monteban
      */
-    ~Graph();
+    virtual ~Graph() = default;
 
     /**
      * @brief Set the End Point object
      *
-     * @param aVertex
+     * @param aVertex the endPoint in the graph
+     *
+     * @author Gianni Monteban
      */
     void setEndPoint(const Vertex& aVertex);
 
     /**
-     * @brief
+     * @brief add an obstacle in the graph
      *
-     * @param obstacle
+     * @param obstacle the obstacle to add
+     *
+     * @Gianni Monteban
      */
     void addObstacle(const obstacle::Obstacle& obstacle);
 
     /**
-     * @brief
+     * @brief remove a specified obstacle from the graph
      *
-     * @param obstacle
+     * @param obstacle the obstacle to remove from the graph
+     *
+     * @author Gianni Monteban
      */
     void removeObstacle(const obstacle::Obstacle& obstacle);
 
     /**
-     * @brief
+     * @brief remove all obstacles
      *
      */
     void removeAllObstacles();
 
     /**
-     * @brief
+     * @brief calculate which vertexes are neighbours of the given vertex
      *
-     * @param aVertex
-     * @return std::vector<Vertex>
+     * @param aVertex the vertex to calculate neighbours for
+     * @return std::vector<Vertex> the list of neighbours
+     *
+     * @author Gianni Monteban
      */
     std::vector<Vertex> calculateNeigbours(const Vertex& aVertex);
   };

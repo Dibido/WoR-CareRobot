@@ -9,10 +9,6 @@ namespace astar
   {
   }
 
-  Graph::~Graph()
-  {
-  }
-
   void Graph::setEndPoint(const Vertex& aVertex)
   {
     endPoint = aVertex;

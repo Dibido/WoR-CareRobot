@@ -3,6 +3,7 @@ project(astar)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
+set(CMAKE_CXX_FLAGS "-std=c++14 -O0 -g3 -pg -ftest-coverage -fprofile-arcs -Wall -Wextra -Wconversion -fmessage-length=0 -no-pie")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)

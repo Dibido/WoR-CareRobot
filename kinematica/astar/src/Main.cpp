@@ -3,7 +3,7 @@
 
 #include <memory>
 
-int main(int argc, char const* argv[])
+int main()
 {
   std::shared_ptr<astar::Graph> graph = std::make_shared<astar::Graph>();
   astar::AStar astar(graph);
