@@ -5,16 +5,16 @@ namespace obstacle
 {
   struct Obstacle
   {
-    double x;
-    double y;
-    double z;
-    double width;
-    double height;
+    double mX;
+    double mY;
+    double mZ;
+    double mWidth;
+    double mHeight;
 
     bool operator==(const Obstacle& rhs) const
     {
-      return x == rhs.x && y == rhs.y && z == rhs.z && width == rhs.width &&
-             height == rhs.height;
+      return mX == rhs.mX && mY == rhs.mY && mZ == rhs.mZ &&
+             mWidth == rhs.mWidth && mHeight == rhs.mHeight;
     }
   };
 } // namespace obstacle
