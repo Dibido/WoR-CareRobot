@@ -9,7 +9,7 @@ namespace kinematics
    * @brief Enum to denote the Type of Joint a Link has
    *
    */
-  enum class Joint
+  enum class eJoint
   {
     /**
      * @brief The Link increases its D value and keeps its Theta
@@ -31,15 +31,15 @@ namespace kinematics
   class JointHelper
   {
       public:
-    static const std::string toString(Joint joint)
+    static const std::string toString(eJoint lJoint)
     {
-      switch (joint)
+      switch (lJoint)
       {
-      case Joint::PRISMATIC:
+      case eJoint::PRISMATIC:
         return "prismatic";
-      case Joint::REVOLUTE:
+      case eJoint::REVOLUTE:
         return "revolute";
-      case Joint::STATIC:
+      case eJoint::STATIC:
         return "static";
       }
       return "error";

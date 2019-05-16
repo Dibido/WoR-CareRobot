@@ -8,11 +8,12 @@ namespace kinematics
   struct EulerAngles
   {
     template <std::size_t M, std::size_t N>
-    explicit EulerAngles(const Matrix<double, M, N>& rotationMatrix);
-    Matrix<double, 3, 3> ToRotationMatrix() const;
-    double yaw;
-    double pitch;
-    double roll;
+    EulerAngles(const Matrix<double, M, N>& lRotationMatrix);
+    EulerAngles(double lYaw_rad, double lPitch_rad, double lRoll_rad);
+    Matrix<double, 3, 3> toRotationMatrix() const;
+    double mYaw_rad;
+    double mPitch_rad;
+    double mRoll_rad;
   };
 
 } // namespace kinematics

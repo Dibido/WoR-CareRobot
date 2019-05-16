@@ -5,142 +5,146 @@
 
 namespace kinematics
 {
-  Link::Link(double a,
-             double alpha,
-             double constant,
-             Joint type,
-             double minValue,
-             double maxValue)
-      : Link(a, alpha, 0, 0, type, minValue, maxValue)
+  Link::Link(double lA_m,
+             double lAlpha_rad,
+             double lConstant,
+             eJoint lType,
+             double lMinValue,
+             double lMaxValue)
+      : Link(lA_m, lAlpha_rad, 0, 0, lType, lMinValue, mMaxValue)
   {
-    switch (type)
+    switch (mType)
     {
-    case Joint::PRISMATIC:
-      theta = constant;
+    case eJoint::PRISMATIC:
+      mTheta_rad = lConstant;
       break;
-    case Joint::REVOLUTE:
-      d = constant;
+    case eJoint::REVOLUTE:
+      mD_m = lConstant;
       break;
     default:
       throw std::invalid_argument(
           "Passed Joint type is not valid for single "
           "Offset construction " +
-          JointHelper::toString(type));
+          JointHelper::toString(lType));
       break;
     }
   }
 
-  Link::Link(double a,
-             double alpha,
-             double d,
-             double theta,
-             Joint type,
-             double minValue,
-             double maxValue)
-      : a(a),
-        alpha(alpha),
-        d(d),
-        theta(theta),
-        type(type),
-        minValue(minValue),
-        maxValue(maxValue)
+  Link::Link(double lA_m,
+             double lAlpha_rad,
+             double lD_m,
+             double lTheta_rad,
+             eJoint lType,
+             double lMinValue,
+             double lMaxValue)
+      : mA_m(lA_m),
+        mAlpha_rad(lAlpha_rad),
+        mD_m(lD_m),
+        mTheta_rad(lTheta_rad),
+        mType(lType),
+        mMinValue(lMinValue),
+        mMaxValue(lMaxValue)
   {
   }
 
-  bool Link::isWithinConstraints(double variable) const
+  bool Link::isWithinConstraints(double lVariable) const
   {
-    variable = constrainVariable(variable);
-    return (type == Joint::STATIC ||
-            (minValue < variable && variable < maxValue));
+    if (mType == eJoint::REVOLUTE)
+    {
+      lVariable = constrainVariable(lVariable);
+    }
+    return (mType == eJoint::STATIC ||
+            (mMinValue < lVariable && lVariable < mMaxValue));
   }
 
-  double Link::constrainVariable(double variable) const
+  double Link::constrainVariable(double lVariable) const
   {
-    if (type == Joint::REVOLUTE)
+    if (mType == eJoint::REVOLUTE)
     {
       // Constrain value between -M_PI and M_PI if the Link is of type REVOLUTE
-      variable = std::fmod(variable + M_PI, M_PI * 2);
-      if (variable < 0)
+      lVariable = std::fmod(lVariable + M_PI, M_PI * 2);
+      if (lVariable < 0)
       {
-        variable += M_PI * 2;
+        lVariable += M_PI * 2;
       }
-      variable -= M_PI;
+      lVariable -= M_PI;
     }
-    
-    if (minValue > variable)
+
+    if (mMinValue > lVariable)
     {
-      variable = minValue;
+      lVariable = mMinValue;
     }
-    else if (variable > maxValue)
+    else if (lVariable > mMaxValue)
     {
-      variable = maxValue;
+      lVariable = mMaxValue;
     }
-    return variable;
+    return lVariable;
   }
 
-  Matrix<double, 4, 4> Link::transformationMatrix(double variable) const
+  Matrix<double, 4, 4> Link::transformationMatrix(double lVariable) const
   {
-    if (isWithinConstraints(variable) == false)
+    if (isWithinConstraints(lVariable) == false)
     {
       ROS_WARN(
           "Link variable (%.4f) is out of allowed constraints (%.4f < v < "
           "%.4f)",
-          variable, minValue, maxValue);
+          lVariable, mMinValue, mMaxValue);
     }
-    double newD = d;
-    double newTheta = theta;
-    switch (type)
+    double lD_m = mD_m;
+    double lTheta_rad = mTheta_rad;
+    switch (mType)
     {
-    case Joint::PRISMATIC:
-      newD += variable;
+    case eJoint::PRISMATIC:
+      lD_m += lVariable;
       break;
-    case Joint::REVOLUTE:
-      newTheta += variable;
+    case eJoint::REVOLUTE:
+      lTheta_rad += lVariable;
       break;
-    case Joint::STATIC:
+    case eJoint::STATIC:
       // Do not change any of the values
       break;
     default:
       throw std::invalid_argument("Invalid Joint type: " +
-                                  JointHelper::toString(type));
+                                  JointHelper::toString(mType));
       break;
     }
     ROS_DEBUG("T: %s A: %.2f\talpha: %.2f\tD: %.2f\tTheta: %.2f",
-              JointHelper::toString(type).c_str(), a, alpha, newD, newTheta);
-    return calculateTransformationMatrix(newD, newTheta);
+              JointHelper::toString(mType).c_str(), mA_m, mAlpha_rad, lD_m,
+              lTheta_rad);
+    return calculateTransformationMatrix(lD_m, lTheta_rad);
   }
 
   double Link::getA() const
   {
-    return a;
+    return mA_m;
   }
   double Link::getAlpha() const
   {
-    return alpha;
+    return mAlpha_rad;
   }
   double Link::getD() const
   {
-    return d;
+    return mD_m;
   }
   double Link::getTheta() const
   {
-    return d;
+    return mTheta_rad;
   }
-  Joint Link::getType() const
+  eJoint Link::getType() const
   {
-    return type;
+    return mType;
   }
 
-  Matrix<double, 4, 4> Link::calculateTransformationMatrix(double d,
-                                                           double theta) const
+  Matrix<double, 4, 4>
+      Link::calculateTransformationMatrix(double lD_m, double lTheta_rad) const
   {
     // clang-format off
-    return Matrix<double, 4, 4>{
-      { cos(theta)              , -sin(theta)              ,  0         ,  a              },
-      { sin(theta) * cos(alpha) ,  cos(theta) * cos(alpha) , -sin(alpha), -sin(alpha) * d },
-      { sin(theta) * sin(alpha) ,  cos(theta) * sin(alpha) ,  cos(alpha),  cos(alpha) * d },
-      { 0                       ,  0                       ,  0         ,  1              }
-    };
+  return Matrix<double, 4, 4>{
+    { cos(lTheta_rad), -sin(lTheta_rad), 0, mA_m },
+    { sin(lTheta_rad) * cos(mAlpha_rad), cos(lTheta_rad) * cos(mAlpha_rad), -sin(mAlpha_rad), -sin(mAlpha_rad) * lD_m },
+    { sin(lTheta_rad) * sin(mAlpha_rad), cos(lTheta_rad) * sin(mAlpha_rad), cos(mAlpha_rad), cos(mAlpha_rad) * lD_m },
+    { 0, 0, 0, 1 }
+  };
     // clang-format on
   }
 } // namespace kinematics

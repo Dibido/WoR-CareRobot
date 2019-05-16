@@ -7,14 +7,14 @@
 namespace kinematics
 {
 
-  inline double radian2Degrees(double radian)
+  inline double radian2Degrees(double lRadian)
   {
-    return radian * 180 / M_PI;
+    return lRadian * 180 / M_PI;
   }
 
-  inline double degree2Radian(double degree)
+  inline double degree2Radian(double lDegree)
   {
-    return M_PI / 180 * degree;
+    return M_PI / 180 * lDegree;
   }
 
   /**
@@ -27,9 +27,9 @@ namespace kinematics
    * @return true
    * @return false
    */
-  inline bool doubleEquals(double lhs, double rhs, double epsilon)
+  inline bool doubleEquals(double lhs, double rhs, double lEpsilon)
   {
-    return std::fabs(lhs - rhs) < epsilon;
+    return std::fabs(lhs - rhs) < lEpsilon;
   }
 
   /**
@@ -38,30 +38,30 @@ namespace kinematics
    * Matrices are assumed to be of form : [pos, .... , pos, rad, .... , rad]
    * @param lhs
    * @param rhs
-   * @param posEpsilon Epsilon to use for the left positional values
-   * @param radEpsilon Epsilon to use for the right rotational values
-   * @param epsilonSplit Index at which to change which epsilon to use
+   * @param lEpsilon_m Epsilon to use for the left positional values
+   * @param lEpsilon_rad Epsilon to use for the right rotational values
+   * @param lEpsilonSplit Index at which to change which epsilon to use
    * @return true
    * @return false
    */
   template <std::size_t M>
   inline bool transformationMatrixEquals(const Matrix<double, M, 1>& lhs,
                                  const Matrix<double, M, 1>& rhs,
-                                 double posEpsilon,
-                                 double radEpsilon,
-                                 std::size_t epsilonSplit)
+                                 double lEpsilon_m,
+                                 double lEpsilon_rad,
+                                 std::size_t lEpsilonSplit)
   {
-    assert(M > epsilonSplit);
-    for (std::size_t i = 0; i < epsilonSplit; ++i)
+    assert(M > lEpsilonSplit);
+    for (std::size_t i = 0; i < lEpsilonSplit; ++i)
     {
-      if (doubleEquals(lhs[i][0], rhs[i][0], posEpsilon) == false)
+      if (doubleEquals(lhs[i][0], rhs[i][0], lEpsilon_m) == false)
       {
         return false;
       }
     }
-    for (std::size_t i = epsilonSplit; i < M; ++i)
+    for (std::size_t i = lEpsilonSplit; i < M; ++i)
     {
-      if (doubleEquals(lhs[i][0], rhs[i][0], radEpsilon) == false)
+      if (doubleEquals(lhs[i][0], rhs[i][0], lEpsilon_rad) == false)
       {
         return false;
       }

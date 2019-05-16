@@ -18,47 +18,47 @@ namespace kinematics
     /**
      * @brief Construct a new Link object
      *
-     * @param a Link length
-     * @param alpha Link twist
-     * @param d Link offset
-     * @param theta Joint angle
-     * @param type
-     * @param minValue
-     * @param maxValue
+     * @param lA_m Link length
+     * @param lAlpha_rad Link twist
+     * @param lD_m Linke offset
+     * @param lTheta_rad Joint angle
+     * @param lType
+     * @param lMinValue Radians if lType is REVOLUTE, meters if lType is PRISMATIC, unused if lType is STATIC
+     * @param lMaxValue Radians if lType is REVOLUTE, meters if lType is PRISMATIC, unused if lType is STATIC
      */
-    Link(double a,
-         double alpha,
-         double d,
-         double theta,
-         Joint type,
-         double minValue = 0,
-         double maxValue = 0);
+    Link(double lA_m,
+         double lAlpha_rad,
+         double lD_m,
+         double lTheta_rad,
+         eJoint lType,
+         double lMinValue = 0,
+         double lMaxValue = 0);
 
     /**
      * @brief Construct a new Link object, sets the static value
      * to 0
-     * @param a Link Length
-     * @param alpha Link Twist
-     * @param constant Value of the constant value (d or
-     * theta)
-     * @param type Type of Joint (Joint::PRISMATIC sets
-     * offsetTheta, Joint::REVOLUTE sets offsetD)
-     * @param minValue
-     * @param maxValue
+     * @param lA_m Link Length
+     * @param lAlpha_rad Link Twist
+     * @param lConstant Value of the constant value (mD_m or
+     * mTheta_rad)
+     * @param lType Type of Joint (Joint::PRISMATIC sets
+     * mTheta_rad, Joint::REVOLUTE sets mD_rad)
+     * @param lMinValue
+     * @param lMaxValue
      */
-    Link(double a,
-         double alpha,
-         double constant,
-         Joint type,
-         double minValue,
-         double maxValue);
+    Link(double lA_m,
+         double lAlpha_rad,
+         double lConstant,
+         eJoint lType,
+         double lMinValue,
+         double lMaxValue);
     ~Link() = default;
     Link(const Link&) = default;
     Link& operator=(const Link&) = default;
 
     /**
      * @brief Get the Transformation Matrix for a given Link
-     * @param variable Changing value for this Link
+     * @param lVariable Changing value for this Link (meters or radians)
      * @return Matrix<double, 4, 4> The TransformationMatrix
      * ~~~
      * [ r00 r11 r12 tx ]
@@ -67,34 +67,34 @@ namespace kinematics
      * [ 0   0   0   1  ]
      * ~~~
      */
-    Matrix<double, 4, 4> transformationMatrix(double variable) const;
+    Matrix<double, 4, 4> transformationMatrix(double lVariable) const;
 
     double getA() const;
     double getAlpha() const;
     double getTheta() const;
     double getD() const;
-    Joint getType() const;
+    eJoint getType() const;
 
     /**
-     * @brief Checks wether variable falls within minValue and maxValue
+     * @brief Checks wether variable falls within lMinValue and lMaxValue
      * In case of a REVOLUTE joint, variable is first translated to fall between
      * -M_PI and M_PI
      *
-     * @param variable
+     * @param lVariable (meters or radians)
      * @return true
      * @return false
      */
-    bool isWithinConstraints(double variable) const;
+    bool isWithinConstraints(double lVariable) const;
 
     /**
-     * @brief Constrains a variable to be between minValue and maxValue
+     * @brief Constrains a variable to be between lMinValue and lMaxValue
      * In case of a REVOLUTE joint, the variable is first translated to fall
      * between -M_PI and M_PI
-     * @param variable Variable to constrain, if variable already falls between
-     * minValue and maxValue the variable is returned unchanged
+     * @param lVariable Variable to constrain, if variable already falls between
+     * lMinValue and lMaxValue the variable is returned unchanged (meters or radians)
      * @return double
      */
-    double constrainVariable(double variable) const;
+    double constrainVariable(double lVariable) const;
 
       private:
     /**
@@ -102,20 +102,20 @@ namespace kinematics
      * "modified" denavit-hartenberg formula
      * @see
      * https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters#Modified_DH_parameters
-     * @param d
-     * @param theta
+     * @param lD_m
+     * @param lTheta_rad
      * @return Matrix<double, 4, 4>
      */
-    Matrix<double, 4, 4> calculateTransformationMatrix(double d,
-                                                       double theta) const;
+    Matrix<double, 4, 4> calculateTransformationMatrix(double lD_m,
+                                                       double lTheta_rad) const;
 
-    const double a;
-    const double alpha;
-    double d;
-    double theta;
-    const Joint type;
-    const double minValue;
-    const double maxValue;
+    double mA_m;
+    double mAlpha_rad;
+    double mD_m;
+    double mTheta_rad;
+    eJoint  mType;
+    double mMinValue; /// Unit of this variable depends on the value of mType
+    double mMaxValue; /// Unit of this variable depends on the value of mType
   };
 
 } // namespace kinematics
