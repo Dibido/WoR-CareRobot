@@ -8,159 +8,162 @@
 namespace kinematics
 {
 
-  DenavitHartenberg::DenavitHartenberg(const std::vector<Link>& config)
-      : configuration(config)
+  DenavitHartenberg::DenavitHartenberg(const std::vector<Link>& lLinkConfig)
+      : mLinkConfiguration(lLinkConfig)
   {
   }
 
   Matrix<double, 6, 1> DenavitHartenberg::forwardKinematicsYPR(
-      const std::vector<double>& bigTheta,
-      std::size_t start,
-      std::size_t end) const
+      const std::vector<double>& lBigTheta,
+      std::size_t lStart,
+      std::size_t lEnd) const
   {
-    const auto fk = forwardKinematics(bigTheta, start, end);
-    EulerAngles euler(fk);
-    return Matrix<double, 6, 1>{ fk[0][3],  fk[1][3],    fk[2][3],
-                                 euler.yaw, euler.pitch, euler.roll };
+    const auto lEndEffector = forwardKinematics(lBigTheta, lStart, lEnd);
+    EulerAngles euler(lEndEffector);
+    return Matrix<double, 6, 1>{ lEndEffector[0][3], lEndEffector[1][3],
+                                 lEndEffector[2][3], euler.mYaw_rad,
+                                 euler.mPitch_rad,   euler.mRoll_rad };
   }
 
   std::vector<double> DenavitHartenberg::inverseKinematics(
-      const Matrix<double, 6, 1>& goal,
-      const std::vector<double>& currentBigTheta) const
+      const Matrix<double, 6, 1>& lGoal,
+      const std::vector<double>& lCurrentBigTheta) const
   {
-    std::vector<double> newConfiguration(currentBigTheta);
-    auto virtualEndPoint = forwardKinematicsYPR(newConfiguration);
-    double beta = IK_BETA;
-    std::size_t it = 0;
-    while (transformationMatrixEquals(goal, virtualEndPoint, IK_POS_EPSILON,
-                                      IK_RAD_EPSILON, DH_TRANSFORM_POS_RAD_SPLIT) == false)
+    std::vector<double> lNewBigTheta(lCurrentBigTheta);
+    auto lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
+    double lBeta = cIkBeta;
+    std::size_t lIterationCount = 0;
+    while (transformationMatrixEquals(lGoal, lVirtualEndEffector, cIkEpsilon_m,
+                                      cIkEpsilon_rad,
+                                      cDhTransformPosRadSplit) == false)
     {
-      ++it;
-      if (it > IK_MAX_ITERATIONS)
+      ++lIterationCount;
+      if (lIterationCount > cIkMaxIterations)
       {
-        ROS_WARN("Aborted inverse kinematics after %l iterations", it);
+        ROS_WARN("Aborted inverse kinematics after %l iterations",
+                 lIterationCount);
         break;
       }
-      Matrix<double, 6, 1> deltaPos = (goal - virtualEndPoint);
-      const auto deltaEffector(deltaPos * beta);
+      Matrix<double, 6, 1> lDeltaPos = (lGoal - lVirtualEndEffector);
+      const auto deltaEffector(lDeltaPos * lBeta);
 
-      const Matrix<double, 6, 7> jacobian(
-          calculateJacobiMatrix(newConfiguration));
-      const auto inverseJacobi(jacobian.pseudoInverse());
+      const Matrix<double, 6, 7> lJacobian(
+          calculateJacobiMatrix(lNewBigTheta));
+      const auto inverseJacobi(lJacobian.pseudoInverse());
 
-      const auto deltaTheta(inverseJacobi * deltaEffector);
-      for (std::size_t i = 0; i < newConfiguration.size(); ++i)
+      const auto lDeltaTheta(inverseJacobi * deltaEffector);
+      for (std::size_t i = 0; i < lNewBigTheta.size(); ++i)
       {
-        newConfiguration[i] += deltaTheta.at(i)[0];
+        lNewBigTheta[i] += lDeltaTheta.at(i)[0];
       }
-      virtualEndPoint = forwardKinematicsYPR(newConfiguration);
+      lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
     }
-    return newConfiguration;
+    return lNewBigTheta;
   }
 
   Matrix<double, 4, 4>
-      DenavitHartenberg::forwardKinematics(const std::vector<double>& bigTheta,
-                                           std::size_t start,
-                                           std::size_t end) const
+      DenavitHartenberg::forwardKinematics(const std::vector<double>& lBigTheta,
+                                           std::size_t lStart,
+                                           std::size_t lEnd) const
   {
-    assert(bigTheta.size() <= configuration.size());
-    assert(end <= configuration.size());
-    if (end == start)
+    assert(lBigTheta.size() <= mLinkConfiguration.size());
+    assert(lEnd <= mLinkConfiguration.size());
+    if (lEnd == lStart)
     {
-      start = 0;
-      end = configuration.size();
+      lStart = 0;
+      lEnd = mLinkConfiguration.size();
     }
-    Matrix<double, 4, 4> result = result.identity();
-    std::size_t thetaIndex = start;
-    for (std::size_t configurationIndex = start; configurationIndex < end;
-         ++configurationIndex)
+    Matrix<double, 4, 4> lResult = lResult.identity();
+    std::size_t mThetaIndex = lStart;
+    for (std::size_t mLinkConfigurationIndex = lStart; mLinkConfigurationIndex < lEnd;
+         ++mLinkConfigurationIndex)
     {
-      double variable;
-      if (configuration[configurationIndex].getType() == Joint::STATIC)
+      double mVariable;
+      if (mLinkConfiguration[mLinkConfigurationIndex].getType() == eJoint::STATIC)
       {
-        variable = 0;
+        mVariable = 0;
       }
       else
       {
-        variable = bigTheta[thetaIndex];
-        ++thetaIndex;
+        mVariable = lBigTheta[mThetaIndex];
+        ++mThetaIndex;
       }
-      result = result *
-               configuration[configurationIndex].transformationMatrix(variable);
+      lResult = lResult *
+               mLinkConfiguration[mLinkConfigurationIndex].transformationMatrix(mVariable);
     }
-    return result;
+    return lResult;
   }
 
   Matrix<double, 6, 7> DenavitHartenberg::calculateJacobiMatrix(
-      const std::vector<double>& bigTheta) const
+      const std::vector<double>& lBigTheta) const
   {
-    assert(bigTheta.size() == 7);
-    double Ct1 = std::cos(bigTheta[0]);
-    double St1 = std::sin(bigTheta[0]);
-    double Ct2 = std::cos(bigTheta[1]);
-    double St2 = std::sin(bigTheta[1]);
-    double Ct3 = std::cos(bigTheta[2]);
-    double St3 = std::sin(bigTheta[2]);
-    double Ct4 = std::cos(bigTheta[3]);
-    double St4 = std::sin(bigTheta[3]);
-    double Ct5 = std::cos(bigTheta[4]);
-    double St5 = std::sin(bigTheta[4]);
-    double Ct6 = std::cos(bigTheta[5]);
-    double St6 = std::sin(bigTheta[5]);
-    double Ct7 = std::cos(bigTheta[6]);
-    double St7 = std::sin(bigTheta[6]);
+    assert(lBigTheta.size() == 7);
+    double lCosT1 = std::cos(lBigTheta[0]);
+    double lSinT1 = std::sin(lBigTheta[0]);
+    double lCosT2 = std::cos(lBigTheta[1]);
+    double lSinT2 = std::sin(lBigTheta[1]);
+    double lCosT3 = std::cos(lBigTheta[2]);
+    double lSinT3 = std::sin(lBigTheta[2]);
+    double lCosT4 = std::cos(lBigTheta[3]);
+    double lSinT4 = std::sin(lBigTheta[3]);
+    double lCosT5 = std::cos(lBigTheta[4]);
+    double lSinT5 = std::sin(lBigTheta[4]);
+    double lCosT6 = std::cos(lBigTheta[5]);
+    double lSinT6 = std::sin(lBigTheta[5]);
+    double lCosT7 = std::cos(lBigTheta[6]);
+    double lSinT7 = std::sin(lBigTheta[6]);
     // clang-format off
-    Matrix<double, 6, 7> jacobian{
-      { CalcJ11(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ12(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ13(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ14(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ15(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ16(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ17(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) },
+    Matrix<double, 6, 7> lJacobian{
+      { CalcJ11(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ12(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ13(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ14(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ15(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ16(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ17(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) },
 
-      { CalcJ21(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ22(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ23(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ24(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ25(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ26(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ27(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) },
+      { CalcJ21(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ22(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ23(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ24(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ25(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ26(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ27(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) },
 
-      { CalcJ31(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ32(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ33(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ34(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ35(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ36(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ37(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) },
+      { CalcJ31(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ32(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ33(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ34(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ35(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ36(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ37(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) },
 
-      { CalcJ41(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ42(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ43(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ44(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ45(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ46(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ47(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) },
+      { CalcJ41(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ42(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ43(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ44(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ45(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ46(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ47(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) },
 
-      { CalcJ51(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ52(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ53(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ54(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ55(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ56(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ57(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) },
+      { CalcJ51(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ52(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ53(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ54(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ55(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ56(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ57(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) },
 
-      { CalcJ61(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ62(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ63(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ64(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ65(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ66(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7),
-        CalcJ67(Ct1, St1, Ct2, St2, Ct3, St3, Ct4, St4, Ct5, St5, Ct6, St6, Ct7, St7) }
+      { CalcJ61(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ62(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ63(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ64(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ65(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ66(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
+        CalcJ67(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7) }
     };
     //clang-format on
-    return jacobian;
+    return lJacobian;
   }
 
 } // namespace kinematics
