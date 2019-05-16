@@ -5,69 +5,71 @@
 namespace astar
 {
 
-  Graph::Graph() : endPoint(0, 0, 0)
+  Graph::Graph() : mEndPoint(0, 0, 0)
   {
   }
 
   void Graph::setEndPoint(const Vertex& aVertex)
   {
-    endPoint = aVertex;
+    mEndPoint = aVertex;
   }
 
   void Graph::addObstacle(const obstacle::Obstacle& obstacle)
   {
-    obstacles.push_back(obstacle);
+    mObstacles.push_back(obstacle);
   }
 
   void Graph::removeObstacle(const obstacle::Obstacle& obstacle)
   {
-    obstacles.erase(
-        std::remove_if(obstacles.begin(), obstacles.end(),
+    mObstacles.erase(
+        std::remove_if(mObstacles.begin(), mObstacles.end(),
                        [obstacle](const obstacle::Obstacle anObstacle) {
                          return obstacle == anObstacle;
                        }),
-        obstacles.end());
+        mObstacles.end());
   }
 
   void Graph::removeAllObstacles()
   {
-    obstacles.clear();
+    mObstacles.clear();
   }
 
   std::vector<Vertex> Graph::calculateNeigbours(const Vertex& aVertex)
   {
 
-    static int xOffset[] = { 0,         STEP,      STEP,      STEP, 0,
-                             -1 * STEP, -1 * STEP, -1 * STEP, 0 };
-    static int yOffset[] = { STEP,      STEP, 0,    -1 * STEP, -1 * STEP,
-                             -1 * STEP, 0,    STEP, 0 };
-    static int zOffset[] = { -1 * STEP, 0, STEP };
+    static short lXOffset[] = { 0,          cStep,      cStep,      cStep, 0,
+                                -1 * cStep, -1 * cStep, -1 * cStep, 0 };
+    static short lYOffset[] = { cStep,      cStep,      0,
+                                -1 * cStep, -1 * cStep, -1 * cStep,
+                                0,          cStep,      0 };
+    static short lZOffset[] = { -1 * cStep, 0, cStep };
 
-    std::vector<Vertex> neighbours;
-    Vertex difference = Vertex(aVertex.x - endPoint.x, aVertex.y - endPoint.y,
-                               aVertex.z - endPoint.z);
+    std::vector<Vertex> lNeighbours;
+    Vertex lDifference =
+        Vertex(aVertex.x - mEndPoint.x, aVertex.y - mEndPoint.y,
+               aVertex.z - mEndPoint.z);
 
-    if (((difference.x >= 0 && difference.x <= STEP) ||
-         (difference.x <= 0 && difference.x >= (STEP * -1))) &&
-        ((difference.y >= 0 && difference.y <= STEP) ||
-         (difference.y <= 0 && difference.y >= (STEP * -1))) &&
-        ((difference.z >= 0 && difference.z <= STEP) ||
-         (difference.z <= 0 && difference.z >= (STEP * -1))))
+    if (((lDifference.x >= 0 && lDifference.x <= cStep) ||
+         (lDifference.x <= 0 && lDifference.x >= (cStep * -1))) &&
+        ((lDifference.y >= 0 && lDifference.y <= cStep) ||
+         (lDifference.y <= 0 && lDifference.y >= (cStep * -1))) &&
+        ((lDifference.z >= 0 && lDifference.z <= cStep) ||
+         (lDifference.z <= 0 && lDifference.z >= (cStep * -1))))
     {
-      neighbours.push_back(endPoint);
-      return neighbours;
+      lNeighbours.push_back(mEndPoint);
+      return lNeighbours;
     }
 
-    for (int j = 0; j < 3; ++j)
+    for (uint8_t j = 0; j < cNrOfDimensionLayers; ++j)
     {
-      for (int i = 0; i < NR_OF_NEIGHBOURS; ++i)
+      for (uint8_t i = 0; i < cNrOfNeighbours; ++i)
       {
-        Vertex vertex(aVertex.x + xOffset[i], aVertex.y + yOffset[i],
-                      aVertex.z + zOffset[j]);
-        neighbours.push_back(vertex);
+        Vertex lVertex(aVertex.x + lXOffset[i], aVertex.y + lYOffset[i],
+                       aVertex.z + lZOffset[j]);
+        lNeighbours.push_back(lVertex);
       }
     }
 
-    return neighbours;
+    return lNeighbours;
   }
 } // namespace astar

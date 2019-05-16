@@ -1,7 +1,7 @@
 /**
  * @file Graph.hpp
  * @author Gianni Monteban (G.Monteban@student.han.nl)
- * @brief
+ * @brief the header file for the graph class
  * @version 0.1
  * @date 2019-05-15
  *
@@ -16,16 +16,17 @@
 
 namespace astar
 {
-  const short STEP = 10;
-  const short NR_OF_NEIGHBOURS = 9;
+  const uint8_t cStep = 10;
+  const uint8_t cNrOfNeighbours = 9;
+  const uint8_t cNrOfDimensionLayers = 3;
   /**
    * @author Gianni Monteban
    */
   class Graph
   {
       private:
-    std::vector<obstacle::Obstacle> obstacles;
-    Vertex endPoint;
+    std::vector<obstacle::Obstacle> mObstacles;
+    Vertex mEndPoint;
 
       public:
     /**
