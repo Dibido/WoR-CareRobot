@@ -6,93 +6,107 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 
+#include <ros/callback_queue.h>
+#include <ros/ros.h>
+#include <ros/subscribe_options.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/String.h>
 
-#include <ros/ros.h>
-#include <ros/callback_queue.h>
-#include <ros/subscribe_options.h>
-
-#include "CommandParser.hpp"
 #include "Command.hpp"
+#include "CommandParser.hpp"
 #include "JointController.hpp"
 
 namespace gazebo
 {
-/**
- * Robot plugin, used in robot model which are loaded in Gazebo
- */
-class RobotControllerPlugin : public ModelPlugin
-{
-public:
-  RobotControllerPlugin();
-  virtual ~RobotControllerPlugin() = default;
-
   /**
-   * Load the robot controller plugin, overrides the Load from ModelPlugin
-   * @param _parent: parent model
-   * @param _sdf: the sdf (xml) in the robot model, within the <plugin> element
+   * Robot plugin, used in robot model which are loaded in Gazebo
    */
-  void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf) override;
+  class RobotControllerPlugin : public ModelPlugin
+  {
+      public:
+    RobotControllerPlugin();
+    virtual ~RobotControllerPlugin() = default;
 
-private:
-  /**
-   * Update hook, called every cycle by gazebo
-   */
-  void onUpdate();
+    /**
+     * Load the robot controller plugin, overrides the Load from ModelPlugin
+     * @param _parent: parent model
+     * @param _sdf: the sdf (xml) in the robot model, within the <plugin>
+     * element
+     */
+    void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf) override;
 
-  /**
-   * Callback method for receiving an incomming robot command
-   * @param msg: string message to parse and apply
-   */
-  void commandCallBack(const std_msgs::StringConstPtr& msg);
+      private:
+    /**
+     * Update hook, called every cycle by gazebo
+     */
+    void onUpdate();
+    /**
+     * Callback method for receiving an incoming robot command
+     * @param msg: double message to parse and apply
+     */
 
-  /**
-   * Loads all joints, based on the joint_info elements in the sdf
-   * @param _sdf: plugin element in the robot model sdf
-   */
-  void loadJointInfo(const sdf::ElementPtr& _sdf);
+    void commandCallBackFloat(const sim_robot::commandPtr& fmsg);
 
-  /**
-   * Move a joint to given position with given speed
-   * @param channel: channel / index of the joint
-   * @param pw: pulse width
-   * @param speed: velocity
-   */
-  void moveJoint(const commands::Command& com);
+    /**
+     * Callback method for receiving an incoming robot command
+     * @param msg: string message to parse and apply
+     */
+    void commandCallBack(const std_msgs::StringConstPtr& msg);
 
-  /**
-   * Stop a joint
-   * @param channel: channel / index of the joint
-   */
-  void stopJoint(const commands::Command& com);
+    /**
+     * Loads all joints, based on the joint_info elements in the sdf
+     * @param _sdf: plugin element in the robot model sdf
+     */
+    void loadJointInfo(const sdf::ElementPtr& _sdf);
 
-  void throwGetElementError(const std::string& jointName, const std::string& element) const;
+    /**
+     * Move a joint to given position with given speed
+     * @param channel: channel / index of the joint
+     * @param pw: pulse width
+     * @param speed: velocity
+     */
+    void moveJoint(const commands::Command& com);
+    /**
+     * Move a joint to given position with given speed
+     * @param channel: channel / index of the joint
+     * @param rad: radials
+     * @param speedfactor: velocity
+     */
+    void moveJointTheta(const commands::Command& com);
+        /**
+         * Stop a joint
+         * @param channel: channel / index of the joint
+         */
+        void stopJoint(const commands::Command& com);
 
-  void queueThread();
+    void throwGetElementError(const std::string& jointName,
+                              const std::string& element) const;
 
-  bool jointExists(jointChannel_t channel) const;
+    void queueThread();
 
-  // Ros variables
-  ros::NodeHandlePtr rosNode;
-  ros::Subscriber rosSub;
-  ros::Publisher rosPub;
-  ros::CallbackQueue rosQueue;
-  std::thread rosQueueThread;
-  ros::ServiceServer rosService;
+    bool jointExists(jointChannel_t channel) const;
 
-  // Gazebo variables
-  physics::ModelPtr model;
-  physics::WorldPtr world;
-  event::ConnectionPtr updateConnection;
-  double updateRate;
+    // Ros variables
+    ros::NodeHandlePtr rosNode;
+    ros::Subscriber rosSub;
+    ros::Publisher rosPub;
+    ros::CallbackQueue rosQueue;
+    std::thread rosQueueThread;
+    ros::ServiceServer rosService;
 
-  // Variables
-  commands::CommandParser parser;
-  std::map<jointChannel_t, JointController> channelJointMap;
-};
+    // Gazebo variables
+    physics::ModelPtr model;
+    physics::WorldPtr world;
+    event::ConnectionPtr updateConnection;
+    double updateRate;
 
-GZ_REGISTER_MODEL_PLUGIN(RobotControllerPlugin)
+    // Variables
+    commands::CommandParser parser;
+    std::map<jointChannel_t, JointController> channelJointMap;
+  };
 
-}  // namespace gazebo
+  GZ_REGISTER_MODEL_PLUGIN(RobotControllerPlugin)
+
+} // namespace gazebo
 
 #endif
