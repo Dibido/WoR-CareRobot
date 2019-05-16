@@ -65,8 +65,8 @@ namespace kinematics
      * ~~~
      */
     Matrix<double, 4, 4> forwardKinematics(const std::vector<double>& lBigTheta,
-                                           std::size_t start = 0,
-                                           std::size_t end = 0) const;
+                                           std::size_t lStart = 0,
+                                           std::size_t lEnd = 0) const;
 
     /**
      * @brief Calculates the jacobian for a 7-DoF robotarm
