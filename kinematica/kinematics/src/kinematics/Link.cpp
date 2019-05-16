@@ -103,10 +103,6 @@ namespace kinematics
     case eJoint::STATIC:
       // Do not change any of the values
       break;
-    default:
-      throw std::invalid_argument("Invalid Joint type: " +
-                                  JointHelper::toString(mType));
-      break;
     }
     ROS_DEBUG("T: %s A: %.2f\talpha: %.2f\tD: %.2f\tTheta: %.2f",
               JointHelper::toString(mType).c_str(), mA_m, mAlpha_rad, lD_m,
