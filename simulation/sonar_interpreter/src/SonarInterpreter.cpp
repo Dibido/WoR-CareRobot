@@ -6,9 +6,9 @@
 #define MIN_TRIGGER_DURATION 0.05
 
 SonarInterpreter::SonarInterpreter(ros::NodeHandle& aRosNode, const std::string& aPublishTopic) : 
-rosPub(aRosNode.advertise<sonar_interpreter::ObjectSpeed>(aPublishTopic, PUBLISH_TOPIC_BUFFER_SIZE)),
 sensor1("ultrasonic1", ros::Time::now(), 3.88, false),
-sensor2("ultrasonic2", ros::Time::now(), 4.16, false)
+sensor2("ultrasonic2", ros::Time::now(), 4.16, false),
+rosPub(aRosNode.advertise<sonar_interpreter::ObjectSpeed>(aPublishTopic, PUBLISH_TOPIC_BUFFER_SIZE))
 {
 }
 
