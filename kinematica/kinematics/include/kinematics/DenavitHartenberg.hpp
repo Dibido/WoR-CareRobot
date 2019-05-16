@@ -25,7 +25,7 @@ namespace kinematics
     /**
      * @brief Construct a Denavit-Hartenberg object using a set of Links
      *
-     * @param lConfig
+     * @param lLinkConfig
      */
     explicit DenavitHartenberg(const std::vector<Link>& lLinkConfig);
     DenavitHartenberg(const DenavitHartenberg&) = default;
@@ -35,8 +35,8 @@ namespace kinematics
 
     Matrix<double, 6, 1>
         forwardKinematicsYPR(const std::vector<double>& bigTheta,
-                             std::size_t start = 0,
-                             std::size_t end = 0) const;
+                             std::size_t lStart = 0,
+                             std::size_t lEnd = 0) const;
 
     /**
      * @brief Run inverse kinematics to find the required Big Theta to reach a given goal
@@ -49,11 +49,11 @@ namespace kinematics
 
       private:
     /**
-     * @brief Calculate end effetor position and rotation
+     * @brief Calculate end effector position and rotation
      *
      * @param lBigTheta The variable to use when calculating the transformation matrix for each Link
-     * @param start Link to start with (0-indexed)
-     * @param end Amount of links to calculate
+     * @param lStart Link to start with (0-indexed)
+     * @param lEnd Amount of links to calculate
      * @return Matrix<double, 4, 4> The calculated Forward
      * Kinematics including a 3x3 Rotational matrix and a 1x3
      * positional matrix
@@ -71,7 +71,7 @@ namespace kinematics
     /**
      * @brief Calculates the jacobian for a 7-DoF robotarm
      *
-     * @param bigTheta
+     * @param lBigTheta
      * @return Matrix<double, 6, 7>
      */
     Matrix<double, 6, 7>

@@ -10,7 +10,7 @@ namespace kinematics
   /**
    * @brief Representation of a Link in a robotarm using Denavit
    * Hartenberg parameters
-   *
+   * @see https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters
    */
   class Link
   {
@@ -20,7 +20,7 @@ namespace kinematics
      *
      * @param lA_m Link length
      * @param lAlpha_rad Link twist
-     * @param lD_m Linke offset
+     * @param lD_m Link offset
      * @param lTheta_rad Joint angle
      * @param lType
      * @param lMinValue Radians if lType is REVOLUTE, meters if lType is PRISMATIC, unused if lType is STATIC
@@ -41,8 +41,8 @@ namespace kinematics
      * @param lAlpha_rad Link Twist
      * @param lConstant Value of the constant value (mD_m or
      * mTheta_rad)
-     * @param lType Type of Joint (Joint::PRISMATIC sets
-     * mTheta_rad, Joint::REVOLUTE sets mD_rad)
+     * @param lType Type of Joint (eJoint::PRISMATIC sets
+     * mTheta_rad, eJoint::REVOLUTE sets mD_rad)
      * @param lMinValue
      * @param lMaxValue
      */

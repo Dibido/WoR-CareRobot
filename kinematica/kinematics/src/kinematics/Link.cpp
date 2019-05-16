@@ -11,7 +11,7 @@ namespace kinematics
              eJoint lType,
              double lMinValue,
              double lMaxValue)
-      : Link(lA_m, lAlpha_rad, 0, 0, lType, lMinValue, mMaxValue)
+      : Link(lA_m, lAlpha_rad, 0, 0, lType, lMinValue, lMaxValue)
   {
     switch (mType)
     {
