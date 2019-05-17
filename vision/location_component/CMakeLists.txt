@@ -7,19 +7,25 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   genmsg
   message_generation
+  image_transport
 )
+
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework)
-find_package(OpenCV 3.2.0 REQUIRED)
+
 find_package(Threads REQUIRED)
+find_package(sensor_msgs)
+find_package(OpenCV)
 
 include(CTest)
 enable_testing()
 
 ## Generate messages in the 'msg' folder
  add_message_files(
-   FILES
+   DIRECTORY 
+   msg
+   FILES ResizedImage.msg
  )
 
 ## Generate added messages and services with any dependencies listed here
@@ -27,21 +33,35 @@ enable_testing()
    DEPENDENCIES
    std_msgs
    geometry_msgs
+   sensor_msgs
  )
 
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs geometry_msgs message_runtime
+  CATKIN_DEPENDS 
+  roscpp std_msgs 
+  geometry_msgs 
+  message_runtime
+  cv_bridge 
+  image_transport  
+  sensor_msgs
 )
 
-include_directories(
-  include
-  SYSTEM
-  ${catkin_INCLUDE_DIRS}
-)
+
+
+include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+
+#include_directories(
+#  include
+#  ${catkin_INCLUDE_DIRS}
+#  ${OpenCV_INCLUDE_DIRS}
+#  SYSTEM
+#)
 
 add_executable(DetectCup src/main.cpp src/CupScanner.cpp src/CupScanner.cpp)
+add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
-target_link_libraries(DetectCup ${OpenCV_LIBS} ${ZBAR_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(DetectCup ${OpenCV_LIBS} ${ZBAR_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
@@ -72,3 +92,14 @@ if(CODE_COVERAGE)
           ${PROJECT_NAME}_unit_tests
              )
 endif()
+
+
+install(TARGETS DetectCup
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(FILES resized_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

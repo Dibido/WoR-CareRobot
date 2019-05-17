@@ -9,6 +9,13 @@
 #include <memory>
 #include <vector>
 
+
+#include <image_transport/image_transport.h>
+#include <opencv2/highgui/highgui.hpp>
+#include <ros/ros.h>
+#include <cv_bridge/cv_bridge.h>
+
+
 namespace
 {
   /** Global Variables */
@@ -26,51 +33,73 @@ namespace
   }
 } // namespace
 
+void imageCallback(const sensor_msgs::ImageConstPtr& msg)
+{
+  try
+  {
+    cv::imshow("view", cv_bridge::toCvShare(msg, "bgr8")->image);
+    cv::waitKey(10);
+  }
+  catch (cv_bridge::Exception& e)
+  {
+    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
+  }
+}
+
 int main(int argc, char** argv)
 {
-  std::string imageName("-0"); // by default
-  int webcamId = -1;
-  if (argc == 1 ||
-      (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h"))
-  {
-    std::cout << "Usage: DetectCup -<webcam id>" << std::endl;
-    return 0;
-  }
-  else
-  {
-    webcamId = std::atoi(argv[1] + 1);
-  }
+  ros::init(argc, argv, "image_listener");
+  ros::NodeHandle nh;
+  cv::namedWindow("view");
+  image_transport::ImageTransport it(nh);
+  image_transport::Subscriber sub =
+      it.subscribe("/sensor/webcam/img_raw", 1, imageCallback);
+  ros::spin();
+  cv::destroyWindow("view");
 
-  cv::VideoCapture webcam(webcamId);
-  if (!webcam.isOpened())
-  {
-    std::cerr << "Failed to open webcam with id " << webcamId << std::endl;
-    return 1;
-  }
+  //   std::string imageName("-0"); // by default
+  //   int webcamId = -1;
+  //   if (argc == 1 ||
+  //       (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h"))
+  //   {
+  //     std::cout << "Usage: DetectCup -<webcam id>" << std::endl;
+  //     return 0;
+  //   }
+  //   else
+  //   {
+  //     webcamId = std::atoi(argv[1] + 1);
+  //   }
 
-  if (USE_MAX_WEBCAM_RESOLUTION)
-  {
-    webcam.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-    webcam.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
-  }
+  //   cv::VideoCapture webcam(webcamId);
+  //   if (!webcam.isOpened())
+  //   {
+  //     std::cerr << "Failed to open webcam with id " << webcamId << std::endl;
+  //     return 1;
+  //   }
 
-  const std::string mainWinName = "DetectCup";
-  cv::namedWindow(mainWinName, cv::WINDOW_AUTOSIZE);
-  /* cv::createTrackbar("BarcodeType (0=QrCode, 1=DataMatrix, 2=Aruco)", */
-  /*                    mainWinName, &barcode_type_id, 2, */
-  /*                    on_linear_transform_trackbar); */
+  //   if (USE_MAX_WEBCAM_RESOLUTION)
+  //   {
+  //     webcam.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+  //     webcam.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
+  //   }
 
-  while (true)
-  {
-    webcam.read(img_original);
-    applyScan();
-    cv::imshow(mainWinName, img_result);
+  //   const std::string mainWinName = "DetectCup";
+  //   cv::namedWindow(mainWinName, cv::WINDOW_AUTOSIZE);
+  //   /* cv::createTrackbar("BarcodeType (0=QrCode, 1=DataMatrix, 2=Aruco)", */
+  //   /*                    mainWinName, &barcode_type_id, 2, */
+  //   /*                    on_linear_transform_trackbar); */
 
-    int c = cv::waitKey(30);
-    // if escape is pressed
-    if (c == 27)
-      break;
-  }
+  //   while (true)
+  //   {
+  //     webcam.read(img_original);
+  //     applyScan();
+  //     cv::imshow(mainWinName, img_result);
+
+  //     int c = cv::waitKey(30);
+  //     // if escape is pressed
+  //     if (c == 27)
+  //       break;
+  //   }
 
   return 0;
 }
