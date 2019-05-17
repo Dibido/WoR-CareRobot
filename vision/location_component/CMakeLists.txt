@@ -3,11 +3,22 @@ project(location_component)
 
 find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_generation sensor_msgs)
 
-# add the resized image message
-add_message_files(DIRECTORY msg
+## Generate messages in the 'msg' folder
+ add_message_files(
+   DIRECTORY 
+   msg
    FILES ResizedImage.msg
-)
-generate_messages(DEPENDENCIES sensor_msgs)
+ )
+
+
+## Generate added messages and services with any dependencies listed here
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+   geometry_msgs
+   sensor_msgs
+ )
+
 
 catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs)
 
@@ -18,6 +29,7 @@ find_package(OpenCV)
 include(CTest)
 enable_testing()
 
+
 include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
@@ -25,6 +37,11 @@ add_executable(DetectCup src/main.cpp src/CupScanner.cpp src/CupScanner.cpp)
 add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+
+#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
