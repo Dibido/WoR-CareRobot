@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>cup_detection</name>
+  <name>location_component</name>
   <version>0.0.1</version>
   <description>Node that detects the AGV and cups</description>
   <maintainer email="C.Uiterwijk@student.han.nl">Casper Uiterwijk</maintainer>

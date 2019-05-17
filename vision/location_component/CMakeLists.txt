@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7.2)
-project(cup_detection)
+project(location_component)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
