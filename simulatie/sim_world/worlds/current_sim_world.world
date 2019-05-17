@@ -128,7 +128,7 @@
            <save enabled="false">
               <path>/tmp/camera_save_tutorial</path>
            </save>
-
+           <horizontal_fov>3.047</horizontal_fov>
            <image>
               <width>720</width>
                <height>480</height>
