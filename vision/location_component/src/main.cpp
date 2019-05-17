@@ -8,36 +8,28 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-
-
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
 
+#include "DetectCup.hpp"
 
-// namespace
-// {
-//   /** Global Variables */
-//   const bool USE_MAX_WEBCAM_RESOLUTION = true;
-//   cv::Mat img_original, img_result;
-//   CupScanner scanner;
-
-//   void applyScan()
-//   {
-//     scanner.scan(img_original, img_result);
-//   }
-
-//   void on_linear_transform_trackbar(int, void*)
-//   {
-//   }
-// } // namespace
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
   try
   {
-    cv::imshow("view", cv_bridge::toCvShare(msg, "bgr8")->image);
+    DetectCup d;
+    cv::Mat srcMatrix;
+    cv::Mat debugMatrix;
+
+    cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
+
+
+    
+    d.detectFrame(srcMatrix, debugMatrix ,eMode::CORNERCENTER);
+    cv::imshow("view",  srcMatrix);
     cv::waitKey(10);
   }
   catch (cv_bridge::Exception& e)
@@ -57,49 +49,6 @@ int main(int argc, char** argv)
   ros::spin();
   cv::destroyWindow("view");
 
-  //   std::string imageName("-0"); // by default
-  //   int webcamId = -1;
-  //   if (argc == 1 ||
-  //       (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h"))
-  //   {
-  //     std::cout << "Usage: DetectCup -<webcam id>" << std::endl;
-  //     return 0;
-  //   }
-  //   else
-  //   {
-  //     webcamId = std::atoi(argv[1] + 1);
-  //   }
-
-  //   cv::VideoCapture webcam(webcamId);
-  //   if (!webcam.isOpened())
-  //   {
-  //     std::cerr << "Failed to open webcam with id " << webcamId << std::endl;
-  //     return 1;
-  //   }
-
-  //   if (USE_MAX_WEBCAM_RESOLUTION)
-  //   {
-  //     webcam.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-  //     webcam.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
-  //   }
-
-  //   const std::string mainWinName = "DetectCup";
-  //   cv::namedWindow(mainWinName, cv::WINDOW_AUTOSIZE);
-  //   /* cv::createTrackbar("BarcodeType (0=QrCode, 1=DataMatrix, 2=Aruco)", */
-  //   /*                    mainWinName, &barcode_type_id, 2, */
-  //   /*                    on_linear_transform_trackbar); */
-
-  //   while (true)
-  //   {
-  //     webcam.read(img_original);
-  //     applyScan();
-  //     cv::imshow(mainWinName, img_result);
-
-  //     int c = cv::waitKey(30);
-  //     // if escape is pressed
-  //     if (c == 27)
-  //       break;
-  //   }
 
   return 0;
 }
