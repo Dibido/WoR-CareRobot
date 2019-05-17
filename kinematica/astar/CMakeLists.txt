@@ -95,17 +95,6 @@ find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 #   cfg/DynReconf2.cfg
 # )
 
-include(CTest)
-enable_testing()
-
-add_library(lib_astar 
-src/Main.cpp
-src/astar/AStar.cpp
-src/astar/Graph.cpp
-)
-
-target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY})
 
 ###################################
 ## catkin specific configuration ##
@@ -136,10 +125,25 @@ include_directories(
   ${Boost_INCLUDE_DIR}
 )
 
+add_executable(astar 
+src/Main.cpp
+)
+
+target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY} lib_astar
+                      ${Boost_SYSTEM_LIBRARY})
+
+
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/astar.cpp
-# )
+
+add_library(lib_astar 
+src/Main.cpp
+src/astar/AStar.cpp
+src/astar/Graph.cpp
+)
+
+target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY})
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -213,13 +217,9 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(astar 
-src/Main.cpp
-)
 
-target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY} lib_astar
-                      ${Boost_SYSTEM_LIBRARY})
-
+include(CTest)
+enable_testing()
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp)
