@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
   ros::Publisher chatter_pub = n.advertise<sim_robot::commands>("/robot_command", 1000);
 
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(1);
 
   /**
    * A count of how many messages we have sent. This is used to create
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     sim_robot::commands msg;
     std::vector<double> thetas = { 2.2, 3, 3, 4.4, 5.5, 6.6 };
     msg.theta = thetas;
-    msg.sf = 1.0;
+    msg.sf = 0.2;
 
     // msg->theta = thetas;
 

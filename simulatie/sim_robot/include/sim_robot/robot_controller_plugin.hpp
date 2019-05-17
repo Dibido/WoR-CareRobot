@@ -54,6 +54,12 @@ namespace gazebo
     void commandCallBack(const std_msgs::StringConstPtr& msg);
 
     /**
+     * Callback method for receiving an incoming stop command
+     * @param smsg: bool message to parse and apply
+     */
+    void stopCallBack(const sim_robot::stopCommandPtr& smsg);
+
+    /**
      * Loads all joints, based on the joint_info elements in the sdf
      * @param _sdf: plugin element in the robot model sdf
      */
@@ -73,12 +79,16 @@ namespace gazebo
      * @param speedfactor: velocity
      */
     void moveJointTheta(const commands::Command& com);
-        /**
-         * Stop a joint
-         * @param channel: channel / index of the joint
-         */
-        void stopJoint(const commands::Command& com);
-
+    /**
+     * Stop a joint
+     * @param channel: channel / index of the joint
+     */
+    void stopJoint(const commands::Command& com);
+    /**
+     * Loading errors
+     * @param jointName: joint
+     * @param element: element
+     */
     void throwGetElementError(const std::string& jointName,
                               const std::string& element) const;
 
@@ -88,7 +98,8 @@ namespace gazebo
 
     // Ros variables
     ros::NodeHandlePtr rosNode;
-    ros::Subscriber rosSub;
+    ros::Subscriber rosSubCommands;
+    ros::Subscriber rosSubStop;
     ros::Publisher rosPub;
     ros::CallbackQueue rosQueue;
     std::thread rosQueueThread;
@@ -99,6 +110,7 @@ namespace gazebo
     physics::WorldPtr world;
     event::ConnectionPtr updateConnection;
     double updateRate;
+    bool stop = false;
 
     // Variables
     commands::CommandParser parser;

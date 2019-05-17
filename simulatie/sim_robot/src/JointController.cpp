@@ -108,11 +108,11 @@ bool JointController::moveTheta(jointRad_t rad, jointVel_t speed, commandTime_t 
 
     if (speed <= 0 && time == 0)
     {
-      speed = 1000;
+      speed = 0.1;
     }
     if (speed > 0)
     {
-      current_vel = M_PI_2 / (1000 / speed);
+      current_vel = M_PI_2  * speed;
     }
     else
     {

@@ -15,7 +15,7 @@ namespace commands
   } Type;
 
   /**
-   * Simple class to store values from an incoming command
+   *  class to store values from an incoming command
    */
   class Command
   {
@@ -42,12 +42,12 @@ namespace commands
 
       private:
     CommandType type = UNDEFINED;
-    jointChannel_t channel;
-    jointPw_t pwm;
-    jointRad_t rad;
-    jointVel_t speed;
-    jointVel_t speedFactor;
-    commandTime_t time;
+    jointChannel_t mChannel;
+    jointPw_t mPwm;
+    jointRad_t mRad;
+    jointVel_t mSpeed;
+    jointVel_t mSpeedFactor;
+    commandTime_t mTime;
   };
 
 } // namespace commands

@@ -6,14 +6,14 @@ commands::Command::Command(CommandType aType,
                            jointPw_t aPwm,
                            jointVel_t aSpeed,
                            commandTime_t aTime)
-    : type(aType), channel(aChannel), pwm(aPwm), speed(aSpeed), time(aTime)
+    : type(aType), mChannel(aChannel), mPwm(aPwm), mSpeed(aSpeed), mTime(aTime)
 {
 }
 commands::Command::Command(CommandType aType,
                            jointChannel_t aChannel,
                            jointRad_t aRad,
                            jointVel_t aSpeedFactor)
-    : type(aType), channel(aChannel), rad(aRad), speedFactor(aSpeedFactor)
+    : type(aType), mChannel(aChannel), mRad(aRad), mSpeedFactor(aSpeedFactor)
 {
 }
 commands::CommandType commands::Command::getType() const
@@ -23,27 +23,27 @@ commands::CommandType commands::Command::getType() const
 
 jointChannel_t commands::Command::getChannel() const
 {
-  return channel;
+  return mChannel;
 }
 
 jointPw_t commands::Command::getPwm() const
 {
-  return pwm;
+  return mPwm;
 }
 jointRad_t commands::Command::getRad() const
 {
-  return rad;
+  return mRad;
 }
 
 jointVel_t commands::Command::getSpeed() const
 {
-  return speed;
+  return mSpeed;
 }
 jointVel_t commands::Command::getSpeedFactor() const
 {
-  return speedFactor;
+  return mSpeedFactor;
 }
 commandTime_t commands::Command::getTime() const
 {
-  return time;
+  return mTime;
 }

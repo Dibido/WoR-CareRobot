@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7.2)
 project(sim_robot)
 
 add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
-
+set(CMAKE_CXX_CPPCHECK "cppcheck" "–enable=all --inline-suppr")
 find_package(catkin REQUIRED COMPONENTS
 	message_generation
 	message_runtime

@@ -1,27 +1,30 @@
 #include <memory>
 
-#include <regex>
-#include "sim_robot/stopCommand.h"
 #include "sim_robot/commands.h"
+#include "sim_robot/stopCommand.h"
+
+#include <regex>
+
 #include <sim_robot/robot_controller_plugin.hpp>
+
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/String.h>
 
-// Topic for serial robot commands
-#define COMMAND_TOPIC "/robot_command"
-
-// Defines to read attributes / elements from the sdf file
-#define SDF_JOINT_INFO_ELEMENT "joint_info"
-#define SDF_JOINT_NAME_ATTR "name"
-#define SDF_JOINT_CHANNEL_ATTR "channel"
-#define SDF_JOINT_MIN_PW "min_pw"
-#define SDF_JOINT_MAX_PW "max_pw"
-#define SDF_JOINT_MIN_RAD "min_rad"
-#define SDF_JOINT_MAX_RAD "max_rad"
-#define SDF_JOINT_MAX_VEL "max_vel"
-
 namespace gazebo
 {
+  // Topic for serial robot commands
+  const char* COMMAND_TOPIC = "/robot_command";
+  const char* STOP_TOPIC = "/robot_stop";
+  // Defines to read attributes / elements from the sdf file
+  const char* SDF_JOINT_INFO_ELEMENT = "joint_info";
+  const char* SDF_JOINT_NAME_ATTR = "name";
+  const char* SDF_JOINT_CHANNEL_ATTR = "channel";
+  const char* SDF_JOINT_MIN_PW = "min_pw";
+  const char* SDF_JOINT_MAX_PW = "max_pw";
+  const char* SDF_JOINT_MIN_RAD = "min_rad";
+  const char* SDF_JOINT_MAX_RAD = "max_rad";
+  const char* SDF_JOINT_MAX_VEL = "max_vel";
+
   RobotControllerPlugin::RobotControllerPlugin()
   {
     ROS_DEBUG("The Servo plugin is attached to model");
@@ -43,14 +46,14 @@ namespace gazebo
     }
     else
     {
-    ROS_DEBUG(("Robot model has joints")) ;
+      ROS_DEBUG(("Robot model has joints"));
     }
 
     // Save the model
     model = _model;
     updateRate = model->GetWorld()->Physics()->GetRealTimeUpdateRate();
 
-    if (_sdf->HasElement(SDF_JOINT_INFO_ELEMENT))
+    if (_sdf->HasElement(gazebo::SDF_JOINT_INFO_ELEMENT))
     {
       // Load joint info
       loadJointInfo(_sdf);
@@ -67,8 +70,11 @@ namespace gazebo
     rosNode = std::make_unique<ros::NodeHandle>("robot_simulation_plugin");
 
     // Subscribe to
-    rosSub = rosNode->subscribe(
-        COMMAND_TOPIC, 1, &RobotControllerPlugin::commandCallBackFloat, this);
+    rosSubCommands =
+        rosNode->subscribe(gazebo::COMMAND_TOPIC, 1,
+                           &RobotControllerPlugin::commandCallBackFloat, this);
+    rosSubStop = rosNode->subscribe(gazebo::STOP_TOPIC, 1,
+                                    &RobotControllerPlugin::stopCallBack, this);
 
     // Set update function
     updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -96,20 +102,35 @@ namespace gazebo
   {
     std::vector<double> incomingTheta = fmsg->theta;
     jointVel_t speedFactor = fmsg->sf;
-    ROS_INFO("recieved command thetas: %f",incomingTheta);
-    ROS_INFO("recieved command speedFactor: %f",speedFactor);
+
     ROS_DEBUG("Received command: %f", incomingTheta);
 
     std::vector<commands::Command> thetaContainer = {};
 
     parser.parseCommandTheta(incomingTheta, speedFactor, thetaContainer);
-
-    for (const auto& c : thetaContainer)
+    if (!this->stop)
     {
+      for (const auto& c : thetaContainer)
+      {
 
-      moveJointTheta(c);
+        moveJointTheta(c);
+      }
     }
   }
+  void
+      RobotControllerPlugin::stopCallBack(const sim_robot::stopCommandPtr& smsg)
+  {
+    stop = smsg->stop;
+    ROS_DEBUG("Received command: %f", stop);
+    std::vector<commands::Command> Container = {};
+    parser.parseCommandStop(stop, Container);
+    for (const auto& c : Container)
+    {
+
+      stopJoint(c);
+    }
+  } // namespace gazebo
+
   // PRIVATE
   void RobotControllerPlugin::commandCallBack(
       const std_msgs::StringConstPtr& msg)
@@ -138,60 +159,61 @@ namespace gazebo
 
   void RobotControllerPlugin::loadJointInfo(const sdf::ElementPtr& _sdf)
   {
-    auto jointInfo = _sdf->GetElement(SDF_JOINT_INFO_ELEMENT);
+    auto jointInfo = _sdf->GetElement(gazebo::SDF_JOINT_INFO_ELEMENT);
     do
     {
-      if (!jointInfo->HasAttribute(SDF_JOINT_NAME_ATTR))
+      if (!jointInfo->HasAttribute(gazebo::SDF_JOINT_NAME_ATTR))
       {
-        throwGetElementError("joint_info element", SDF_JOINT_NAME_ATTR);
+        throwGetElementError("joint_info element", gazebo::SDF_JOINT_NAME_ATTR);
       }
       std::string name;
-      jointInfo->GetAttribute(SDF_JOINT_NAME_ATTR)->Get(name);
+      jointInfo->GetAttribute(gazebo::SDF_JOINT_NAME_ATTR)->Get(name);
 
       // Check if the joint_info element in the sdf file contains all the
       // necessary elements
-      if (!jointInfo->HasAttribute(SDF_JOINT_CHANNEL_ATTR))
+      if (!jointInfo->HasAttribute(gazebo::SDF_JOINT_CHANNEL_ATTR))
       {
-        throwGetElementError(name, SDF_JOINT_CHANNEL_ATTR);
+        throwGetElementError(name, gazebo::SDF_JOINT_CHANNEL_ATTR);
       }
-      if (!jointInfo->HasElement(SDF_JOINT_MIN_PW))
+      if (!jointInfo->HasElement(gazebo::SDF_JOINT_MIN_PW))
       {
-        throwGetElementError(name, SDF_JOINT_MIN_PW);
+        throwGetElementError(name, gazebo::SDF_JOINT_MIN_PW);
       }
-      if (!jointInfo->HasElement(SDF_JOINT_MAX_PW))
+      if (!jointInfo->HasElement(gazebo::SDF_JOINT_MAX_PW))
       {
-        throwGetElementError(name, SDF_JOINT_MAX_PW);
+        throwGetElementError(name, gazebo::SDF_JOINT_MAX_PW);
       }
-      if (!jointInfo->HasElement(SDF_JOINT_MIN_RAD))
+      if (!jointInfo->HasElement(gazebo::SDF_JOINT_MIN_RAD))
       {
-        throwGetElementError(name, SDF_JOINT_MIN_RAD);
+        throwGetElementError(name, gazebo::SDF_JOINT_MIN_RAD);
       }
-      if (!jointInfo->HasElement(SDF_JOINT_MAX_RAD))
+      if (!jointInfo->HasElement(gazebo::SDF_JOINT_MAX_RAD))
       {
-        throwGetElementError(name, SDF_JOINT_MAX_RAD);
+        throwGetElementError(name, gazebo::SDF_JOINT_MAX_RAD);
       }
-      if (!jointInfo->HasElement(SDF_JOINT_MAX_VEL))
+      if (!jointInfo->HasElement(gazebo::SDF_JOINT_MAX_VEL))
       {
-        throwGetElementError(name, SDF_JOINT_MAX_VEL);
+        throwGetElementError(name, gazebo::SDF_JOINT_MAX_VEL);
       }
 
-      auto channel = jointInfo->Get<jointChannel_t>(SDF_JOINT_CHANNEL_ATTR);
+      auto channel =
+          jointInfo->Get<jointChannel_t>(gazebo::SDF_JOINT_CHANNEL_ATTR);
 
       auto modelJoint = model->GetJoint(name);
 
       // Add it the the map
       channelJointMap.emplace(
-          channel,
-          JointController(modelJoint, name, channel,
-                          jointInfo->Get<jointPw_t>(SDF_JOINT_MIN_PW),
-                          jointInfo->Get<jointPw_t>(SDF_JOINT_MAX_PW),
-                          jointInfo->Get<jointRad_t>(SDF_JOINT_MIN_RAD),
-                          jointInfo->Get<jointRad_t>(SDF_JOINT_MAX_RAD),
-                          jointInfo->Get<jointVel_t>(SDF_JOINT_MAX_VEL)));
+          channel, JointController(
+                       modelJoint, name, channel,
+                       jointInfo->Get<jointPw_t>(gazebo::SDF_JOINT_MIN_PW),
+                       jointInfo->Get<jointPw_t>(gazebo::SDF_JOINT_MAX_PW),
+                       jointInfo->Get<jointRad_t>(gazebo::SDF_JOINT_MIN_RAD),
+                       jointInfo->Get<jointRad_t>(gazebo::SDF_JOINT_MAX_RAD),
+                       jointInfo->Get<jointVel_t>(gazebo::SDF_JOINT_MAX_VEL)));
 
       ROS_DEBUG("Loaded joint \"%s\" on channel %d", name.c_str(), channel);
 
-      jointInfo = jointInfo->GetNextElement(SDF_JOINT_INFO_ELEMENT);
+      jointInfo = jointInfo->GetNextElement(gazebo::SDF_JOINT_INFO_ELEMENT);
     } while (jointInfo);
   }
 
@@ -202,7 +224,8 @@ namespace gazebo
       ROS_DEBUG("Command MOVE: channel %d to rad %f withSpeedFactor %f",
                 com.getChannel(), com.getRad(), com.getSpeedFactor());
       channelJointMap.at(com.getChannel())
-          .moveTheta(com.getRad(), com.getSpeedFactor(), com.getTime(), updateRate);
+          .moveTheta(com.getRad(), com.getSpeedFactor(), com.getTime(),
+                     updateRate);
     }
     else
     {

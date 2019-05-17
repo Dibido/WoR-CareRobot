@@ -39,25 +39,54 @@ namespace commands
   {
     jointVel_t tempSpeedFactor = 0;
     if (commandTheta.empty())
-    { // the match on commandTheta is the speed (if it exists) else this field is
+    { // the match on commandTheta is the speed (if it exists) else this field
+      // is
       // empty
       speedFactor = tempSpeedFactor;
     }
-    createCommandTheta(commandTheta,speedFactor, thetaOut);
+    createCommandTheta(commandTheta, speedFactor, thetaOut);
+  }
+  void CommandParser::parseCommandStop(const bool& stop,
+                                       std::vector<Command>& out)
+  {
+
+    createStopCommandTheta(stop, out);
   }
 
   void CommandParser::createCommandTheta(
-      const std::vector<double>& commandTheta, jointVel_t speedFactor,
+      const std::vector<double>& commandTheta,
+      jointVel_t speedFactor,
       std::vector<commands::Command>& container)
   {
 
     for (uint16_t i = 0; i < commandTheta.size(); ++i)
     {
+      if (i >= 5 && speedFactor > mMaxSpeed) // Joint 5,6,7 are slower
+      {
+        speedFactor = mMaxSpeed;
+      }
       Command command(CommandType::MOVE,                        // type
                       static_cast<jointChannel_t>(i),           // channel
                       static_cast<jointRad_t>(commandTheta[i]), // rad
-                      speedFactor);                         // speedFactor
+                      speedFactor);                             // speedFactor
       container.push_back(command);
+    }
+  }
+
+  void CommandParser::createStopCommandTheta(
+      const bool& stop,
+      std::vector<commands::Command>& container)
+  {
+    if (stop)
+    {
+      for (uint16_t i = 0; i < 7; ++i)
+      {
+        Command command(CommandType::STOP,              // type
+                        static_cast<jointChannel_t>(i), // channel
+                        static_cast<jointRad_t>(0),     // rad
+                        0);                             // speedFactor
+        container.push_back(command);
+      }
     }
   }
 
