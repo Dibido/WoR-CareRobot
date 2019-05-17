@@ -1,3 +1,5 @@
-uint32 width
-uint32 height
-uint8[] data
+# Topic name:
+# /sensor/webcam
+
+# The frame that was captured by the webcam.
+sensor_msgs/Image frame

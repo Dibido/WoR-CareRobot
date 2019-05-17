@@ -4,6 +4,7 @@ project(sensor_interfaces)
 find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
+  sensor_msgs
   genmsg
   message_generation
 )
@@ -19,10 +20,11 @@ find_package(catkin REQUIRED COMPONENTS
    DEPENDENCIES
    std_msgs
    geometry_msgs
+   sensor_msgs
  )
 
 catkin_package(
-  CATKIN_DEPENDS std_msgs geometry_msgs message_runtime
+  CATKIN_DEPENDS std_msgs geometry_msgs sensor_msgs message_runtime
 )
 
 include_directories(

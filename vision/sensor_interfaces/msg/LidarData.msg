@@ -1,6 +1,8 @@
 # Topic name:
-# /sensor/lidardata
+# /sensor/lidar
+
 Header header
+
 # Measured distance in meters.
 # If distance == 0, the measured distance was below the range
 # If distance == MAX_FLOAT, the measured distance was above the range

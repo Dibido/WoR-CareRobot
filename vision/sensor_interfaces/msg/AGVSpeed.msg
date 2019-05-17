@@ -1,2 +1,7 @@
-float32[] speed_samples
-float32 speed_precision
+# Topic name:
+# /sensor/agv
+
+Header header
+
+# Current AGV speed in meters per second.
+float32 speed
