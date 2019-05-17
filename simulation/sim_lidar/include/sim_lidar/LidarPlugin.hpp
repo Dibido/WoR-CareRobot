@@ -25,6 +25,7 @@ private:
   /**
    * @brief Callback function of gazebo sensor topic
    *        Publishes a LaserScan message on ros topic @var: topicName
+   *        Publishes a LidarData message on ros topic /sensor/lidardata
    * @param _msg: contains the information of the sensor
    */
   void OnScan(ConstLaserScanStampedPtr& _msg);
@@ -32,6 +33,7 @@ private:
   // Variables
   std::string frameName;
   std::string topicName;
+  std::string mLidarDataTopic;
   sensors::RaySensorPtr parentSensor;
 
   // Gazebo variables
@@ -41,6 +43,7 @@ private:
   // Ros variables
   ros::NodeHandlePtr rosNode;
   ros::Publisher rosPub;
+  ros::Publisher mLidarDataPub;
 };
 GZ_REGISTER_SENSOR_PLUGIN(LidarPlugin)
 }  // namespace gazebo
