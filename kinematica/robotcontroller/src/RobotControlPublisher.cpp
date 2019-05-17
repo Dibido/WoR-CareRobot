@@ -1,7 +1,5 @@
 #include "robotcontroller/RobotControlPublisher.hpp"
 
-#include <ros/ros.h>
-
 namespace robotcontroller {
 
   RobotControlPublisher::RobotControlPublisher(ros::NodeHandle& lN) : mN(lN) 

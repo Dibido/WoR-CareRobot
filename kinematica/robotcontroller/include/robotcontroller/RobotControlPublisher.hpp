@@ -8,10 +8,26 @@
 
 namespace robotcontroller {
 
+/**
+ * @brief Publisher for controlling the robotarm
+ * 
+ */
 class RobotControlPublisher
 {
     public:
+    /**
+     * @brief Construct a new Robot Control Publisher object
+     * 
+     * @param lN NodeHandler 
+     */
     explicit RobotControlPublisher(ros::NodeHandle& lN);
+
+    /**
+     * @brief Publishes a Control msg to the robot_command topic
+     * 
+     * @param lSf 
+     * @param joints 
+     */
     void publish(const double lSf, const std::vector<kinematics::Link>& joints);
 
     private:
