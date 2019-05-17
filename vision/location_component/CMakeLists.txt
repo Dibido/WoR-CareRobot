@@ -10,9 +10,12 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework)
 find_package(OpenCV 3.2.0 REQUIRED)
 find_package(Threads REQUIRED)
+
+include(CTest)
+enable_testing()
 
 ## Generate messages in the 'msg' folder
  add_message_files(
@@ -36,6 +39,36 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(DetectCup src/Main.cpp src/CupScanner.cpp src/CupScanner.cpp)
+add_executable(DetectCup src/main.cpp src/CupScanner.cpp src/CupScanner.cpp)
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(DetectCup ${OpenCV_LIBS} ${ZBAR_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+  include(../../cmake/CodeCoverage.cmake)
+
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )
+endif()
