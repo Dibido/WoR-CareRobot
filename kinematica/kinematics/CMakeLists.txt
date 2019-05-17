@@ -93,7 +93,8 @@ catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp
                 unitTests/DenavitHartenberg_test.cpp
                 unitTests/Link_test.cpp
                 unitTests/EulerAngles_test.cpp
-                unitTests/UtilityFunctions_test.cpp)
+                unitTests/UtilityFunctions_test.cpp
+                unitTests/JacobiMatrix_test.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_kinematics ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)
