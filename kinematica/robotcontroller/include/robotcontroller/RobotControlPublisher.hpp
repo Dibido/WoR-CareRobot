@@ -25,8 +25,8 @@ class RobotControlPublisher
     /**
      * @brief Publishes a Control msg to the robot_command topic
      * 
-     * @param lSf 
-     * @param joints 
+     * @param lSf Speedfactor for the robotarm movement speed
+     * @param joints Joints of the robotarm
      */
     void publish(const double lSf, const std::vector<kinematics::Link>& joints);
 
