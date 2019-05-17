@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(astar)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0 -g3)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -98,6 +98,14 @@ find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 include(CTest)
 enable_testing()
 
+add_library(lib_astar 
+src/Main.cpp
+src/astar/AStar.cpp
+src/astar/Graph.cpp
+)
+
+target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY})
 
 ###################################
 ## catkin specific configuration ##
@@ -110,7 +118,7 @@ enable_testing()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
-#  LIBRARIES astar
+ LIBRARIES lib_astar
 #  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -207,22 +215,11 @@ include_directories(
 # catkin_add_nosetests(test)
 add_executable(astar 
 src/Main.cpp
-src/astar/AStar.cpp
-src/astar/Graph.cpp
 )
 
-target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY}
+target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY} lib_astar
                       ${Boost_SYSTEM_LIBRARY})
 
-
-add_library(lib_astar 
-src/Main.cpp
-src/astar/AStar.cpp
-src/astar/Graph.cpp
-)
-
-target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp)

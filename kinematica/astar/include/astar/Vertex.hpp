@@ -18,6 +18,11 @@ namespace astar
     {
       return x == rhs.x && y == rhs.y && z == rhs.z;
     }
+
+    bool operator!=(const Vertex& rhs) const
+    {
+      return x != rhs.x || y != rhs.y || z != rhs.z;
+    }
     /**
      *
      */

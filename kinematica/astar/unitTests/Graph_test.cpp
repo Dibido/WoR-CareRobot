@@ -42,15 +42,15 @@ namespace astar
     EXPECT_NO_THROW(graph.removeObstacle(ob));
   }
 
-  TEST(GrapSetEndPoint, testEndPoint)
+  TEST(GraphSetEndPoint, testEndPoint)
   {
     Graph graph;
 
     Vertex v(-10, -20, -10);
 
     graph.setEndPoint(v);
-    v.z -= 5;
-    EXPECT_EQ(v, graph.calculateNeighbours(v).at(0));
+    EXPECT_EQ(v, graph.calculateNeighbours(Vertex(-10, -20, -15)).at(0));
+    EXPECT_NE(v, graph.calculateNeighbours(Vertex(0, 0, 0)).at(0));
   }
 
   TEST(GraphCaclulateNeighbours, calculateCorrectNeighbours)
@@ -71,5 +71,6 @@ namespace astar
     graph.setEndPoint(Vertex(20, 20, 20));
 
     EXPECT_EQ(controlList, graph.calculateNeighbours(Vertex(0, 0, 0)));
+    EXPECT_NE(controlList, graph.calculateNeighbours(Vertex(0, 10, 0)));
   }
 } // namespace astar
