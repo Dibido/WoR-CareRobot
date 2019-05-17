@@ -40,7 +40,7 @@ namespace kinematics
       ++lIterationCount;
       if (lIterationCount > cIkMaxIterations)
       {
-        ROS_WARN("Aborted inverse kinematics after %l iterations",
+        ROS_WARN("Aborted inverse kinematics after %u iterations",
                  lIterationCount);
         break;
       }
