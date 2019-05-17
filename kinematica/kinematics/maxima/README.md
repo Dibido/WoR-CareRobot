@@ -56,3 +56,12 @@ include_directories(
 ```
 
 Using the `SYSTEM` flag suppresses all compiler warnings for files in all following directories.
+
+## Jacobi Matrix Unit Test
+
+In order to test if the conversion from maxima to C++ has been done
+correctly `jacobi_matrix_test.mac` has been used
+to create jacobi matrices to test against in
+a unit test.
+
+This unittest is found at `unitTest/JacobiMatrix_test.cpp`

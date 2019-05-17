@@ -68,15 +68,6 @@ namespace kinematics
                                            std::size_t lStart = 0,
                                            std::size_t lEnd = 0) const;
 
-    /**
-     * @brief Calculates the jacobian for a 7-DoF robotarm
-     *
-     * @param lBigTheta
-     * @return Matrix<double, 6, 7>
-     */
-    Matrix<double, 6, 7>
-        calculateJacobiMatrix(const std::vector<double>& lBigTheta) const;
-
     const std::vector<Link> mLinkConfiguration;
   };
 
