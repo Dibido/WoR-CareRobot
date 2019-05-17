@@ -29,7 +29,7 @@ namespace obstacle
      * @brief coversPoint returns wether a supplied point is within the
      * obstacle.
      *
-     * @param aVertex A 3D points which will be used to check
+     * @param aVertex A 3D point which will be used to check
      * @return true True will be returned if the given points is within the
      * obstacle.
      * @return false False will be returned if the given points is not within
