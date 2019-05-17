@@ -9,6 +9,7 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   robotcontroller_msgs
+  kinematics
   roscpp
   genmsg
 )
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robotcontroller
-#  CATKIN_DEPENDS robotcontroller_msgs roscpp
+   CATKIN_DEPENDS robotcontroller_msgs roscpp lib_kinematics
 #  DEPENDS system_lib
 )
 
@@ -116,10 +117,15 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
+  SYSTEM
   ${catkin_INCLUDE_DIRS}
 )
 
+add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp)
+target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
+add_dependencies(robotcontrol robotcontroller_msgs generate_messages)
+  
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/robotcontroller.cpp
@@ -197,6 +203,4 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)add_executable(talker src/talker.cpp)
-add_executable(robotcontrol src/robotcontrol.cpp)
-target_link_libraries(robotcontrol ${catkin_LIBRARIES})
-add_dependencies(robotcontrol robotcontroller_msgs_generate_messages_cpp)
+
