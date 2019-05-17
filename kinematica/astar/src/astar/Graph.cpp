@@ -66,10 +66,27 @@ namespace astar
       {
         Vertex lVertex(aVertex.x + lXOffset[i], aVertex.y + lYOffset[i],
                        aVertex.z + lZOffset[j]);
-        lNeighbours.push_back(lVertex);
+        if (isObstacleFreePoint(lVertex))
+        {
+          lNeighbours.push_back(lVertex);
+        }
       }
     }
 
     return lNeighbours;
   }
+
+  bool Graph::isObstacleFreePoint(const Vertex& aVertex) const
+  {
+
+    for (const obstacle::Obstacle& obstacle : mObstacles)
+    {
+      if (obstacle.coversPoint(aVertex))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
 } // namespace astar
