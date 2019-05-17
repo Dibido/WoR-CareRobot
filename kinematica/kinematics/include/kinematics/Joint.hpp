@@ -28,9 +28,19 @@ namespace kinematics
     STATIC,
   };
 
+  /**
+   * @brief Helper to convert eJoint to string
+   * 
+   */
   class JointHelper
   {
       public:
+      /**
+       * @brief Convert eJoint to a string value
+       * 
+       * @param lJoint 
+       * @return const std::string 
+       */
     static const std::string toString(eJoint lJoint)
     {
       switch (lJoint)
