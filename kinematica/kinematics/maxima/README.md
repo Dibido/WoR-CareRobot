@@ -1,7 +1,5 @@
 # Analytical Jacobian
 
-
-
 To run the script execute the following command from the command line
 
 ```
@@ -56,3 +54,37 @@ include_directories(
 ```
 
 Using the `SYSTEM` flag suppresses all compiler warnings for files in all following directories.
+
+## Running analytical_jacobian.mac in Maxima
+
+To run the script in maxima without running the python script the following commands can be used:
+
+
+Run the file and exit, generates all files used by the python script
+```
+maxima -b analytical_jacobian.mac
+```
+
+Load the file into maxima, allowing manual experimentation
+```
+maxima
+
+load("analytical_jacobian.mac");
+```
+
+To then for example get the DenavitHartenberg matrix
+```
+Denavit;
+```
+
+To calculate a single joint and assign it to `Joint`
+```
+Joint : subst[theta=2%pi/4, alpha=%pi/2, a=2, d=2], Denavit);
+Joint;
+```
+
+To multiply matrices with each other
+
+```
+J1 . J2 . J3;
+```
