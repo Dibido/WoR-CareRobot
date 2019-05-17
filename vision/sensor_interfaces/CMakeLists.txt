@@ -36,4 +36,4 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_custom_target(sensor_interfaces_gen_msgs DEPENDS sensor_interfaces_generate_messages_cpp)
+add_custom_target(sensor_interfaces DEPENDS sensor_interfaces_generate_messages_cpp)
