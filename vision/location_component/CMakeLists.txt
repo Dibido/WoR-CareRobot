@@ -1,18 +1,15 @@
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 2.8)
 project(location_component)
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  std_msgs
-  geometry_msgs
-  genmsg
-  message_generation
-  image_transport
+find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_generation sensor_msgs)
+
+# add the resized image message
+add_message_files(DIRECTORY msg
+   FILES ResizedImage.msg
 )
+generate_messages(DEPENDENCIES sensor_msgs)
 
-
-## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework)
+catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs)
 
 find_package(Threads REQUIRED)
 find_package(sensor_msgs)
@@ -21,51 +18,13 @@ find_package(OpenCV)
 include(CTest)
 enable_testing()
 
-## Generate messages in the 'msg' folder
- add_message_files(
-   DIRECTORY 
-   msg
-   FILES ResizedImage.msg
- )
-
-## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-   geometry_msgs
-   sensor_msgs
- )
-
-catkin_package(
-  CATKIN_DEPENDS 
-  roscpp std_msgs 
-  geometry_msgs 
-  message_runtime
-  cv_bridge 
-  image_transport  
-  sensor_msgs
-)
-
-
-
 include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
-#include_directories(
-#  include
-#  ${catkin_INCLUDE_DIRS}
-#  ${OpenCV_INCLUDE_DIRS}
-#  SYSTEM
-#)
-
+# add the publisher example
 add_executable(DetectCup src/main.cpp src/CupScanner.cpp src/CupScanner.cpp)
 add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
-target_link_libraries(DetectCup ${OpenCV_LIBS} ${ZBAR_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-
-
-#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
@@ -93,7 +52,7 @@ if(CODE_COVERAGE)
              )
 endif()
 
-
+# Mark executables and/or libraries for installation
 install(TARGETS DetectCup
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

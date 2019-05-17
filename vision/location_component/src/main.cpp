@@ -1,8 +1,8 @@
-#include "CupScanner.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/objdetect.hpp"
+//#include "CupScanner.hpp"
+// #include "opencv2/highgui.hpp"
+// #include "opencv2/imgcodecs.hpp"
+// #include "opencv2/imgproc/imgproc.hpp"
+// #include "opencv2/objdetect.hpp"
 #include <ctime>
 #include <iomanip>
 #include <iostream>
@@ -16,22 +16,22 @@
 #include <cv_bridge/cv_bridge.h>
 
 
-namespace
-{
-  /** Global Variables */
-  const bool USE_MAX_WEBCAM_RESOLUTION = true;
-  cv::Mat img_original, img_result;
-  CupScanner scanner;
+// namespace
+// {
+//   /** Global Variables */
+//   const bool USE_MAX_WEBCAM_RESOLUTION = true;
+//   cv::Mat img_original, img_result;
+//   CupScanner scanner;
 
-  void applyScan()
-  {
-    scanner.scan(img_original, img_result);
-  }
+//   void applyScan()
+//   {
+//     scanner.scan(img_original, img_result);
+//   }
 
-  void on_linear_transform_trackbar(int, void*)
-  {
-  }
-} // namespace
+//   void on_linear_transform_trackbar(int, void*)
+//   {
+//   }
+// } // namespace
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
