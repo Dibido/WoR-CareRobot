@@ -1,7 +1,8 @@
 #include <memory>
 
 #include <regex>
-#include "sim_robot/commandT.h"
+#include "sim_robot/stopCommand.h"
+#include "sim_robot/commands.h"
 #include <sim_robot/robot_controller_plugin.hpp>
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/String.h>
@@ -91,10 +92,12 @@ namespace gazebo
     }
   }
   void RobotControllerPlugin::commandCallBackFloat(
-      const sim_robot::commandPtr& fmsg)
+      const sim_robot::commandsPtr& fmsg)
   {
     std::vector<double> incomingTheta = fmsg->theta;
     jointVel_t speedFactor = fmsg->sf;
+    ROS_INFO("recieved command thetas: %f",incomingTheta);
+    ROS_INFO("recieved command speedFactor: %f",speedFactor);
     ROS_DEBUG("Received command: %f", incomingTheta);
 
     std::vector<commands::Command> thetaContainer = {};
@@ -199,7 +202,7 @@ namespace gazebo
       ROS_DEBUG("Command MOVE: channel %d to rad %f withSpeedFactor %f",
                 com.getChannel(), com.getRad(), com.getSpeedFactor());
       channelJointMap.at(com.getChannel())
-          .move(com.getRad(), com.getSpeedFactor(), com.getTime(), updateRate);
+          .moveTheta(com.getRad(), com.getSpeedFactor(), com.getTime(), updateRate);
     }
     else
     {

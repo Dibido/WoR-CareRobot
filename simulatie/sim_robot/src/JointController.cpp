@@ -94,6 +94,49 @@ void JointController::update()
   }
 }
 
+bool JointController::moveTheta(jointRad_t rad, jointVel_t speed, commandTime_t time, double updateRate)
+{
+ 
+    target_pos = rad;
+
+    if (equalsDouble(target_pos, current_pos))
+    {
+      return false;
+    }
+
+    auto distance = std::abs(target_pos - current_pos);
+
+    if (speed <= 0 && time == 0)
+    {
+      speed = 1000;
+    }
+    if (speed > 0)
+    {
+      current_vel = M_PI_2 / (1000 / speed);
+    }
+    else
+    {
+      current_vel = 0;
+    }
+    if (time > 0)
+    {
+      auto time_vel = distance * (1000.0 / time);
+      current_vel = time_vel > current_vel ? time_vel : current_vel;
+    }
+
+    if (current_vel > max_vel)
+    {
+      ROS_WARN("Joint [%s] speed to high! Using max [%f] instead of [%f]", name.c_str(), max_vel, current_vel);
+      current_vel = max_vel;
+    }
+
+    step_size = ((distance / updateRate) * (current_vel / distance));
+
+    ROS_DEBUG("Joint [%s] moving to [%f] in [%f] rad per sec", name.c_str(), target_pos, current_vel);
+
+    return true;
+
+}
 bool JointController::move(jointPw_t pw, jointVel_t speed, commandTime_t time, double updateRate)
 {
   if (inRange(pw))
