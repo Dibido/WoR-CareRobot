@@ -68,3 +68,35 @@ TEST(DenavitHartenberg, InverseKinematics)
                                              cDhTransformPosRadSplit));
   
 }
+
+TEST(DenavitHartenberg, ForwardKinematics)
+{
+
+  std::vector<Link> jointsSimplify;
+  std::vector<double> bigTheta = { 0, 0};
+
+  jointsSimplify.push_back(
+      Link(0, 0, 2, eJoint::REVOLUTE, -M_PI, M_PI));
+  jointsSimplify.push_back(Link(
+      0, -M_PI_2, 0, eJoint::REVOLUTE, -M_PI, M_PI));
+  jointsSimplify.push_back(Link(
+      0, M_PI_2, 2, 0, eJoint::STATIC));
+
+  DenavitHartenberg denavitHartenberg(jointsSimplify);
+
+  const auto endEffector = denavitHartenberg.forwardKinematicsYPR(bigTheta);
+  const Matrix<double, 6, 1> expectedEndEffector{ 0, 0, 4, 0, 0, 0 };
+
+  EXPECT_EQ(true, equals(expectedEndEffector,
+                         denavitHartenberg.forwardKinematicsYPR(bigTheta),
+                         std::numeric_limits<double>::epsilon(), 10));
+
+  std::vector<double> bigTheta2 = { 0, M_PI_4};
+  const Matrix<double, 6, 1> expectedEndEffector2{ sqrt(2), 0, sqrt(2)+2, 0, M_PI_4, 0 };
+  EXPECT_EQ(true, equals(expectedEndEffector2,
+                         denavitHartenberg.forwardKinematicsYPR(bigTheta2),
+                         std::numeric_limits<double>::epsilon(), 10));
+
+                         std::cout << expectedEndEffector2 << std::endl;
+                         std::cout << denavitHartenberg.forwardKinematicsYPR(bigTheta2) << std::endl;
+}
