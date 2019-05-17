@@ -13,6 +13,11 @@ namespace astar
         : x(anX), y(anY), z(anZ), actualCost(0.0), heuristicCost(0.0)
     {
     }
+
+    bool operator==(const Vertex& rhs) const
+    {
+      return x == rhs.x && y == rhs.y && z == rhs.z;
+    }
     /**
      *
      */
