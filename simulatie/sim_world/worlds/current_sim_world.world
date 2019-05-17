@@ -115,26 +115,26 @@
       <pose>0.35 -4 1.8 0 1.570796 0</pose>
       <static>true</static>
       <link name="link">
-        <sensor name="camera" type="camera">  
+        <sensor name="webcam" type="camera">  
         <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
            <robotNamespace>camera_plugin</robotNamespace>
            <updateRate>30.0</updateRate>
-           <cameraName>camera</cameraName>
-           <imageTopicName>/sensor/camera/img_raw</imageTopicName>
-           <cameraInfoTopicName>sensor/camera/camera_info</cameraInfoTopicName>
+           <cameraName>webcam</cameraName>
+           <imageTopicName>/sensor/webcam/img_raw</imageTopicName>
+           <cameraInfoTopicName>sensor/webcam/camera_info</cameraInfoTopicName>
         </plugin>
         <update_rate>30</update_rate>
         <camera>
            <save enabled="false">
               <path>/tmp/camera_save_tutorial</path>
            </save>
-           <horizontal_fov>2.047</horizontal_fov>
+
            <image>
               <width>720</width>
                <height>480</height>
                <format>R8G8B8</format>
            </image>
-           <horizontal_fov>1.05</horizontal_fov>
+
            <aspect_ratio>1.8</aspect_ratio>
         </camera>
           <visualize>true</visualize>
