@@ -40,7 +40,7 @@ namespace obstacle
 
     bool coversPoint(const astar::Vertex& aVertex) const
     {
-      bool pointCovered = false;
+      bool lPointCovered = false;
       if (static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters >
               mX_m - mWidth_m / 2 &&
           static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters <
@@ -58,11 +58,11 @@ namespace obstacle
                       cConversionFromMetersToCentimeters <
                   mZ_m + mHeight_m / 2)
           {
-            pointCovered = true;
+            lPointCovered = true;
           }
         }
       }
-      return pointCovered;
+      return lPointCovered;
     }
   };
 } // namespace obstacle

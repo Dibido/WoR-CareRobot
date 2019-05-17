@@ -95,7 +95,7 @@ namespace astar
      * 
      * @author Martijn Vogelaar
      */
-    bool isObstacleFreePoint(const Vertex& aVertex) const;
+    bool isPointInAnObstacle(const Vertex& aVertex) const;
   };
 
 } // namespace astar

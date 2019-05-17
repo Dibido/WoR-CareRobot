@@ -66,7 +66,7 @@ namespace astar
       {
         Vertex lVertex(aVertex.x + lXOffset[i], aVertex.y + lYOffset[i],
                        aVertex.z + lZOffset[j]);
-        if (isObstacleFreePoint(lVertex))
+        if (!isPointInAnObstacle(lVertex))
         {
           lNeighbours.push_back(lVertex);
         }
@@ -76,17 +76,16 @@ namespace astar
     return lNeighbours;
   }
 
-  bool Graph::isObstacleFreePoint(const Vertex& aVertex) const
+  bool Graph::isPointInAnObstacle(const Vertex& aVertex) const
   {
-
     for (const obstacle::Obstacle& obstacle : mObstacles)
     {
       if (obstacle.coversPoint(aVertex))
       {
-        return false;
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
 } // namespace astar
