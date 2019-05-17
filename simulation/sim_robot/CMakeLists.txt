@@ -74,13 +74,6 @@ target_link_libraries(${PROJECT_NAME}_publisher
 		${Boost_LIBRARIES})
 
 
-target_link_libraries(${PROJECT_NAME}_joint_test
-		${catkin_LIBRARIES}
-		${Boost_LIBRARIES})
-		
-target_link_libraries(${PROJECT_NAME}_joint_test gcov ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-target_compile_options(${PROJECT_NAME}_joint_test PUBLIC -g -O0 --coverage)
-
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
