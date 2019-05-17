@@ -5,6 +5,7 @@ add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
 find_package(catkin REQUIRED COMPONENTS 
     roscpp
     gazebo_ros
+    sensor_interfaces
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -29,18 +30,23 @@ include_directories(
         ${catkin_INCLUDE_DIRS}
         ${GAZEBO_INCLUDE_DIRS})
 
+catkin_package(
+    DEPENDS
+    roscpp
+    gazebo_ros
+    sensor_interfaces)
+
+add_dependencies(sensor_interfaces ${catkin_EXPORTED_TARGETS})
+
 add_library(${PROJECT_NAME}_plugin SHARED
         src/LidarPlugin.cpp)
+
+add_dependencies(${PROJECT_NAME}_plugin sensor_interfaces)
 
 target_link_libraries(${PROJECT_NAME}_plugin
         ${catkin_LIBRARIES}
         ${GAZEBO_LIBRARIES}
         RayPlugin)
-
-catkin_package(
-    DEPENDS
-    roscpp
-    gazebo_ros)
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)

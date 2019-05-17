@@ -50,6 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <test_depend>rosunit</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>sensor_interfaces</depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>

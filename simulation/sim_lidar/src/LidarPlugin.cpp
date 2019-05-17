@@ -2,6 +2,8 @@
 
 #include <sim_lidar/LidarPlugin.hpp>
 
+#include <sensor_interfaces/LidarData.h>
+
 #define FRAME_NAME "frameName"
 #define FRAME_NAME_DEFAULT "/laser"
 #define TOPIC_NAME "topicName"
@@ -99,7 +101,6 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& _msg)
 {
   //Publish the LaserScan message
   sensor_msgs::LaserScan laser_msg;
-  float lAngleIncrement = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size());
   float lAngleMin = static_cast<float>(_msg->scan().angle_min());
   float lAngleMax = static_cast<float>(_msg->scan().angle_max());
 
@@ -114,7 +115,7 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& _msg)
   laser_msg.range_max = static_cast<float>(_msg->scan().range_max());
   laser_msg.ranges.resize(static_cast<unsigned long>(_msg->scan().ranges_size()));
   std::copy(_msg->scan().ranges().begin(), _msg->scan().ranges().end(), laser_msg.ranges.begin());
-  laser_msg.angle_increment = lAngleIncrement;
+  laser_msg.angle_increment = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size());
   rosPub.publish(laser_msg);
 
   // Publish the LidarData message
@@ -126,12 +127,13 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& _msg)
   lLidarDataMessage.distances.resize(static_cast<unsigned long>(_msg->scan().ranges_size()));
   std::copy(_msg->scan().ranges().begin(), _msg->scan().ranges().end(), lLidarDataMessage.distances.begin());
   // Add angles
-  lLidarDataMessage.angles.resize(static_cast<unsigned long>(_msg->scan().ranges_size()));
-  for(float lCurrentAngle = lAngleMin; lCurrentAngle < lAngleMin; lCurrentAngle += lAngleIncrement)
+  lLidarDataMessage.measurement_angles.clear();
+  for(float lCurrentAngle = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size()); lCurrentAngle < lAngleMax + static_cast<float>(M_PI); lCurrentAngle += static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size()))
   {
-    lLidarDataMessage.angles.push_back(lCurrentAngle);
+    lLidarDataMessage.measurement_angles.push_back(lCurrentAngle);
   }
-  assert(lLidarDataMessage.angles.size() == lLidarDataMessage.distances.size());
+  //Assert to check that the ranges and their angles are matched
+  assert(lLidarDataMessage.measurement_angles.size() == lLidarDataMessage.distances.size());
   mLidarDataPub.publish(lLidarDataMessage);
 }
 }  // namespace gazebo
