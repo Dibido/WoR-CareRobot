@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(astar)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14)
-set(CMAKE_CXX_FLAGS "-O0 -g3 -pg -ftest-coverage -fprofile-arcs -Wall -Wextra -Wconversion -fmessage-length=0 -no-pie")
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
 )
+
+
+find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -93,6 +95,7 @@ find_package(catkin REQUIRED COMPONENTS
 #   cfg/DynReconf2.cfg
 # )
 
+
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -103,8 +106,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES astar
+ INCLUDE_DIRS include
+ LIBRARIES lib_astar
 #  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -116,14 +119,31 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
+  SYSTEM
   ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
 )
 
+add_executable(astar 
+src/Main.cpp
+)
+
+target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY} lib_astar
+                      ${Boost_SYSTEM_LIBRARY})
+
+
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/astar.cpp
-# )
+
+add_library(lib_astar 
+src/Main.cpp
+src/astar/AStar.cpp
+src/astar/Graph.cpp
+)
+
+target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY})
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -198,16 +218,37 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
+include(CTest)
+enable_testing()
 
-find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
+#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests lib_astar ${catkin_LIBRARIES})
+  
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
 
-include_directories( ${Boost_INCLUDE_DIR} )
 
-add_executable(astar 
-src/Main.cpp
-src/astar/AStar.cpp
-src/astar/Graph.cpp
-)
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+    '*/*Main.cpp'
+  )
 
-target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY})
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()
