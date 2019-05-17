@@ -36,7 +36,7 @@
         </material>
         <geometry>
           <box>
-            <size>0.25 0.25 0.05</size>
+            <size>0.35 0.40 0.05</size>
           </box>
         </geometry>
       </visual>
