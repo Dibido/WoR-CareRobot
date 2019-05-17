@@ -10,6 +10,7 @@ namespace kinematics
   /**
    * @brief Representation of a Link in a robotarm using Denavit
    * Hartenberg parameters
+   * @author Emiel Bosman
    * @see https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters
    */
   class Link
@@ -17,6 +18,7 @@ namespace kinematics
       public:
     /**
      * @brief Construct a new Link object
+     * @author Emiel Bosman
      *
      * @param lA_m Link length
      * @param lAlpha_rad Link twist
@@ -37,6 +39,7 @@ namespace kinematics
     /**
      * @brief Construct a new Link object, sets the static value
      * to 0
+     * @author Emiel Bosman
      * @param lA_m Link Length
      * @param lAlpha_rad Link Twist
      * @param lConstant Value of the constant value (mD_m or
@@ -58,6 +61,7 @@ namespace kinematics
 
     /**
      * @brief Get the Transformation Matrix for a given Link
+     * @author Emiel Bosman
      * @param lVariable Changing value for this Link (meters or radians)
      * @return Matrix<double, 4, 4> The TransformationMatrix
      * ~~~
@@ -79,6 +83,7 @@ namespace kinematics
      * @brief Checks wether variable falls within lMinValue and lMaxValue
      * In case of a REVOLUTE joint, variable is first translated to fall between
      * -M_PI and M_PI
+     * @author Emiel Bosman
      *
      * @param lVariable (meters or radians)
      * @return true
@@ -90,6 +95,7 @@ namespace kinematics
      * @brief Constrains a variable to be between lMinValue and lMaxValue
      * In case of a REVOLUTE joint, the variable is first translated to fall
      * between -M_PI and M_PI
+     * @author Emiel Bosman
      * @param lVariable Variable to constrain, if variable already falls between
      * lMinValue and lMaxValue the variable is returned unchanged (meters or radians)
      * @return double
@@ -100,6 +106,7 @@ namespace kinematics
     /**
      * @brief Calculates the transformation Matrix using the
      * "modified" denavit-hartenberg formula
+     * @author Emiel Bosman
      * @see
      * https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters#Modified_DH_parameters
      * @param lD_m
