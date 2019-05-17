@@ -12,7 +12,18 @@
 struct LidarData
 {
   std::vector<double> mAngles;
-  std::vector<double> mDistances;
+  std::vector<double> mDistances_m;
+
+  /**
+   * @brief Clears mAngles and mDistances_m
+   * @precondition: -
+   * @postcondition: mAngles and mDistances_m contain no elements
+   */
+  void reset()
+  {
+    mAngles.clear();
+    mDistances_m.clear();
+  }
 };
 
 #endif // LIDARDATA_H_

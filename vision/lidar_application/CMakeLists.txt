@@ -19,9 +19,13 @@ enable_testing()
 
 
 catkin_package(
+INCLUDE_DIRS include
+CATKIN_DEPENDS roscpp
 )
 
 include_directories(
+  include
+  SYSTEM
   ${catkin_INCLUDE_DIRS}
 )
 
