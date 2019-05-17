@@ -20,7 +20,7 @@ namespace astar
   const uint8_t cNrOfNeighbours = 9;
   const uint8_t cNrOfDimensionLayers = 3;
   /**
-   * @brief The graph is builded in Centimeters
+   * @brief The graph is build in Centimeters
    *
    * @author Gianni Monteban
    */
@@ -53,7 +53,7 @@ namespace astar
      *
      * @param obstacle the obstacle to add
      *
-     * @Gianni Monteban
+     * @author Gianni Monteban
      */
     void addObstacle(const obstacle::Obstacle& obstacle);
 

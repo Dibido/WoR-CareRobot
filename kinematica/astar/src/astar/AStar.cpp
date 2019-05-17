@@ -238,18 +238,6 @@ namespace astar
         [aVertex](const Vertex& rhs) { return aVertex.equalPoint(rhs); });
   }
 
-  bool AStar::findRemoveInOpenSet(const Vertex& aVertex)
-  {
-    std::lock_guard<std::recursive_mutex> lock(openSetMutex);
-    OpenSet::iterator i = findInOpenSet(aVertex);
-    if (i != openSet.end())
-    {
-      openSet.erase(i);
-      return true;
-    }
-    return false;
-  }
-
   void AStar::removeFirstFromOpenSet()
   {
     std::unique_lock<std::recursive_mutex> lock(openSetMutex);
@@ -279,39 +267,6 @@ namespace astar
   {
     std::unique_lock<std::recursive_mutex> lock(closedSetMutex);
     return closedSet.find(aVertex);
-  }
-
-  ClosedSet AStar::getClosedSet() const
-  {
-    std::lock_guard<std::recursive_mutex> lock(closedSetMutex);
-    ClosedSet c = getCS();
-    return c;
-  }
-
-  bool AStar::findRemoveClosedSet(const Vertex& aVertex)
-  {
-    std::lock_guard<std::recursive_mutex> lock(closedSetMutex);
-    ClosedSet::iterator i = findInClosedSet(aVertex);
-    if (i != closedSet.end())
-    {
-      closedSet.erase(i);
-      return true;
-    }
-    return false;
-  }
-
-  OpenSet AStar::getOpenSet() const
-  {
-    std::lock_guard<std::recursive_mutex> lock(openSetMutex);
-    OpenSet o = getOS();
-    return o;
-  }
-
-  VertexMap AStar::getPredecessorMap() const
-  {
-    std::lock_guard<std::recursive_mutex> lock(predecessorMapMutex);
-    VertexMap p = getPM();
-    return p;
   }
 
   ClosedSet& AStar::getCS()
