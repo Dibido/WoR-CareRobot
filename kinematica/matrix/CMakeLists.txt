@@ -4,6 +4,7 @@ project(matrix)
 add_compile_options(-std=c++14 -Wall -Wextra -Wconversion)
 
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
 )
 
 ## System dependencies are found with CMake's conventions

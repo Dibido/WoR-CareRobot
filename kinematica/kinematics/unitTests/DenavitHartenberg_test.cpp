@@ -23,9 +23,8 @@ TEST(DenavitHartenberg, ForwardKinematics)
                          denavitHartenberg.forwardKinematicsYPR(bigTheta),
                          std::numeric_limits<double>::epsilon(), 10));
 
-  std::vector<double> bigTheta2 = { 0, M_PI_2};
-
-  const Matrix<double, 6, 1> expectedEndEffector2{ 2, 0, 2, M_PI_4, M_PI_2, M_PI_4 };
+  std::vector<double> bigTheta2 = { 0, M_PI_4};
+  const Matrix<double, 6, 1> expectedEndEffector2{ sqrt(2), 1, sqrt(2)+2, 0, M_PI_4, 0 };
   EXPECT_EQ(true, equals(expectedEndEffector2,
                          denavitHartenberg.forwardKinematicsYPR(bigTheta2),
                          std::numeric_limits<double>::epsilon(), 10));
