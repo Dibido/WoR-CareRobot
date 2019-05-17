@@ -1,6 +1,7 @@
 # Topic name:
 # /sensor/lidar
 
+# ROS message header with a timestamp.
 Header header
 
 # Measured distance in meters.
