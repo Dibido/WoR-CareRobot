@@ -18,7 +18,6 @@
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
-
   try
   {
     DetectCup d;
