@@ -21,11 +21,11 @@ namespace robotcontroller
      *
      * @param lN NodeHandler
      * @param lTopic Topic on which the message will be published
-     * @param lQue_size Number of messages that will be qued
+     * @param lQueue_size Number of messages that will be Queued
      */
     RobotStopPublisher(ros::NodeHandle& lN,
                        const std::string& lTopic,
-                       const uint16_t lQue_size);
+                       const uint16_t lQueue_size);
 
     /**
      * @brief Publishes a Stop msg to the robot_command topic
@@ -37,7 +37,7 @@ namespace robotcontroller
       private:
     ros::NodeHandle& mN;
     const std::string& cTopic;
-    const uint16_t cQue_size;
+    const uint16_t cQueue_size;
     ros::Publisher mRobotControl_pub;
   };
 } // namespace robotcontroller

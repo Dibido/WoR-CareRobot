@@ -7,7 +7,7 @@ std::vector<kinematics::Link> createConfiguration();
 int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
-  const uint16_t cQue_size = 1000;
+  const uint16_t cQueue_size = 1000;
   const uint8_t cRate = 10;
 
   ros::init(argc, argv, cControlTopic);
@@ -18,7 +18,7 @@ int main(int argc, char** argv)
   ros::Rate lLoop_rate(cRate);
 
   robotcontroller::RobotControlPublisher lRobotControlPub(
-      lControlNode, cControlTopic, cQue_size);
+      lControlNode, cControlTopic, cQueue_size);
 
   kinematics::DenavitHartenberg lDen(createConfiguration());
   std::vector<double> lCurrentConfiguration = {
