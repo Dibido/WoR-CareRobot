@@ -1,6 +1,6 @@
-#include "../include/astar/AStar.hpp"
-#include "../include/astar/Graph.hpp"
-#include "../include/obstacle/Obstacle.hpp"
+#include "astar/AStar.hpp"
+#include "astar/Graph.hpp"
+#include "obstacle/Obstacle.hpp"
 
 #include <memory>
 

@@ -1,7 +1,7 @@
 #ifndef OBSTACLE_HPP
 #define OBSTACLE_HPP
 
-#include "../astar/Vertex.hpp"
+#include "astar/Vertex.hpp"
 
 namespace obstacle
 {
