@@ -1,0 +1,4 @@
+<launch>
+  <node name="lidar_application" pkg="lidar_application" type="lidar_application_main" />
+</launch>
+

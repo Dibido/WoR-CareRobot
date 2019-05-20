@@ -19,5 +19,7 @@
 
   </include>
 
+  <include file="$(find robotcontroller)/launch/robotcontroller.launch" />
+  <include file="$(find lidar_application)/launch/lidar_application.launch" />
   <include file="$(find sonar_interpreter)/launch/sonar_interpreter.launch" />
 </launch>
