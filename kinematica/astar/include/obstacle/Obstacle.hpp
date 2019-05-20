@@ -1,7 +1,7 @@
 #ifndef OBSTACLE_HPP
 #define OBSTACLE_HPP
 
-#include "../astar/Vertex.hpp"
+#include "astar/Vertex.hpp"
 
 namespace obstacle
 {
@@ -9,7 +9,7 @@ namespace obstacle
 
   /**
    * @brief Obstacle represents a 3D obstacle.
-   * 
+   *
    */
   struct Obstacle
   {
@@ -34,7 +34,7 @@ namespace obstacle
      * obstacle.
      * @return false False will be returned if the given points is not within
      * the obstacle.
-     * 
+     *
      * @author Martijn Vogelaar
      */
 

@@ -20,7 +20,7 @@ namespace astar
   const uint8_t cNrOfNeighbours = 9;
   const uint8_t cNrOfDimensionLayers = 3;
   /**
-   * @brief The graph is build in Centimeters
+   * @brief The graph is built in Centimeters
    *
    * @author Gianni Monteban
    */
