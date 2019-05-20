@@ -1,0 +1,4 @@
+<launch>
+  <node name="robotcontroller" pkg="robotcontroller" type="robotcontrol" />
+</launch>
+
