@@ -6,66 +6,66 @@
       <debug></debug>
 
       <joint_info name="_joint1" channel="0">
-        <min_pw>-2.8973</min_pw>
-        <max_pw>2.8973</max_pw>
-        <min_rad>-2.8973</min_rad>
-        <max_rad>2.8973</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint2" channel="1">
-        <min_pw>-1.763</min_pw>
-        <max_pw>1.763</max_pw>
-        <min_rad>-1.763</min_rad>
-        <max_rad>1.763</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint3" channel="2">
-        <min_pw>-2.8973</min_pw>
-        <max_pw>2.8973</max_pw>
-        <min_rad>-2.8973</min_rad>
-        <max_rad>2.8973</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint4" channel="3">
-        <min_pw>-3.0718</min_pw>
-        <max_pw>-0.0697</max_pw>
-        <min_rad>-3.0718</min_rad>
-        <max_rad>-0.0697</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint5" channel="4">
-        <min_pw>-2.8973</min_pw>
-        <max_pw>2.8973</max_pw>
-        <min_rad>-2.8973</min_rad>
-        <max_rad>2.8973</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 
       <joint_info name="_joint6" channel="5">
-        <min_pw>-0.0175</min_pw>
-        <max_pw>3.7525</max_pw>
-        <min_rad>-0.0175</min_rad>
-        <max_rad>3.7525</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 x
       <joint_info name="_joint7" channel="6">
-        <min_pw>-3.857231089</min_pw>
-        <max_pw>1.937368911</max_pw>
-        <min_rad>−3.857231089</min_rad>
-        <max_rad>1.937368911</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 
       <joint_info name="_jointH1" channel="7">
-        <min_pw>0</min_pw>
-        <max_pw>0.0395</max_pw>
-        <min_rad>0</min_rad>
-        <max_rad>0.0395</max_rad>
+        <min_pw>-100</min_pw>
+        <max_pw>100</max_pw>
+        <min_rad>-100</min_rad>
+        <max_rad>100</max_rad>
         <max_vel>2.870</max_vel>
       </joint_info>
    </plugin>
@@ -191,8 +191,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -233,8 +233,8 @@ x
         <xyz>0 1 0</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-1.8326</lower>
-        <upper>1.8326</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -276,8 +276,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -318,8 +318,8 @@ x
         <xyz>0 -1 0</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -360,8 +360,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -402,8 +402,8 @@ x
         <xyz>0 -1 0</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-0.0873</lower>
-        <upper>3.8223</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -441,11 +441,11 @@ x
       <child>link7</child>
       <pose>0.0 0 0.06 0 0 -0.785398</pose>
       <axis>
-        <xyz>0 0 1</xyz>
+        <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -487,8 +487,8 @@ x
         <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-100</lower>
+        <upper>100</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -546,8 +546,8 @@ x
       <axis>
         <xyz>0 1 0</xyz>
         <limit> 
-          <lower>0</lower>
-          <upper>0.0395</upper>
+          <lower>-100</lower>
+          <upper>100</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>
         </limit>
@@ -608,8 +608,8 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
         <limit> 
-          <lower>0</lower>
-          <upper>0.0395</upper>
+          <lower>-100</lower>
+          <upper>100</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>
         </limit>
