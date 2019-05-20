@@ -48,6 +48,7 @@
 				</range>
 			</ray>
 			<plugin name="lidar_control" filename="libsim_lidar_plugin.so">
+        <lidardatatopicName>/sensor/lidar</lidardatatopicName>
 				<topicName>/sensor/lidar/scan</topicName>
 				<frameName>laser</frameName>
 			</plugin>

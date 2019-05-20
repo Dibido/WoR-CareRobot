@@ -62,10 +62,6 @@ namespace astar
     /**
      *
      */
-    bool findRemoveInOpenSet(const Vertex& aVertex);
-    /**
-     *
-     */
     void removeFirstFromOpenSet();
     /**
      *
@@ -83,22 +79,6 @@ namespace astar
      *
      */
     ClosedSet::iterator findInClosedSet(const Vertex& aVertex);
-    /**
-     *
-     */
-    bool findRemoveClosedSet(const Vertex& aVertex);
-    /**
-     *
-     */
-    ClosedSet getClosedSet() const;
-    /**
-     *
-     */
-    OpenSet getOpenSet() const;
-    /**
-     *
-     */
-    VertexMap getPredecessorMap() const;
 
       protected:
     /**

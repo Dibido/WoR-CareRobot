@@ -1,4 +1,4 @@
-#include "../../include/astar/Graph.hpp"
+#include "astar/Graph.hpp"
 
 #include <algorithm>
 #include <unistd.h>

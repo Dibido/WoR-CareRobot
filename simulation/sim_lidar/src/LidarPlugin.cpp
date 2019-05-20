@@ -1,18 +1,23 @@
-
 #include <sensor_msgs/LaserScan.h>
-
 #include <sim_lidar/LidarPlugin.hpp>
+#include <sensor_interfaces/LidarData.h>
 
-#define FRAME_NAME "frameName"
-#define FRAME_NAME_DEFAULT "/laser"
-#define TOPIC_NAME "topicName"
-#define TOPIC_NAME_DEFAULT "/scan"
+namespace LidarConfiguration {
+  const std::string cFrameName = "frameName";
+  const std::string cFrameNameDefault = "/laser";
+  const std::string cTopicName = "topicName";
+  const std::string cTopicNameDefault = "/scan";
+  // Set lidardata topic as defined in LidarData.msg
+  const std::string cLidarDataTopicName = "lidardatatopicName";
+  const std::string cLidarDataTopic = "/sensor/lidardata";
+}
+
 
 namespace gazebo
 {
-void LidarPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
+void LidarPlugin::Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf)
 {
-  RayPlugin::Load(_parent, _sdf);
+  RayPlugin::Load(aParent, aSdf);
 
   if (!ros::isInitialized())
   {
@@ -21,75 +26,116 @@ void LidarPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     return;
   }
 
-  parentSensor = std::dynamic_pointer_cast<sensors::RaySensor>(_parent);
+  mParentSensor = std::dynamic_pointer_cast<sensors::RaySensor>(aParent);
 
-  if (!parentSensor)
+  if (!mParentSensor)
   {
     gzthrow("Lidar controller requires a Ray Sensor as its parent");
   }
 
-  if (!_sdf->HasElement(FRAME_NAME))
+  if (!aSdf->HasElement(LidarConfiguration::cFrameName))
   {
-    ROS_INFO("Laser plugin missing <frameName>, defaults to %s", FRAME_NAME_DEFAULT);
-    frameName = FRAME_NAME_DEFAULT;
+    ROS_INFO("Laser plugin missing <frameName>, defaults to %s", LidarConfiguration::cFrameNameDefault);
+    mFrameName = LidarConfiguration::cFrameNameDefault;
   }
   else
   {
-    frameName = _sdf->Get<std::string>(FRAME_NAME);
+    mFrameName = aSdf->Get<std::string>(LidarConfiguration::cFrameName);
   }
 
-  if (!_sdf->HasElement(TOPIC_NAME))
+  if (!aSdf->HasElement(LidarConfiguration::cTopicName))
   {
-    ROS_INFO("Laser plugin missing <topicName>, defaults to %s", TOPIC_NAME_DEFAULT);
-    topicName = TOPIC_NAME_DEFAULT;
+    ROS_INFO("Laser plugin missing <topicName>, defaults to %s", LidarConfiguration::cTopicNameDefault);
+    mTopicName = LidarConfiguration::cTopicNameDefault;
   }
   else
   {
-    topicName = _sdf->Get<std::string>(TOPIC_NAME);
+    mTopicName = aSdf->Get<std::string>(LidarConfiguration::cTopicName);
+  }
+
+  if (!aSdf->HasElement(LidarConfiguration::cLidarDataTopicName))
+  {
+    ROS_INFO("Laser plugin missing <lidardatatopicName>, defaults to %s", LidarConfiguration::cLidarDataTopic);
+    mLidarDataTopic = LidarConfiguration::cLidarDataTopic;
+  }
+  else
+  {
+    mLidarDataTopic = aSdf->Get<std::string>(LidarConfiguration::cLidarDataTopicName);
   }
 
   // Start gazebo node
-  gazeboNode = transport::NodePtr(new transport::Node());
-  gazeboNode->Init();
+  mGazeboNode = transport::NodePtr(new transport::Node());
+  mGazeboNode->Init();
 
   // Subscribe to gazebo sensor topic
-  gazeboSub = gazeboNode->Subscribe(parentSensor->Topic(), &LidarPlugin::OnScan, this);
+  mGazeboSub = mGazeboNode->Subscribe(mParentSensor->Topic(), &LidarPlugin::OnScan, this);
 
   // Create a ros NodeHandle
-  rosNode = std::make_unique<ros::NodeHandle>();
+  mRosNode = std::make_unique<ros::NodeHandle>();
 
-  if (!topicName.empty())
+  if (!mTopicName.empty())
   {
-    // Advertise LaserScan msg on topic specified in plugin elekment <topicName>
-    rosPub = rosNode->advertise<sensor_msgs::LaserScan>(topicName, 1);
+    // Advertise LaserScan msg on topic specified in plugin element <topicName>
+    mRosPub = mRosNode->advertise<sensor_msgs::LaserScan>(mTopicName, 1);
   }
   else
   {
     ROS_WARN("Element topicName may not be empty!");
   }
+  if (!mLidarDataTopic.empty())
+  {
+    // Advertise LaserScan msg on topic specified in plugin element <lidardatatopicName>
+    mLidarDataPub = mRosNode->advertise<sensor_interfaces::LidarData>(mLidarDataTopic, 1);
+  }
+  else
+  {
+    ROS_WARN("Element lidardatatopicName may not be empty!");
+  }
 
   // Active the sensor
-  parentSensor->SetActive(true);
+  mParentSensor->SetActive(true);
 }
 
 // PRIVATE
-void LidarPlugin::OnScan(ConstLaserScanStampedPtr& _msg)
+void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
 {
-  sensor_msgs::LaserScan laser_msg;
+  //Publish the LaserScan message
+  sensor_msgs::LaserScan lLaserMessage;
+  float lAngleMin = static_cast<float>(aMsg->scan().angle_min());
+  float lAngleMax = static_cast<float>(aMsg->scan().angle_max());
 
-  laser_msg.header.stamp =
-      ros::Time(static_cast<uint32_t>(_msg->time().sec()), static_cast<uint32_t>(_msg->time().nsec()));
-  laser_msg.header.frame_id = frameName;
-  laser_msg.angle_min = static_cast<float>(_msg->scan().angle_min());
-  laser_msg.angle_max = static_cast<float>(_msg->scan().angle_max());
-  laser_msg.time_increment = 0;
-  laser_msg.scan_time = 0;
-  laser_msg.range_min = static_cast<float>(_msg->scan().range_min());
-  laser_msg.range_max = static_cast<float>(_msg->scan().range_max());
-  laser_msg.ranges.resize(static_cast<unsigned long>(_msg->scan().ranges_size()));
-  std::copy(_msg->scan().ranges().begin(), _msg->scan().ranges().end(), laser_msg.ranges.begin());
-  laser_msg.angle_increment = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size());
+  lLaserMessage.header.stamp =
+      ros::Time(static_cast<uint32_t>(aMsg->time().sec()), static_cast<uint32_t>(aMsg->time().nsec()));
+  lLaserMessage.header.frame_id = mFrameName;
+  lLaserMessage.angle_min = lAngleMin;
+  lLaserMessage.angle_max = lAngleMax;
+  lLaserMessage.time_increment = 0;
+  lLaserMessage.scan_time = 0;
+  lLaserMessage.range_min = static_cast<float>(aMsg->scan().range_min());
+  lLaserMessage.range_max = static_cast<float>(aMsg->scan().range_max());
+  lLaserMessage.ranges.resize(static_cast<unsigned long>(aMsg->scan().ranges_size()));
+  std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(), lLaserMessage.ranges.begin());
+  lLaserMessage.angle_increment = static_cast<float>(2.0 * M_PI) / static_cast<float>(lLaserMessage.ranges.size());
+  mRosPub.publish(lLaserMessage);
 
-  rosPub.publish(laser_msg);
+  // Publish the LidarData message
+  sensor_interfaces::LidarData lLidarDataMessage;
+  lLidarDataMessage.header.stamp =
+      ros::Time(static_cast<uint32_t>(aMsg->time().sec()), static_cast<uint32_t>(aMsg->time().nsec()));
+  lLidarDataMessage.header.frame_id = mFrameName;
+  // Add distances
+  lLidarDataMessage.distances.resize(static_cast<unsigned long>(aMsg->scan().ranges_size()));
+  std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(), lLidarDataMessage.distances.begin());
+  // Add angles
+  lLidarDataMessage.measurement_angles.clear();
+  // Fill the angle array with the correct range. Add 1 PI so we get a range from 0 - TAU.
+  const float lAngleOffset = static_cast<float>(2.0 * M_PI) / static_cast<float>(lLaserMessage.ranges.size());
+  for(float lCurrentAngle = lAngleOffset; lCurrentAngle < (lAngleMax + static_cast<float>(M_PI)); lCurrentAngle += lAngleOffset)
+  {
+    lLidarDataMessage.measurement_angles.push_back(lCurrentAngle);
+  }
+  //Assert to check that the ranges and their angles are matched
+  assert(lLidarDataMessage.measurement_angles.size() == lLidarDataMessage.distances.size());
+  mLidarDataPub.publish(lLidarDataMessage);
 }
 }  // namespace gazebo
