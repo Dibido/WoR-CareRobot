@@ -16,19 +16,19 @@ public:
 
   /**
    * @brief Load the robot controller plugin, overrides the Load from ModelPlugin
-   * @param _parent: parent model
-   * @param _sdf: the sdf (xml) in the robot model, within the <plugin> element
+   * @param aParent: parent model
+   * @param aSdf: the sdf (xml) in the robot model, within the <plugin> element
    */
-  void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
+  void Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf);
 
 private:
   /**
    * @brief Callback function of gazebo sensor topic
    *        Publishes a LaserScan message on ros topic @var: topicName
    *        Publishes a LidarData message on ros topic /sensor/lidardata
-   * @param _msg: contains the information of the sensor
+   * @param aMsg: contains the information of the sensor
    */
-  void OnScan(ConstLaserScanStampedPtr& _msg);
+  void OnScan(ConstLaserScanStampedPtr& aMsg);
 
   // Variables
   std::string frameName;
