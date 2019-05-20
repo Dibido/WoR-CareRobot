@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-TEST(MatrixConstructors, DefaultContructor)
+TEST(MatrixConstructors, DefaultConstructor)
 {
   std::string m0_as_string(
       "Matrix<3,3>\n"

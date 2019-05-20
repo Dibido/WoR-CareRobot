@@ -8,6 +8,9 @@
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="e.bosman2@student.han.nl">Emiel Bosman</maintainer>
+  <maintainer email="bd.geldof@student.han.nl">Brandon Geldof</maintainer>
+  <maintainer email="g.monteban@student.han.nl">Gianni Monteban</maintainer>
+  <maintainer email="mj.vogelaar@student.han.nl">Martijn Vogelaar</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -32,7 +35,7 @@
   <!-- Dependencies can be catkin packages or system dependencies -->
   <!-- Examples: -->
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
-  <!--<depend>roscpp</depend> -->
+  <depend>roscpp</depend>
   <!--   Note that this is equivalent to the following: -->
   <!--   <build_depend>roscpp</build_depend> -->
   <!--   <exec_depend>roscpp</exec_depend> -->

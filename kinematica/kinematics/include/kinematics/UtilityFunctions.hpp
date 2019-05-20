@@ -7,11 +7,23 @@
 namespace kinematics
 {
 
+  /**
+   * @brief Convert radians to degrees
+   * 
+   * @param lRadian 
+   * @return double 
+   */
   inline double radian2Degrees(double lRadian)
   {
     return lRadian * 180 / M_PI;
   }
 
+  /**
+   * @brief Convert degrees to radians
+   * 
+   * @param lDegree 
+   * @return double 
+   */
   inline double degree2Radian(double lDegree)
   {
     return M_PI / 180 * lDegree;
@@ -20,10 +32,11 @@ namespace kinematics
   /**
    * @brief Checks if two double are equal to each other within a given margin
    * of error
+   * @author Emiel Bosman
    *
    * @param lhs
    * @param rhs
-   * @param epsilon
+   * @param lEpsilon
    * @return true
    * @return false
    */
@@ -36,6 +49,7 @@ namespace kinematics
    * @brief Checks if TransformationMatrices with both positional and rotational
    * values are equal to each other
    * Matrices are assumed to be of form : [pos, .... , pos, rad, .... , rad]
+   * @author Emiel Bosman
    * @param lhs
    * @param rhs
    * @param lEpsilon_m Epsilon to use for the left positional values
