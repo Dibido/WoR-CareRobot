@@ -1,7 +1,7 @@
 #include "../include/ObjectDetection.h"
 
 // Declaration of namespace variables
-const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.1;
+const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.2;
 const double ObjectDetectionConstants::cLidarHeight_m = 1.0;
 
 ObjectDetection::ObjectDetection() : mInitialized(false)
@@ -39,6 +39,7 @@ void ObjectDetection::run()
 
 void ObjectDetection::detectObjects()
 {
+  std::cout << "start detect objects" << std::endl;
   // Checking preconditions
   if ((mInitialScan.mDistances_m.size() == 0) ||
       (mMostRecentScan.mDistances_m.size() == 0) ||
@@ -71,21 +72,20 @@ void ObjectDetection::detectObjects()
     double lCurrentDistance_m = mMostRecentScan.mDistances_m.at(i);
     double lCurrentAngle_m = mMostRecentScan.mAngles.at(i);
 
-    double lDistanceDifference_m =
-        std::abs(lInitialDistance_m - lCurrentDistance_m);
+    double lDistanceDifference_m = lInitialDistance_m - lCurrentDistance_m;
 
-    // There is a change compared to initial scan
+    // There is a positive change compared to initial scan (object came closer)
     if ((lDistanceDifference_m >
          ObjectDetectionConstants::cMaxDistanceDifference_m))
     {
-      // Current measurement can't be taken of the same object as previous
-      // iteration
+      // Current measurement wasn't taken of the same object as previous angle
       if (std::abs(lCurrentDistance_m - lPreviousDistance_m) >
           ObjectDetectionConstants::cMaxDistanceDifference_m)
       {
         // If lObject contains valid info (it won't at first iteration)
-        if ((lObject.mDistances_m.size() > 0))
+        if ((lObject.mDistances_m.size() > 0))  
         {
+          std::cout << "be4 getaverageMeaurement" << std::endl;
           // Add centerpoint of this object to list
           lObjectList.push_back(getAverageMeasurement(lObject));
           lObject.reset();
@@ -93,6 +93,7 @@ void ObjectDetection::detectObjects()
       }
 
       lObject.mAngles.push_back(lCurrentAngle_m);
+      lObject.mDistances_m.push_back(lCurrentDistance_m);
 
       lLastComparisonDifferent = true;
     }
@@ -100,8 +101,10 @@ void ObjectDetection::detectObjects()
     {
       if (lLastComparisonDifferent == true)
       {
+        std::cout << "Before add centerpoint" << std::endl;
         // Add centerpoint of this object to the list
         lObjectList.push_back(getAverageMeasurement(lObject));
+        std::cout << " after " << std::endl;
         lObject.reset();
 
         lLastComparisonDifferent = false;
@@ -184,6 +187,9 @@ std::pair<double, double>
 
 bool ObjectDetection::validateLidarData(LidarData& aData) const
 {
+  std::cout << "mAngleSize: " << std::to_string(aData.mAngles.size()) << std::endl;
+  std::cout << "mDistances_m: " << std::to_string(aData.mDistances_m.size()) << std::endl;
+
   if (aData.mAngles.size() == aData.mDistances_m.size())
   {
     return true;

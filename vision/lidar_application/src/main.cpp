@@ -5,8 +5,10 @@
 
 #include <iostream>
 
-int main()
+int main(int argc, char *argv[])
 {
+  ros::init(argc, argv, "ObjectDetection");
+
   ObjectDetection lObjectDetector;
   lObjectDetector.run();
 }
