@@ -9,6 +9,8 @@
 namespace robotcontroller {
 
 /**
+ * 
+ * @author Brandon Geldof
  * @brief Publisher for controlling the robotarm
  * 
  */
