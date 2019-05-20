@@ -1,8 +1,8 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
-#include "../include/LidarData.h"
-#include "../include/DataHandler.h"
+#include "../include/LidarData.hpp"
+#include "../include/DataHandler.hpp"
 
 #include <iostream>
 #include <vector>

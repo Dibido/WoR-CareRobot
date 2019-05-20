@@ -1,4 +1,4 @@
-#include "../include/ObjectDetection.h"
+#include "../include/ObjectDetection.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>

@@ -1,7 +1,7 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
-#include "../include/LidarData.h"
+#include "../include/LidarData.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>

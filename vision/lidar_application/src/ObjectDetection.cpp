@@ -1,4 +1,4 @@
-#include "../include/ObjectDetection.h"
+#include "../include/ObjectDetection.hpp"
 
 // Declaration of namespace variables
 const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.2;
