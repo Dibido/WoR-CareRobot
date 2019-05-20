@@ -42,6 +42,12 @@ class DataHandler
    */
   LidarData getLidarData();
   
+  /**
+   * @brief Handles incoming messages on defined topic (see constants in cpp)
+   * @precondition: ros::init() must've ben called
+   * @postcondition: Received data is stored in mLidarData, mNewDataAvailable will be true
+   * @param aLidarDataMessage 
+   */
   void dataReceiveCallback(const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage);
 
   /**
@@ -51,7 +57,7 @@ class DataHandler
    * @param aData - X,Y of objects
    * @param aHeight - Z of the object
    */
-  void publishData(std::vector<std::pair<double, double>> aData, double aHeight_m) const;
+  void publishData(std::vector<std::pair<double, double>>& aData, double aHeight_m) const;
 
   private:
   ros::NodeHandle mNodeHandler;

@@ -16,6 +16,9 @@ void ObjectDetection::run()
 {
   while (true)
   {
+    // Sleep for a millisec
+    ros::Duration(0.001).sleep();
+
     ros::spinOnce();
 
     if (mDataHandler.isNewDataAvailable())
@@ -66,7 +69,6 @@ void ObjectDetection::detectObjects()
   for (size_t i = 0; i < mMostRecentScan.mDistances_m.size(); ++i)
   {
     double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
-    // double lInitialAngle = mInitialScan.mAngles.at(i);
 
     double lCurrentDistance_m = mMostRecentScan.mDistances_m.at(i);
     double lCurrentAngle_m = mMostRecentScan.mAngles.at(i);

@@ -1,14 +1,20 @@
 #include "DataHandler.hpp"
 
+namespace DataHandlerConstants
+{
+  const std::string cReceiveTopicName = "/sensor/lidar";
+  const std::string cPublishTopicName = "/detectedObjects";
+}
+
 /**
  * @brief Default constructor
  */
 DataHandler::DataHandler() : mNewDataAvailable(false)
 {
   mLidarSubscriber = mNodeHandler.subscribe(
-      "/sensor/lidar", 1000, &DataHandler::dataReceiveCallback, this);
+      DataHandlerConstants::cReceiveTopicName, 1000, &DataHandler::dataReceiveCallback, this);
 
-  mObjectPublisher = mNodeHandler.advertise<kinematica_msgs::Obstacles>("/detectedobjects", 1000);
+  mObjectPublisher = mNodeHandler.advertise<kinematica_msgs::Obstacles>(DataHandlerConstants::cPublishTopicName, 1000);
 }
 
 /**
@@ -57,7 +63,7 @@ void DataHandler::dataReceiveCallback(
   }
 }
 
-void DataHandler::publishData(std::vector<std::pair<double, double>> aData, double aHeight_m) const
+void DataHandler::publishData(std::vector<std::pair<double, double>>& aData, double aHeight_m) const
 {
     kinematica_msgs::Object lObject;
     kinematica_msgs::Obstacles lObstacleList;
