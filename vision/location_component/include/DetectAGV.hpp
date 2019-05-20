@@ -5,17 +5,16 @@
 #include <math.h>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
+#include <boost/optional.hpp>
 
 const unsigned int CornersOfObject = 4;
 const unsigned int CenterMargin = 50; // Pixels
 const float AngleMargin = 10;
 const float AngleRect = -90;
 
-enum class eMode
-{
-  PERSPECTIVE,
-  CORNERCENTER,
-  CENTER_OF_RECT_ESTIMATION
+struct DetectedAGV {
+  std::vector<cv::Point> mCorners;
+  cv::Point mMidpoint;
 };
 
 class DetectCup
@@ -24,17 +23,16 @@ class DetectCup
   DetectCup();
   ~DetectCup();
 
-  void detectFrame(cv::Mat& frame, cv::Mat& disFrame, eMode mode);
+  void detectFrame(const cv::Mat& frame, cv::Mat& debugFrame);
 
-  void perspectiveCorrection(cv::Mat& frame, cv::Mat& disFrame);
-  void estimatedCornerCorrection(cv::Mat& frame, cv::Mat& disFrame);
-  void CornerCorrection(cv::Mat& frame, cv::Mat& disFrame);
+  boost::optional<DetectedAGV> detectAGV(const cv::Mat& frame, cv::Mat& debugFrame);
 
   void makePerspectiveCorrection(const cv::Mat& transmtx,
                                  const cv::Mat& sourceMat,
                                  cv::Mat& dist);
 
-  void getContoursMat(cv::Mat& sourceMat,
+  void getContoursMat(const cv::Mat& sourceMat,
+                      cv::Mat& debugMat,
                       std::vector<std::vector<cv::Point>>& contours);
   cv::Point getMidPoint(std::vector<cv::Point>& contours);
 
