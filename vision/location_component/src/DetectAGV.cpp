@@ -1,6 +1,8 @@
 #include "DetectAGV.hpp"
+#include "CupScanner.hpp"
+#include <ros/ros.h>
 
-DetectCup::DetectCup()
+DetectCup::DetectCup() : prevDetectedAGV(), capturedFrame(0, 0, CV_8UC3)
 {
 }
 
@@ -8,27 +10,71 @@ DetectCup::~DetectCup()
 {
 }
 
-void DetectCup::detectFrame(const cv::Mat& frame, cv::Mat& debugFrame)
+void DetectCup::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
 {
-  boost::optional<DetectedAGV> detectedAGV = detectAGV(frame, debugFrame);
+  boost::optional<DetectedAGV> detectedAGV = detectAGV(frame);
+  if (capturedFrame.cols == 0) {
+    capturedFrame = cv::Mat(frame.rows, frame.cols, CV_8UC3);
+  }
+  if (capturedFrame.type() != frame.type()) {
+    ROS_INFO_STREAM("AFOIJDOIJFDSO");
+  }
+  cv::Mat leftDispFrame;
+  frame.copyTo(leftDispFrame);
   if (detectedAGV)
   {
-    for (const cv::Point& corner : (*detectedAGV).mCorners) {
-      cv::circle(debugFrame, corner, 10, cv::Scalar(0, 0, 255),
-                 CV_FILLED);
+    for (const cv::Point& corner : (*detectedAGV).mCorners)
+    {
+      cv::circle(leftDispFrame, corner, 10, cv::Scalar(0, 0, 255), CV_FILLED);
     }
-    cv::circle(frame, (*detectedAGV).mMidpoint, 10,
-               cv::Scalar(0, 255, 0), CV_FILLED, 8, 0);
+    cv::circle(leftDispFrame, (*detectedAGV).mMidpoint, 10, cv::Scalar(0, 255, 0),
+               CV_FILLED, 8, 0);
+
+    if (prevDetectedAGV)
+    {
+      bool capture = false;
+      if ((*detectedAGV).mMidpoint.x < frame.cols / 2 &&
+          (*prevDetectedAGV).mMidpoint.x >= frame.cols / 2)
+      {
+        ROS_INFO_STREAM("GOING LEFT");
+        capture = true;
+      }
+      if ((*prevDetectedAGV).mMidpoint.x < frame.cols / 2 &&
+          (*detectedAGV).mMidpoint.x >= frame.cols / 2)
+      {
+        ROS_INFO_STREAM("GOING RIGHT");
+        capture = true;
+      }
+
+      if (capture)
+      {
+        CupScanner cupScanner;
+          ROS_INFO_STREAM("AAAA");
+        cv::Mat t;
+        std::vector<DetectedCup> detectedCups =
+            cupScanner.scan(frame, t);
+
+        frame.copyTo(capturedFrame);
+
+        for (const auto& detectedCup : detectedCups)
+        {
+          ROS_INFO_STREAM("BBBB");
+          cv::circle(capturedFrame, detectedCup.mMidpoint, 10,
+                     cv::Scalar(255, 0, 0), CV_FILLED);
+        }
+      }
+    }
   }
+  cv::hconcat(leftDispFrame, capturedFrame, displayFrame);
+  prevDetectedAGV = detectedAGV;
 }
 
-boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame,
-                                                  cv::Mat& debugFrame)
+boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame)
 {
   cv::Mat disFrame;
   std::vector<std::vector<cv::Point>> contours(1);
 
-  getContoursMat(frame, debugFrame, contours);
+  getContoursMat(frame, contours);
 
   cv::Rect boundRect;
 
@@ -61,8 +107,7 @@ boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame,
     makePerspectiveCorrection(transmtx, frame, disFrame);
 
     std::vector<std::vector<cv::Point>> contours(1);
-    cv::Mat t;
-    getContoursMat(disFrame, t, contours);
+    getContoursMat(disFrame, contours);
 
     if (contours.at(0).size() == CornersOfObject)
     {
@@ -73,7 +118,6 @@ boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame,
                                transmtx.inv());
 
       detectedAGV.mMidpoint = pointInOriginalPerspective.at(0);
-
     }
 
     return detectedAGV;
@@ -94,14 +138,11 @@ void DetectCup::makePerspectiveCorrection(const cv::Mat& transmtx,
 
 void DetectCup::getContoursMat(
     const cv::Mat& sourceMat,
-    cv::Mat& debugMat,
     std::vector<std::vector<cv::Point>>& contours_poly)
 {
   std::vector<std::vector<cv::Point>> contours;
   cv::Mat matDes;
   cv::inRange(sourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30), matDes);
-  cv::Mat debugMatChs[] = { matDes, matDes, matDes };
-  cv::merge(debugMatChs, 3, debugMat);
   cv::findContours(matDes, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
 
   if (contours.size() == 0 || contours.size() == 0)

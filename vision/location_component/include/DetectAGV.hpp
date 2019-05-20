@@ -23,20 +23,21 @@ class DetectCup
   DetectCup();
   ~DetectCup();
 
-  void detectFrame(const cv::Mat& frame, cv::Mat& debugFrame);
+  void detectFrame(const cv::Mat& frame, cv::Mat& displayFrame);
 
-  boost::optional<DetectedAGV> detectAGV(const cv::Mat& frame, cv::Mat& debugFrame);
+  boost::optional<DetectedAGV> detectAGV(const cv::Mat& frame);
 
   void makePerspectiveCorrection(const cv::Mat& transmtx,
                                  const cv::Mat& sourceMat,
                                  cv::Mat& dist);
 
   void getContoursMat(const cv::Mat& sourceMat,
-                      cv::Mat& debugMat,
                       std::vector<std::vector<cv::Point>>& contours);
   cv::Point getMidPoint(std::vector<cv::Point>& contours);
 
     private:
+  boost::optional<DetectedAGV> prevDetectedAGV;
+  cv::Mat capturedFrame;
 };
 
 #endif

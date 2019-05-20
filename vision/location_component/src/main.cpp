@@ -12,20 +12,19 @@
 
 #include "DetectAGV.hpp"
 
+DetectCup d;
+
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
   try
   {
-    DetectCup d;
     cv::Mat srcMatrix;
-    cv::Mat debugMatrix = cv::Mat(20, 20, CV_8UC3);
+    cv::Mat displayMatrix;
 
     cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
 
-    d.detectFrame(srcMatrix, debugMatrix);
-    cv::Mat dispMatrix;
-    cv::hconcat(srcMatrix, debugMatrix, dispMatrix);
-    cv::imshow("view", dispMatrix);
+    d.detectFrame(srcMatrix, displayMatrix);
+    cv::imshow("view", displayMatrix);
 
     int c = cv::waitKey(10);
     if (c == 27)
