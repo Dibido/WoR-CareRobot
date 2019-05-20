@@ -5,7 +5,8 @@ add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
 set(CMAKE_CXX_CPPCHECK "cppcheck" "–enable=all -Wall -Wextra -Wconversion --inline-suppr")
 find_package(catkin REQUIRED COMPONENTS
 	message_generation
-	message_runtime
+  message_runtime
+  robotcontroller_msgs
 	gazebo_ros
 	rospy
 	roscpp
@@ -44,7 +45,8 @@ catkin_package(
 	CATKIN_DEPENDS
 	gazebo_ros
 	roscpp
-	visualization_msgs
+  visualization_msgs
+  robotcontroller_msgs
 	message_runtime
 	std_msgs
 )
@@ -60,7 +62,6 @@ add_library(${PROJECT_NAME}_plugin
 	src/Command.cpp
 	src/CommandParser.cpp
 	src/JointController.cpp)
-add_dependencies(${PROJECT_NAME}_plugin robotcontroller_msgs_generate_messages_cpp)
 add_dependencies(${PROJECT_NAME}_plugin sim_robot_generate_messages_cpp)
 target_link_libraries(${PROJECT_NAME}_plugin
 		${catkin_LIBRARIES}
