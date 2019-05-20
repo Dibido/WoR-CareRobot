@@ -28,10 +28,10 @@ namespace gazebo
      * @brief Called once by when loading in the plugin. loads the config
      * parameters of
      *
-     * @param _parent
-     * @param _sdf
+     * @param aParent
+     * @param aSdf
      */
-    void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
+    void Load(physics::ModelPtr aParent, sdf::ElementPtr aSdf);
 
     /**
      * @brief Called by the world update start event.

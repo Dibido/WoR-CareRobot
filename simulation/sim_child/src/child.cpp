@@ -7,22 +7,20 @@
 #include <ros/ros.h>
 #include <sim_child/child.hpp>
 
-#define PI 3.14159265
-
-void gazebo::Child::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
+void gazebo::Child::Load(physics::ModelPtr aParent, sdf::ElementPtr aSdf)
 {
   // Store the pointer to the model
-  this->mModel = _parent;
+  this->mModel = aParent;
 
-  if (_sdf->HasElement("velocity"))
+  if (aSdf->HasElement("velocity"))
   {
-    mVelocity = _sdf->Get<double>("velocity");
+    mVelocity = aSdf->Get<double>("velocity");
     ROS_INFO("Velocity loaded");
   }
 
-  if (_sdf->HasElement("angle"))
+  if (aSdf->HasElement("angle"))
   {
-    mAngle = _sdf->Get<double>("angle");
+    mAngle = aSdf->Get<double>("angle");
     ROS_INFO("Angle loaded");
   }
 
@@ -37,6 +35,6 @@ void gazebo::Child::onUpdate()
 {
   // Apply a small linear velocity to the model.
   this->mModel->SetLinearVel(
-      ignition::math::Vector3d(mVelocity * cos(mAngle * (PI / 180)),
-                               mVelocity * sin(mAngle * (PI / 180)), 0));
+      ignition::math::Vector3d(mVelocity * cos(mAngle * (M_PI / 180)),
+                               mVelocity * sin(mAngle * (M_PI / 180)), 0));
 }
