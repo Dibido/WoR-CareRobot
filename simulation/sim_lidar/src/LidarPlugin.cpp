@@ -1,13 +1,7 @@
 #include <sensor_msgs/LaserScan.h>
-
 #include <sim_lidar/LidarPlugin.hpp>
-
 #include <sensor_interfaces/LidarData.h>
 
-// #define cFrameName "frameName"
-// #define ccFrameNameDefault "/laser"
-// #define cTopicName "topicName"
-// #define cTopicNameDefault "/scan"
 const std::string cFrameName = "frameName";
 const std::string cFrameNameDefault = "/laser";
 const std::string cTopicName = "topicName";
