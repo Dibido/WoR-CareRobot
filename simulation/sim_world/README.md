@@ -28,6 +28,7 @@ There are a few different parameter options for this launch file.
 | `world:=franka_empty`         | Franka arm                            | Mirror the real world   |
 | `world:=franka`               | Franka arm, sensors, table, cup       | -                       |
 | `world:=al5d`                 | AL5D arm                              | -                       |
+| `world:=current_world`        | Current world                         | -                       |
     
 
 ## Known problems
