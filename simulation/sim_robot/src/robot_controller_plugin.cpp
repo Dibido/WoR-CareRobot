@@ -1,8 +1,7 @@
 #include <memory>
 
-#include "sim_robot/commands.h"
 #include "sim_robot/stopCommand.h"
-
+#include "robotcontroller_msgs/Control.h"
 #include <regex>
 
 #include <sim_robot/robot_controller_plugin.hpp>
@@ -98,7 +97,7 @@ namespace gazebo
     }
   }
   void RobotControllerPlugin::commandCallBackFloat(
-      const sim_robot::commandsPtr& fmsg)
+      const robotcontroller_msgs::ControlPtr& fmsg)
   {
     std::vector<double> incomingTheta = fmsg->theta;
     jointVel_t speedFactor = fmsg->sf;

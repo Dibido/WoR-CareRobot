@@ -60,6 +60,7 @@ add_library(${PROJECT_NAME}_plugin
 	src/Command.cpp
 	src/CommandParser.cpp
 	src/JointController.cpp)
+add_dependencies(${PROJECT_NAME}_plugin robotcontroller_msgs_generate_messages_cpp)
 add_dependencies(${PROJECT_NAME}_plugin sim_robot_generate_messages_cpp)
 target_link_libraries(${PROJECT_NAME}_plugin
 		${catkin_LIBRARIES}

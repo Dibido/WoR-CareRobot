@@ -45,7 +45,7 @@ namespace gazebo
      * @param msg: double message to parse and apply
      */
 
-    void commandCallBackFloat(const sim_robot::commandsPtr& fmsg);
+    void commandCallBackFloat(const robotcontroller_msgs::ControlPtr& fmsg);
 
     /**
      * Callback method for receiving an incoming robot command
