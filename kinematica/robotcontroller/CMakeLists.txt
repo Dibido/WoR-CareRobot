@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   robotcontroller_msgs
   kinematics
   roscpp
-  genmsg
 )
 
 ## System dependencies are found with CMake's conventions
@@ -124,7 +123,6 @@ include_directories(
 
 add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp)
 target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
-add_dependencies(robotcontrol robotcontroller_msgs generate_messages)
   
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
