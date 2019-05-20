@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find sim_robot)/launch/franka.launch">
+  </include>
+  <node name="demo_kinematics" pkg="robotcontroller" type="robotcontrol" output="screen" required="true"/>  
+</launch>
+
+

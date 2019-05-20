@@ -2,20 +2,20 @@
 
 #include "ros/ros.h"
 
+Matrix<double, 6, 1> GetEndEffector();
 std::vector<kinematics::Link> createConfiguration();
 
 int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
   const uint16_t cQueue_size = 1000;
-  const uint8_t cRate = 10;
 
   ros::init(argc, argv, cControlTopic);
 
   ros::NodeHandle lControlNode;
   ros::NodeHandle lStopNode;
 
-  ros::Rate lLoop_rate(cRate);
+  ros::Duration lMoveDuration(4);
 
   robotcontroller::RobotControlPublisher lRobotControlPub(
       lControlNode, cControlTopic, cQueue_size);
@@ -27,18 +27,40 @@ int main(int argc, char** argv)
   Matrix<double, 6, 1> lGoalEndEffector{
     0, 0, 0, 0, 0, 0
   }; // Determine with astar
-  std::vector<double> lGoalConfiguration =
-      lDen.inverseKinematics(lGoalEndEffector, lCurrentConfiguration);
 
   while (ros::ok())
   {
+    lGoalEndEffector = GetEndEffector();
+    std::vector<double> lGoalConfiguration =
+        lDen.inverseKinematics(lGoalEndEffector, lCurrentConfiguration);
     lRobotControlPub.publish(1.0, lGoalConfiguration);
-
-    ros::spinOnce();
-    lLoop_rate.sleep();
+    lMoveDuration.sleep();
+    lCurrentConfiguration = lGoalConfiguration;
   }
 
   return 0;
+}
+
+Matrix<double, 6, 1> GetEndEffector()
+{
+  static int8_t iterator = -1;
+  ++iterator;
+  ROS_INFO("GetEndEffector %d", iterator);
+  switch (iterator)
+  {
+  case 1:
+    return Matrix<double, 6, 1>{ 0.18937, 0.294939, 0.737341, 1, -1.5, -M_PI };
+  case 2:
+    return Matrix<double, 6, 1>{ -0.224580, -0.21499,  0.993990,
+                                 -2.925026, -0.679329, -2.146552 };
+  case 3:
+    return Matrix<double, 6, 1>{
+      0.786246, 0.00, 0.276516, 0,0,M_PI
+    };
+  default:
+    iterator = 0;
+    return Matrix<double, 6, 1>{ 0.088, 0, 0.927, 0, 0, -M_PI };
+  }
 }
 
 std::vector<kinematics::Link> createConfiguration()

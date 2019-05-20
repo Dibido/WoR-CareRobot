@@ -30,7 +30,12 @@ include(CTest)
 enable_testing()
 
 
-include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+include_directories(
+  include
+  SYSTEM
+  ${catkin_INCLUDE_DIRS} 
+  ${OpenCV_INCLUDE_DIRS}
+)
 
 # add the publisher example
 add_executable(DetectCup src/main.cpp src/DetectAGV.cpp src/CupScanner.cpp)

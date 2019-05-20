@@ -82,5 +82,16 @@ namespace kinematics
     }
     return true;
   }
+
+  inline void constrainRadian(double& lVariable)
+  {
+    // Constrain value between -M_PI and M_PI if the Link is of type REVOLUTE
+    lVariable = std::fmod(lVariable + M_PI, M_PI * 2);
+    if (lVariable < 0)
+    {
+      lVariable += M_PI * 2;
+    }
+    lVariable -= M_PI;
+  }
 } // namespace kinematics
 #endif // KINEMATICS_UTILITYFUNCTIONS_HPP

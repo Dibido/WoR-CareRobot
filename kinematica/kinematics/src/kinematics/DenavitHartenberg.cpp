@@ -54,6 +54,7 @@ namespace kinematics
       for (std::size_t i = 0; i < lNewBigTheta.size(); ++i)
       {
         lNewBigTheta[i] += lDeltaTheta.at(i)[0];
+        constrainRadian(lNewBigTheta[i]);
       }
       lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
     }
