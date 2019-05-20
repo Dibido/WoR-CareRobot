@@ -27,9 +27,9 @@ namespace robotcontroller
      * @param lTopic Topic on which the message will be published
      * @param lQue_size Number of messages that will be qued
      */
-    explicit RobotControlPublisher(ros::NodeHandle& lN,
-                                   const std::string& lTopic,
-                                   const uint16_t lQue_size);
+    RobotControlPublisher(ros::NodeHandle& lN,
+                          const std::string& lTopic,
+                          const uint16_t lQue_size);
 
     /**
      * @brief Publishes a Control msg to the robot_command topic

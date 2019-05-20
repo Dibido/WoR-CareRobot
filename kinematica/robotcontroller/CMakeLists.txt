@@ -121,7 +121,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp)
+add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp src/RobotStopPublisher.cpp)
 target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
   
 ## Declare a C++ library
