@@ -12,7 +12,7 @@
 
 #include "DetectAGV.hpp"
 
-DetectCup d;
+DetectAGV d;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {

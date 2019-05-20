@@ -1,5 +1,5 @@
-#ifndef DETECTCUP_HPP
-#define DETECTCUP_HPP
+#ifndef DETECTAGV_HPP
+#define DETECTAGV_HPP
 
 #include <iostream>
 #include <math.h>
@@ -17,15 +17,15 @@ struct DetectedAGV {
   cv::Point mMidpoint;
 };
 
-class DetectCup
+class DetectAGV
 {
     public:
-  DetectCup();
-  ~DetectCup();
+  DetectAGV();
+  ~DetectAGV();
 
   void detectFrame(const cv::Mat& frame, cv::Mat& displayFrame);
 
-  boost::optional<DetectedAGV> detectAGV(const cv::Mat& frame);
+  boost::optional<DetectedAGV> detect(const cv::Mat& frame);
 
   void makePerspectiveCorrection(const cv::Mat& transmtx,
                                  const cv::Mat& sourceMat,

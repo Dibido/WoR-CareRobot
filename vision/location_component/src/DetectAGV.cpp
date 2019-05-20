@@ -2,17 +2,17 @@
 #include "CupScanner.hpp"
 #include <ros/ros.h>
 
-DetectCup::DetectCup() : prevDetectedAGV(), capturedFrame(0, 0, CV_8UC3)
+DetectAGV::DetectAGV() : prevDetectedAGV(), capturedFrame(0, 0, CV_8UC3)
 {
 }
 
-DetectCup::~DetectCup()
+DetectAGV::~DetectAGV()
 {
 }
 
-void DetectCup::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
+void DetectAGV::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
 {
-  boost::optional<DetectedAGV> detectedAGV = detectAGV(frame);
+  boost::optional<DetectedAGV> detectedAGV = detect(frame);
   if (capturedFrame.cols == 0) {
     capturedFrame = cv::Mat(frame.rows, frame.cols, CV_8UC3);
   }
@@ -69,7 +69,7 @@ void DetectCup::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
   prevDetectedAGV = detectedAGV;
 }
 
-boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame)
+boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame)
 {
   cv::Mat disFrame;
   std::vector<std::vector<cv::Point>> contours(1);
@@ -128,7 +128,7 @@ boost::optional<DetectedAGV> DetectCup::detectAGV(const cv::Mat& frame)
   }
 }
 
-void DetectCup::makePerspectiveCorrection(const cv::Mat& transmtx,
+void DetectAGV::makePerspectiveCorrection(const cv::Mat& transmtx,
                                           const cv::Mat& sourceMat,
                                           cv::Mat& dist)
 {
@@ -136,7 +136,7 @@ void DetectCup::makePerspectiveCorrection(const cv::Mat& transmtx,
   warpPerspective(sourceMat, dist, transmtx, sourceMat.size());
 }
 
-void DetectCup::getContoursMat(
+void DetectAGV::getContoursMat(
     const cv::Mat& sourceMat,
     std::vector<std::vector<cv::Point>>& contours_poly)
 {
@@ -167,7 +167,7 @@ void DetectCup::getContoursMat(
                5, true);
 }
 
-cv::Point DetectCup::getMidPoint(std::vector<cv::Point>& contours)
+cv::Point DetectAGV::getMidPoint(std::vector<cv::Point>& contours)
 {
   unsigned int averageX = 0;
   unsigned int averageY = 0;
