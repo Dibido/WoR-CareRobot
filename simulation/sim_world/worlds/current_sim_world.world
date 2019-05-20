@@ -10,7 +10,7 @@
     </include>
 
     <include>
-      <uri>model://franka_panda</uri>
+      <uri>model://franka_panda_2</uri>
     </include>
 
     <model name="table_model">
@@ -73,6 +73,13 @@
       <pose>0 -1 1.2 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="sim_child">
+      <pose>1.5 -6 0 0 0 0.5</pose>
+      <include>
+        <uri>model://child</uri>
       </include>
     </model>
 
