@@ -6,7 +6,7 @@
 namespace obstacle
 {
   const uint8_t cConversionFromMetersToCentimeters = 100;
-
+  
   /**
    * @brief Obstacle represents a 3D obstacle.
    *
@@ -17,8 +17,8 @@ namespace obstacle
     float mY_m;
     float mZ_m;
     float mWidth_m;
-    float mHeight_m;
     float mDepth_m;
+    float mHeight_m;
 
     bool operator==(const Obstacle& rhs) const
     {

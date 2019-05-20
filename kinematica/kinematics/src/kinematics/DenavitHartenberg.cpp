@@ -47,8 +47,7 @@ namespace kinematics
       Matrix<double, 6, 1> lDeltaPos = (lGoal - lVirtualEndEffector);
       const auto deltaEffector(lDeltaPos * lBeta);
 
-      const Matrix<double, 6, 7> lJacobian(
-          calculateJacobiMatrix(lNewBigTheta));
+      const Matrix<double, 6, 7> lJacobian(calculateJacobiMatrix(lNewBigTheta));
       const auto inverseJacobi(lJacobian.pseudoInverse());
 
       const auto lDeltaTheta(inverseJacobi * deltaEffector);
@@ -75,11 +74,12 @@ namespace kinematics
     }
     Matrix<double, 4, 4> lResult = lResult.identity();
     std::size_t mThetaIndex = lStart;
-    for (std::size_t mLinkConfigurationIndex = lStart; mLinkConfigurationIndex < lEnd;
-         ++mLinkConfigurationIndex)
+    for (std::size_t mLinkConfigurationIndex = lStart;
+         mLinkConfigurationIndex < lEnd; ++mLinkConfigurationIndex)
     {
       double mVariable;
-      if (mLinkConfiguration[mLinkConfigurationIndex].getType() == eJoint::STATIC)
+      if (mLinkConfiguration[mLinkConfigurationIndex].getType() ==
+          eJoint::STATIC)
       {
         mVariable = 0;
       }
@@ -88,8 +88,10 @@ namespace kinematics
         mVariable = lBigTheta[mThetaIndex];
         ++mThetaIndex;
       }
-      lResult = lResult *
-               mLinkConfiguration[mLinkConfigurationIndex].transformationMatrix(mVariable);
+      lResult =
+          lResult *
+          mLinkConfiguration[mLinkConfigurationIndex].transformationMatrix(
+              mVariable);
     }
     return lResult;
   }
