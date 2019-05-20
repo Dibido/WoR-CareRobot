@@ -10,8 +10,8 @@
  */
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
-#include "../obstacle/Obstacle.hpp"
 #include "Vertex.hpp"
+#include "obstacle/Obstacle.hpp"
 #include <vector>
 
 namespace astar
@@ -20,7 +20,7 @@ namespace astar
   const uint8_t cNrOfNeighbours = 9;
   const uint8_t cNrOfDimensionLayers = 3;
   /**
-   * @brief The graph is builded in Centimeters
+   * @brief The graph is built in Centimeters
    *
    * @author Gianni Monteban
    */
@@ -53,7 +53,7 @@ namespace astar
      *
      * @param obstacle the obstacle to add
      *
-     * @Gianni Monteban
+     * @author Gianni Monteban
      */
     void addObstacle(const obstacle::Obstacle& obstacle);
 
@@ -87,12 +87,15 @@ namespace astar
     std::vector<obstacle::Obstacle> mObstacles;
     Vertex mEndPoint;
     /**
-     * @brief Checks whether if the given point is within any of the known obstacles.
-     * 
+     * @brief Checks whether if the given point is within any of the known
+     * obstacles.
+     *
      * @param aVertex Point which will be checked for "collision"
-     * @return true True will be returned if there is no obstacle which collides with the given point.
-     * @return false False will be returned if there is an obstacle which collides with the given point.
-     * 
+     * @return true True will be returned if there is no obstacle which collides
+     * with the given point.
+     * @return false False will be returned if there is an obstacle which
+     * collides with the given point.
+     *
      * @author Martijn Vogelaar
      */
     bool isPointInAnObstacle(const Vertex& aVertex) const;
