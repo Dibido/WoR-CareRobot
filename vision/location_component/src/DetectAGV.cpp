@@ -79,7 +79,7 @@ boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame)
   cv::Rect boundRect;
 
   // Getting the middle point of the rect and draw this point
-  if (contours.size() > 0 && contours[0].size() == 4)
+  if (contours[0].size() == 4)
   {
     DetectedAGV detectedAGV;
     boundRect = boundingRect(contours.at(0));

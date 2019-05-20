@@ -20,6 +20,7 @@ struct DetectedAGV {
 class DetectAGV
 {
     public:
+    
   DetectAGV();
   ~DetectAGV();
 
