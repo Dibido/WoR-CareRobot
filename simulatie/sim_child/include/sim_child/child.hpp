@@ -1,3 +1,13 @@
+/**
+ * @file child.hpp
+ * @author Maurits Muijsert (MPW.Muijsert@student.han.nl)
+ * @brief gazebo plugin for simulating a moving child
+ * @version 0.1
+ * @date 2019-05-20
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
 #include <functional>
 #include <iostream>
 #include <gazebo/gazebo.hh>
@@ -7,24 +17,37 @@
 
 namespace gazebo
 {
+  /**
+   * @brief gazebo plugin for simulating a running child.
+   * 
+   */
   class Child : public ModelPlugin
   {
   public: 
     
+    /**
+     * @brief Called once by when loading in the plugin. loads the config parameters of 
+     * 
+     * @param _parent 
+     * @param _sdf 
+     */
     void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
 
-    // Called by the world update start event
+    /**
+     * @brief Called by the world update start event. 
+     * 
+     */
     void onUpdate();
 
+    /**
+     * @brief Destroy the Child object
+     * 
+     */
     virtual ~Child() = default;
 
   private: 
-    // Pointer to the model
     physics::ModelPtr mModel;
-
-    // Pointer to the update event connection
     event::ConnectionPtr mUpdateConnection;
-
     double mVelocity = 0;
     double mAngle = 0;
   };
