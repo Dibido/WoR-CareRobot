@@ -237,7 +237,7 @@ namespace astar
     AStar astar(lGraph);
 
     Path lP = astar.search(astar::Vertex(0, 0, 0), astar::Vertex(80, 30, 0));
-    EXPECT_EQ(0, lP.size());
+    EXPECT_EQ((unsigned)0, lP.size());
   }
 
   TEST(ObstaclePathfinding, DifferentStartPoint)
