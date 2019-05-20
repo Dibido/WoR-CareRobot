@@ -1,4 +1,4 @@
-#include "../../include/astar/AStar.hpp"
+#include "astar/AStar.hpp"
 
 #include <algorithm>
 #include <cmath>

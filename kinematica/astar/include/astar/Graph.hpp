@@ -10,8 +10,8 @@
  */
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
-#include "../obstacle/Obstacle.hpp"
 #include "Vertex.hpp"
+#include "obstacle/Obstacle.hpp"
 #include <vector>
 
 namespace astar
@@ -87,12 +87,15 @@ namespace astar
     std::vector<obstacle::Obstacle> mObstacles;
     Vertex mEndPoint;
     /**
-     * @brief Checks whether if the given point is within any of the known obstacles.
-     * 
+     * @brief Checks whether if the given point is within any of the known
+     * obstacles.
+     *
      * @param aVertex Point which will be checked for "collision"
-     * @return true True will be returned if there is no obstacle which collides with the given point.
-     * @return false False will be returned if there is an obstacle which collides with the given point.
-     * 
+     * @return true True will be returned if there is no obstacle which collides
+     * with the given point.
+     * @return false False will be returned if there is an obstacle which
+     * collides with the given point.
+     *
      * @author Martijn Vogelaar
      */
     bool isPointInAnObstacle(const Vertex& aVertex) const;

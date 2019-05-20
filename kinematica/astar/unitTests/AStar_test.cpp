@@ -1,5 +1,5 @@
-#include "../include/astar/AStar.hpp"
-#include "../include/astar/Graph.hpp"
+#include "astar/AStar.hpp"
+#include "astar/Graph.hpp"
 
 #include "gtest/gtest.h"
 
