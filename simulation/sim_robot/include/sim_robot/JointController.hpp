@@ -8,14 +8,14 @@
 namespace gazebo
 {
   /**
-   * Simulation of a robot joint, has all the information like min / max pwm and
-   * radians. Controls the Gazebo joint
+   * @brief Simulation of a robot joint, has all the information like min / max pwm and
+   * radians. Controls the Gazebo joint.
    */
   class JointController
   {
       public:
     /**
-     * Construct a joint controller
+     * @brief Construct a joint controller
      * @param joint : joint pointer to the gazebo physical joint
      * @param name : Name of the joint
      * @param channel : Index / Channel of the joint
@@ -41,13 +41,13 @@ namespace gazebo
     bool operator!=(const JointController& other) const;
 
     /**
-     * Run the joint once and update the gazebo model joint
+     * @brief Run the joint once and update the gazebo model joint
      * Called by update from robot controller
      */
     void update();
 
     /**
-     * Check if given pulse width is in valid range for this joint
+     *@brief Check if given pulse width is in valid range for this joint
      * @param pw : pulse width to check if it is in range
      * @return true if in range
      */
@@ -71,7 +71,7 @@ namespace gazebo
                    commandTime_t time,
                    double updateRate);
     /**
-     * Stop the joint movement
+     *@brief Stop the joint movement
      */
     void stop();
 
@@ -80,8 +80,8 @@ namespace gazebo
     jointVel_t getCurrentVel() const;
 
     /**
-     * Hard set current position, no checks.
-     * @param aCurrentPos
+     * @brief Hard set current position, no checks.
+     * @param aCurrentPos.
      */
     void setCurrentPos(jointRad_t aCurrentPos);
 
@@ -89,7 +89,7 @@ namespace gazebo
     double convertPw2Radians(jointPw_t pw) const;
 
     /**
-     * Step once towards target position with step size
+     *@brief Step once towards target position with step size
      */
     void run();
 

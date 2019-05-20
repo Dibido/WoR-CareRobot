@@ -145,13 +145,13 @@ namespace gazebo
     {
       switch (c.getType())
       {
-      case commands::MOVE:
+      case commands::eCommandType::MOVE:
         moveJoint(c);
         break;
-      case commands::STOP:
+      case commands::eCommandType::STOP:
         stopJoint(c);
         break;
-      case commands::UNDEFINED:
+      case commands::eCommandType::UNDEFINED:
         break;
       }
     }

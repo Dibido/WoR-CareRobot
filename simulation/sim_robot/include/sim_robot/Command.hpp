@@ -7,12 +7,12 @@
 
 namespace commands
 {
-  typedef enum CommandType
+   enum class eCommandType
   {
     UNDEFINED = -1,
     MOVE,
     STOP
-  } Type;
+  };
 
   /**
    *  class to store values from an incoming command
@@ -20,19 +20,19 @@ namespace commands
   class Command
   {
       public:
-    Command(CommandType aType,
+    Command(eCommandType aType,
             jointChannel_t aChannel,
             jointPw_t aPwm,
             jointVel_t aSpeed,
             commandTime_t aTime);
-    Command(CommandType aType,
+    Command(eCommandType aType,
             jointChannel_t aChannel,
             jointRad_t aRad,
             jointVel_t aSpeedFactor);
     Command() = delete;
     virtual ~Command() = default;
 
-    CommandType getType() const;
+    eCommandType getType() const;
     jointChannel_t getChannel() const;
     jointPw_t getPwm() const;
     jointRad_t getRad() const;
@@ -41,13 +41,13 @@ namespace commands
     commandTime_t getTime() const;
 
       private:
-    CommandType type = UNDEFINED;
+    eCommandType type = eCommandType::UNDEFINED;
     jointChannel_t mChannel;
-    jointPw_t mPwm;
-    jointRad_t mRad;
-    jointVel_t mSpeed;
-    jointVel_t mSpeedFactor;
-    commandTime_t mTime;
+    jointPw_t mPwm=0;
+    jointRad_t mRad=0;
+    jointVel_t mSpeed=0;
+    jointVel_t mSpeedFactor=0;
+    commandTime_t mTime=0;
   };
 
 } // namespace commands

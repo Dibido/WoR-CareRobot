@@ -1,7 +1,7 @@
 
 #include <sim_robot/Command.hpp>
 
-commands::Command::Command(CommandType aType,
+commands::Command::Command(eCommandType aType,
                            jointChannel_t aChannel,
                            jointPw_t aPwm,
                            jointVel_t aSpeed,
@@ -9,14 +9,14 @@ commands::Command::Command(CommandType aType,
     : type(aType), mChannel(aChannel), mPwm(aPwm), mSpeed(aSpeed), mTime(aTime)
 {
 }
-commands::Command::Command(CommandType aType,
+commands::Command::Command(eCommandType aType,
                            jointChannel_t aChannel,
                            jointRad_t aRad,
                            jointVel_t aSpeedFactor)
     : type(aType), mChannel(aChannel), mRad(aRad), mSpeedFactor(aSpeedFactor)
 {
 }
-commands::CommandType commands::Command::getType() const
+commands::eCommandType commands::Command::getType() const
 {
   return type;
 }
@@ -34,7 +34,6 @@ jointRad_t commands::Command::getRad() const
 {
   return mRad;
 }
-
 jointVel_t commands::Command::getSpeed() const
 {
   return mSpeed;

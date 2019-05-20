@@ -8,7 +8,7 @@
  */
 int main(int argc, char** argv)
 {
-  int iterator = 0;
+ 
   /**
    * The ros::init() function needs to see argc and argv so that it can perform
    * any ROS arguments and name remapping that were provided at the command

@@ -109,7 +109,7 @@ namespace gazebo
     physics::ModelPtr model;
     physics::WorldPtr world;
     event::ConnectionPtr updateConnection;
-    double updateRate;
+    double updateRate = 0;
     bool stop = false;
 
     // Variables
