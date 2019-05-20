@@ -7,6 +7,8 @@ DataHandler::DataHandler() : mNewDataAvailable(false)
 {
   mLidarSubscriber = mNodeHandler.subscribe(
       "/sensor/lidar", 1000, &DataHandler::dataReceiveCallback, this);
+
+  mObjectPublisher = mNodeHandler.advertise<kinematica_msgs::Obstacles>("/detectedobjects", 1000);
 }
 
 /**
@@ -21,8 +23,7 @@ DataHandler::DataHandler(std::string& aReceiveTopic, std::string& aPublishTopic)
       aReceiveTopic, 1000, &DataHandler::dataReceiveCallback, this);
 
   mObjectPublisher =
-      mNodeHandler.advertise<sensor_interfaces::LidarData>(aPublishTopic, 1000);
-  // To-do publisher
+      mNodeHandler.advertise<kinematica_msgs::Obstacles>(aPublishTopic, 1000);
 }
 
 DataHandler::~DataHandler()
@@ -54,10 +55,25 @@ void DataHandler::dataReceiveCallback(
     mLidarData.mDistances_m.push_back(
         static_cast<double>(aLidarDataMessage->distances.at(i)));
   }
+}
 
+void DataHandler::publishData(std::vector<std::pair<double, double>> aData, double aHeight_m) const
+{
+    kinematica_msgs::Object lObject;
+    kinematica_msgs::Obstacles lObstacleList;
 
-  std::cout << "Angles: "
-            << std::to_string(mLidarData.mAngles.size())
-            << " distances: "
-            << std::to_string(mLidarData.mDistances_m.size()) << std::endl;
+    geometry_msgs::Point lPoint;
+
+    for(size_t i = 0; i < aData.size(); ++i)
+    {
+      lPoint.x = aData.at(i).first;
+      lPoint.y = aData.at(i).second;
+      lPoint.z = aHeight_m;
+
+      lObject.position_m = lPoint;
+      lObstacleList.obstacles.push_back(lObject);
+    }
+
+    mObjectPublisher.publish(lObstacleList);
+    ros::spinOnce();
 }

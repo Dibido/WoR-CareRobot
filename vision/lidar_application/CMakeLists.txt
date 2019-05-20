@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_interfaces
+  kinematica_msgs
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -22,7 +23,7 @@ enable_testing()
 catkin_package(
 INCLUDE_DIRS include
 CATKIN_DEPENDS roscpp
- DEPENDS roscpp std_msgs message_runtime sensor_interfaces
+ DEPENDS roscpp std_msgs message_runtime sensor_interfaces kinematica_msgs
 )
 
 include_directories(

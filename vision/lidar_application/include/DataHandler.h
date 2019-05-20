@@ -7,10 +7,13 @@
 #include <ros/console.h>
 
 #include <sensor_interfaces/LidarData.h>
+#include <kinematica_msgs/Object.h>
+#include <kinematica_msgs/Obstacles.h>
+
+#include "geometry_msgs/Point.h"
 
 #include <iostream>
 
-//TODO: Include messages here
 
 class DataHandler
 {
@@ -40,6 +43,15 @@ class DataHandler
   LidarData getLidarData();
   
   void dataReceiveCallback(const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage);
+
+  /**
+   * @brief Publishes object data on topic
+   * @precondition: -
+   * @postcondition: Data is published on rostopic
+   * @param aData - X,Y of objects
+   * @param aHeight - Z of the object
+   */
+  void publishData(std::vector<std::pair<double, double>> aData, double aHeight_m) const;
 
   private:
   ros::NodeHandle mNodeHandler;

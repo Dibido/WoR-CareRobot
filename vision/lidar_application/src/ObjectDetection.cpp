@@ -2,7 +2,7 @@
 
 // Declaration of namespace variables
 const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.2;
-const double ObjectDetectionConstants::cLidarHeight_m = 1.0;
+const double ObjectDetectionConstants::cLidarHeight_m = 0.5;
 
 ObjectDetection::ObjectDetection() : mInitialized(false)
 {
@@ -26,7 +26,7 @@ void ObjectDetection::run()
 
         detectObjects();
 
-        // To-do: publish results
+        mDataHandler.publishData(mDetectedObjects, ObjectDetectionConstants::cLidarHeight_m);
       }
       else
       {
@@ -39,7 +39,6 @@ void ObjectDetection::run()
 
 void ObjectDetection::detectObjects()
 {
-  std::cout << "start detect objects" << std::endl;
   // Checking preconditions
   if ((mInitialScan.mDistances_m.size() == 0) ||
       (mMostRecentScan.mDistances_m.size() == 0) ||
@@ -85,7 +84,6 @@ void ObjectDetection::detectObjects()
         // If lObject contains valid info (it won't at first iteration)
         if ((lObject.mDistances_m.size() > 0))  
         {
-          std::cout << "be4 getaverageMeaurement" << std::endl;
           // Add centerpoint of this object to list
           lObjectList.push_back(getAverageMeasurement(lObject));
           lObject.reset();
@@ -101,10 +99,8 @@ void ObjectDetection::detectObjects()
     {
       if (lLastComparisonDifferent == true)
       {
-        std::cout << "Before add centerpoint" << std::endl;
         // Add centerpoint of this object to the list
         lObjectList.push_back(getAverageMeasurement(lObject));
-        std::cout << " after " << std::endl;
         lObject.reset();
 
         lLastComparisonDifferent = false;
@@ -144,8 +140,6 @@ std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
     double lObjectX = lDistance_m * cos(lConvertedAngle);
     double lObjectY = lDistance_m * sin(lConvertedAngle);
 
-    std::cout << "Object X/Y: " << std::to_string(lObjectX) << ","
-              << std::to_string(lObjectY) << std::endl;
     lReturnObjects.push_back(std::make_pair(lObjectX, lObjectY));
   }
 
@@ -187,9 +181,6 @@ std::pair<double, double>
 
 bool ObjectDetection::validateLidarData(LidarData& aData) const
 {
-  std::cout << "mAngleSize: " << std::to_string(aData.mAngles.size()) << std::endl;
-  std::cout << "mDistances_m: " << std::to_string(aData.mDistances_m.size()) << std::endl;
-
   if (aData.mAngles.size() == aData.mDistances_m.size())
   {
     return true;
