@@ -1,9 +1,10 @@
 <?xml version='1.0'?>
 <sdf version="1.6">
     <model name="child">
-        <gravity>0</gravity>
-        <pose>-10 0 1 0 0 0</pose>
+        <pose>0 0 1 0 0 0</pose>
         <link name="link">
+
+        <gravity>0</gravity>
         <collision name="collision">
             <geometry>
             <box>
@@ -23,7 +24,7 @@
 
         <plugin name="model_child" filename="libmodel_child.so">
             <velocity>2</velocity>
-            <angle>45</angle>
+            <angle>90</angle>
         </plugin>
     </model>
 </sdf>
