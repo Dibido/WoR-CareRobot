@@ -23,6 +23,8 @@ class RobotControlPublisher
      * @brief Construct a new Robot Control Publisher object
      * 
      * @param lN NodeHandler 
+     * @param lTopic Topic on which the message will be published
+     * @param lQue_size Number of messages that will be qued
      */
     explicit RobotControlPublisher(ros::NodeHandle& lN, const std::string& lTopic, 
     const uint16_t lQue_size);
@@ -31,7 +33,7 @@ class RobotControlPublisher
      * @brief Publishes a Control msg to the robot_command topic
      * 
      * @param lSf Speedfactor for the robotarm movement speed
-     * @param joints Joints of the robotarm
+     * @param lConfiguration Configuration of the robotarm
      */
     void publish(const double lSf, const std::vector<double>& lConfiguration);
 
