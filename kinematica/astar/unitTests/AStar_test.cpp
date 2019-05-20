@@ -25,8 +25,9 @@ namespace astar
                 Vertex(90, 90, 90), Vertex(100, 100, 100) };
 
     Path p = astar.search(v1, v2);
-    pG.push_back(Vertex(110, 110, 110));
+
     EXPECT_EQ(p, pG);
+    pG.push_back(Vertex(110, 110, 110));
     EXPECT_NE(p, pG);
   }
 } // namespace astar
