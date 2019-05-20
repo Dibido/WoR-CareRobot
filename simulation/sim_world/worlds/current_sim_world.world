@@ -20,41 +20,6 @@
       </include>
     </model>
 
-    <model name="table_model2">
-      <pose>0.55 1.5 0 0 0 1.570796</pose>
-      <include>
-	      <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model3">
-      <pose>0.55 -1.5 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model4">
-      <pose>0.55 -3 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model5">
-      <pose>0.55 3 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model6">
-      <pose>0.55 -4.5 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
     <model name="kinect_1">
       <pose>0 0 2.98 0 1.570796 0</pose>
       <include>
