@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7.2)
 project(sim_lidar)
+
 add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
+set(CMAKE_CXX_CPPCHECK "cppcheck" "–enable=all -Wall -Wextra -Wconversion --inline-suppr")
 
 find_package(catkin REQUIRED COMPONENTS 
     roscpp
@@ -35,8 +37,6 @@ catkin_package(
     roscpp
     gazebo_ros
     sensor_interfaces)
-
-add_dependencies(sensor_interfaces ${catkin_EXPORTED_TARGETS})
 
 add_library(${PROJECT_NAME}_plugin SHARED
         src/LidarPlugin.cpp)

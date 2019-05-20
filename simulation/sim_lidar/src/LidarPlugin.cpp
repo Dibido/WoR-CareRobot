@@ -2,13 +2,16 @@
 #include <sim_lidar/LidarPlugin.hpp>
 #include <sensor_interfaces/LidarData.h>
 
-const std::string cFrameName = "frameName";
-const std::string cFrameNameDefault = "/laser";
-const std::string cTopicName = "topicName";
-const std::string cTopicNameDefault = "/scan";
-// Set lidardata topic as defined in LidarData.msg
-const std::string cLidarDataTopicName = "lidardatatopicName";
-const std::string cLidarDataTopic = "/sensor/lidardata";
+namespace LidarConfiguration {
+  const std::string cFrameName = "frameName";
+  const std::string cFrameNameDefault = "/laser";
+  const std::string cTopicName = "topicName";
+  const std::string cTopicNameDefault = "/scan";
+  // Set lidardata topic as defined in LidarData.msg
+  const std::string cLidarDataTopicName = "lidardatatopicName";
+  const std::string cLidarDataTopic = "/sensor/lidardata";
+}
+
 
 namespace gazebo
 {
@@ -23,58 +26,57 @@ void LidarPlugin::Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf)
     return;
   }
 
-  parentSensor = std::dynamic_pointer_cast<sensors::RaySensor>(aParent);
+  mParentSensor = std::dynamic_pointer_cast<sensors::RaySensor>(aParent);
 
-  if (!parentSensor)
+  if (!mParentSensor)
   {
     gzthrow("Lidar controller requires a Ray Sensor as its parent");
   }
 
-  if (!aSdf->HasElement(cFrameName))
+  if (!aSdf->HasElement(LidarConfiguration::cFrameName))
   {
-    ROS_INFO("Laser plugin missing <frameName>, defaults to %s", cFrameNameDefault);
-    frameName = cFrameNameDefault;
+    ROS_INFO("Laser plugin missing <frameName>, defaults to %s", LidarConfiguration::cFrameNameDefault);
+    mFrameName = LidarConfiguration::cFrameNameDefault;
   }
   else
   {
-    frameName = aSdf->Get<std::string>(cFrameName);
+    mFrameName = aSdf->Get<std::string>(LidarConfiguration::cFrameName);
   }
 
-  if (!aSdf->HasElement(cTopicName))
+  if (!aSdf->HasElement(LidarConfiguration::cTopicName))
   {
-    ROS_INFO("Laser plugin missing <topicName>, defaults to %s", cTopicNameDefault);
-    topicName = cTopicNameDefault;
+    ROS_INFO("Laser plugin missing <topicName>, defaults to %s", LidarConfiguration::cTopicNameDefault);
+    mTopicName = LidarConfiguration::cTopicNameDefault;
   }
   else
   {
-    topicName = aSdf->Get<std::string>(cTopicName);
+    mTopicName = aSdf->Get<std::string>(LidarConfiguration::cTopicName);
   }
 
-  if (!aSdf->HasElement(cLidarDataTopicName))
+  if (!aSdf->HasElement(LidarConfiguration::cLidarDataTopicName))
   {
-    ROS_INFO("Laser plugin missing <lidardatatopicName>, defaults to %s", cLidarDataTopic);
-    mLidarDataTopic = cLidarDataTopic;
+    ROS_INFO("Laser plugin missing <lidardatatopicName>, defaults to %s", LidarConfiguration::cLidarDataTopic);
+    mLidarDataTopic = LidarConfiguration::cLidarDataTopic;
   }
   else
   {
-    mLidarDataTopic = aSdf->Get<std::string>(cLidarDataTopicName);
+    mLidarDataTopic = aSdf->Get<std::string>(LidarConfiguration::cLidarDataTopicName);
   }
 
   // Start gazebo node
-  gazeboNode = transport::NodePtr(new transport::Node());
-  gazeboNode->Init();
+  mGazeboNode = transport::NodePtr(new transport::Node());
+  mGazeboNode->Init();
 
   // Subscribe to gazebo sensor topic
-  gazeboSub = gazeboNode->Subscribe(parentSensor->Topic(), &LidarPlugin::OnScan, this);
+  mGazeboSub = mGazeboNode->Subscribe(mParentSensor->Topic(), &LidarPlugin::OnScan, this);
 
   // Create a ros NodeHandle
-  rosNode = std::make_unique<ros::NodeHandle>();
+  mRosNode = std::make_unique<ros::NodeHandle>();
 
-  if (!topicName.empty())
+  if (!mTopicName.empty())
   {
     // Advertise LaserScan msg on topic specified in plugin element <topicName>
-    rosPub = rosNode->advertise<sensor_msgs::LaserScan>(topicName, 1);
-    
+    mRosPub = mRosNode->advertise<sensor_msgs::LaserScan>(mTopicName, 1);
   }
   else
   {
@@ -83,7 +85,7 @@ void LidarPlugin::Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf)
   if (!mLidarDataTopic.empty())
   {
     // Advertise LaserScan msg on topic specified in plugin element <lidardatatopicName>
-    mLidarDataPub = rosNode->advertise<sensor_interfaces::LidarData>(mLidarDataTopic, 1);
+    mLidarDataPub = mRosNode->advertise<sensor_interfaces::LidarData>(mLidarDataTopic, 1);
   }
   else
   {
@@ -91,7 +93,7 @@ void LidarPlugin::Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf)
   }
 
   // Active the sensor
-  parentSensor->SetActive(true);
+  mParentSensor->SetActive(true);
 }
 
 // PRIVATE
@@ -104,7 +106,7 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
 
   lLaserMessage.header.stamp =
       ros::Time(static_cast<uint32_t>(aMsg->time().sec()), static_cast<uint32_t>(aMsg->time().nsec()));
-  lLaserMessage.header.frame_id = frameName;
+  lLaserMessage.header.frame_id = mFrameName;
   lLaserMessage.angle_min = lAngleMin;
   lLaserMessage.angle_max = lAngleMax;
   lLaserMessage.time_increment = 0;
@@ -114,20 +116,20 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
   lLaserMessage.ranges.resize(static_cast<unsigned long>(aMsg->scan().ranges_size()));
   std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(), lLaserMessage.ranges.begin());
   lLaserMessage.angle_increment = static_cast<float>(2.0 * M_PI) / static_cast<float>(lLaserMessage.ranges.size());
-  rosPub.publish(lLaserMessage);
+  mRosPub.publish(lLaserMessage);
 
   // Publish the LidarData message
   sensor_interfaces::LidarData lLidarDataMessage;
   lLidarDataMessage.header.stamp =
       ros::Time(static_cast<uint32_t>(aMsg->time().sec()), static_cast<uint32_t>(aMsg->time().nsec()));
-  lLidarDataMessage.header.frame_id = frameName;
+  lLidarDataMessage.header.frame_id = mFrameName;
   // Add distances
   lLidarDataMessage.distances.resize(static_cast<unsigned long>(aMsg->scan().ranges_size()));
   std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(), lLidarDataMessage.distances.begin());
   // Add angles
   lLidarDataMessage.measurement_angles.clear();
   // Fill the angle array with the correct range. Add 1 PI so we get a range from 0 - TAU.
-  float lAngleOffset = static_cast<float>(2.0 * M_PI) / static_cast<float>(lLaserMessage.ranges.size());
+  const float lAngleOffset = static_cast<float>(2.0 * M_PI) / static_cast<float>(lLaserMessage.ranges.size());
   for(float lCurrentAngle = lAngleOffset; lCurrentAngle < (lAngleMax + static_cast<float>(M_PI)); lCurrentAngle += lAngleOffset)
   {
     lLidarDataMessage.measurement_angles.push_back(lCurrentAngle);

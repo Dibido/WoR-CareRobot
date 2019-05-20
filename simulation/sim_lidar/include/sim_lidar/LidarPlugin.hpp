@@ -31,18 +31,18 @@ private:
   void OnScan(ConstLaserScanStampedPtr& aMsg);
 
   // Variables
-  std::string frameName;
-  std::string topicName;
+  std::string mFrameName;
+  std::string mTopicName;
   std::string mLidarDataTopic;
-  sensors::RaySensorPtr parentSensor;
+  sensors::RaySensorPtr mParentSensor;
 
   // Gazebo variables
-  transport::NodePtr gazeboNode;
-  transport::SubscriberPtr gazeboSub;
+  transport::NodePtr mGazeboNode;
+  transport::SubscriberPtr mGazeboSub;
 
   // Ros variables
-  ros::NodeHandlePtr rosNode;
-  ros::Publisher rosPub;
+  ros::NodeHandlePtr mRosNode;
+  ros::Publisher mRosPub;
   ros::Publisher mLidarDataPub;
 };
 GZ_REGISTER_SENSOR_PLUGIN(LidarPlugin)
