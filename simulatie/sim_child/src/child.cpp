@@ -1,40 +1,41 @@
+#include <sim_child/child.hpp>
 #include <functional>
-#include <iostream>
+#include <math.h>       /* cos and sin */
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
 #include <ignition/math/Vector3.hh>
+#include <ros/ros.h>
 
-namespace gazebo
+#define PI 3.14159265
+
+void gazebo::Child::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
-  class ModelPush : public ModelPlugin
+  // Store the pointer to the model
+  this->mModel = _parent;
+
+  if (_sdf->HasElement("velocity"))
   {
-    public: void Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
-    {
-      // Store the pointer to the model
-      this->model = _parent;
+    mVelocity = _sdf->Get<double>("velocity");
+    ROS_INFO("Velocity loaded");  
+  }
 
-      // Listen to the update event. This event is broadcast every
-      // simulation iteration.
-      this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-          std::bind(&ModelPush::OnUpdate, this));
-      std::cout << "plugin loaded" << std::endl;     
-    }
+  if (_sdf->HasElement("angle"))
+  {
+    mAngle = _sdf->Get<double>("angle");
+    ROS_INFO("Angle loaded");  
+  }
 
-    // Called by the world update start event
-    public: void OnUpdate()
-    {
-      // Apply a small linear velocity to the model.
-      this->model->SetLinearVel(ignition::math::Vector3d(2, 0, 0));
+  // Listen to the update event. This event is broadcast every
+  // simulation iteration.
+  this->mUpdateConnection = event::Events::ConnectWorldUpdateBegin(
+      std::bind(&Child::onUpdate, this));
+  ROS_INFO("Child plugin loaded");
+}
 
-    }
-    // Pointer to the model
-    private: physics::ModelPtr model;
 
-    // Pointer to the update event connection
-    private: event::ConnectionPtr updateConnection;
-  };
-
-  // Register this plugin with the simulator
-  GZ_REGISTER_MODEL_PLUGIN(ModelPush)
+void gazebo::Child::onUpdate()
+{
+  // Apply a small linear velocity to the model.
+  this->mModel->SetLinearVel(ignition::math::Vector3d(mVelocity * cos( mAngle * ( PI / 180 )), mVelocity * sin( mAngle * ( PI / 180 )), 0));
 }
