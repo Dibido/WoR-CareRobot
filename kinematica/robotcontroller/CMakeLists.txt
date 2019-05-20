@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   robotcontroller_msgs
   kinematics
   roscpp
+  astar
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES robotcontroller
-   CATKIN_DEPENDS robotcontroller_msgs roscpp lib_kinematics
+   CATKIN_DEPENDS robotcontroller_msgs roscpp lib_kinematics kinematics lib_astar
 #  DEPENDS system_lib
 )
 
@@ -121,8 +122,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp src/RobotStopPublisher.cpp)
-target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
+add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp src/RobotStopPublisher.cpp src/obstacle/ObstacleSubscriber.cpp )
+target_link_libraries(robotcontrol lib_kinematics lib_astar ${catkin_LIBRARIES})
   
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

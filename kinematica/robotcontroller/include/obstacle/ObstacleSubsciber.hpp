@@ -12,6 +12,7 @@
 #define OBSTACLE_SUBSCRIBER_HPP
 
 #include "kinematica_msgs/Obstacles.h"
+#include "robotcontroller/RobotStopPublisher.hpp"
 #include "ros/ros.h"
 #include <string>
 
@@ -24,17 +25,17 @@ namespace obstacle
   {
 
       public:
-    ObstacleSubsciber(const std::shared_ptr<Safety> aSafety,
-                      std::string& aSubName);
+    ObstacleSubsciber(std::string& aSubName);
 
     virtual ~ObstacleSubsciber() = default;
 
     void obstaclesCallback(const kinematica_msgs::ObstaclesConstPtr& aMsg);
 
       private:
-    std::shared_ptr<Safety> mSafety;
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
+    ros::NodeHandle mHandlePub;
+    robotcontroller::RobotStopPublisher mPublis;
   };
 } // namespace obstacle
 

@@ -1,5 +1,5 @@
+#include "obstacle/ObstacleSubsciber.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
-
 #include "ros/ros.h"
 
 std::vector<kinematics::Link> createConfiguration();
@@ -11,6 +11,8 @@ int main(int argc, char** argv)
   const uint8_t cRate = 10;
 
   ros::init(argc, argv, cControlTopic);
+  std::string str = std::string("/detectedObjects");
+  obstacle::ObstacleSubsciber subsriber(str);
 
   ros::NodeHandle lControlNode;
   ros::NodeHandle lStopNode;
