@@ -132,7 +132,7 @@ class Matrix
   /**
    * Comparison operator
    */
-  bool operator==(const Matrix<T, M, N>& rhs) const;  
+  bool operator==(const Matrix<T, M, N>& rhs) const;
   /**
    * Comparison operator
    */

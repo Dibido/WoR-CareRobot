@@ -32,16 +32,12 @@ namespace kinematics
     Matrix<double, 6, 1> lhs{ 2, 3, 4, 0.01, 0.03, 0.04 };
     Matrix<double, 6, 1> rhs{ 2.05, 2.99, 4.0001, 0.010001, 0.03001, 0.03992 };
 
-    EXPECT_EQ(true,
-              transformationMatrixEquals(lhs, rhs, 0.1, 0.001, 3));
+    EXPECT_EQ(true, transformationMatrixEquals(lhs, rhs, 0.1, 0.001, 3));
 
-    EXPECT_EQ(true,
-              transformationMatrixEquals(lhs, rhs, 0.1, 0.001, 2));
+    EXPECT_EQ(true, transformationMatrixEquals(lhs, rhs, 0.1, 0.001, 2));
 
-    EXPECT_EQ(false,
-              transformationMatrixEquals(lhs, rhs, 0.001, 1, 3));
+    EXPECT_EQ(false, transformationMatrixEquals(lhs, rhs, 0.001, 1, 3));
 
-    EXPECT_EQ(false, transformationMatrixEquals(lhs, rhs, 0.1,
-                                                            0.00001, 3));
+    EXPECT_EQ(false, transformationMatrixEquals(lhs, rhs, 0.1, 0.00001, 3));
   }
 } // namespace kinematics

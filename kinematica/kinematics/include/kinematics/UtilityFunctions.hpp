@@ -9,9 +9,9 @@ namespace kinematics
 
   /**
    * @brief Convert radians to degrees
-   * 
-   * @param lRadian 
-   * @return double 
+   *
+   * @param lRadian
+   * @return double
    */
   inline double radian2Degrees(double lRadian)
   {
@@ -20,9 +20,9 @@ namespace kinematics
 
   /**
    * @brief Convert degrees to radians
-   * 
-   * @param lDegree 
-   * @return double 
+   *
+   * @param lDegree
+   * @return double
    */
   inline double degree2Radian(double lDegree)
   {
@@ -60,10 +60,10 @@ namespace kinematics
    */
   template <std::size_t M>
   inline bool transformationMatrixEquals(const Matrix<double, M, 1>& lhs,
-                                 const Matrix<double, M, 1>& rhs,
-                                 double lEpsilon_m,
-                                 double lEpsilon_rad,
-                                 std::size_t lEpsilonSplit)
+                                         const Matrix<double, M, 1>& rhs,
+                                         double lEpsilon_m,
+                                         double lEpsilon_rad,
+                                         std::size_t lEpsilonSplit)
   {
     assert(M > lEpsilonSplit);
     for (std::size_t i = 0; i < lEpsilonSplit; ++i)

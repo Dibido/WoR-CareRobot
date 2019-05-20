@@ -73,7 +73,6 @@ namespace kinematics
     EXPECT_EQ(false, transformationMatrixEquals(
                          impossibleEndEffector, foundEndEffector2, cIkEpsilon_m,
                          cIkEpsilon_rad, cDhTransformPosRadSplit));
- 
   }
 
   TEST(DenavitHartenberg, ForwardKinematics)
