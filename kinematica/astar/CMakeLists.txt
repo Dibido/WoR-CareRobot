@@ -222,7 +222,7 @@ include(CTest)
 enable_testing()
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp unitTests/Obstacle_test.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_astar ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)
