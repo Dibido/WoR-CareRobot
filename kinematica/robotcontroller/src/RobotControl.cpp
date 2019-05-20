@@ -5,16 +5,34 @@ std::vector<kinematics::Link> createConfiguration();
 
 int main(int argc, char** argv)
 {
+    std::string lTopic = "robot_command";
+    uint16_t lQue_size = 1000;
+    const uint8_t lRate = 10;
 
-  ros::init(argc, argv, "robot_command");
+  ros::init(argc, argv, lTopic);
 
   ros::NodeHandle lN;
 
-  robotcontroller::RobotControlPublisher lRobotControlPub(lN);
+  ros::Rate lLoop_rate(lRate);
+
+  robotcontroller::RobotControlPublisher lRobotControlPub(lN, lTopic, lQue_size);
+
+  kinematics::DenavitHartenberg lDen(createConfiguration());
+  std::vector<double> lCurrentConfiguration = {
+    0, 0, 0, 0, 0, 0, 0
+  }; // Current configuration
+  Matrix<double, 6, 1> lGoalEndEffector{
+    0, 0, 0, 0, 0, 0
+  }; // Determine with astar
+  std::vector<double> lGoalConfiguration =
+      lDen.inverseKinematics(lGoalEndEffector, lCurrentConfiguration);
 
   while (ros::ok())
   {
-    lRobotControlPub.publish(1.0, createConfiguration());
+    lRobotControlPub.publish(1.0, lGoalConfiguration);
+
+    ros::spinOnce();
+    lLoop_rate.sleep();
   }
 
   return 0;

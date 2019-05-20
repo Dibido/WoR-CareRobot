@@ -1,42 +1,28 @@
 #include "robotcontroller/RobotControlPublisher.hpp"
 
-namespace robotcontroller {
+namespace robotcontroller
+{
 
-  RobotControlPublisher::RobotControlPublisher(ros::NodeHandle& lN) : mN(lN) 
+  RobotControlPublisher::RobotControlPublisher(ros::NodeHandle& lN,
+                                               const std::string& lTopic,
+                                               const uint16_t lQue_size)
+      : mN(lN),
+        cTopic(lTopic),
+        cQue_size(lQue_size),
+        mRobotControl_pub(
+            mN.advertise<robotcontroller_msgs::Control>(cTopic, cQue_size))
   {
-
   }
 
-  void RobotControlPublisher::publish(const double lSf, const std::vector<kinematics::Link>& joints)
+  void RobotControlPublisher::publish(const double lSf,
+                                      const std::vector<double>& lConfiguration)
   {
-
-  ros::Publisher lRobotcontrol_pub =
-      mN.advertise<robotcontroller_msgs::Control>("robot_command", 1000);
-
-  ros::Rate lLoop_rate(10);
-
-  kinematics::DenavitHartenberg lDen(joints);
-  std::vector<double> lCurrentConfiguration = {
-    0, 0, 0, 0, 0, 0, 0
-  }; // Current configuration
-  Matrix<double, 6, 1> lGoalEndEffector{
-    0, 0, 0, 0, 0, 0
-  }; // Determine with astar
-  std::vector<double> lGoalConfiguration =
-      lDen.inverseKinematics(lGoalEndEffector, lCurrentConfiguration);
-
     robotcontroller_msgs::Control lMsg;
 
-    lMsg.theta = lGoalConfiguration;
+    lMsg.theta = lConfiguration;
     lMsg.sf = lSf;
 
-    lRobotcontrol_pub.publish(lMsg);
-
-    lCurrentConfiguration = lGoalConfiguration;
-
-    ros::spinOnce();
-
-    lLoop_rate.sleep();
+    mRobotControl_pub.publish(lMsg);
   }
 
-}
+} // namespace robotcontroller

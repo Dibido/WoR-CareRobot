@@ -6,6 +6,8 @@
 #include "robotcontroller_msgs/Control.h"   
 #include "ros/ros.h"
 
+#include <iostream>
+
 namespace robotcontroller {
 
 /**
@@ -22,7 +24,8 @@ class RobotControlPublisher
      * 
      * @param lN NodeHandler 
      */
-    explicit RobotControlPublisher(ros::NodeHandle& lN);
+    explicit RobotControlPublisher(ros::NodeHandle& lN, const std::string& lTopic, 
+    const uint16_t lQue_size);
 
     /**
      * @brief Publishes a Control msg to the robot_command topic
@@ -30,10 +33,13 @@ class RobotControlPublisher
      * @param lSf Speedfactor for the robotarm movement speed
      * @param joints Joints of the robotarm
      */
-    void publish(const double lSf, const std::vector<kinematics::Link>& joints);
+    void publish(const double lSf, const std::vector<double>& lConfiguration);
 
     private:
     ros::NodeHandle& mN;
+    const std::string& cTopic;
+    const uint16_t cQue_size;
+    ros::Publisher mRobotControl_pub;
 };
 }
 
