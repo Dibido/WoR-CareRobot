@@ -1,6 +1,10 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 #include "../include/DetectAGV.hpp"
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 
 // Declare a test
 TEST(TestSuite, testCase1)
@@ -20,5 +24,8 @@ TEST(TestSuite, testCase1)
 // Declare another test
 TEST(TestSuite, testCase2)
 {
-		  EXPECT_EQ(1000, 1000);
+    // cv::Mat image = cv::imread("Test_picture.png", cv::IMREAD_COLOR);
+	// imshow("test", image);
+
+	EXPECT_EQ(1000, 1000);
 }
