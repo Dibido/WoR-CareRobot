@@ -263,7 +263,7 @@ TEST(MatrixFunctions, MatrixInverse)
 
   EXPECT_EQ(true, equals(m1.identity(), m1 * m1.inverse(),
                          std::numeric_limits<double>::epsilon(), 100));
-  Matrix<double, 3, 3> m2{{0,0,0},{0,0,0},{0,0,0}};
+  Matrix<double, 3, 3> m2{ { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
 
   EXPECT_EQ(true, equals(m2.identity(), m2.inverse(),
                          std::numeric_limits<double>::epsilon(), 100));

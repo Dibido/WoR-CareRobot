@@ -25,8 +25,10 @@ namespace kinematics
      * @param lD_m Link offset
      * @param lTheta_rad Joint angle
      * @param lType
-     * @param lMinValue Radians if lType is REVOLUTE, meters if lType is PRISMATIC, unused if lType is STATIC
-     * @param lMaxValue Radians if lType is REVOLUTE, meters if lType is PRISMATIC, unused if lType is STATIC
+     * @param lMinValue Radians if lType is REVOLUTE, meters if lType is
+     * PRISMATIC, unused if lType is STATIC
+     * @param lMaxValue Radians if lType is REVOLUTE, meters if lType is
+     * PRISMATIC, unused if lType is STATIC
      */
     Link(double lA_m,
          double lAlpha_rad,
@@ -97,7 +99,8 @@ namespace kinematics
      * between -M_PI and M_PI
      * @author Emiel Bosman
      * @param lVariable Variable to constrain, if variable already falls between
-     * lMinValue and lMaxValue the variable is returned unchanged (meters or radians)
+     * lMinValue and lMaxValue the variable is returned unchanged (meters or
+     * radians)
      * @return double
      */
     double constrainVariable(double lVariable) const;
@@ -120,7 +123,7 @@ namespace kinematics
     double mAlpha_rad;
     double mD_m;
     double mTheta_rad;
-    eJoint  mType;
+    eJoint mType;
     double mMinValue; /// Unit of this variable depends on the value of mType
     double mMaxValue; /// Unit of this variable depends on the value of mType
   };
