@@ -33,7 +33,7 @@ enable_testing()
 include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(DetectCup src/main.cpp src/DetectCup.cpp src/CupScanner.cpp)
+add_executable(DetectCup src/main.cpp src/DetectAGV.cpp src/CupScanner.cpp)
 add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
