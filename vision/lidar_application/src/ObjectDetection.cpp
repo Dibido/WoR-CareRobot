@@ -1,5 +1,9 @@
 #include "../include/ObjectDetection.h"
 
+// Declaration of namespace variables
+const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.1;
+const double ObjectDetectionConstants::cLidarHeight_m = 1.0;
+
 ObjectDetection::ObjectDetection() : mInitialized(false)
 {
 }
@@ -12,20 +16,22 @@ void ObjectDetection::run()
 {
   while (true)
   {
-    bool lNewData = false;
-    // TO-DO  check for new data
+    ros::spinOnce();
 
-    if (lNewData)
+    if (mDataHandler.isNewDataAvailable())
     {
       if (mInitialized)
       {
-        // Processdata
+        mMostRecentScan = mDataHandler.getLidarData();
 
-        // Publish objects
+        detectObjects();
+
+        // To-do: publish results
       }
       else
       {
-        // mInitialScan =
+        mInitialScan = mDataHandler.getLidarData();
+        mInitialized = true;
       }
     }
   }
@@ -36,17 +42,20 @@ void ObjectDetection::detectObjects()
   // Checking preconditions
   if ((mInitialScan.mDistances_m.size() == 0) ||
       (mMostRecentScan.mDistances_m.size() == 0) ||
-      (mInitialScan.mDistances_m.size() != mMostRecentScan.mDistances_m.size()) ||
+      (mInitialScan.mDistances_m.size() !=
+       mMostRecentScan.mDistances_m.size()) ||
       (!validateLidarData(mInitialScan)) ||
       (!validateLidarData(mMostRecentScan)))
   {
     throw std::logic_error("Preconditions of detectObjects weren't met");
   }
 
-  // Will contain a list of centerpoints of objects [Angle(key) -> Distance(value)]
+  // Will contain a list of centerpoints of objects [Angle(key) ->
+  // Distance(value)]
   std::vector<std::pair<double, double>> lObjectList;
 
-  // Boolean shows if previous distances compared where within (false) the max distance range or not (true). 
+  // Boolean shows if previous distances compared where within (false) the max
+  // distance range or not (true).
   bool lLastComparisonDifferent = false;
 
   // Will contain all measurements that belong to an object
@@ -54,24 +63,28 @@ void ObjectDetection::detectObjects()
 
   double lPreviousDistance_m = 0.0;
 
-  for (int i = 0; i < mMostRecentScan.mDistances_m.size(); ++i)
+  for (size_t i = 0; i < mMostRecentScan.mDistances_m.size(); ++i)
   {
     double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
-    double lInitialAngle = mInitialScan.mAngles.at(i);
+    // double lInitialAngle = mInitialScan.mAngles.at(i);
 
     double lCurrentDistance_m = mMostRecentScan.mDistances_m.at(i);
     double lCurrentAngle_m = mMostRecentScan.mAngles.at(i);
-    
-    double lDistanceDifference_m = std::abs(lInitialDistance_m - lCurrentDistance_m);
+
+    double lDistanceDifference_m =
+        std::abs(lInitialDistance_m - lCurrentDistance_m);
 
     // There is a change compared to initial scan
-    if((lDistanceDifference_m > ObjectDetectionConstants::cMaxDistanceDifference_m))
+    if ((lDistanceDifference_m >
+         ObjectDetectionConstants::cMaxDistanceDifference_m))
     {
-      // Current measurement can't be taken of the same object as previous iteration
-      if(std::abs(lCurrentDistance_m - lPreviousDistance_m) > ObjectDetectionConstants::cMaxDistanceDifference_m)
+      // Current measurement can't be taken of the same object as previous
+      // iteration
+      if (std::abs(lCurrentDistance_m - lPreviousDistance_m) >
+          ObjectDetectionConstants::cMaxDistanceDifference_m)
       {
         // If lObject contains valid info (it won't at first iteration)
-        if((lObject.mDistances_m.size() > 0))
+        if ((lObject.mDistances_m.size() > 0))
         {
           // Add centerpoint of this object to list
           lObjectList.push_back(getAverageMeasurement(lObject));
@@ -79,13 +92,13 @@ void ObjectDetection::detectObjects()
         }
       }
 
-      lObject.mAngles.push_back(lCurrentAngle_m);  
+      lObject.mAngles.push_back(lCurrentAngle_m);
 
       lLastComparisonDifferent = true;
     }
-    else 
+    else
     {
-      if(lLastComparisonDifferent == true)
+      if (lLastComparisonDifferent == true)
       {
         // Add centerpoint of this object to the list
         lObjectList.push_back(getAverageMeasurement(lObject));
@@ -97,13 +110,53 @@ void ObjectDetection::detectObjects()
 
     lPreviousDistance_m = lCurrentDistance_m;
   }
+
+  mPublishData = convertVectorsTo2D(lObjectList);
+
+  std::cout << "Detected objects:" << std::endl;
+
+  for(auto lPair : mPublishData)
+  {
+    std::cout << "(" << std::to_string(lPair.first) << "," << std::to_string(lPair.second) << ")" << std::endl;
+  }
+  
+  std::cout << std::endl;
 }
 
-std::pair<double, double> ObjectDetection::getAverageMeasurement(LidarData& aData) const
+std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
+    std::vector<std::pair<double, double>> aData) const
 {
-  if(!validateLidarData(aData))
+  std::vector<std::pair<double, double>> lReturnObjects;
+
+  for (size_t i = 0; i < aData.size(); ++i)
   {
-    throw std::logic_error("getAverageMeasurement was used wrongly, aData.mAngles size is not equal to aData.mDistances_m");
+    double lDistance_m = aData.at(i).second;
+
+    /* Convert angle in such a way that we can use sin/cos functions correctly,
+    compensating for the fact the lidars view starts north and then goes in a
+    clockwise circle, while the unit circle starts east and then moves
+    anti-clockwise */
+    double lConvertedAngle = (aData.at(i).first - M_PI_2) * -1;
+
+    double lObjectX = lDistance_m * cos(lConvertedAngle);
+    double lObjectY = lDistance_m * sin(lConvertedAngle);
+
+    std::cout << "Object X/Y: " << std::to_string(lObjectX) << ","
+              << std::to_string(lObjectY) << std::endl;
+    lReturnObjects.push_back(std::make_pair(lObjectX, lObjectY));
+  }
+
+  return lReturnObjects;
+}
+
+std::pair<double, double>
+    ObjectDetection::getAverageMeasurement(LidarData& aData) const
+{
+  if (!validateLidarData(aData))
+  {
+    throw std::logic_error(
+        "getAverageMeasurement was used wrongly, aData.mAngles size is not "
+        "equal to aData.mDistances_m");
   }
 
   double lAverageAngle = 0.0;
@@ -112,15 +165,15 @@ std::pair<double, double> ObjectDetection::getAverageMeasurement(LidarData& aDat
   double lSumAngles = 0.0;
   double lSumDistance_m = 0.0;
 
-  int lSampleSize = aData.mAngles.size();
+  int lSampleSize = static_cast<int>(aData.mAngles.size());
 
-  for(int i = 0; i < aData.mDistances_m.size(); ++i)
+  for (size_t i = 0; i < aData.mDistances_m.size(); ++i)
   {
     lSumAngles += aData.mAngles.at(i);
     lSumDistance_m += aData.mDistances_m.at(i);
   }
 
-  if(lSampleSize > 0)
+  if (lSampleSize > 0)
   {
     lAverageAngle = lSumAngles / lSampleSize;
     lAverageDistance_m = lSumDistance_m / lSampleSize;
@@ -131,11 +184,11 @@ std::pair<double, double> ObjectDetection::getAverageMeasurement(LidarData& aDat
 
 bool ObjectDetection::validateLidarData(LidarData& aData) const
 {
-  if(aData.mAngles.size() == aData.mDistances_m.size())
+  if (aData.mAngles.size() == aData.mDistances_m.size())
   {
     return true;
   }
-  else 
+  else
   {
     return false;
   }

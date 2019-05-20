@@ -2,15 +2,19 @@
 #define OBJECTDETECTION_H_
 
 #include "../include/LidarData.h"
+#include "../include/DataHandler.h"
 
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <math.h>
 
 namespace ObjectDetectionConstants
 {
   // Maximum difference allowed between measurement for them to be considered as measurements of the same object
-  double cMaxDistanceDifference_m = 0.1;
+  extern const double cMaxDistanceDifference_m;
+
+  extern const double cLidarHeight_m; // Z position of lidar
 }
 
 
@@ -42,6 +46,16 @@ class ObjectDetection
     void detectObjects();
 
     /**
+     * @brief Function converts data in vector format (theta, distance) to 
+     * objects position (x, y) relative to the lidar.
+     * @precondition: -
+     * @postcondition: -
+     * @param aData - Valid data format (theta, distance). Angles must be in radians.
+     * @return A list of positions of objects (X,Y).
+     */
+    std::vector<std::pair<double, double>> convertVectorsTo2D(std::vector<std::pair<double, double>> aData) const;
+
+    /**
      * @brief Function returns the average angle (key) and distance (value) of a data set.
      * @precondition: -
      * @postcondition: -
@@ -66,6 +80,11 @@ class ObjectDetection
 
     // Contains the data of the most recent 360 degrees scan performed.
     LidarData mMostRecentScan;
+
+    // Contains the data that will be published 
+    std::vector<std::pair<double, double>> mPublishData;
+
+    DataHandler mDataHandler;
 };
 
 #endif // OBJECTDETECTION_H_
