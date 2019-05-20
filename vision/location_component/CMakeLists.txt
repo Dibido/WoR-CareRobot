@@ -40,7 +40,7 @@ target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp src/DetectAGV.cpp src/CupScanner.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
 
 if(CODE_COVERAGE)

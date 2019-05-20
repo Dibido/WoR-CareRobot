@@ -66,7 +66,7 @@
       <cupWidthBottom> 5 </cupWidthBottom> <!--CM-->
       <cupWidthTop> 7.1 </cupWidthTop> <!--CM-->
       <cupWeight> 8 </cupWeight> <!--Gram-->
-      <cupVolumeOfLiquid> 157 </cupVolumeOfLiquid> <!--ml-->
+      <cupVolumeOfLiquid> 50 </cupVolumeOfLiquid> <!--ml-->
       <!-- 2.5*2.5*pi(3.14) * 8 = 157 ml-->
     </plugin>
   </model>

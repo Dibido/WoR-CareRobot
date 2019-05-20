@@ -54,6 +54,10 @@ std::vector<DetectedCup> CupScanner::scan(const cv::Mat& image, cv::Mat& display
   std::vector<std::vector<cv::Point>> allContours;
   cv::findContours(image_edges, allContours, CV_RETR_CCOMP,
                    CV_CHAIN_APPROX_TC89_L1);
+
+  drawContours( image, allContours, -1, cv::Scalar(255,0,0), 2);
+  
+
   std::vector<std::vector<cv::Point>> contours;
   std::copy_if(allContours.begin(), allContours.end(),
                std::back_inserter(contours),
