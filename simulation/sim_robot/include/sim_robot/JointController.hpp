@@ -8,8 +8,8 @@
 namespace gazebo
 {
   /**
-   * @brief Simulation of a robot joint, has all the information like min / max pwm and
-   * radians. Controls the Gazebo joint.
+   * @brief Simulation of a robot joint, has all the information like min / max
+   * pwm and radians. Controls the Gazebo joint.
    */
   class JointController
   {
@@ -84,6 +84,11 @@ namespace gazebo
      * @param aCurrentPos.
      */
     void setCurrentPos(jointRad_t aCurrentPos);
+      /**
+     * @brief Hard set current velocity, no checks.
+     * @param aCurrentVel.
+     */
+    void setCurrentVel(jointVel_t aCurrentVel);
 
       private:
     double convertPw2Radians(jointPw_t pw) const;

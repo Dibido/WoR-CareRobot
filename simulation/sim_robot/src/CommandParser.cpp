@@ -37,12 +37,12 @@ namespace commands
                                         jointVel_t speedFactor,
                                         std::vector<Command>& thetaOut)
   {
-    jointVel_t tempSpeedFactor = 0;
+  
     if (commandTheta.empty())
     { // the match on commandTheta is the speed (if it exists) else this field
       // is
       // empty
-      speedFactor = tempSpeedFactor;
+      speedFactor = 0;
     }
     createCommandTheta(commandTheta, speedFactor, thetaOut);
   }
