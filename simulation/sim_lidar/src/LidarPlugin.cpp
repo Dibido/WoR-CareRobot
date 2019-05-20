@@ -129,7 +129,8 @@ void LidarPlugin::OnScan(ConstLaserScanStampedPtr& _msg)
   // Add angles
   lLidarDataMessage.measurement_angles.clear();
   // Fill the angle array with the correct range. Add 1 PI so we get a range from 0 - TAU.
-  for(float lCurrentAngle = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size()); lCurrentAngle < lAngleMax + static_cast<float>(M_PI); lCurrentAngle += static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size()))
+  float lAngleOffset = static_cast<float>(2.0 * M_PI) / static_cast<float>(laser_msg.ranges.size());
+  for(float lCurrentAngle = lAngleOffset; lCurrentAngle < (lAngleMax + static_cast<float>(M_PI)); lCurrentAngle += lAngleOffset)
   {
     lLidarDataMessage.measurement_angles.push_back(lCurrentAngle);
   }
