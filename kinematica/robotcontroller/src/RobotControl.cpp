@@ -1,21 +1,24 @@
 #include "robotcontroller/RobotControlPublisher.hpp"
+
 #include "ros/ros.h"
 
 std::vector<kinematics::Link> createConfiguration();
 
 int main(int argc, char** argv)
 {
-    std::string lTopic = "robot_command";
-    uint16_t lQue_size = 1000;
-    const uint8_t lRate = 10;
+  const std::string cControlTopic = "robot_command";
+  const uint16_t cQueue_size = 1000;
+  const uint8_t cRate = 10;
 
-  ros::init(argc, argv, lTopic);
+  ros::init(argc, argv, cControlTopic);
 
-  ros::NodeHandle lN;
+  ros::NodeHandle lControlNode;
+  ros::NodeHandle lStopNode;
 
-  ros::Rate lLoop_rate(lRate);
+  ros::Rate lLoop_rate(cRate);
 
-  robotcontroller::RobotControlPublisher lRobotControlPub(lN, lTopic, lQue_size);
+  robotcontroller::RobotControlPublisher lRobotControlPub(
+      lControlNode, cControlTopic, cQueue_size);
 
   kinematics::DenavitHartenberg lDen(createConfiguration());
   std::vector<double> lCurrentConfiguration = {

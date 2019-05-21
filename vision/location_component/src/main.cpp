@@ -6,6 +6,8 @@
 #include <ros/ros.h>
 #include <vector>
 
+location_component::DetectAGV d;
+
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
   try

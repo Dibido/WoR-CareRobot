@@ -3,31 +3,37 @@
 
 #include <opencv2/opencv.hpp>
 
-/**
- * @brief Information of the detected cups in a object.
- * 
- */
-struct DetectedCup
+namespace location_component
 {
-  double mRadius;
-  bool mFilled;
-  cv::Point mMidpoint;
-};
-
-class CupScanner
-{
-    public:
-  CupScanner();
-  ~CupScanner();
-
   /**
-   * @brief This function will use a frame and detect the cups on the frame. It will register all the cups and the different states of the cups.
-   * 
-   * @param image - The image u want to register the different cups.
-   * @param display - A debug frame with all the information of the detected cups.
-   * @return std::vector<DetectedCup> - A vector with a alement for all the detected cups.
+   * @brief Information of the detected cups in a object.
+   *
    */
-  std::vector<DetectedCup> scan(const cv::Mat& image, cv::Mat& display);
-};
+  struct DetectedCup
+  {
+    double mRadius;
+    bool mFilled;
+    cv::Point mMidpoint;
+  };
+
+  class CupScanner
+  {
+      public:
+    CupScanner();
+    ~CupScanner();
+
+    /**
+     * @brief This function will use a frame and detect the cups on the frame.
+     * It will register all the cups and the different states of the cups.
+     *
+     * @param image - The image u want to register the different cups.
+     * @param display - A debug frame with all the information of the detected
+     * cups.
+     * @return std::vector<DetectedCup> - A vector with a alement for all the
+     * detected cups.
+     */
+    std::vector<DetectedCup> scan(const cv::Mat& image, cv::Mat& display);
+  };
+} // namespace location_component
 
 #endif /* ARUCOSCANNER_HPP */

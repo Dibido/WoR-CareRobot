@@ -4,11 +4,11 @@ project(location_component)
 find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_generation sensor_msgs)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   DIRECTORY
-   msg
-   FILES ResizedImage.msg
- )
+ # add_message_files(
+ #   DIRECTORY
+ #   msg
+ #   FILES ResizedImage.msg
+ # )
 
 
 ## Generate added messages and services with any dependencies listed here

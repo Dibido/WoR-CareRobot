@@ -16,8 +16,8 @@ TEST(TestSuite, testCase5)
   cv::Mat mat;
   image.copyTo(mat);
 
-  CupScanner scanner;
-  std::vector<DetectedCup> cups = scanner.scan(image, mat);
+  location_component::CupScanner scanner;
+  std::vector<location_component::DetectedCup> cups = scanner.scan(image, mat);
 
   EXPECT_EQ(cups.size(), 4);
 }
@@ -31,8 +31,8 @@ TEST(TestSuite, testCase6)
   cv::Mat mat;
   image.copyTo(mat);
 
-  CupScanner scanner;
-  std::vector<DetectedCup> cups = scanner.scan(image, mat);
+  location_component::CupScanner scanner;
+  std::vector<location_component::DetectedCup> cups = scanner.scan(image, mat);
 
   EXPECT_EQ(cups.at(0).mMidpoint.x, 462);
   EXPECT_EQ(cups.at(0).mMidpoint.y, 481);
