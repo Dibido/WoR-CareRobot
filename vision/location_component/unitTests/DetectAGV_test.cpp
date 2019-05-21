@@ -1,6 +1,6 @@
 // Bring in gtest
 #include <gtest/gtest.h>
-#include "../include/DetectAGV.hpp"
+#include "location_component/DetectAGV.hpp"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
