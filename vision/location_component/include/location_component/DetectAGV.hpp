@@ -1,18 +1,19 @@
 #ifndef DETECTAGV_HPP
 #define DETECTAGV_HPP
 
+#include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
-#include <boost/optional.hpp>
 
 const unsigned int CornersOfObject = 4;
 const unsigned int CenterMargin = 50; // Pixels
 const float AngleMargin = 10;
 const float AngleRect = -90;
 
-struct DetectedAGV {
+struct DetectedAGV
+{
   std::vector<cv::Point> mCorners;
   cv::Point mMidpoint;
 };
@@ -20,7 +21,6 @@ struct DetectedAGV {
 class DetectAGV
 {
     public:
-    
   DetectAGV();
   ~DetectAGV();
 

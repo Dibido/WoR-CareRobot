@@ -1,16 +1,10 @@
-//#include "CupScanner.hpp"
-// #include "opencv2/highgui.hpp"
-// #include "opencv2/imgcodecs.hpp"
-// #include "opencv2/imgproc/imgproc.hpp"
-// #include "opencv2/objdetect.hpp"
+#include "location_component/DetectAGV.hpp"
 #include <ctime>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/ros.h>
 #include <vector>
-
-#include "DetectAGV.hpp"
 
 DetectAGV d;
 

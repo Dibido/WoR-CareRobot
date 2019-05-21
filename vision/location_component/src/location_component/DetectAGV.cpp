@@ -1,5 +1,5 @@
-#include "DetectAGV.hpp"
-#include "CupScanner.hpp"
+#include "location_component/DetectAGV.hpp"
+#include "location_component/CupScanner.hpp"
 #include <ros/ros.h>
 
 DetectAGV::DetectAGV() : prevDetectedAGV(), capturedFrame(0, 0, CV_8UC3)
@@ -89,18 +89,18 @@ boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame)
     for (size_t idx = 0; idx < CornersOfObject; ++idx)
     {
       quad_pts.push_back(
-          cv::Point2f(contours.at(0).at(idx).x, contours.at(0).at(idx).y));
+          cv::Point2f((float)contours.at(0).at(idx).x, (float)contours.at(0).at(idx).y));
 
       detectedAGV.mCorners.push_back(contours.at(0).at(idx));
     }
 
-    square_pts.push_back(cv::Point2f(boundRect.x, boundRect.y));
+    square_pts.push_back(cv::Point2f((float)boundRect.x, (float)boundRect.y));
     square_pts.push_back(
-        cv::Point2f(boundRect.x, boundRect.y + boundRect.height));
-    square_pts.push_back(cv::Point2f(boundRect.x + boundRect.width,
-                                     boundRect.y + boundRect.height));
+        cv::Point2f((float)boundRect.x, (float)(boundRect.y + boundRect.height)));
+    square_pts.push_back(cv::Point2f((float)(boundRect.x + boundRect.width),
+                                     (float)(boundRect.y + boundRect.height)));
     square_pts.push_back(
-        cv::Point2f(boundRect.x + boundRect.width, boundRect.y));
+        cv::Point2f((float)(boundRect.x + boundRect.width), (float)boundRect.y));
 
     cv::Mat transmtx = getPerspectiveTransform(quad_pts, square_pts);
 
@@ -156,8 +156,8 @@ void DetectAGV::getContoursMat(
     double a = contourArea(contours.at(idx_0), false);
     if (a > largest_area)
     {
-      largest_area = a;
-      largest_contour_index = idx_0;
+      largest_area = (int)a;
+      largest_contour_index = (int)idx_0;
     }
   }
 
@@ -178,8 +178,8 @@ cv::Point DetectAGV::getMidPoint(std::vector<cv::Point>& contours)
     averageY += contours.at(idx).y;
   }
 
-  averageX /= contours.size();
-  averageY /= contours.size();
+  averageX /= (unsigned int)contours.size();
+  averageY /= (unsigned int)contours.size();
 
   return cv::Point(averageX, averageY);
 }

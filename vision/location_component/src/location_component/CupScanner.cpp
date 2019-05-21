@@ -1,4 +1,4 @@
-#include "CupScanner.hpp"
+#include "location_component/CupScanner.hpp"
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 
@@ -33,7 +33,7 @@ std::vector<DetectedCup> CupScanner::scan(const cv::Mat& image, cv::Mat& display
               image_edges_raw);
   image_edges_raw.forEach<uchar>(
       [](uchar& s, __attribute__((unused)) const int position[]) {
-        s = 255 - s;
+        s = (uchar)(255 - s);
       });
   cv::dilate(image_edges_raw, image_edges,
              cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5)));
@@ -76,7 +76,7 @@ std::vector<DetectedCup> CupScanner::scan(const cv::Mat& image, cv::Mat& display
     detectedCup.mFilled = false;
     detectedCup.mRadius = 5.0;
     cv::Moments mu = cv::moments(contours[idx]);
-    cv::Point centroid{ mu.m10 / mu.m00, mu.m01 / mu.m00 };
+    cv::Point centroid{ (int)(mu.m10 / mu.m00), (int)(mu.m01 / mu.m00) };
     detectedCup.mMidpoint = centroid;
     detectedCups.push_back(detectedCup);
   }
