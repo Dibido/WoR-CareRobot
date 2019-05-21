@@ -24,8 +24,14 @@ TEST(TestSuite, testCase1)
 // Declare another test
 TEST(TestSuite, testCase2)
 {
-    // cv::Mat image = cv::imread("Test_picture.png", cv::IMREAD_COLOR);
-	// imshow("test", image);
+    cv::Mat image = cv::imread("src/wor-18-19-s2/vision/location_component/unitTests/pictures/Test_picture.png", cv::IMREAD_COLOR);
+	cv::Mat mat;
 
-	EXPECT_EQ(1000, 1000);
+
+	DetectAGV d;
+	std::vector<std::vector<cv::Point>> contours(1);
+	d.getContoursMat(image,contours);
+
+	//The square has 4 corners
+	EXPECT_EQ(4, contours.at(0).size());
 }
