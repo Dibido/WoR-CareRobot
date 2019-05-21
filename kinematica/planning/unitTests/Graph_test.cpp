@@ -1,8 +1,8 @@
-#include "astar/Graph.hpp"
-#include "astar/Vertex.hpp"
+#include "planning/Graph.hpp"
+#include "planning/Vertex.hpp"
 #include "gtest/gtest.h"
 
-namespace astar
+namespace planning
 {
   TEST(GraphConstructor, DefaultConstructor)
   {

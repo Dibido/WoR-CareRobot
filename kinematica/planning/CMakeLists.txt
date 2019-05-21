@@ -1,16 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(robotcontroller)
+project(planning)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14 -Wall -Wextra -Wconversion)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  robotcontroller_msgs
-  kinematics
   roscpp
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -70,7 +69,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   robotcontroller_msgs
+#   std_msgs
 # )
 
 ################################################
@@ -103,9 +102,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES lib_robotcontrol
-  CATKIN_DEPENDS robotcontroller_msgs roscpp 
+ INCLUDE_DIRS include
+ LIBRARIES lib_planning
+#  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -119,25 +118,31 @@ include_directories(
   include
   SYSTEM
   ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
 )
 
-# add_executable(robotcontrol 
-# src/RobotControl.cpp 
+add_executable(planning 
+src/Main.cpp
+)
 
-# )
-
-add_library(lib_robotcontrol
-src/RobotControlPublisher.cpp 
-src/RobotStopPublisher.cpp )
+target_link_libraries(planning ${Boost_FILESYSTEM_LIBRARY} lib_planning
+                      ${Boost_SYSTEM_LIBRARY})
 
 
-target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
+## Declare a C++ library
 
-# target_link_libraries(robotcontrol lib_robotcontrol lib_kinematics)
-  
+add_library(lib_planning 
+src/Main.cpp
+src/planning/AStar.cpp
+src/planning/Graph.cpp
+)
+
+target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY})
+
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/robotcontroller.cpp
+#   src/${PROJECT_NAME}/planning.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -148,7 +153,7 @@ target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/robotcontroller_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/planning_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -205,11 +210,45 @@ target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_robotcontroller.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_planning.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)add_executable(talker src/talker.cpp)
+# catkin_add_nosetests(test)
 
+include(CTest)
+enable_testing()
+
+#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp unitTests/AStar_test.cpp unitTests/Obstacle_test.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests lib_planning ${catkin_LIBRARIES})
+  
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+    '*/*Main.cpp'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()

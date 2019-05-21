@@ -1,9 +1,9 @@
 #ifndef OBSTACLE_HPP
 #define OBSTACLE_HPP
 
-#include "astar/Vertex.hpp"
+#include "planning/Vertex.hpp"
 
-namespace obstacle
+namespace environment_controller
 {
   const uint8_t cConversionFromMetersToCentimeters = 100;
   
@@ -38,7 +38,7 @@ namespace obstacle
      * @author Martijn Vogelaar
      */
 
-    bool coversPoint(const astar::Vertex& aVertex) const
+    bool coversPoint(const planning::Vertex& aVertex) const
     {
       bool lPointCovered = false;
       if (static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters >

@@ -1,6 +1,6 @@
-#include "astar/AStar.hpp"
-#include "astar/Graph.hpp"
-#include "astar/Vertex.hpp"
+#include "planning/AStar.hpp"
+#include "planning/Graph.hpp"
+#include "planning/Vertex.hpp"
 #include "obstacle/Obstacle.hpp"
 #include "gtest/gtest.h"
 #include <iostream>
@@ -13,7 +13,7 @@
 // ― = OBSTACLE
 // . = FREE POINT
 
-namespace astar
+namespace planning
 {
   TEST(ObstaclePathfinding, 2Dpath_1)
   {

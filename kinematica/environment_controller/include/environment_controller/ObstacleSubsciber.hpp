@@ -12,13 +12,10 @@
 #define OBSTACLE_SUBSCRIBER_HPP
 
 #include "kinematica_msgs/Obstacles.h"
-#include "robotcontroller/RobotStopPublisher.hpp"
 #include "ros/ros.h"
 #include <string>
 
-class Safety;
-
-namespace obstacle
+namespace environment_controller
 {
   const uint8_t QUEUE_SIZE = 100;
   class ObstacleSubsciber
@@ -35,7 +32,6 @@ namespace obstacle
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
     ros::NodeHandle mHandlePub;
-    robotcontroller::RobotStopPublisher mPublis;
   };
 } // namespace obstacle
 
