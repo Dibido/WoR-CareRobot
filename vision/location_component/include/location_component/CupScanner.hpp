@@ -3,19 +3,22 @@
 
 #include <opencv2/opencv.hpp>
 
-struct DetectedCup
+namespace location_component
 {
-  double mRadius;
-  bool mFilled;
-  cv::Point mMidpoint;
-};
+  struct DetectedCup
+  {
+    double mRadius;
+    bool mFilled;
+    cv::Point mMidpoint;
+  };
 
-class CupScanner
-{
-    public:
-  CupScanner();
-  ~CupScanner();
-  std::vector<DetectedCup> scan(const cv::Mat& image, cv::Mat& display);
-};
+  class CupScanner
+  {
+      public:
+    CupScanner();
+    ~CupScanner();
+    std::vector<DetectedCup> scan(const cv::Mat& image, cv::Mat& display);
+  };
+} // namespace location_component
 
 #endif /* ARUCOSCANNER_HPP */

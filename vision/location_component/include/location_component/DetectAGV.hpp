@@ -12,33 +12,36 @@ const unsigned int CenterMargin = 50; // Pixels
 const float AngleMargin = 10;
 const float AngleRect = -90;
 
-struct DetectedAGV
+namespace location_component
 {
-  std::vector<cv::Point> mCorners;
-  cv::Point mMidpoint;
-};
+  struct DetectedAGV
+  {
+    std::vector<cv::Point> mCorners;
+    cv::Point mMidpoint;
+  };
 
-class DetectAGV
-{
-    public:
-  DetectAGV();
-  ~DetectAGV();
+  class DetectAGV
+  {
+      public:
+    DetectAGV();
+    ~DetectAGV();
 
-  void detectFrame(const cv::Mat& frame, cv::Mat& displayFrame);
+    void detectFrame(const cv::Mat& frame, cv::Mat& displayFrame);
 
-  boost::optional<DetectedAGV> detect(const cv::Mat& frame);
+    boost::optional<DetectedAGV> detect(const cv::Mat& frame);
 
-  void makePerspectiveCorrection(const cv::Mat& transmtx,
-                                 const cv::Mat& sourceMat,
-                                 cv::Mat& dist);
+    void makePerspectiveCorrection(const cv::Mat& transmtx,
+                                   const cv::Mat& sourceMat,
+                                   cv::Mat& dist);
 
-  void getContoursMat(const cv::Mat& sourceMat,
-                      std::vector<std::vector<cv::Point>>& contours);
-  cv::Point getMidPoint(std::vector<cv::Point>& contours);
+    void getContoursMat(const cv::Mat& sourceMat,
+                        std::vector<std::vector<cv::Point>>& contours);
+    cv::Point getMidPoint(std::vector<cv::Point>& contours);
 
-    private:
-  boost::optional<DetectedAGV> prevDetectedAGV;
-  cv::Mat capturedFrame;
-};
+      private:
+    boost::optional<DetectedAGV> prevDetectedAGV;
+    cv::Mat capturedFrame;
+  };
+} // namespace location_component
 
 #endif

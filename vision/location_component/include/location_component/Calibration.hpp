@@ -3,9 +3,12 @@
 
 #include <opencv/opencv2.hpp>
 
-struct Calibration
+namespace location_component
 {
-  std::pair<cv::Scalar, cv::Scalar> mAGVColorRange_HSV;
-};
+  struct Calibration
+  {
+    std::pair<cv::Scalar, cv::Scalar> mAGVColorRange_HSV;
+  };
+} // namespace location_component
 
 #endif /* CALIBRATION_HPP */
