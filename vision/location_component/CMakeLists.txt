@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_genera
 
 ## Generate messages in the 'msg' folder
  add_message_files(
-   DIRECTORY 
+   DIRECTORY
    msg
    FILES ResizedImage.msg
  )
@@ -30,17 +30,17 @@ include(CTest)
 enable_testing()
 
 
-include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(DetectCup src/main.cpp src/DetectAGV.cpp src/CupScanner.cpp)
+add_executable(DetectCup src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
 add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp src/DetectAGV.cpp src/CupScanner.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CODE_COVERAGE)
