@@ -1,6 +1,6 @@
 // Bring in gtest
-#include "../include/CupScanner.hpp"
-#include "../include/DetectAGV.hpp"
+#include "location_component/CupScanner.hpp"
+#include "location_component/DetectAGV.hpp"
 #include <gtest/gtest.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>

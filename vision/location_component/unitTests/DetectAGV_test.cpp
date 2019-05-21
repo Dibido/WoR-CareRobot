@@ -1,11 +1,6 @@
 // Bring in gtest
-<<<<<<< HEAD
-#include "../include/DetectAGV.hpp"
-#include <gtest/gtest.h>
-=======
 #include <gtest/gtest.h>
 #include "location_component/DetectAGV.hpp"
->>>>>>> 8ea9f5fbc5d67a033b75e632cc83d45604e9a67b
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -67,11 +62,6 @@ TEST(TestSuite, testCase4)
   DetectAGV d;
   boost::optional<DetectedAGV> agv = d.detect(image);
 
-<<<<<<< HEAD
   EXPECT_EQ(335, agv->mMidpoint.x);
   EXPECT_EQ(456, agv->mMidpoint.y);
 }
-=======
-	EXPECT_EQ(505, agv->mMidpoint.y);
-}
->>>>>>> 8ea9f5fbc5d67a033b75e632cc83d45604e9a67b
