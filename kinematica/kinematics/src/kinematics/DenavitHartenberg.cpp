@@ -1,6 +1,7 @@
 #include "kinematics/DenavitHartenberg.hpp"
 #include "kinematics/EulerAngles.hpp"
 #include "kinematics/JacobiMatrix.hpp"
+#include "kinematics/KinematicsDefines.hpp"
 #include "kinematics/UtilityFunctions.hpp"
 #include <math.h>
 #include <ros/ros.h>
@@ -8,34 +9,31 @@
 namespace kinematics
 {
 
-  DenavitHartenberg::DenavitHartenberg(const std::vector<Link>& lLinkConfig)
-      : mLinkConfiguration(lLinkConfig)
+  DenavitHartenberg::DenavitHartenberg() : mRobotConfiguration()
   {
   }
 
-  Matrix<double, 6, 1> DenavitHartenberg::forwardKinematicsYPR(
-      const std::vector<double>& lBigTheta,
-      std::size_t lStart,
-      std::size_t lEnd) const
+  Matrix<double, 6, 1>
+      DenavitHartenberg::forwardKinematicsYPR(const Configuration& aBigTheta,
+                                              std::size_t aStart,
+                                              std::size_t aEnd) const
   {
-    const auto lEndEffector = forwardKinematics(lBigTheta, lStart, lEnd);
-    EulerAngles euler(lEndEffector);
-    return Matrix<double, 6, 1>{ lEndEffector[0][3], lEndEffector[1][3],
-                                 lEndEffector[2][3], euler.mYaw_rad,
+    const auto aEndEffector = forwardKinematics(aBigTheta, aStart, aEnd);
+    EulerAngles euler(aEndEffector);
+    return Matrix<double, 6, 1>{ aEndEffector[0][3], aEndEffector[1][3],
+                                 aEndEffector[2][3], euler.mYaw_rad,
                                  euler.mPitch_rad,   euler.mRoll_rad };
   }
 
-  std::vector<double> DenavitHartenberg::inverseKinematics(
-      const Matrix<double, 6, 1>& lGoal,
-      const std::vector<double>& lCurrentBigTheta) const
+  Configuration DenavitHartenberg::inverseKinematics(
+      const Matrix<double, 6, 1>& aGoal,
+      const Configuration& aCurrentBigTheta) const
   {
-    std::vector<double> lNewBigTheta(lCurrentBigTheta);
-    auto lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
+    Configuration lNewBigTheta(aCurrentBigTheta);
+    auto lVirtuaaEndEffector = forwardKinematicsYPR(lNewBigTheta);
     double lBeta = cIkBeta;
     std::size_t lIterationCount = 0;
-    while (transformationMatrixEquals(lGoal, lVirtualEndEffector, cIkEpsilon_m,
-                                      cIkEpsilon_rad,
-                                      cDhTransformPosRadSplit) == false)
+    while (lNewBigTheta.result() == false)
     {
       ++lIterationCount;
       if (lIterationCount > cIkMaxIterations)
@@ -44,53 +42,55 @@ namespace kinematics
                  lIterationCount);
         break;
       }
-      Matrix<double, 6, 1> lDeltaPos = (lGoal - lVirtualEndEffector);
+      Matrix<double, 6, 1> lDeltaPos = (aGoal - lVirtuaaEndEffector);
       const auto deltaEffector(lDeltaPos * lBeta);
 
       const Matrix<double, 6, 7> lJacobian(calculateJacobiMatrix(lNewBigTheta));
       const auto inverseJacobi(lJacobian.pseudoInverse());
 
       const auto lDeltaTheta(inverseJacobi * deltaEffector);
-      for (std::size_t i = 0; i < lNewBigTheta.size(); ++i)
+      for (std::size_t i = 0; i < lNewBigTheta.size; ++i)
       {
-        lNewBigTheta[i] += lDeltaTheta.at(i)[0];
+        lNewBigTheta.setTheta(i, lNewBigTheta[i] + lDeltaTheta[i][0]);
       }
-      lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
+      lVirtuaaEndEffector = forwardKinematicsYPR(lNewBigTheta);
+
+      lNewBigTheta.setResult(
+          transformationMatrixEquals(aGoal, lVirtuaaEndEffector, cIkEpsilon_m,
+                                     cIkEpsilon_rad, cDhTransformPosRadSplit));
     }
     return lNewBigTheta;
   }
 
   Matrix<double, 4, 4>
-      DenavitHartenberg::forwardKinematics(const std::vector<double>& lBigTheta,
-                                           std::size_t lStart,
-                                           std::size_t lEnd) const
+      DenavitHartenberg::forwardKinematics(const Configuration& aBigTheta,
+                                           std::size_t aStart,
+                                           std::size_t aEnd) const
   {
-    assert(lBigTheta.size() <= mLinkConfiguration.size());
-    assert(lEnd <= mLinkConfiguration.size());
-    if (lEnd == lStart)
+    if (aEnd == aStart)
     {
-      lStart = 0;
-      lEnd = mLinkConfiguration.size();
+      aStart = 0;
+      aEnd = mRobotConfiguration.size;
     }
     Matrix<double, 4, 4> lResult = lResult.identity();
-    std::size_t mThetaIndex = lStart;
-    for (std::size_t mLinkConfigurationIndex = lStart;
-         mLinkConfigurationIndex < lEnd; ++mLinkConfigurationIndex)
+    std::size_t mThetaIndex = aStart;
+    for (std::size_t mLinkConfigurationIndex = aStart;
+         mLinkConfigurationIndex < aEnd; ++mLinkConfigurationIndex)
     {
       double mVariable;
-      if (mLinkConfiguration[mLinkConfigurationIndex].getType() ==
+      if (mRobotConfiguration[mLinkConfigurationIndex].getType() ==
           eJoint::STATIC)
       {
         mVariable = 0;
       }
       else
       {
-        mVariable = lBigTheta[mThetaIndex];
+        mVariable = aBigTheta[mThetaIndex];
         ++mThetaIndex;
       }
       lResult =
           lResult *
-          mLinkConfiguration[mLinkConfigurationIndex].transformationMatrix(
+          mRobotConfiguration[mLinkConfigurationIndex].transformationMatrix(
               mVariable);
     }
     return lResult;

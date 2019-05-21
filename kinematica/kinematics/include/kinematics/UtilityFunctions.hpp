@@ -82,5 +82,22 @@ namespace kinematics
     }
     return true;
   }
+
+  /**
+   * @brief Constran a radian between -M_PI and M_PI
+   *
+   * @param aRadian
+   * @return double
+   */
+  inline double constrainRadian(double aRadian)
+  {
+    aRadian = std::fmod(aRadian + M_PI, M_PI * 2);
+    if (aRadian < 0)
+    {
+      aRadian += M_PI * 2;
+    }
+    aRadian -= M_PI;
+    return aRadian;
+  }
 } // namespace kinematics
 #endif // KINEMATICS_UTILITYFUNCTIONS_HPP
