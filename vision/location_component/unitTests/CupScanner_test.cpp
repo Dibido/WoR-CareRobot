@@ -1,0 +1,48 @@
+// Bring in gtest
+#include "../include/CupScanner.hpp"
+#include "../include/DetectAGV.hpp"
+#include <gtest/gtest.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+
+// Testing the fucntion getMidPoint
+TEST(TestSuite, testCase5)
+{
+  cv::Mat image = cv::imread(
+      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
+      "Test_picture_cups.png",
+      cv::IMREAD_COLOR);
+  cv::Mat mat;
+  image.copyTo(mat);
+
+  CupScanner scanner;
+  std::vector<DetectedCup> cups = scanner.scan(image, mat);
+
+  EXPECT_EQ(cups.size(), 4);
+}
+
+TEST(TestSuite, testCase6)
+{
+  cv::Mat image = cv::imread(
+      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
+      "Test_picture_cups.png",
+      cv::IMREAD_COLOR);
+  cv::Mat mat;
+  image.copyTo(mat);
+
+  CupScanner scanner;
+  std::vector<DetectedCup> cups = scanner.scan(image, mat);
+
+  EXPECT_EQ(cups.at(0).mMidpoint.x, 462);
+  EXPECT_EQ(cups.at(0).mMidpoint.y, 481);
+
+  EXPECT_EQ(cups.at(1).mMidpoint.x, 197);
+  EXPECT_EQ(cups.at(1).mMidpoint.y, 447);
+
+  EXPECT_EQ(cups.at(2).mMidpoint.x, 650);
+  EXPECT_EQ(cups.at(2).mMidpoint.y, 338);
+
+  EXPECT_EQ(cups.at(3).mMidpoint.x, 412);
+  EXPECT_EQ(cups.at(3).mMidpoint.y, 248);
+}
