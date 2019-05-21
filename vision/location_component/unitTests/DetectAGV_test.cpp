@@ -5,8 +5,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-
-// Declare a test
+//Testing the fucntion getMidPoint
 TEST(TestSuite, testCase1)
 {
 	std::vector<cv::Point> contours;
@@ -21,7 +20,7 @@ TEST(TestSuite, testCase1)
   	EXPECT_EQ(point.x, point.y);
 }
 
-// Declare another test
+//Testing the contour function
 TEST(TestSuite, testCase2)
 {
     cv::Mat image = cv::imread("src/wor-18-19-s2/vision/location_component/unitTests/pictures/Test_picture.png", cv::IMREAD_COLOR);
@@ -34,4 +33,40 @@ TEST(TestSuite, testCase2)
 
 	//The square has 4 corners
 	EXPECT_EQ(4, contours.at(0).size());
+}
+
+TEST(TestSuite, testCase3)
+{
+    cv::Mat image = cv::imread("src/wor-18-19-s2/vision/location_component/unitTests/pictures/Test_picture.png", cv::IMREAD_COLOR);
+	cv::Mat mat;
+
+	DetectAGV d;
+	boost::optional<DetectedAGV> agv = d.detect(image);
+
+	EXPECT_EQ(328, agv->mMidpoint.x);
+	EXPECT_EQ(505, agv->mMidpoint.y);
+}
+
+TEST(TestSuite, testCase4)
+{
+    cv::Mat image = cv::imread("src/wor-18-19-s2/vision/location_component/unitTests/pictures/Test_picture.png", cv::IMREAD_COLOR);
+	cv::Mat mat;
+
+	DetectAGV d;
+	boost::optional<DetectedAGV> agv = d.detect(image);
+
+	EXPECT_EQ(328, agv->mMidpoint.x);
+	EXPECT_EQ(505, agv->mMidpoint.y);
+}
+
+
+TEST(TestSuite, testCase5)
+{
+    cv::Mat image = cv::imread("src/wor-18-19-s2/vision/location_component/unitTests/pictures/Test_picture_perspective_view.png", cv::IMREAD_COLOR);
+	cv::Mat mat;
+
+	DetectAGV d;
+	boost::optional<DetectedAGV> agv = d.detect(image);
+
+	EXPECT_EQ(505, agv->mMidpoint.y);
 }
