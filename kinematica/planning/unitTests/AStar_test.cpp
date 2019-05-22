@@ -1,9 +1,9 @@
-#include "astar/AStar.hpp"
-#include "astar/Graph.hpp"
+#include "planning/AStar.hpp"
+#include "planning/Graph.hpp"
 
 #include "gtest/gtest.h"
 
-namespace astar
+namespace planning
 {
   TEST(ASTAR, constructor)
   {

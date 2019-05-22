@@ -14,7 +14,7 @@
 #include "Graph.hpp"
 #include "Vertex.hpp"
 
-namespace astar
+namespace planning
 {
   typedef std::vector<Vertex> Path;
   typedef std::vector<Vertex> OpenSet;

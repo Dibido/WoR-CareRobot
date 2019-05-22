@@ -1,4 +1,4 @@
-#include "astar/AStar.hpp"
+#include "planning/AStar.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <utility>
 
-namespace astar
+namespace planning
 {
 
   double ActualCost(const Vertex& aStart, const Vertex& aGoal)
