@@ -11,7 +11,7 @@ namespace planning
 
   TEST(GraphRemoveObstacle, RemoveObastacleDontExist)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.removeObstacle(ob));
@@ -26,7 +26,7 @@ namespace planning
 
   TEST(GraphAddObstacle, addObstacle)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.addObstacle(ob));
@@ -34,7 +34,7 @@ namespace planning
 
   TEST(GraphAddObstacle, addObstacleAndRemove)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     graph.addObstacle(ob);
@@ -73,4 +73,4 @@ namespace planning
     EXPECT_EQ(controlList, graph.calculateNeighbours(Vertex(0, 0, 0)));
     EXPECT_NE(controlList, graph.calculateNeighbours(Vertex(0, 10, 0)));
   }
-} // namespace astar
+} // namespace planning

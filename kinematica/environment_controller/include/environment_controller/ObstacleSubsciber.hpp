@@ -17,7 +17,7 @@
 
 namespace environment_controller
 {
-  const uint8_t QUEUE_SIZE = 100;
+  const uint8_t cQueueSize = 100;
   class ObstacleSubsciber
   {
 
@@ -33,6 +33,6 @@ namespace environment_controller
     ros::Subscriber mSubscriber;
     ros::NodeHandle mHandlePub;
   };
-} // namespace obstacle
+} // namespace environment_controller
 
 #endif // OBSTACLE_SUBSCRIBER_HPP
