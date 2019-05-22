@@ -6,7 +6,10 @@
 
 namespace environment_controller
 {
-
+  /**
+   * @brief data structure object
+   *
+   */
   struct Object
   {
       private:
@@ -20,6 +23,18 @@ namespace environment_controller
     uint8_t mSensorId;
 
       public:
+    /**
+     * @brief Construct a new Object object
+     *
+     * @param aPosition
+     * @param aHeight
+     * @param aWidth
+     * @param aDepth
+     * @param aDirection
+     * @param aSpeed
+     * @param aMeasurementTime
+     * @param aSensorId
+     */
     Object(const Position& aPosition,
            double aHeight,
            double aWidth,
@@ -43,7 +58,11 @@ namespace environment_controller
       speed_ms();
       measurementTime();
     }
-
+    /**
+     * @brief
+     *
+     * @return Position&
+     */
     Position& position()
     {
       mPosition.x_m();
@@ -52,42 +71,67 @@ namespace environment_controller
       return mPosition;
     }
 
+    /**
+     * @brief
+     *
+     * @return double&
+     */
     double& height_m()
     {
-      if (mHeight_m > cMaxRange || mHeight_m < cMinRange)
+      if (mHeight_m >= cMaxRange || mHeight_m <= cMinRange)
       {
         throw std::range_error("height is out of range");
       }
       return mHeight_m;
     }
 
+    /**
+     * @brief
+     *
+     * @return double&
+     */
     double& width_m()
     {
-      if (mWidth_m > cMaxRange || mWidth_m < cMinRange)
+      if (mWidth_m >= cMaxRange || mWidth_m <= cMinRange)
       {
         throw std::range_error("width is out of range");
       }
       return mWidth_m;
     }
 
+    /**
+     * @brief
+     *
+     * @return double&
+     */
     double& depth_m()
     {
-      if (mDepth_m > cMaxRange || mDepth_m < cMinRange)
+      if (mDepth_m >= cMaxRange || mDepth_m <= cMinRange)
       {
         throw std::range_error("depth is out of range");
       }
       return mDepth_m;
     }
 
+    /**
+     * @brief
+     *
+     * @return double&
+     */
     double& speed_ms()
     {
-      if (mSpeed_ms > cToFast_ms || mSpeed_ms < cToSlow_ms)
+      if (mSpeed_ms >= cToFast_ms || mSpeed_ms <= cToSlow_ms)
       {
         throw std::range_error("speed is out of range");
       }
       return mSpeed_ms;
     }
 
+    /**
+     * @brief
+     *
+     * @return ros::Time&
+     */
     ros::Time& measurementTime()
     {
       if (mMeasurementTime == ros::Time(0))
@@ -97,6 +141,11 @@ namespace environment_controller
       return mMeasurementTime;
     }
 
+    /**
+     * @brief
+     *
+     * @return uint8_t&
+     */
     uint8_t& sensorId()
     {
       return mSensorId;

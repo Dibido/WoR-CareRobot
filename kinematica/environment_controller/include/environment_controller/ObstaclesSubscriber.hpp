@@ -21,7 +21,8 @@ namespace environment_controller
   const uint8_t cQueueSize = 100;
 
   /**
-   * @brief
+   * @brief implements the interface for obstacles, this class receives the ros
+   * messages for obstacles
    *
    */
   class ObstaclesSubscriber : public IObstacles
@@ -32,12 +33,15 @@ namespace environment_controller
      * @brief Construct a new Obstacles Subscriber object
      *
      * @param aSubName
+     *
+     * @author Gianni Monteban
      */
     ObstaclesSubscriber(const std::string& aSubName);
 
     /**
      * @brief Destroy the Obstacles Subscriber object
      *
+     * @author Gianni Monteban
      */
     virtual ~ObstaclesSubscriber() = default;
 
@@ -45,12 +49,15 @@ namespace environment_controller
      * @brief receives the message from
      *
      * @param aMsg the message that is received on the obstacle topic
+     *
+     * @author Gianni Monteban
      */
     void obstaclesCallback(const kinematica_msgs::ObstaclesConstPtr& aMsg);
 
     /**
      * @see IObstacles.hpp
      *
+     * @author Gianni Monteban
      */
     void parseObstacles(const Obstacles& aObstacles);
 

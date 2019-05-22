@@ -1,4 +1,5 @@
 #include "environment_controller/ObstaclesSubscriber.hpp"
+#include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
 

@@ -17,20 +17,27 @@ namespace environment_controller
       const kinematica_msgs::ObstaclesConstPtr& aMsg)
   {
     Obstacles lObstacles;
-    for (size_t i = 0; i < aMsg->obstacles.size(); ++i)
+    for (std::size_t i = 0; i < aMsg->obstacles.size(); ++i)
     {
-      environment_controller::Position lPos(aMsg->obstacles[i].position_m.x,
-                                            aMsg->obstacles[i].position_m.y,
-                                            aMsg->obstacles[i].position_m.z);
-      environment_controller::Object lObj(
-          lPos, aMsg->obstacles[i].height_m, aMsg->obstacles[i].width_m,
-          aMsg->obstacles[i].depth_m, aMsg->obstacles[i].direction_rad,
-          aMsg->obstacles[i].speed_ms, aMsg->obstacles[i].measurementTime,
-          aMsg->obstacles[i].sensorID);
-      lObstacles.push_back(lObj);
+      try
+      {
+        environment_controller::Position lPos(aMsg->obstacles[i].position_m.x,
+                                              aMsg->obstacles[i].position_m.y,
+                                              aMsg->obstacles[i].position_m.z);
+        environment_controller::Object lObj(
+            lPos, aMsg->obstacles[i].height_m, aMsg->obstacles[i].width_m,
+            aMsg->obstacles[i].depth_m, aMsg->obstacles[i].direction_rad,
+            aMsg->obstacles[i].speed_ms, aMsg->obstacles[i].measurementTime,
+            aMsg->obstacles[i].sensorID);
+        lObstacles.push_back(lObj);
+      }
+      catch (const std::exception& e)
+      {
+        ROS_ERROR(e.what());
+      }
     }
     parseObstacles(lObstacles);
-  }
+  } // namespace environment_controller
 
   void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)
   {
