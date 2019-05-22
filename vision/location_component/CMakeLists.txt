@@ -19,7 +19,6 @@ find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_genera
    sensor_msgs
  )
 
-
 catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs)
 
 find_package(Threads REQUIRED)
@@ -33,10 +32,10 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(DetectCup src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
-add_dependencies(DetectCup ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_compile_options(DetectCup PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
-target_link_libraries(DetectCup ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
+add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
+target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
@@ -71,7 +70,7 @@ if(CODE_COVERAGE)
 endif()
 
 # Mark executables and/or libraries for installation
-install(TARGETS DetectCup
+install(TARGETS location_component
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -34,6 +34,7 @@ namespace location_component
       if (prevDetectedAGV)
       {
         bool capture = false;
+        // Check if the AGV has moved from one side of the frame to another.
         if ((*detectedAGV).mMidpoint.x < frame.cols / 2 &&
             (*prevDetectedAGV).mMidpoint.x >= frame.cols / 2)
         {
@@ -50,8 +51,7 @@ namespace location_component
         if (capture)
         {
           CupScanner cupScanner;
-          cv::Mat t;
-          std::vector<DetectedCup> detectedCups = cupScanner.scan(frame, t);
+          std::vector<DetectedCup> detectedCups = cupScanner.detectCups(frame);
 
           frame.copyTo(capturedFrame);
 
@@ -67,7 +67,7 @@ namespace location_component
     prevDetectedAGV = detectedAGV;
   }
 
-  boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame)
+  boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame) const
   {
     cv::Mat disFrame;
     std::vector<std::vector<cv::Point>> contours(1);
@@ -81,7 +81,9 @@ namespace location_component
     {
       DetectedAGV detectedAGV;
       boundRect = boundingRect(contours.at(0));
+      // The corners of the AGV.
       std::vector<cv::Point2f> quad_pts;
+      // The corners of the bounding rectangle around the AGV.
       std::vector<cv::Point2f> square_pts;
 
       for (size_t idx = 0; idx < CornersOfObject; ++idx)
@@ -130,7 +132,7 @@ namespace location_component
 
   void DetectAGV::makePerspectiveCorrection(const cv::Mat& transmtx,
                                             const cv::Mat& sourceMat,
-                                            cv::Mat& dist)
+                                            cv::Mat& dist) const
   {
     dist = cv::Mat::zeros(sourceMat.rows, sourceMat.cols, CV_8UC3);
     warpPerspective(sourceMat, dist, transmtx, sourceMat.size());
@@ -138,7 +140,7 @@ namespace location_component
 
   void DetectAGV::getContoursMat(
       const cv::Mat& sourceMat,
-      std::vector<std::vector<cv::Point>>& contours_poly)
+      std::vector<std::vector<cv::Point>>& contoursPoly) const
   {
     std::vector<std::vector<cv::Point>> contours;
     cv::Mat matDes;
@@ -147,41 +149,41 @@ namespace location_component
     cv::findContours(matDes, contours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 
-    if (contours.size() == 0 || contours.size() == 0)
+    if (contours.size() == 0)
       return;
 
-    int largest_area = 0;
-    int largest_contour_index = 0;
+    int largestArea = 0;
+    int largestContourIndex = 0;
 
-    for (size_t idx_0 = 0; idx_0 < contours.size(); idx_0++)
+    for (size_t idx0 = 0; idx0 < contours.size(); idx0++)
     {
-      double a = contourArea(contours.at(idx_0), false);
-      if (a > largest_area)
+      double area = contourArea(contours.at(idx0), false);
+      if (area > largestArea)
       {
-        largest_area = ( int )a;
-        largest_contour_index = ( int )idx_0;
+        largestArea = ( int )area;
+        largestContourIndex = ( int )idx0;
       }
     }
 
     // Copy the right rectengle tot contour_poly
 
-    approxPolyDP(cv::Mat(contours.at(largest_contour_index)),
-                 contours_poly.at(0), 5, true);
+    approxPolyDP(cv::Mat(contours.at(largestContourIndex)), contoursPoly.at(0),
+                 5, true);
   }
 
-  cv::Point DetectAGV::getMidPoint(std::vector<cv::Point>& contours)
+  cv::Point DetectAGV::getMidPoint(const std::vector<cv::Point>& contours) const
   {
-    unsigned int averageX = 0;
-    unsigned int averageY = 0;
+    unsigned int sumX = 0;
+    unsigned int sumY = 0;
 
     for (size_t idx = 0; idx < contours.size(); ++idx)
     {
-      averageX += contours.at(idx).x;
-      averageY += contours.at(idx).y;
+      sumX += contours.at(idx).x;
+      sumY += contours.at(idx).y;
     }
 
-    averageX /= ( unsigned int )contours.size();
-    averageY /= ( unsigned int )contours.size();
+    unsigned int averageX = sumX / ( unsigned int )contours.size();
+    unsigned int averageY = sumY / ( unsigned int )contours.size();
 
     return cv::Point(averageX, averageY);
   }

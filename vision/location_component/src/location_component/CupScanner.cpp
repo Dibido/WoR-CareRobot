@@ -21,8 +21,14 @@ namespace location_component
   {
   }
 
-  std::vector<DetectedCup> CupScanner::scan(const cv::Mat& image,
-                                            cv::Mat& display)
+  std::vector<DetectedCup> CupScanner::detectCups(const cv::Mat& image) const
+  {
+    cv::Mat lDisplayMat;
+    return detectCups(image, lDisplayMat);
+  }
+
+  std::vector<DetectedCup> CupScanner::detectCups(const cv::Mat& image,
+                                                  cv::Mat& display) const
   {
     std::vector<DetectedCup> detectedCups;
 

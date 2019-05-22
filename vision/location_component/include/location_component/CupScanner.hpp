@@ -1,5 +1,5 @@
-#ifndef ARUCOSCANNER_HPP
-#define ARUCOSCANNER_HPP
+#ifndef CUPSCANNER_HPP
+#define CUPSCANNER_HPP
 
 #include <opencv2/opencv.hpp>
 
@@ -31,8 +31,14 @@ namespace location_component
      * cups.
      * @return std::vector<DetectedCup> - A collection of the detected cups.
      */
-    std::vector<DetectedCup> scan(const cv::Mat& image, cv::Mat& display);
+    std::vector<DetectedCup> detectCups(const cv::Mat& image,
+                                        cv::Mat& display) const;
+    /**
+     * @brief Overload for CupScanner::detectCups without the output display
+     * matrix.
+     */
+    std::vector<DetectedCup> detectCups(const cv::Mat& image) const;
   };
 } // namespace location_component
 
-#endif /* ARUCOSCANNER_HPP */
+#endif /* CUPSCANNER_HPP */
