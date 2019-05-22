@@ -1,6 +1,5 @@
 #include "environment_controller/ObstaclesSubscriber.hpp"
 #include "kinematica_msgs/Object.h"
-#include "robotcontroller_msgs/Stop.h"
 
 namespace environment_controller
 {

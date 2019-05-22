@@ -123,18 +123,24 @@ include_directories(
   
   ## Declare a C++ library
   
-  add_library(lib_planning 
-  src/Main.cpp
-  src/planning/AStar.cpp
-  src/planning/Graph.cpp
-  )
-  
-  target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
+add_library(lib_planning 
+src/Main.cpp
+src/planning/AStar.cpp
+src/planning/Graph.cpp
+)
+
+add_dependencies(lib_planning
+${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
                         ${Boost_SYSTEM_LIBRARY})
 
 add_executable(${PROJECT_NAME}_main 
 src/Main.cpp
 )
+
+add_dependencies(${PROJECT_NAME}_main 
+${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_main ${Boost_FILESYSTEM_LIBRARY} lib_planning
                       ${Boost_SYSTEM_LIBRARY})

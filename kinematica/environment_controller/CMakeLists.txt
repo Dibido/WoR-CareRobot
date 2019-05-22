@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(environment_controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -125,6 +125,9 @@ add_library(lib_environment_controller
 src/environment_controller/ObstaclesSubscriber.cpp
 src/environment_controller/Object.cpp
 src/environment_controller/Position.cpp)
+
+add_dependencies(lib_environment_controller
+${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(lib_environment_controller 
 ${catkin_LIBRARIES}
