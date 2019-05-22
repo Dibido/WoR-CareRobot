@@ -38,7 +38,8 @@ namespace location_component
     cv::Mat lGrayscale = lHSVChannels[1];
 
     cv::Mat lEdgesRaw, lEdges;
-    cv::inRange(lHSV, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30), lEdgesRaw);
+    cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
+    // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
         [](uchar& s, __attribute__((unused)) const int position[]) {
           s = (uchar)(255 - s);
@@ -46,12 +47,13 @@ namespace location_component
     cv::dilate(lEdgesRaw, lEdges,
                cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5)));
 
-    cv::Point lCorners[4];
+    const std::size_t lCornersSize = 4;
+    cv::Point lCorners[lCornersSize];
     lCorners[0] = cv::Point();
     lCorners[1] = cv::Point(0, lEdges.rows - 1);
     lCorners[2] = cv::Point(lEdges.cols - 1, 0);
     lCorners[3] = cv::Point(lEdges.cols - 1, lEdges.rows - 1);
-    for (std::size_t lIdx = 0; lIdx < 4; lIdx++)
+    for (std::size_t lIdx = 0; lIdx < lCornersSize; lIdx++)
     {
       cv::floodFill(lEdges, lCorners[lIdx], cv::Scalar(0));
     }
@@ -66,11 +68,13 @@ namespace location_component
     drawContours(aDisplay, lAllContours, -1, cv::Scalar(255, 0, 0), 2);
 
     std::vector<std::vector<cv::Point>> lContours;
+    // Remove all contours that are too small in either width or height.
     std::copy_if(lAllContours.begin(), lAllContours.end(),
                  std::back_inserter(lContours),
                  [](const std::vector<cv::Point>& lContour) mutable {
                    auto lRect = cv::boundingRect(lContour);
-                   return lRect.width > 100 && lRect.height > 100;
+                   return lRect.width > ( int )cMinCupDiameter_px &&
+                          lRect.height > ( int )cMinCupDiameter_px;
                  });
 
     cv::Scalar colors[3];

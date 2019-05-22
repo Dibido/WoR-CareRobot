@@ -38,8 +38,8 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   cv::namedWindow("view");
   image_transport::ImageTransport it(nh);
-  image_transport::Subscriber sub =
-      it.subscribe("/sensor/webcam/img_raw", 1, imageCallback);
+  const std::string cTopicName = "/sensor/webcam/img_raw";
+  image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
   ros::spin();
   cv::destroyWindow("view");
 

@@ -6,6 +6,18 @@
 namespace location_component
 {
   /**
+   * @brief The minimum diameter of the detected cups in pixels.
+   */
+  const unsigned int cMinCupDiameter_px = 100;
+  /**
+   * @brief The minimum HSV color value of the AGV.
+   */
+  const cv::Scalar cMinAGVHSVColor = cv::Scalar(0, 0, 0);
+  /**
+   * @brief The maximum HSV color value of the AGV.
+   */
+  const cv::Scalar cMaxAGVHSVColor = cv::Scalar(255, 255, 30);
+  /**
    * @brief Information of the detected cups in a object.
    *
    */

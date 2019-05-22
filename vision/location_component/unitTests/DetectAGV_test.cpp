@@ -17,7 +17,8 @@ TEST(DetectAGVSuite, CalculateMidpoint)
 
   location_component::DetectAGV lAGVDetector;
   cv::Point lPoint = lAGVDetector.getMidPoint(lContours);
-  EXPECT_EQ(lPoint.x, lPoint.y);
+  EXPECT_EQ(lPoint.x, 50);
+  EXPECT_EQ(lPoint.y, 50);
 }
 
 // Testing the contour function
