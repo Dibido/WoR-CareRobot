@@ -8,7 +8,7 @@
 #include <opencv2/imgcodecs.hpp>
 
 // Testing the fucntion getMidPoint
-TEST(TestSuite, testCase5)
+TEST(CupScannerSuite, RecogniseMultipleCups)
 {
   cv::Mat image =
       cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
@@ -21,7 +21,7 @@ TEST(TestSuite, testCase5)
   EXPECT_EQ(cups.size(), 4);
 }
 
-TEST(TestSuite, testCase6)
+TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
 {
   cv::Mat image =
       cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);

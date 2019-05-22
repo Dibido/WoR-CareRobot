@@ -7,7 +7,7 @@
 #include <opencv2/imgcodecs.hpp>
 
 // Testing the fucntion getMidPoint
-TEST(TestSuite, testCase1)
+TEST(DetectAGVSuite, CalculateMidpoint)
 {
   std::vector<cv::Point> contours;
   contours.push_back(cv::Point(0, 0));
@@ -21,7 +21,7 @@ TEST(TestSuite, testCase1)
 }
 
 // Testing the contour function
-TEST(TestSuite, testCase2)
+TEST(DetectAGVSuite, ContoursMatSize)
 {
   cv::Mat image =
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
@@ -35,7 +35,7 @@ TEST(TestSuite, testCase2)
   EXPECT_EQ(4, contours.at(0).size());
 }
 
-TEST(TestSuite, testCase3)
+TEST(DetectAGVSuite, DetectAGVPosition)
 {
   cv::Mat image =
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
@@ -48,7 +48,7 @@ TEST(TestSuite, testCase3)
   EXPECT_EQ(505, agv->mMidpoint.y);
 }
 
-TEST(TestSuite, testCase4)
+TEST(DetectAGVSuite, DetectAGVPositionPerspective)
 {
   cv::Mat image = cv::imread(
       getImagePath("Test_picture_agv_perspective_view.png"), cv::IMREAD_COLOR);
