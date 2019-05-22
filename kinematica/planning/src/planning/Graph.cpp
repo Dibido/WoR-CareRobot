@@ -1,8 +1,9 @@
-#include "astar/Graph.hpp"
+#include "planning/Graph.hpp"
 
 #include <algorithm>
 #include <unistd.h>
-namespace astar
+
+namespace planning
 {
 
   Graph::Graph() : mEndPoint(0, 0, 0)
@@ -14,16 +15,16 @@ namespace astar
     mEndPoint = aVertex;
   }
 
-  void Graph::addObstacle(const obstacle::Obstacle& obstacle)
+  void Graph::addObstacle(const environment_controller::Obstacle& obstacle)
   {
     mObstacles.push_back(obstacle);
   }
 
-  void Graph::removeObstacle(const obstacle::Obstacle& obstacle)
+  void Graph::removeObstacle(const environment_controller::Obstacle& obstacle)
   {
     mObstacles.erase(
         std::remove_if(mObstacles.begin(), mObstacles.end(),
-                       [obstacle](const obstacle::Obstacle anObstacle) {
+                       [obstacle](const environment_controller::Obstacle anObstacle) {
                          return obstacle == anObstacle;
                        }),
         mObstacles.end());
@@ -78,7 +79,7 @@ namespace astar
 
   bool Graph::isPointInAnObstacle(const Vertex& aVertex) const
   {
-    for (const obstacle::Obstacle& obstacle : mObstacles)
+    for (const environment_controller::Obstacle& obstacle : mObstacles)
     {
       if (obstacle.coversPoint(aVertex))
       {
