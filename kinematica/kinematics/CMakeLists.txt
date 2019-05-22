@@ -49,6 +49,9 @@ add_library(lib_kinematics
     src/kinematics/Link.cpp
     src/kinematics/RobotConfiguration.cpp
     )
+
+add_dependencies(lib_kinematics
+    ${catkin_EXPORTED_TARGETS})
 target_link_libraries(lib_kinematics
     ${catkin_LIBRARIES}
 )

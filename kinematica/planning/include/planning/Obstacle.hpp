@@ -3,10 +3,10 @@
 
 #include "planning/Vertex.hpp"
 
-namespace environment_controller
+namespace planning
 {
   const uint8_t cConversionFromMetersToCentimeters = 100;
-  
+
   /**
    * @brief Obstacle represents a 3D obstacle.
    *
@@ -38,7 +38,7 @@ namespace environment_controller
      * @author Martijn Vogelaar
      */
 
-    bool coversPoint(const planning::Vertex& aVertex) const
+    bool coversPoint(const Vertex& aVertex) const
     {
       bool lPointCovered = false;
       if (static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters >
@@ -65,6 +65,6 @@ namespace environment_controller
       return lPointCovered;
     }
   };
-} // namespace obstacle
+} // namespace planning
 
 #endif // OBSTACLE_HPP

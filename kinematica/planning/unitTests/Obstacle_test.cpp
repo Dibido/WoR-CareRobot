@@ -1,6 +1,6 @@
-#include "environment_controller/Obstacle.hpp"
 #include "planning/AStar.hpp"
 #include "planning/Graph.hpp"
+#include "planning/Obstacle.hpp"
 #include "planning/Vertex.hpp"
 #include "gtest/gtest.h"
 #include <iostream>
@@ -24,24 +24,15 @@ namespace planning
         . . . . . . P G
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.2f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.5f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.2f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.5f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
     AStar astar(lGraph);
     Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 10, 0, 0 },
                         Vertex{ 20, 10, 0 }, Vertex{ 30, 10, 0 },
@@ -60,24 +51,15 @@ namespace planning
         . . . P P P P G
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.1f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.5f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.5f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
     AStar astar(lGraph);
     Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 10, 10, 0 },
                         Vertex{ 20, 20, 0 }, Vertex{ 30, 30, 0 },
@@ -98,22 +80,14 @@ namespace planning
       ― ― ― ― ― ― ― ― ― ― ―
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.0f, -0.1f, 0.0f,
-                                                          10.0f, 0.1f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.9f, 0.4f, 0.0f,
-                                                          10.0f, 0.1f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ -0.1f, -0.1f, 0.0f,
-                                                          0.1f, 10.0f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.9f, -0.1f, 0.0f,
-                                                          0.1f, 10.0f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.1f, 0.1f, 0.0f,
-                                                          0.1f, 0.4f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.3f, 0.2f, 0.0f,
-                                                          0.1f, 0.4f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.5f, 0.1f, 0.0f,
-                                                          0.1f, 0.4f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.7f, 0.2f, 0.0f,
-                                                          0.1f, 0.4f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, -0.1f, 0.0f, 10.0f, 0.1f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.9f, 0.4f, 0.0f, 10.0f, 0.1f, 10.0f });
+    lGraph->addObstacle(Obstacle{ -0.1f, -0.1f, 0.0f, 0.1f, 10.0f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.9f, -0.1f, 0.0f, 0.1f, 10.0f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.1f, 0.1f, 0.0f, 0.1f, 0.4f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.4f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.5f, 0.1f, 0.0f, 0.1f, 0.4f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.7f, 0.2f, 0.0f, 0.1f, 0.4f, 10.0f });
     AStar astar(lGraph);
     Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 0, 10, 0 },
                         Vertex{ 0, 20, 0 },  Vertex{ 10, 30, 0 },
@@ -168,40 +142,23 @@ namespace planning
         ― ― ― ― ― ― ― ― ― ― ― ―
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.5f, -0.1f, 0.0f,
-                                                          1.2f, 0.1f, 0.6f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.1f, 0.0f, 2.0f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.1f, 0.1f, 2.0f, 0.1f, 0.1f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.5f, -0.1f, 0.0f,
-                                                          1.2f, 0.1f, 0.6f });
-    lGraph->addObstacle(environment_controller::Obstacle{ -0.1f, 0.1f, 0.0f,
-                                                          0.1f, 0.8f, 0.6f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 1.0f, 0.1f, 0.0f, 0.1f, 0.8f, 0.6f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.1f, 0.3f, 2.0f, 1.0f, 0.1f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.4f, 0.1f, -0.1f,
-                                                          2.0f, 1.0f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.6f, 0.2f, 0.1f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.7f, 0.2f, 0.1f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.6f, 0.3f, 0.1f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.7f, 0.3f, 0.1f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.7f, 0.1f, 0.2f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.8f, 0.1f, 0.2f, 0.1f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.3f, 0.1f, 0.2f, 0.8f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.2f, 0.2f, 0.2f, 0.5f, 0.1f, 0.1f });
-    lGraph->addObstacle(
-        environment_controller::Obstacle{ 0.4f, 0.3f, 0.2f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.5f, -0.1f, 0.0f, 1.2f, 0.1f, 0.6f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, 0.0f, 2.0f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, 0.1f, 2.0f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.5f, -0.1f, 0.0f, 1.2f, 0.1f, 0.6f });
+    lGraph->addObstacle(Obstacle{ -0.1f, 0.1f, 0.0f, 0.1f, 0.8f, 0.6f });
+    lGraph->addObstacle(Obstacle{ 1.0f, 0.1f, 0.0f, 0.1f, 0.8f, 0.6f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, 0.3f, 2.0f, 1.0f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, -0.1f, 2.0f, 1.0f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.6f, 0.2f, 0.1f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.7f, 0.2f, 0.1f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.6f, 0.3f, 0.1f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.7f, 0.3f, 0.1f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.7f, 0.1f, 0.2f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.8f, 0.1f, 0.2f, 0.1f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.3f, 0.1f, 0.2f, 0.8f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.2f, 0.2f, 0.2f, 0.5f, 0.1f, 0.1f });
+    lGraph->addObstacle(Obstacle{ 0.4f, 0.3f, 0.2f, 0.1f, 0.1f, 0.1f });
     AStar astar(lGraph);
     Path lExpectedPath{
       Vertex{ 0, 0, 0 },    Vertex{ 10, 0, 0 },   Vertex{ 20, 0, 0 },
@@ -224,14 +181,10 @@ namespace planning
        | ― |
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.0f, -0.1f, 0.0f,
-                                                          10.0f, 0.1f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.0f, 0.1f, 0.0f,
-                                                          10.0f, 0.1f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ -0.1f, -0.1f, 0.0f,
-                                                          10.0f, 0.3f, 10.0f });
-    lGraph->addObstacle(environment_controller::Obstacle{ 0.1f, -0.1f, 0.0f,
-                                                          10.0f, 0.3f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, -0.1f, 0.0f, 10.0f, 0.1f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.0f, 0.1f, 0.0f, 10.0f, 0.1f, 10.0f });
+    lGraph->addObstacle(Obstacle{ -0.1f, -0.1f, 0.0f, 10.0f, 0.3f, 10.0f });
+    lGraph->addObstacle(Obstacle{ 0.1f, -0.1f, 0.0f, 10.0f, 0.3f, 10.0f });
 
     AStar astar(lGraph);
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -125,6 +125,9 @@ include_directories(
 
 add_executable(main_application 
 src/RobotControl.cpp)
+
+add_dependencies(main_application
+${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(main_application 
 lib_kinematics
