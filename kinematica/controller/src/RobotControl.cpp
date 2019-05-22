@@ -1,4 +1,5 @@
 #include "environment_controller/ObstacleSubsciber.hpp"
+#include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
 
@@ -21,15 +22,16 @@ int main(int argc, char** argv)
   robotcontroller::RobotControlPublisher lRobotControlPub(
       lControlNode, cControlTopic, cQueue_size);
 
-  kinematics::DenavitHartenberg lDen();
-  std::vector<double> lCurrentConfiguration = {
-    0, 0, 0, 0, 0, 0, 0
-  }; // Current configuration
-  Matrix<double, 6, 1> lGoalEndEffector{
-    0, 0, 0, 0, 0, 0
-  }; // Determine with astar
-  std::vector<double> lGoalConfiguration =
-      lDen.inverseKinematics(lGoalEndEffector, lCurrentConfiguration);
+  std::shared_ptr<kinematics::IConfigurationProvider> lConfigurationProvider =
+      std::make_shared<kinematics::ConfigurationProvider>();
+
+  kinematics::Configuration lCurrentConfiguration;
+
+  kinematics::EndEffector lGoalEndEffector(0, 0, 0, 0, 0, 0);
+
+  kinematics::Configuration lGoalConfiguration =
+      lConfigurationProvider->inverseKinematics(lGoalEndEffector,
+                                                lCurrentConfiguration);
 
   while (ros::ok())
   {

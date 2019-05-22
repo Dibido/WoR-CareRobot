@@ -17,7 +17,8 @@ namespace kinematics
     /**
      * @brief Uses the inverseKinematics to find a Configuration that is equal
      * to the position and rotation described in EndEffector
-     *
+     * @see
+     * http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/DDD+-+Kinematics+interface
      * @pre aGoalPosition uses the Tait-Bryan convention to describes the angles
      * yaw, pitch and roll
      * @post result in Configuration has been set to the result of the

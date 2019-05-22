@@ -42,10 +42,11 @@ include_directories(
 )
 
 add_library(lib_kinematics
-    src/kinematics/DenavitHartenberg.cpp
-    src/kinematics/Link.cpp
     src/kinematics/Configuration.cpp
+    src/kinematics/ConfigurationProvider.cpp
+    src/kinematics/DenavitHartenberg.cpp
     src/kinematics/EndEffector.cpp
+    src/kinematics/Link.cpp
     src/kinematics/RobotConfiguration.cpp
     )
 target_link_libraries(lib_kinematics
