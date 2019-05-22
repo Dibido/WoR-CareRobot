@@ -30,7 +30,7 @@ namespace kinematics
      */
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalPosition,
-                          const Configuration& aCurrentConfiguration);
+                          const Configuration& aCurrentConfiguration) = 0;
   };
 } // namespace kinematics
 
