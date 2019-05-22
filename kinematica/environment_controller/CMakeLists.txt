@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_environment_controller
-  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs
+  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs planning
 #  DEPENDS system_lib
 )
 

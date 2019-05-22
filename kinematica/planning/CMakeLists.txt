@@ -104,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES lib_planning
-#  CATKIN_DEPENDS roscpp std_msgs
+ CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -119,26 +119,26 @@ include_directories(
   SYSTEM
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
-)
+  )
+  
+  ## Declare a C++ library
+  
+  add_library(lib_planning 
+  src/Main.cpp
+  src/planning/AStar.cpp
+  src/planning/Graph.cpp
+  )
+  
+  target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
+                        ${Boost_SYSTEM_LIBRARY})
 
-add_executable(planning 
+add_executable(${PROJECT_NAME}_main 
 src/Main.cpp
 )
 
-target_link_libraries(planning ${Boost_FILESYSTEM_LIBRARY} lib_planning
+target_link_libraries(${PROJECT_NAME}_main ${Boost_FILESYSTEM_LIBRARY} lib_planning
                       ${Boost_SYSTEM_LIBRARY})
 
-
-## Declare a C++ library
-
-add_library(lib_planning 
-src/Main.cpp
-src/planning/AStar.cpp
-src/planning/Graph.cpp
-)
-
-target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

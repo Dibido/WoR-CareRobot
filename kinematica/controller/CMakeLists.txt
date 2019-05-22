@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES controller
-  CATKIN_DEPENDS environment_controller planning robotcontroller std_msgs lib_kinematics lib_planning lib_environment_controller
+  CATKIN_DEPENDS environment_controller planning robotcontroller std_msgs kinematics
 #  DEPENDS system_lib
 )
 

@@ -105,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_robotcontrol
-  CATKIN_DEPENDS robotcontroller_msgs roscpp 
+  CATKIN_DEPENDS robotcontroller_msgs roscpp kinematics
 #  DEPENDS system_lib
 )
 
