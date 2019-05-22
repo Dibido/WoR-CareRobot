@@ -52,12 +52,17 @@ namespace gazebo
     virtual void Load(sensors::SensorPtr aModel, sdf::ElementPtr aSdf);
 
       private:
-   
+      // Ros variables
     std::unique_ptr<ros::NodeHandle> mRosNode;
     ros::Subscriber mRosSub;
     ros::Publisher mWebcamPublisher;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
+
+     /**
+     * Handles incoming ros messages
+     * 
+     */
     void QueueThread();
   };
 
