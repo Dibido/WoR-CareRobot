@@ -11,8 +11,8 @@ namespace robotcontroller
     const double cWidth_m;
     const double cSpeedfactor;
     const double cForce_nm;
-    const double cEpsilon_inner_m;
-    const double cEpsilon_outer_m;
+    const double cEpsilonInner_m;
+    const double cEpsilonOuter_m;
     /**
      * @brief Construct a new Gripper Data object
      *
@@ -25,8 +25,8 @@ namespace robotcontroller
     GripperData(const double aWidth_m,
                 const double aSpeedfactor,
                 const double aForce_nm,
-                const double anEpsilon_inner_m,
-                const double anEpsilon_outer_m);
+                const double anEpsilonInner_m,
+                const double anEpsilonOuter_m);
     ~GripperData() = default;
   };
 } // namespace robotcontroller

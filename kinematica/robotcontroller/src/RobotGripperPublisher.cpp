@@ -22,8 +22,8 @@ namespace robotcontroller
     lMsg.width = aGripperData.cWidth_m;
     lMsg.speedfactor = aGripperData.cSpeedfactor;
     lMsg.force = aGripperData.cForce_nm;
-    lMsg.epsilon_inner = aGripperData.cEpsilon_inner_m;
-    lMsg.epsilon_outer = aGripperData.cEpsilon_outer_m;
+    lMsg.epsilon_inner = aGripperData.cEpsilonInner_m;
+    lMsg.epsilon_outer = aGripperData.cEpsilonOuter_m;
 
     mRobotGripper_pub.publish(lMsg);
   }
