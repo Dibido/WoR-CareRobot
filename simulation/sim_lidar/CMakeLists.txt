@@ -50,12 +50,18 @@ target_link_libraries(${PROJECT_NAME}_plugin
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+
+add_dependencies(${PROJECT_NAME}_unit_tests sensor_interfaces)
+
+target_link_libraries(${PROJECT_NAME}_unit_tests
+ ${catkin_LIBRARIES}
+ ${GAZEBO_LIBRARIES}
+ ${PROJECT_NAME}_plugin
+ RayPlugin)
   
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
   set(CMAKE_BUILD_TYPE Debug)
-
 
   include(../../cmake/CodeCoverage.cmake)
     
@@ -75,7 +81,6 @@ if(CODE_COVERAGE)
   )
 
   APPEND_COVERAGE_COMPILER_FLAGS()
-
 
   SETUP_TARGET_FOR_COVERAGE_LCOV(
           NAME ${PROJECT_NAME}_coverage
