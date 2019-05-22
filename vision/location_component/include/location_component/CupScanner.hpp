@@ -26,18 +26,18 @@ namespace location_component
      * @brief This function will use a frame and detect the cups on the frame.
      * It will register all the cups and the different states of the cups.
      *
-     * @param image - The image on which to register the different cups.
-     * @param display - A debug frame with all the information of the detected
+     * @param aImage - The image on which to register the different cups.
+     * @param aDisplay - A debug frame with all the information of the detected
      * cups.
      * @return std::vector<DetectedCup> - A collection of the detected cups.
      */
-    std::vector<DetectedCup> detectCups(const cv::Mat& image,
-                                        cv::Mat& display) const;
+    std::vector<DetectedCup> detectCups(const cv::Mat& aImage,
+                                        cv::Mat& aDisplay) const;
     /**
      * @brief Overload for CupScanner::detectCups without the output display
      * matrix.
      */
-    std::vector<DetectedCup> detectCups(const cv::Mat& image) const;
+    std::vector<DetectedCup> detectCups(const cv::Mat& aImage) const;
   };
 } // namespace location_component
 

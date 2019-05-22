@@ -5,7 +5,7 @@
 namespace location_component
 {
 
-  DetectAGV::DetectAGV() : prevDetectedAGV(), capturedFrame(0, 0, CV_8UC3)
+  DetectAGV::DetectAGV() : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3)
   {
   }
 
@@ -16,9 +16,9 @@ namespace location_component
   void DetectAGV::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
   {
     boost::optional<DetectedAGV> detectedAGV = detect(frame);
-    if (capturedFrame.cols == 0)
+    if (mCapturedFrame.cols == 0)
     {
-      capturedFrame = cv::Mat(frame.rows, frame.cols, CV_8UC3);
+      mCapturedFrame = cv::Mat(frame.rows, frame.cols, CV_8UC3);
     }
     cv::Mat leftDispFrame;
     frame.copyTo(leftDispFrame);
@@ -31,17 +31,17 @@ namespace location_component
       cv::circle(leftDispFrame, (*detectedAGV).mMidpoint, 10,
                  cv::Scalar(0, 255, 0), CV_FILLED, 8, 0);
 
-      if (prevDetectedAGV)
+      if (mPrevDetectedAGV)
       {
         bool capture = false;
         // Check if the AGV has moved from one side of the frame to another.
         if ((*detectedAGV).mMidpoint.x < frame.cols / 2 &&
-            (*prevDetectedAGV).mMidpoint.x >= frame.cols / 2)
+            (*mPrevDetectedAGV).mMidpoint.x >= frame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING LEFT");
           capture = true;
         }
-        if ((*prevDetectedAGV).mMidpoint.x < frame.cols / 2 &&
+        if ((*mPrevDetectedAGV).mMidpoint.x < frame.cols / 2 &&
             (*detectedAGV).mMidpoint.x >= frame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING RIGHT");
@@ -53,18 +53,18 @@ namespace location_component
           CupScanner cupScanner;
           std::vector<DetectedCup> detectedCups = cupScanner.detectCups(frame);
 
-          frame.copyTo(capturedFrame);
+          frame.copyTo(mCapturedFrame);
 
           for (const auto& detectedCup : detectedCups)
           {
-            cv::circle(capturedFrame, detectedCup.mMidpoint, 10,
+            cv::circle(mCapturedFrame, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), CV_FILLED);
           }
         }
       }
     }
-    cv::hconcat(leftDispFrame, capturedFrame, displayFrame);
-    prevDetectedAGV = detectedAGV;
+    cv::hconcat(leftDispFrame, mCapturedFrame, displayFrame);
+    mPrevDetectedAGV = detectedAGV;
   }
 
   boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame) const
@@ -77,7 +77,7 @@ namespace location_component
     cv::Rect boundRect;
 
     // Getting the middle point of the rect and draw this point
-    if (contours.at(0).size() == CornersOfObject)
+    if (contours.at(0).size() == cCornersOfObject)
     {
       DetectedAGV detectedAGV;
       boundRect = boundingRect(contours.at(0));
@@ -86,7 +86,7 @@ namespace location_component
       // The corners of the bounding rectangle around the AGV.
       std::vector<cv::Point2f> square_pts;
 
-      for (size_t idx = 0; idx < CornersOfObject; ++idx)
+      for (size_t idx = 0; idx < cCornersOfObject; ++idx)
       {
         quad_pts.push_back(cv::Point2f(( float )contours.at(0).at(idx).x,
                                        ( float )contours.at(0).at(idx).y));
@@ -111,7 +111,7 @@ namespace location_component
       std::vector<std::vector<cv::Point>> contours(1);
       getContoursMat(disFrame, contours);
 
-      if (contours.at(0).size() == CornersOfObject)
+      if (contours.at(0).size() == cCornersOfObject)
       {
         std::vector<cv::Point2f> points, pointInOriginalPerspective;
         points.push_back(getMidPoint(contours.at(0)));
