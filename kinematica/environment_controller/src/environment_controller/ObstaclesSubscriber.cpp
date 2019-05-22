@@ -37,7 +37,7 @@ namespace environment_controller
     }
     if (lObstacles.size())
       parseObstacles(lObstacles);
-  } // namespace environment_controller
+  }
 
   void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)
   {

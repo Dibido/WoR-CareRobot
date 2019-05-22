@@ -14,6 +14,7 @@ namespace environment_controller
         mHeight_m(aHeight),
         mWidth_m(aWidth),
         mDepth_m(aDepth),
+        mDirecton_rad(aDirection),
         mSpeed_ms(aSpeed),
         mMeasurementTime(aMeasurementTime),
         mSensorId(aSensorId)
@@ -59,6 +60,15 @@ namespace environment_controller
       throw std::range_error("depth is out of range");
     }
     return mDepth_m;
+  }
+
+  double& Object::direction_rad()
+  {
+    if (mDirecton_rad <= cLow_rad || mDirecton_rad > cHigh_rad)
+    {
+      throw std::range_error("direction is out of range");
+    }
+    return mDirecton_rad;
   }
 
   double& Object::speed_ms()

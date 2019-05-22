@@ -7,24 +7,14 @@
 namespace environment_controller
 {
   /**
-   * @brief data structure object
+   * @brief data structure object, if a parameter is not between the correct
+   * values it will throw an exception
+   * @see parameters for correct interface data
    * @author Gianni Monteban
    */
   struct Object
   {
       public:
-    /**
-     * @brief Construct a new Object object
-     *
-     * @param aPosition
-     * @psaram aHeight
-     * @param aWidth
-     * @param aDepth
-     * @param aDirection
-     * @param aSpeed
-     * @param aMeasurementTime
-     * @param aSensorId
-     */
     Object(const Position& aPosition,
            double aHeight,
            double aWidth,
@@ -34,61 +24,68 @@ namespace environment_controller
            const ros::Time& aMeasurementTime,
            uint8_t aSensorId);
     /**
-     * @brief
+     * @brief getter & setter for position
      *
-     * @return Position&
+     * @return Position& the position strcut
      */
     Position& position();
 
     /**
-     * @brief
+     * @brief getter & setter for height
      *
-     * @return double&
+     * @return double& the height
      */
     double& height_m();
 
     /**
-     * @brief
+     * @brief getter & setter for width
      *
-     * @return double&
+     * @return double& the widht
      */
     double& width_m();
     /**
-     * @brief
+     * @brief getter & setter for depth
      *
-     * @return double&
+     * @return double& the depth
      */
     double& depth_m();
 
     /**
-     * @brief
+     * @brief getter & setter for direction
      *
-     * @return double&
+     * @return double& the direction
+     */
+    double& direction_rad();
+
+    /**
+     * @brief getter & setter for speed
+     *
+     * @return double& the speed
      */
     double& speed_ms();
 
     /**
-     * @brief
+     * @brief getter & setter for measurementTime
      *
-     * @return ros::Time&
+     * @return ros::Time& the time the object was measured
      */
     ros::Time& measurementTime();
     /**
-     * @brief
+     * @brief getter & setter for sensorId
      *
-     * @return uint8_t&
+     * @return uint8_t& the sensorId
      */
     uint8_t& sensorId();
 
       private:
-    Position mPosition;
-    double mHeight_m;
-    double mWidth_m;
-    double mDepth_m;
-    double mDirecton_rad;
-    double mSpeed_ms;
-    ros::Time mMeasurementTime;
-    uint8_t mSensorId;
+    Position mPosition;         ///< @see Position.hpp for correct values
+    double mHeight_m;           ///< must be between -100 and 100 meters
+    double mWidth_m;            ///< must be between -100 and 100 meters
+    double mDepth_m;            ///< must be between -100 and 100 meters
+    double mDirecton_rad;       ///< must be between -PI and PI
+    double mSpeed_ms;           ///< must be between 0 and 10 M/S
+    ros::Time mMeasurementTime; ///< cannot be 0
+    uint8_t mSensorId;          ///< sensorId needs to exsist
   };
 
 } // namespace environment_controller
