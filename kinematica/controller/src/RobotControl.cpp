@@ -1,4 +1,4 @@
-#include "environment_controller/ObstacleSubsciber.hpp"
+#include "environment_controller/ObstaclesSubscriber.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
 
@@ -13,7 +13,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, cControlTopic);
 
   std::string lStr = std::string("/detectedObjects");
-  environment_controller::ObstacleSubsciber subsriber(lStr);
+  environment_controller::ObstaclesSubscriber lSubscriber(lStr);
 
   ros::NodeHandle lControlNode;
   ros::NodeHandle lStopNode;

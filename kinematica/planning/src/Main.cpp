@@ -1,6 +1,6 @@
-#include "environment_controller/Obstacle.hpp"
 #include "planning/AStar.hpp"
 #include "planning/Graph.hpp"
+#include "planning/Obstacle.hpp"
 
 #include <memory>
 
@@ -8,9 +8,9 @@ int main()
 {
   std::shared_ptr<planning::Graph> lGraph = std::make_shared<planning::Graph>();
   lGraph->addObstacle(
-      environment_controller::Obstacle{ 0.0f, 0.0f, -0.2f, 0.2f, 0.2f, 0.2f });
+      planning::Obstacle{ 0.0f, 0.0f, -0.2f, 0.2f, 0.2f, 0.2f });
   lGraph->addObstacle(
-      environment_controller::Obstacle{ 0.2f, 0.0f, -1.1f, 1.0f, 1.2f, 1.2f });
+      planning::Obstacle{ 0.2f, 0.0f, -1.1f, 1.0f, 1.2f, 1.2f });
 
   planning::AStar astar(lGraph);
 

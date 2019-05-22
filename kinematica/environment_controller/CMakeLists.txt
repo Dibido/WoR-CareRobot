@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
   std_msgs
-  planning
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_environment_controller
-  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs planning
+  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -123,10 +122,9 @@ include_directories(
 )
 
 add_library(lib_environment_controller
-src/environment_controller/ObstacleSubscriber.cpp)
+src/environment_controller/ObstaclesSubscriber.cpp)
 
 target_link_libraries(lib_environment_controller 
-lib_planning
 ${catkin_LIBRARIES}
 )
 ## Declare a C++ library

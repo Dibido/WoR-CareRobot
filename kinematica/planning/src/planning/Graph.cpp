@@ -15,19 +15,18 @@ namespace planning
     mEndPoint = aVertex;
   }
 
-  void Graph::addObstacle(const environment_controller::Obstacle& obstacle)
+  void Graph::addObstacle(const Obstacle& obstacle)
   {
     mObstacles.push_back(obstacle);
   }
 
-  void Graph::removeObstacle(const environment_controller::Obstacle& obstacle)
+  void Graph::removeObstacle(const Obstacle& obstacle)
   {
-    mObstacles.erase(
-        std::remove_if(mObstacles.begin(), mObstacles.end(),
-                       [obstacle](const environment_controller::Obstacle anObstacle) {
-                         return obstacle == anObstacle;
-                       }),
-        mObstacles.end());
+    mObstacles.erase(std::remove_if(mObstacles.begin(), mObstacles.end(),
+                                    [obstacle](const Obstacle anObstacle) {
+                                      return obstacle == anObstacle;
+                                    }),
+                     mObstacles.end());
   }
 
   void Graph::removeAllObstacles()
@@ -79,7 +78,7 @@ namespace planning
 
   bool Graph::isPointInAnObstacle(const Vertex& aVertex) const
   {
-    for (const environment_controller::Obstacle& obstacle : mObstacles)
+    for (const Obstacle& obstacle : mObstacles)
     {
       if (obstacle.coversPoint(aVertex))
       {
@@ -89,4 +88,4 @@ namespace planning
     return false;
   }
 
-} // namespace astar
+} // namespace planning
