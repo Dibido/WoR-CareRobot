@@ -1,7 +1,7 @@
 #ifndef VERTEX_HPP
 #define VERTEX_HPP
 #include <iostream>
-namespace astar
+namespace planning
 {
 
   struct Vertex

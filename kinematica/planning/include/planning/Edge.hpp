@@ -5,7 +5,7 @@
 #include <iostream>
 #include <set>
 
-namespace astar
+namespace planning
 {
   struct Edge
   {

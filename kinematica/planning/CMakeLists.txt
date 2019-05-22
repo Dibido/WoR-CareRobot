@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(astar)
+project(planning)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
@@ -11,9 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
 )
-
-
-find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -95,7 +92,6 @@ find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 #   cfg/DynReconf2.cfg
 # )
 
-
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -107,8 +103,8 @@ find_package( Boost COMPONENTS system filesystem unit_test_framework REQUIRED )
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
- LIBRARIES lib_astar
-#  CATKIN_DEPENDS roscpp std_msgs
+ LIBRARIES lib_planning
+ CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -123,27 +119,31 @@ include_directories(
   SYSTEM
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
-)
+  )
+  
+  ## Declare a C++ library
+  
+  add_library(lib_planning 
+  src/Main.cpp
+  src/planning/AStar.cpp
+  src/planning/Graph.cpp
+  )
+  
+  target_link_libraries(lib_planning ${Boost_FILESYSTEM_LIBRARY}
+                        ${Boost_SYSTEM_LIBRARY})
 
-add_executable(astar 
+add_executable(${PROJECT_NAME}_main 
 src/Main.cpp
 )
 
-target_link_libraries(astar ${Boost_FILESYSTEM_LIBRARY} lib_astar
+target_link_libraries(${PROJECT_NAME}_main ${Boost_FILESYSTEM_LIBRARY} lib_planning
                       ${Boost_SYSTEM_LIBRARY})
 
 
 ## Declare a C++ library
-
-add_library(lib_astar 
-src/Main.cpp
-src/astar/AStar.cpp
-src/astar/Graph.cpp
-)
-
-target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY})
-
+# add_library(${PROJECT_NAME}
+#   src/${PROJECT_NAME}/planning.cpp
+# )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -153,7 +153,7 @@ target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/astar_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/planning_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -210,7 +210,7 @@ target_link_libraries(lib_astar ${Boost_FILESYSTEM_LIBRARY}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_astar.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_planning.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
@@ -223,7 +223,7 @@ enable_testing()
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/Graph_test.cpp unitTests/AStar_test.cpp unitTests/Obstacle_test.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests lib_astar ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_unit_tests lib_planning ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build

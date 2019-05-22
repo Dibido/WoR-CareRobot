@@ -1,8 +1,8 @@
-#include "astar/Graph.hpp"
-#include "astar/Vertex.hpp"
+#include "planning/Graph.hpp"
+#include "planning/Vertex.hpp"
 #include "gtest/gtest.h"
 
-namespace astar
+namespace planning
 {
   TEST(GraphConstructor, DefaultConstructor)
   {
@@ -11,7 +11,7 @@ namespace astar
 
   TEST(GraphRemoveObstacle, RemoveObastacleDontExist)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.removeObstacle(ob));
@@ -26,7 +26,7 @@ namespace astar
 
   TEST(GraphAddObstacle, addObstacle)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.addObstacle(ob));
@@ -34,7 +34,7 @@ namespace astar
 
   TEST(GraphAddObstacle, addObstacleAndRemove)
   {
-    obstacle::Obstacle ob;
+    environment_controller::Obstacle ob;
     Graph graph;
 
     graph.addObstacle(ob);
@@ -73,4 +73,4 @@ namespace astar
     EXPECT_EQ(controlList, graph.calculateNeighbours(Vertex(0, 0, 0)));
     EXPECT_NE(controlList, graph.calculateNeighbours(Vertex(0, 10, 0)));
   }
-} // namespace astar
+} // namespace planning

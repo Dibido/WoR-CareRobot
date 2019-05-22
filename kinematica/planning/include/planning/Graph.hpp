@@ -11,10 +11,10 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 #include "Vertex.hpp"
-#include "obstacle/Obstacle.hpp"
+#include "environment_controller/Obstacle.hpp"
 #include <vector>
 
-namespace astar
+namespace planning
 {
   const uint8_t cStep = 10;
   const uint8_t cNrOfNeighbours = 9;
@@ -55,7 +55,7 @@ namespace astar
      *
      * @author Gianni Monteban
      */
-    void addObstacle(const obstacle::Obstacle& obstacle);
+    void addObstacle(const environment_controller::Obstacle& obstacle);
 
     /**
      * @brief remove a specified obstacle from the graph
@@ -64,7 +64,7 @@ namespace astar
      *
      * @author Gianni Monteban
      */
-    void removeObstacle(const obstacle::Obstacle& obstacle);
+    void removeObstacle(const environment_controller::Obstacle& obstacle);
 
     /**
      * @brief remove all obstacles
@@ -84,7 +84,7 @@ namespace astar
     std::vector<Vertex> calculateNeighbours(const Vertex& aVertex);
 
       private:
-    std::vector<obstacle::Obstacle> mObstacles;
+    std::vector<environment_controller::Obstacle> mObstacles;
     Vertex mEndPoint;
     /**
      * @brief Checks whether if the given point is within any of the known
