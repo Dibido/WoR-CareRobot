@@ -26,7 +26,8 @@ namespace location_component
     {
       for (const cv::Point& lCorner : (*lDetectedAGV).mCorners)
       {
-        cv::circle(lLeftDispFrame, lCorner, 10, cv::Scalar(0, 0, 255), CV_FILLED);
+        cv::circle(lLeftDispFrame, lCorner, 10, cv::Scalar(0, 0, 255),
+                   CV_FILLED);
       }
       cv::circle(lLeftDispFrame, (*lDetectedAGV).mMidpoint, 10,
                  cv::Scalar(0, 255, 0), CV_FILLED, 8, 0);
@@ -51,7 +52,8 @@ namespace location_component
         if (lCapture)
         {
           CupScanner lCupScanner;
-          std::vector<DetectedCup> lDetectedCups = lCupScanner.detectCups(aFrame);
+          std::vector<DetectedCup> lDetectedCups =
+              lCupScanner.detectCups(aFrame);
 
           aFrame.copyTo(mCapturedFrame);
 
@@ -89,7 +91,7 @@ namespace location_component
       for (size_t idx = 0; idx < cCornersOfObject; ++idx)
       {
         lAGVCorners.push_back(cv::Point2f(( float )lContours.at(0).at(idx).x,
-                                       ( float )lContours.at(0).at(idx).y));
+                                          ( float )lContours.at(0).at(idx).y));
 
         lDetectedAGV.mCorners.push_back(lContours.at(0).at(idx));
       }
@@ -101,10 +103,11 @@ namespace location_component
       lEstimatedSquare.push_back(
           cv::Point2f(( float )(lBoundRect.x + lBoundRect.width),
                       ( float )(lBoundRect.y + lBoundRect.height)));
-      lEstimatedSquare.push_back(cv::Point2f(( float )(lBoundRect.x + lBoundRect.width),
-                                       ( float )lBoundRect.y));
+      lEstimatedSquare.push_back(cv::Point2f(
+          ( float )(lBoundRect.x + lBoundRect.width), ( float )lBoundRect.y));
 
-      cv::Mat lTransmtx = getPerspectiveTransform(lAGVCorners, lEstimatedSquare);
+      cv::Mat lTransmtx =
+          getPerspectiveTransform(lAGVCorners, lEstimatedSquare);
 
       makePerspectiveCorrection(lTransmtx, aFrame, lDisFrame);
 
@@ -152,26 +155,27 @@ namespace location_component
     if (lContours.size() == 0)
       return;
 
-    int lLargestlArea = 0;
+    int lLargestArea = 0;
     int lLargestContourIndex = 0;
 
     for (size_t idx = 0; idx < lContours.size(); idx++)
     {
-      double lArea = contourlArea(lContours.at(idx), false);
-      if (lArea > lLargestlArea)
+      double lArea = cv::contourArea(lContours.at(idx), false);
+      if (lArea > lLargestArea)
       {
-        lLargestlArea = ( int )lArea;
+        lLargestArea = ( int )lArea;
         lLargestContourIndex = ( int )idx;
       }
     }
 
     // Copy the right rectengle tot contour_poly
 
-    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), contoursPoly.at(0),
-                 5, true);
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)),
+                 aContoursPoly.at(0), 5, true);
   }
 
-  cv::Point DetectAGV::getMidPoint(const std::vector<cv::Point>& aContours) const
+  cv::Point
+      DetectAGV::getMidPoint(const std::vector<cv::Point>& aContours) const
   {
     unsigned int lSumX = 0;
     unsigned int lSumY = 0;

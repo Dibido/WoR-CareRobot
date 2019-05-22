@@ -10,36 +10,38 @@
 // Testing the fucntion getMidPoint
 TEST(CupScannerSuite, RecogniseMultipleCups)
 {
-  cv::Mat image =
+  cv::Mat lImage =
       cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
-  cv::Mat mat;
-  image.copyTo(mat);
+  cv::Mat lMat;
+  lImage.copyTo(lMat);
 
-  location_component::CupScanner scanner;
-  std::vector<location_component::DetectedCup> cups = scanner.scan(image, mat);
+  location_component::CupScanner lScanner;
+  std::vector<location_component::DetectedCup> lCups =
+      lScanner.detectCups(lImage, lMat);
 
-  EXPECT_EQ(cups.size(), 4);
+  EXPECT_EQ(lCups.size(), 4);
 }
 
 TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
 {
-  cv::Mat image =
+  cv::Mat lImage =
       cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
-  cv::Mat mat;
-  image.copyTo(mat);
+  cv::Mat lMat;
+  lImage.copyTo(lMat);
 
-  location_component::CupScanner scanner;
-  std::vector<location_component::DetectedCup> cups = scanner.scan(image, mat);
+  location_component::CupScanner lScanner;
+  std::vector<location_component::DetectedCup> lCups =
+      lScanner.detectCups(lImage, lMat);
 
-  EXPECT_EQ(cups.at(0).mMidpoint.x, 462);
-  EXPECT_EQ(cups.at(0).mMidpoint.y, 481);
+  EXPECT_EQ(lCups.at(0).mMidpoint.x, 462);
+  EXPECT_EQ(lCups.at(0).mMidpoint.y, 481);
 
-  EXPECT_EQ(cups.at(1).mMidpoint.x, 197);
-  EXPECT_EQ(cups.at(1).mMidpoint.y, 447);
+  EXPECT_EQ(lCups.at(1).mMidpoint.x, 197);
+  EXPECT_EQ(lCups.at(1).mMidpoint.y, 447);
 
-  EXPECT_EQ(cups.at(2).mMidpoint.x, 650);
-  EXPECT_EQ(cups.at(2).mMidpoint.y, 338);
+  EXPECT_EQ(lCups.at(2).mMidpoint.x, 650);
+  EXPECT_EQ(lCups.at(2).mMidpoint.y, 338);
 
-  EXPECT_EQ(cups.at(3).mMidpoint.x, 412);
-  EXPECT_EQ(cups.at(3).mMidpoint.y, 248);
+  EXPECT_EQ(lCups.at(3).mMidpoint.x, 412);
+  EXPECT_EQ(lCups.at(3).mMidpoint.y, 248);
 }
