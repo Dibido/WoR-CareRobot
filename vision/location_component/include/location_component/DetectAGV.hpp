@@ -27,7 +27,7 @@ namespace location_component
     ~DetectAGV();
 
     /**
-     * @brief The detectFrame function will analyse the frame end decide what
+     * @brief The detectFrame function will analyse the frame and decide what
      * the current position is of the agv.
      *
      * @param frame - This param will be the input of the function
@@ -51,10 +51,10 @@ namespace location_component
      * @brief This function will transform the matrix with transformation
      * information.
      *
-     * @param transmtx - This param will have the information how transform the
-     * matrix
-     * @param sourceMat - This original matrix u want to be changed
-     * @param dist - The matrix that will be changed
+     * @param transmtx - The transformation matrix that determines how to
+     * transform the matrix.
+     * @param sourceMat - The input matrix.
+     * @param dist - The output matrix after the transformation has been done.
      */
     void makePerspectiveCorrection(const cv::Mat& transmtx,
                                    const cv::Mat& sourceMat,
@@ -63,7 +63,7 @@ namespace location_component
     /**
      * @brief Get the Contours Mat object
      *
-     * @param sourceMat - The matrix u want to get the contours of
+     * @param sourceMat - The matrix to get the contours of
      * @param contours - A reference of a vector with all the found contours
      */
     void getContoursMat(const cv::Mat& sourceMat,
