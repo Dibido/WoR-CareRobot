@@ -122,7 +122,9 @@ include_directories(
 )
 
 add_library(lib_environment_controller
-src/environment_controller/ObstaclesSubscriber.cpp)
+src/environment_controller/ObstaclesSubscriber.cpp
+src/environment_controller/Object.cpp
+src/environment_controller/Position.cpp)
 
 target_link_libraries(lib_environment_controller 
 ${catkin_LIBRARIES}

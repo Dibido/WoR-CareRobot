@@ -33,10 +33,11 @@ namespace environment_controller
       }
       catch (const std::exception& e)
       {
-        ROS_ERROR(e.what());
+        ROS_ERROR("%s", e.what());
       }
     }
-    parseObstacles(lObstacles);
+    if (lObstacles.size())
+      parseObstacles(lObstacles);
   } // namespace environment_controller
 
   void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)

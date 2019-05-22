@@ -1,3 +1,13 @@
+/**
+ * @file Position.hpp
+ * @author Gianni Monteban
+ * @brief the header file for the position data struct
+ * @version 0.1
+ * @date 2019-05-22
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
 #ifndef POSITION_HPP
 #define POSITION_HPP
 
@@ -6,55 +16,50 @@
 
 namespace environment_controller
 {
-
+  /**
+   * @brief The data struct for a position
+   * @author Gianni Monteban
+   */
   struct Position
   {
+      public:
+    /**
+     * @brief Construct a new Position object
+     *
+     * @param aX_m
+     * @param aY_m
+     * @param aZ_m
+     */
+    Position(double aX_m, double aY_m, double aZ_m);
+    /**
+     * @brief Construct a new Position object
+     *
+     * @param aPos
+     */
+    Position(const Position& aPos);
+    /**
+     * @brief
+     *
+     * @return double&
+     */
+    double& x_m();
+    /**
+     * @brief
+     *
+     * @return double&
+     */
+    double& y_m();
+    /**
+     * @brief
+     *
+     * @return double&
+     */
+    double& z_m();
 
       private:
     double mX_m;
     double mY_m;
     double mZ_m;
-
-      public:
-    Position(double aX_m, double aY_m, double aZ_m)
-        : mX_m(aX_m), mY_m(aY_m), mZ_m(aZ_m)
-    {
-      x_m();
-      y_m();
-      z_m();
-    }
-
-    Position(const Position& aPos)
-        : mX_m(aPos.mX_m), mY_m(aPos.mY_m), mZ_m(aPos.mZ_m)
-    {
-    }
-
-    double& x_m()
-    {
-      if (mX_m > cMaxRange || mX_m < cMinRange)
-      {
-        throw std::range_error("Xpos is out of range");
-      }
-      return mX_m;
-    }
-
-    double& y_m()
-    {
-      if (mY_m > cMaxRange || mY_m < cMinRange)
-      {
-        throw std::range_error("Ypos is out of range");
-      }
-      return mY_m;
-    }
-
-    double& z_m()
-    {
-      if (mZ_m > cMaxRange || mZ_m < cMinRange)
-      {
-        throw std::range_error("Zpos is out of range");
-      }
-      return mZ_m;
-    }
   };
 } // namespace environment_controller
 
