@@ -1,6 +1,7 @@
 // Bring in gtest
-#include <gtest/gtest.h>
+#include "ImagePath.hpp"
 #include "location_component/DetectAGV.hpp"
+#include <gtest/gtest.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -22,10 +23,8 @@ TEST(TestSuite, testCase1)
 // Testing the contour function
 TEST(TestSuite, testCase2)
 {
-  cv::Mat image = cv::imread(
-      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
-      "Test_picture_agv.png",
-      cv::IMREAD_COLOR);
+  cv::Mat image =
+      cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat mat;
 
   location_component::DetectAGV d;
@@ -38,10 +37,8 @@ TEST(TestSuite, testCase2)
 
 TEST(TestSuite, testCase3)
 {
-  cv::Mat image = cv::imread(
-      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
-      "Test_picture_agv.png",
-      cv::IMREAD_COLOR);
+  cv::Mat image =
+      cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat mat;
 
   location_component::DetectAGV d;
@@ -54,9 +51,7 @@ TEST(TestSuite, testCase3)
 TEST(TestSuite, testCase4)
 {
   cv::Mat image = cv::imread(
-      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
-      "Test_picture_agv_perspective_view.png",
-      cv::IMREAD_COLOR);
+      getImagePath("Test_picture_agv_perspective_view.png"), cv::IMREAD_COLOR);
   cv::Mat mat;
 
   location_component::DetectAGV d;

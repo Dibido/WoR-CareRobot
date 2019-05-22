@@ -1,4 +1,5 @@
 // Bring in gtest
+#include "ImagePath.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/DetectAGV.hpp"
 #include <gtest/gtest.h>
@@ -9,10 +10,8 @@
 // Testing the fucntion getMidPoint
 TEST(TestSuite, testCase5)
 {
-  cv::Mat image = cv::imread(
-      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
-      "Test_picture_cups.png",
-      cv::IMREAD_COLOR);
+  cv::Mat image =
+      cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
   cv::Mat mat;
   image.copyTo(mat);
 
@@ -24,10 +23,8 @@ TEST(TestSuite, testCase5)
 
 TEST(TestSuite, testCase6)
 {
-  cv::Mat image = cv::imread(
-      "src/wor-18-19-s2/vision/location_component/unitTests/pictures/"
-      "Test_picture_cups.png",
-      cv::IMREAD_COLOR);
+  cv::Mat image =
+      cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
   cv::Mat mat;
   image.copyTo(mat);
 
