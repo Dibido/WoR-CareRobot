@@ -5,17 +5,17 @@
 namespace kinematics
 {
   template <std::size_t M, std::size_t N>
-  EulerAngles::EulerAngles(const Matrix<double, M, N>& lRotationMatrix)
+  EulerAngles::EulerAngles(const Matrix<double, M, N>& aRotationMatrix)
   {
     static_assert(M >= 3 && N >= 3, "A RotationMatrix is at least 3x3");
-    double l_SqrtM = std::sqrt(lRotationMatrix[2][1] * lRotationMatrix[2][1] +
-                               lRotationMatrix[2][2] * lRotationMatrix[2][2]);
-    mYaw_rad = std::atan2(lRotationMatrix[1][0], lRotationMatrix[0][0]);
-    mPitch_rad = std::atan2(-lRotationMatrix[2][0], l_SqrtM);
-    mRoll_rad = std::atan2(lRotationMatrix[2][1], lRotationMatrix[2][2]);
+    double l_SqrtM = std::sqrt(aRotationMatrix[2][1] * aRotationMatrix[2][1] +
+                               aRotationMatrix[2][2] * aRotationMatrix[2][2]);
+    mYaw_rad = std::atan2(aRotationMatrix[1][0], aRotationMatrix[0][0]);
+    mPitch_rad = std::atan2(-aRotationMatrix[2][0], l_SqrtM);
+    mRoll_rad = std::atan2(aRotationMatrix[2][1], aRotationMatrix[2][2]);
   }
-  EulerAngles::EulerAngles(double lYaw_rad, double lPitch_rad, double lRoll_rad)
-      : mYaw_rad(lYaw_rad), mPitch_rad(lPitch_rad), mRoll_rad(lRoll_rad)
+  EulerAngles::EulerAngles(double aYaw_rad, double aPitch_rad, double aRoll_rad)
+      : mYaw_rad(aYaw_rad), mPitch_rad(aPitch_rad), mRoll_rad(aRoll_rad)
   {
   }
 

@@ -42,8 +42,12 @@ include_directories(
 )
 
 add_library(lib_kinematics
+    src/kinematics/Configuration.cpp
+    src/kinematics/ConfigurationProvider.cpp
     src/kinematics/DenavitHartenberg.cpp
+    src/kinematics/EndEffector.cpp
     src/kinematics/Link.cpp
+    src/kinematics/RobotConfiguration.cpp
     )
 target_link_libraries(lib_kinematics
     ${catkin_LIBRARIES}
@@ -94,7 +98,11 @@ catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp
                 unitTests/Link_test.cpp
                 unitTests/EulerAngles_test.cpp
                 unitTests/UtilityFunctions_test.cpp
-                unitTests/JacobiMatrix_test.cpp)
+                unitTests/JacobiMatrix_test.cpp
+                unitTests/Configuration_test.cpp
+                unitTests/RobotConfiguration_test.cpp
+                unitTests/EndEffector_test.cpp
+)
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_kinematics ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)
