@@ -41,7 +41,7 @@ namespace kinematics
      * @param aJoint
      * @return const std::string
      */
-    static const std::string toString(eJoint aJoint)
+    static std::string toString(eJoint aJoint)
     {
       switch (aJoint)
       {

@@ -41,7 +41,7 @@ namespace kinematics
     mResult = aResult;
   }
 
-  const std::array<double, cKinematicsDoF>
+  const std::array<double, cKinematicsDoF>&
       Configuration::getConfiguration() const
   {
     return mConfiguration;

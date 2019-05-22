@@ -63,7 +63,7 @@ namespace kinematics
      *
      * @return const std::array<double, cKinematicsDoF>
      */
-    const std::array<double, cKinematicsDoF> getConfiguration() const;
+    const std::array<double, cKinematicsDoF>& getConfiguration() const;
 
       private:
     bool mResult;

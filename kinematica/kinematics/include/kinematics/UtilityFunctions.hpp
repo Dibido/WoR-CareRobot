@@ -84,7 +84,7 @@ namespace kinematics
   }
 
   /**
-   * @brief Constran a radian between -M_PI and M_PI
+   * @brief Constrain a radian between -M_PI and M_PI
    *
    * @param aRadian
    * @return double
