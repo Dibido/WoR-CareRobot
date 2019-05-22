@@ -17,6 +17,31 @@ commands::Command::Command(eCommandType aType,
 {
 }
 
+commands::Command::Command(const Command& other)
+    : mType(other.mType),
+      mChannel(other.mChannel),
+      mRad(other.mRad),
+      mSpeedFactor(other.mSpeedFactor),
+      mTime(other.mTime)
+
+{
+}
+
+commands::Command& commands::Command::operator=(const Command& other)
+{
+  if (this != &other)
+  {
+    mType = other.mType;
+    mChannel = other.mChannel;
+    mRad = other.mRad;
+    mSpeedFactor = other.mSpeedFactor;
+    mPwm = other.mPwm;
+    mSpeed = other.mSpeed;
+    mTime = other.mTime;
+  }
+  return *this;
+}
+
 bool commands::Command::operator==(const Command& other) const
 {
   if (this == &other)
@@ -25,6 +50,11 @@ bool commands::Command::operator==(const Command& other) const
   }
   return mType == other.mType && mChannel == other.mChannel &&
          mRad == other.mRad && mSpeedFactor == other.mSpeedFactor;
+}
+
+bool commands::Command::operator!=(const Command& other) const
+{
+  return !(Command::operator==(other));
 }
 
 commands::eCommandType commands::Command::getType() const

@@ -66,8 +66,8 @@ namespace gazebo
               commandTime_t aTime,
               double aUpdateRate);
 
-    bool moveTheta(jointPw_t aPw,
-                   jointVel_t aSpeed,
+    bool moveTheta(jointRad_t aRad,
+                   jointVel_t aSpeedFactor,
                    commandTime_t aTime,
                    double aUpdateRate);
     /**
@@ -78,6 +78,7 @@ namespace gazebo
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
     jointVel_t getCurrentVel() const;
+    double getCurrentForce() const;
 
     /**
      * @brief Hard set current position, no checks.
@@ -113,12 +114,13 @@ namespace gazebo
     // Current values
     jointRad_t mCurrentPos;
     jointVel_t mCurrentVel;
+    double mCurrentForce;
 
     // For movement simulation
     jointRad_t mTargetPos;
     jointRad_t mStepSize;
   };
-
+  bool equalsDouble(const double& a, const double& b);
 } // namespace gazebo
 
 #endif // PROJECT_JOINTINFO_HPP

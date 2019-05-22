@@ -56,8 +56,10 @@ namespace commands
             jointVel_t aSpeedFactor);
     Command() = delete;
     virtual ~Command() = default;
-
+    Command(const Command& other);
+    Command& operator=(const Command& other);
     bool operator==(const Command& other) const;
+    bool operator!=(const Command& other) const;
 
     eCommandType getType() const;
     jointChannel_t getChannel() const;

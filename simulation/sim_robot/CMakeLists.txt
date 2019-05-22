@@ -77,7 +77,14 @@ target_link_libraries(${PROJECT_NAME}_publisher
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp src/Command.cpp src/CommandParser.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests 
+unitTests/gtest.cpp 
+unitTests/Command.cpp
+unitTests/CommandParser.cpp  
+unitTests/JointController.cpp  
+src/JointController.cpp
+src/Command.cpp 
+src/CommandParser.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)

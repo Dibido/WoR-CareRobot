@@ -5,8 +5,9 @@
 
 namespace gazebo
 {
-  bool equalsDouble(const double& a, const double& b, uint16_t aPrecision = 100)
+  bool equalsDouble(const double& a, const double& b)
   {
+    uint16_t aPrecision = 100;
     auto precision = std::numeric_limits<double>::epsilon() * aPrecision;
     return precision >= std::abs(a - b);
   }
@@ -55,7 +56,7 @@ namespace gazebo
     if (this != &other)
     {
       joint = other.joint;
-      mName= other.mName;
+      mName = other.mName;
       mChannel = other.mChannel;
       mMinPw = other.mMinPw;
       mMaxPw = other.mMaxPw;
@@ -76,8 +77,8 @@ namespace gazebo
     {
       return true;
     }
-    return joint == other.joint && mName== other.mName&&
-           mChannel== other.mChannel&& equalsDouble(mMinPw, other.mMinPw) &&
+    return joint == other.joint && mName == other.mName &&
+           mChannel == other.mChannel && equalsDouble(mMinPw, other.mMinPw) &&
            equalsDouble(mMaxPw, other.mMaxPw) &&
            equalsDouble(mMinRad, other.mMinRad) &&
            equalsDouble(mMaxRad, other.mMaxRad) &&
@@ -105,7 +106,7 @@ namespace gazebo
   }
 
   bool JointController::moveTheta(jointRad_t aRad,
-                                  jointVel_t aSpeed,
+                                  jointVel_t aSpeedFactor,
                                   commandTime_t aTime,
                                   double aUpdateRate)
   {
@@ -119,13 +120,13 @@ namespace gazebo
 
     auto distance = std::abs(mTargetPos - mCurrentPos);
 
-    if (aSpeed <= 0 && aTime == 0)
+    if (aSpeedFactor <= 0 && aTime == 0)
     {
-      aSpeed = 0.1;
+      aSpeedFactor = 0.1;
     }
-    if (aSpeed > 0)
+    if (aSpeedFactor > 0)
     {
-      mCurrentVel = M_PI_2 * aSpeed;
+      mCurrentVel = M_PI_2 * aSpeedFactor;
     }
     else
     {
@@ -250,6 +251,10 @@ namespace gazebo
   jointRad_t JointController::getCurrentPos() const
   {
     return mCurrentPos;
+  }
+  double JointController::getCurrentForce() const
+  {
+    return mCurrentForce;
   }
 
   void JointController::setCurrentPos(jointRad_t aCurrentPos)
