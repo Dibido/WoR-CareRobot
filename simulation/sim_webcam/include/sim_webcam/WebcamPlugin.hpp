@@ -2,12 +2,21 @@
 #ifndef PROJECT_WEBCAMPLUGIN_HPP
 #define PROJECT_WEBCAMPLUGIN_HPP
 
+#include "ros/callback_queue.h"
 #include "ros/ros.h"
+#include "ros/subscribe_options.h"
+#include "std_msgs/Float32.h"
 #include "std_msgs/String.h"
+#include <gazebo/gazebo.hh>
+#include <gazebo/msgs/msgs.hh>
+#include <gazebo/physics/physics.hh>
 #include <gazebo/plugins/CameraPlugin.hh>
+#include <gazebo/transport/transport.hh>
 #include <gazebo_plugins/gazebo_ros_camera_utils.h>
+#include <ros/subscribe_options.h>
 #include <sstream>
 #include <string>
+#include <thread>
 
 namespace gazebo
 {
@@ -31,7 +40,7 @@ namespace gazebo
     /**
      * Gets executed when there is data being published.
      */
-    void callback(const sensor_msgs::Image& aMsg);
+    void callback(const sensor_msgs::ImageConstPtr aMsg);
 
     /**
      * Setup the sensor plugin. Gets executed when the model (SDF file) gets
@@ -42,6 +51,14 @@ namespace gazebo
      */
     virtual void Load(sensors::SensorPtr aModel, sdf::ElementPtr aSdf);
 
+      private:
+   
+    std::unique_ptr<ros::NodeHandle> mRosNode;
+    ros::Subscriber mRosSub;
+    ros::Publisher mWebcamPublisher;
+    ros::CallbackQueue mRosQueue;
+    std::thread mRosQueueThread;
+    void QueueThread();
   };
 
 } // namespace gazebo
