@@ -46,8 +46,9 @@ namespace commands
      * @param aType : message type
      * @param aChannel : Index / Channel of the joint
      * @param aRad :  radian to move joint to
-     * @param aSpeedFactor : Maximum velocity in radians per second (ex. 1.0 will
-     * result in 180(or 150 depending on joint channel) degrees movement per 1 second. )
+     * @param aSpeedFactor : Maximum velocity in radians per second (ex. 1.0
+     * will result in 180(or 150 depending on joint channel) degrees movement
+     * per 1 second. )
      */
     Command(eCommandType aType,
             jointChannel_t aChannel,
@@ -55,6 +56,8 @@ namespace commands
             jointVel_t aSpeedFactor);
     Command() = delete;
     virtual ~Command() = default;
+
+    bool operator==(const Command& other) const;
 
     eCommandType getType() const;
     jointChannel_t getChannel() const;

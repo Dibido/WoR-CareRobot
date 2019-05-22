@@ -1,8 +1,8 @@
 #include <memory>
 #include <regex>
 
-#include "sim_robot/stopCommand.h"
 #include "robotcontroller_msgs/Control.h"
+#include "sim_robot/stopCommand.h"
 
 #include <sim_robot/robot_controller_plugin.hpp>
 
@@ -202,13 +202,13 @@ namespace gazebo
 
       // Add it the the map
       channelJointMap.emplace(
-          channel, JointController(
-                       modelJoint, name, channel,
-                       jointInfo->Get<jointPw_t>(gazebo::cSdfJointMinPw),
-                       jointInfo->Get<jointPw_t>(gazebo::cSdfJointMaxPw),
-                       jointInfo->Get<jointRad_t>(gazebo::cSdfJointMinRad),
-                       jointInfo->Get<jointRad_t>(gazebo::cSdfJointMaxRad),
-                       jointInfo->Get<jointVel_t>(gazebo::cSdfJointMaxVel)));
+          channel,
+          JointController(modelJoint, name, channel,
+                          jointInfo->Get<jointPw_t>(gazebo::cSdfJointMinPw),
+                          jointInfo->Get<jointPw_t>(gazebo::cSdfJointMaxPw),
+                          jointInfo->Get<jointRad_t>(gazebo::cSdfJointMinRad),
+                          jointInfo->Get<jointRad_t>(gazebo::cSdfJointMaxRad),
+                          jointInfo->Get<jointVel_t>(gazebo::cSdfJointMaxVel)));
 
       ROS_DEBUG("Loaded joint \"%s\" on channel %d", name.c_str(), channel);
 
@@ -231,6 +231,7 @@ namespace gazebo
       ROS_WARN("Command MOVE: unknown channel %d", com.getChannel());
     }
   }
+
   void RobotControllerPlugin::moveJoint(const commands::Command& com)
   {
     if (jointExists(com.getChannel()))

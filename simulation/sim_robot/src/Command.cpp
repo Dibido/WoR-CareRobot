@@ -16,6 +16,17 @@ commands::Command::Command(eCommandType aType,
     : mType(aType), mChannel(aChannel), mRad(aRad), mSpeedFactor(aSpeedFactor)
 {
 }
+
+bool commands::Command::operator==(const Command& other) const
+{
+  if (this == &other)
+  {
+    return true;
+  }
+  return mType == other.mType && mChannel == other.mChannel &&
+         mRad == other.mRad && mSpeedFactor == other.mSpeedFactor;
+}
+
 commands::eCommandType commands::Command::getType() const
 {
   return mType;
