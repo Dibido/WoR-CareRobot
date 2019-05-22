@@ -24,7 +24,7 @@ namespace kinematics
      * @return Configuration
      */
     virtual Configuration
-        inverseKinematics(const EndEffector& aGoalPosition,
+        inverseKinematics(const EndEffector& aGoalEndEffector,
                           const Configuration& aCurrentConfiguration);
 
       private:

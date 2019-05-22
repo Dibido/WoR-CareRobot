@@ -18,8 +18,8 @@ namespace kinematics
      */
     Configuration();
     virtual ~Configuration() = default;
-    Configuration(const Configuration& copy) = default;
-    Configuration& operator=(const Configuration& copy) = default;
+    Configuration(const Configuration& copy);
+    Configuration& operator=(const Configuration& copy);
 
     /**
      * @brief Number of values in configuration

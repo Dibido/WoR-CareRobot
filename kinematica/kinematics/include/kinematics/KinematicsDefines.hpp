@@ -6,7 +6,7 @@ namespace kinematics
 {
   const std::size_t cKinematicsDoF = 7;
   const std::size_t cRobotConfigurationJoints = cKinematicsDoF + 1;
-  const double cIkBeta = 0.3;
+  const double cIkBeta = 0.5;
   const double cIkEpsilon_m = 0.000001;
   const double cIkEpsilon_rad = M_PI / 180 * 3;
   const std::size_t cIkMaxIterations = 1000;
