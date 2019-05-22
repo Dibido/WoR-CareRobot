@@ -13,49 +13,49 @@ namespace location_component
   {
   }
 
-  void DetectAGV::detectFrame(const cv::Mat& frame, cv::Mat& displayFrame)
+  void DetectAGV::detectFrame(const cv::Mat& aFrame, cv::Mat& aDisplayName)
   {
-    boost::optional<DetectedAGV> detectedAGV = detect(frame);
+    boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
     if (mCapturedFrame.cols == 0)
     {
-      mCapturedFrame = cv::Mat(frame.rows, frame.cols, CV_8UC3);
+      mCapturedFrame = cv::Mat(aFrame.rows, aFrame.cols, CV_8UC3);
     }
-    cv::Mat leftDispFrame;
-    frame.copyTo(leftDispFrame);
-    if (detectedAGV)
+    cv::Mat lLeftDispFrame;
+    aFrame.copyTo(lLeftDispFrame);
+    if (lDetectedAGV)
     {
-      for (const cv::Point& corner : (*detectedAGV).mCorners)
+      for (const cv::Point& lCorner : (*lDetectedAGV).mCorners)
       {
-        cv::circle(leftDispFrame, corner, 10, cv::Scalar(0, 0, 255), CV_FILLED);
+        cv::circle(lLeftDispFrame, lCorner, 10, cv::Scalar(0, 0, 255), CV_FILLED);
       }
-      cv::circle(leftDispFrame, (*detectedAGV).mMidpoint, 10,
+      cv::circle(lLeftDispFrame, (*lDetectedAGV).mMidpoint, 10,
                  cv::Scalar(0, 255, 0), CV_FILLED, 8, 0);
 
       if (mPrevDetectedAGV)
       {
-        bool capture = false;
-        // Check if the AGV has moved from one side of the frame to another.
-        if ((*detectedAGV).mMidpoint.x < frame.cols / 2 &&
-            (*mPrevDetectedAGV).mMidpoint.x >= frame.cols / 2)
+        bool lCapture = false;
+        // Check if the AGV has moved from one side of the aFrame to another.
+        if ((*lDetectedAGV).mMidpoint.x < aFrame.cols / 2 &&
+            (*mPrevDetectedAGV).mMidpoint.x >= aFrame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING LEFT");
-          capture = true;
+          lCapture = true;
         }
-        if ((*mPrevDetectedAGV).mMidpoint.x < frame.cols / 2 &&
-            (*detectedAGV).mMidpoint.x >= frame.cols / 2)
+        if ((*mPrevDetectedAGV).mMidpoint.x < aFrame.cols / 2 &&
+            (*lDetectedAGV).mMidpoint.x >= aFrame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING RIGHT");
-          capture = true;
+          lCapture = true;
         }
 
-        if (capture)
+        if (lCapture)
         {
-          CupScanner cupScanner;
-          std::vector<DetectedCup> detectedCups = cupScanner.detectCups(frame);
+          CupScanner lCupScanner;
+          std::vector<DetectedCup> lDetectedCups = lCupScanner.detectCups(aFrame);
 
-          frame.copyTo(mCapturedFrame);
+          aFrame.copyTo(mCapturedFrame);
 
-          for (const auto& detectedCup : detectedCups)
+          for (const auto& detectedCup : lDetectedCups)
           {
             cv::circle(mCapturedFrame, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), CV_FILLED);
@@ -63,66 +63,66 @@ namespace location_component
         }
       }
     }
-    cv::hconcat(leftDispFrame, mCapturedFrame, displayFrame);
-    mPrevDetectedAGV = detectedAGV;
+    cv::hconcat(lLeftDispFrame, mCapturedFrame, aDisplayName);
+    mPrevDetectedAGV = lDetectedAGV;
   }
 
-  boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& frame) const
+  boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& aFrame) const
   {
-    cv::Mat disFrame;
-    std::vector<std::vector<cv::Point>> contours(1);
+    cv::Mat lDisFrame;
+    std::vector<std::vector<cv::Point>> lContours(1);
 
-    getContoursMat(frame, contours);
+    getContoursMat(aFrame, lContours);
 
-    cv::Rect boundRect;
+    cv::Rect lBoundRect;
 
     // Getting the middle point of the rect and draw this point
-    if (contours.at(0).size() == cCornersOfObject)
+    if (lContours.at(0).size() == cCornersOfObject)
     {
-      DetectedAGV detectedAGV;
-      boundRect = boundingRect(contours.at(0));
+      DetectedAGV lDetectedAGV;
+      lBoundRect = boundingRect(lContours.at(0));
       // The corners of the AGV.
-      std::vector<cv::Point2f> quad_pts;
+      std::vector<cv::Point2f> lAGVCorners;
       // The corners of the bounding rectangle around the AGV.
-      std::vector<cv::Point2f> square_pts;
+      std::vector<cv::Point2f> lEstimatedSquare;
 
       for (size_t idx = 0; idx < cCornersOfObject; ++idx)
       {
-        quad_pts.push_back(cv::Point2f(( float )contours.at(0).at(idx).x,
-                                       ( float )contours.at(0).at(idx).y));
+        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(0).at(idx).x,
+                                       ( float )lContours.at(0).at(idx).y));
 
-        detectedAGV.mCorners.push_back(contours.at(0).at(idx));
+        lDetectedAGV.mCorners.push_back(lContours.at(0).at(idx));
       }
 
-      square_pts.push_back(
-          cv::Point2f(( float )boundRect.x, ( float )boundRect.y));
-      square_pts.push_back(cv::Point2f(
-          ( float )boundRect.x, ( float )(boundRect.y + boundRect.height)));
-      square_pts.push_back(
-          cv::Point2f(( float )(boundRect.x + boundRect.width),
-                      ( float )(boundRect.y + boundRect.height)));
-      square_pts.push_back(cv::Point2f(( float )(boundRect.x + boundRect.width),
-                                       ( float )boundRect.y));
+      lEstimatedSquare.push_back(
+          cv::Point2f(( float )lBoundRect.x, ( float )lBoundRect.y));
+      lEstimatedSquare.push_back(cv::Point2f(
+          ( float )lBoundRect.x, ( float )(lBoundRect.y + lBoundRect.height)));
+      lEstimatedSquare.push_back(
+          cv::Point2f(( float )(lBoundRect.x + lBoundRect.width),
+                      ( float )(lBoundRect.y + lBoundRect.height)));
+      lEstimatedSquare.push_back(cv::Point2f(( float )(lBoundRect.x + lBoundRect.width),
+                                       ( float )lBoundRect.y));
 
-      cv::Mat transmtx = getPerspectiveTransform(quad_pts, square_pts);
+      cv::Mat lTransmtx = getPerspectiveTransform(lAGVCorners, lEstimatedSquare);
 
-      makePerspectiveCorrection(transmtx, frame, disFrame);
+      makePerspectiveCorrection(lTransmtx, aFrame, lDisFrame);
 
-      std::vector<std::vector<cv::Point>> contours(1);
-      getContoursMat(disFrame, contours);
+      std::vector<std::vector<cv::Point>> lContours(1);
+      getContoursMat(lDisFrame, lContours);
 
-      if (contours.at(0).size() == cCornersOfObject)
+      if (lContours.at(0).size() == cCornersOfObject)
       {
-        std::vector<cv::Point2f> points, pointInOriginalPerspective;
-        points.push_back(getMidPoint(contours.at(0)));
+        std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
+        lPoints.push_back(getMidPoint(lContours.at(0)));
 
-        cv::perspectiveTransform(points, pointInOriginalPerspective,
-                                 transmtx.inv());
+        cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
+                                 lTransmtx.inv());
 
-        detectedAGV.mMidpoint = pointInOriginalPerspective.at(0);
+        lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
       }
 
-      return detectedAGV;
+      return lDetectedAGV;
     }
     else
     {
@@ -130,62 +130,62 @@ namespace location_component
     }
   }
 
-  void DetectAGV::makePerspectiveCorrection(const cv::Mat& transmtx,
-                                            const cv::Mat& sourceMat,
-                                            cv::Mat& dist) const
+  void DetectAGV::makePerspectiveCorrection(const cv::Mat& aTransmtx,
+                                            const cv::Mat& aSourceMat,
+                                            cv::Mat& aDist) const
   {
-    dist = cv::Mat::zeros(sourceMat.rows, sourceMat.cols, CV_8UC3);
-    warpPerspective(sourceMat, dist, transmtx, sourceMat.size());
+    aDist = cv::Mat::zeros(aSourceMat.rows, aSourceMat.cols, CV_8UC3);
+    warpPerspective(aSourceMat, aDist, aTransmtx, aSourceMat.size());
   }
 
   void DetectAGV::getContoursMat(
-      const cv::Mat& sourceMat,
-      std::vector<std::vector<cv::Point>>& contoursPoly) const
+      const cv::Mat& aSourceMat,
+      std::vector<std::vector<cv::Point>>& aContoursPoly) const
   {
-    std::vector<std::vector<cv::Point>> contours;
-    cv::Mat matDes;
-    cv::inRange(sourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
-                matDes);
-    cv::findContours(matDes, contours, CV_RETR_EXTERNAL,
+    std::vector<std::vector<cv::Point>> lContours;
+    cv::Mat lMatDes;
+    cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
+                lMatDes);
+    cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 
-    if (contours.size() == 0)
+    if (lContours.size() == 0)
       return;
 
-    int largestArea = 0;
-    int largestContourIndex = 0;
+    int lLargestlArea = 0;
+    int lLargestContourIndex = 0;
 
-    for (size_t idx0 = 0; idx0 < contours.size(); idx0++)
+    for (size_t idx = 0; idx < lContours.size(); idx++)
     {
-      double area = contourArea(contours.at(idx0), false);
-      if (area > largestArea)
+      double lArea = contourlArea(lContours.at(idx), false);
+      if (lArea > lLargestlArea)
       {
-        largestArea = ( int )area;
-        largestContourIndex = ( int )idx0;
+        lLargestlArea = ( int )lArea;
+        lLargestContourIndex = ( int )idx;
       }
     }
 
     // Copy the right rectengle tot contour_poly
 
-    approxPolyDP(cv::Mat(contours.at(largestContourIndex)), contoursPoly.at(0),
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), contoursPoly.at(0),
                  5, true);
   }
 
-  cv::Point DetectAGV::getMidPoint(const std::vector<cv::Point>& contours) const
+  cv::Point DetectAGV::getMidPoint(const std::vector<cv::Point>& aContours) const
   {
-    unsigned int sumX = 0;
-    unsigned int sumY = 0;
+    unsigned int lSumX = 0;
+    unsigned int lSumY = 0;
 
-    for (size_t idx = 0; idx < contours.size(); ++idx)
+    for (size_t idx = 0; idx < aContours.size(); ++idx)
     {
-      sumX += contours.at(idx).x;
-      sumY += contours.at(idx).y;
+      lSumX += aContours.at(idx).x;
+      lSumY += aContours.at(idx).y;
     }
 
-    unsigned int averageX = sumX / ( unsigned int )contours.size();
-    unsigned int averageY = sumY / ( unsigned int )contours.size();
+    unsigned int lAverageX = lSumX / ( unsigned int )aContours.size();
+    unsigned int lAverageY = lSumY / ( unsigned int )aContours.size();
 
-    return cv::Point(averageX, averageY);
+    return cv::Point(lAverageX, lAverageY);
   }
 
 } // namespace location_component
