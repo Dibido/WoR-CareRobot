@@ -17,49 +17,47 @@
 namespace environment_controller
 {
   /**
-   * @brief The data struct for a position
+   * @brief The data struct for a position, the structs throws an exception when
+   * the value is out of range
+   * @see parameters for correct values
    * @author Gianni Monteban
    */
   struct Position
   {
       public:
-    /**
-     * @brief Construct a new Position object
-     *
-     * @param aX_m
-     * @param aY_m
-     * @param aZ_m
-     */
     Position(double aX_m, double aY_m, double aZ_m);
     /**
      * @brief Construct a new Position object
      *
-     * @param aPos
+     * @param aPos the object to copy
      */
     Position(const Position& aPos);
     /**
-     * @brief
+     * @brief getter & setter
      *
-     * @return double&
+     * @return double& x
      */
     double& x_m();
+    const double& x_m() const;
     /**
-     * @brief
+     * @brief getter & setter
      *
-     * @return double&
+     * @return double& y
      */
     double& y_m();
+    const double& y_m() const;
     /**
-     * @brief
+     * @brief getter & setter
      *
-     * @return double&
+     * @return double& z
      */
     double& z_m();
+    const double& z_m() const;
 
       private:
-    double mX_m;
-    double mY_m;
-    double mZ_m;
+    double mX_m; ///< must be between cMinRange_m and cMaxRange_m
+    double mY_m; ///< must be between cMinRange_m and cMaxRange_m
+    double mZ_m; ///< must be between cMinRange_m and cMaxRange_m
   };
 } // namespace environment_controller
 
