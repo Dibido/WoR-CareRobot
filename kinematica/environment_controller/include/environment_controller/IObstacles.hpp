@@ -6,8 +6,8 @@
 
 namespace environment_controller
 {
-
-  typedef std::vector<Object> Obstacles; ///< the obstacles for the interface
+  typedef Object Obstacle;
+  typedef std::vector<Obstacle> Obstacles;
 
   /**
    * @brief the class of the interface obstacle
