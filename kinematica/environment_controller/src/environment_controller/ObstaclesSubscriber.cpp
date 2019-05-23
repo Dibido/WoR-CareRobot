@@ -1,7 +1,7 @@
 #include "environment_controller/ObstaclesSubscriber.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/SafetyController.hpp"
 #include "kinematica_msgs/Object.h"
-#include "environment_controller/EnvironmentConsts.hpp"
 
 namespace environment_controller
 {

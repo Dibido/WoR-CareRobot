@@ -1,6 +1,7 @@
 
 #include "kinematics/Link.hpp"
 #include "kinematics/UtilityFunctions.hpp"
+#include <rng/RandomNumberGenerator.hpp>
 #include <ros/ros.h>
 #include <stdexcept>
 
@@ -63,7 +64,7 @@ namespace kinematics
   {
     if (mType == eJoint::REVOLUTE)
     {
-      aVariable = constrainVariable(aVariable);
+      aVariable = constrainRadian(aVariable);
     }
     return (mType == eJoint::STATIC ||
             (mMinValue < aVariable && aVariable < mMaxValue));
@@ -135,6 +136,11 @@ namespace kinematics
   eJoint Link::getType() const
   {
     return mType;
+  }
+
+  double Link::generateRandomVariable() const
+  {
+    return rng::RandomNumberGenerator::GenerateInRange(mMinValue, mMaxValue);
   }
 
   Matrix<double, 4, 4>
