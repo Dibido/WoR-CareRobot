@@ -1,6 +1,7 @@
 // Bring in my package's API, which is what I'm testing
 #include <boost/shared_ptr.hpp>
 #include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
 #include <gazebo/plugins/RayPlugin.hh>
 #include <ros/ros.h>
 // Include messages
@@ -28,11 +29,12 @@ TEST(LidarData, LidarDataConversion)
   gazebo::LidarPlugin lLidarPlugin;
   const unsigned int lNumberOfMeasurements = 360;
   // Set up message
-  // ConstLaserScanStampedPtr
   sensor_msgs::LaserScan lLaserScanMessage;
-  lLaserScanMessage.time_increment = 2;
   lLaserScanMessage.angle_min = static_cast<float>(-M_PI);
   lLaserScanMessage.angle_max = static_cast<float>(M_PI);
+  lLaserScanMessage.angle_increment =
+      (lLaserScanMessage.angle_max - lLaserScanMessage.angle_min) /
+      lNumberOfMeasurements;
   lLaserScanMessage.range_min = static_cast<float>(0.1);
   lLaserScanMessage.range_max = 3;
   lLaserScanMessage.ranges.clear();
@@ -49,10 +51,11 @@ TEST(LidarData, LidarDataConversion)
   ASSERT_EQ(lLidarMessage.distances.size(), lLaserScanMessage.ranges.size());
   // Check conversion
   EXPECT_EQ(lLidarMessage.header.frame_id, lLaserScanMessage.header.frame_id);
-  EXPECT_EQ(lLidarMessage.measurement_angles.at(0), 0.0);
-  EXPECT_EQ(lLidarMessage.measurement_angles.at(
-                lLidarMessage.measurement_angles.size()),
-            (M_PI * 2));
+  EXPECT_EQ(lLidarMessage.measurement_angles.at(0),
+            lLaserScanMessage.angle_increment);
+  EXPECT_NEAR(lLidarMessage.measurement_angles.at(
+                  lLidarMessage.measurement_angles.size() - 1),
+              (lLaserScanMessage.angle_increment * 360), 0.00005);
   EXPECT_EQ(lLidarMessage.distances, lLaserScanMessage.ranges);
   float lExpectedAngle = 0;
   for (unsigned int i = 0; i < lLidarMessage.distances.size(); i++)
@@ -67,6 +70,7 @@ TEST(LidarData, LidarDataConversion)
  * Check whether the data that is sent to the ScanData topic is converted
  * properly.
  */
+/*
 TEST(LidarData, ScanDataConversion)
 {
   // Set values
@@ -87,11 +91,12 @@ TEST(LidarData, ScanDataConversion)
     lLaserScanMessage.intensities.push_back(0);
   }
   // Call parser function
-  gazebo_msgs::LaserScan lLaserScanDataMessage;
+  sensor_msgs::LaserScan lLaserScanDataMessage;
   lLaserScanDataMessage = lLidarPlugin.convertToLaserScan(lLaserScanMessage);
   // Check conversion
   // TODO
 }
+*/
 
 // Run all the tests that were declared with TEST()
 int main(int argc, char** argv)

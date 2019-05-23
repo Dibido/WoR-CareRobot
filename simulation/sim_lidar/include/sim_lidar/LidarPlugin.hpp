@@ -37,19 +37,21 @@ namespace gazebo
     void OnScan(ConstLaserScanStampedPtr& aMsg);
 
     /**
-     * @brief
-     *
+     * @brief Convert the gazebo::LaserScan const message to
+     * sensor_msgs::LaserScan for processing
+     * @param aMsg: The gazebo formatted message recieved from the simulation
+     * @return: The converted sensor_msgs::LaserScan message
      */
     sensor_msgs::LaserScan convertToLaserScan(ConstLaserScanStampedPtr& aMsg);
 
     /**
-     * @brief
-     *
-     * @param aMsg
-     * @return sensor_interfaces::LidarData
+     * @brief Convert the LaserScan message to
+     * @param aMsg: The converted laserscan message
+     * @return sensor_interfaces::LidarData: The LidarData message according to
+     * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(ConstLaserScanStampedPtr& aMsg);
+        convertToLidarData(sensor_msgs::LaserScan aMsg);
 
     // Variables
     std::string mFrameName;
