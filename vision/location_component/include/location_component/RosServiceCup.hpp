@@ -7,11 +7,11 @@
 namespace location_component
 {
 
-  class RosServiceObstacles : public environment_controller::IObstacles
+  class RosServiceCup : public environment_controller::IObstacles
   {
       public:
-    RosServiceObstacles(ros::NodeHandle& aNodeHandle);
-    virtual ~RosServiceObstacles() = default;
+    RosServiceCup(ros::NodeHandle& aNodeHandle);
+    virtual ~RosServiceCup() = default;
 
     virtual void parseObstacles(const environment_controller::Obstacles& aObstacles);
 

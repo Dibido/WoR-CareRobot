@@ -38,7 +38,7 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/RosServiceObstacles.cpp)
+add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/RosServiceCup.cpp)
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
