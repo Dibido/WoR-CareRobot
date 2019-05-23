@@ -35,8 +35,9 @@ namespace environment_controller
      *
      * @author Gianni Monteban
      */
-    ObstaclesSubscriber(const std::shared_ptr<SafetyController>& aSafetyController,
-                        const std::string& aSubName);
+    ObstaclesSubscriber(
+        const std::shared_ptr<SafetyController>& aSafetyController,
+        const std::string& aSubName);
 
     /**
      * @brief Destroy the Obstacles Subscriber object

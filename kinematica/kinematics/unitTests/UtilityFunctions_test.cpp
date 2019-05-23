@@ -40,4 +40,12 @@ namespace kinematics
 
     EXPECT_EQ(false, transformationMatrixEquals(lhs, rhs, 0.1, 0.00001, 3));
   }
+
+  TEST(UtilityFunctions, RadianEquals)
+  {
+    EXPECT_EQ(true, radianEquals(-M_PI, M_PI,
+                                 std::numeric_limits<double>::epsilon()));
+    EXPECT_EQ(true, radianEquals(-M_PI + 0.0000009999, M_PI, 0.000001));
+    EXPECT_EQ(false, radianEquals(-3, M_PI - 1, 0.0000001));
+  }
 } // namespace kinematics

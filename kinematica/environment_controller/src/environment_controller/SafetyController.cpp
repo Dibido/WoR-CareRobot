@@ -5,7 +5,8 @@ namespace environment_controller
 {
   SafetyController::SafetyController(
       const std::shared_ptr<EnvironmentController>& aEnvironmentController)
-      : mEnvironmentController(aEnvironmentController)  {
+      : mEnvironmentController(aEnvironmentController)
+  {
   }
 
   void SafetyController::areObstaclesAThreat(const Obstacles& aObstacles)
@@ -31,13 +32,14 @@ namespace environment_controller
     bool lToClose = false;
     double lDeltaX = abs(cRobotX_m - aObstacle.position().x_m());
     double lDeltaY = abs(cRobotY_m - aObstacle.position().y_m());
-    double minRadiusCircle = sqrt(pow(aObstacle.depth_m(),2) + pow(aObstacle.width_m(),2))/2;
+    double minRadiusCircle =
+        sqrt(pow(aObstacle.depth_m(), 2) + pow(aObstacle.width_m(), 2)) / 2;
 
-    //2D distance between the middlepoint of the obstacle and robotarm
-    double lDistance =
-        sqrt(pow(lDeltaX, 2) + pow(lDeltaY, 2));
+    // 2D distance between the middlepoint of the obstacle and robotarm
+    double lDistance = sqrt(pow(lDeltaX, 2) + pow(lDeltaY, 2));
 
-    //Check if the distance between the middlepoints is larger than the two radii combined.
+    // Check if the distance between the middlepoints is larger than the two
+    // radii combined.
     if (lDistance < cMinDistanceToRobotarm_m + minRadiusCircle)
     {
       lToClose = true;

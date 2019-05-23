@@ -1,4 +1,5 @@
 #include "kinematics/ConfigurationProvider.hpp"
+#include "kinematics/KinematicsDefines.hpp"
 
 namespace kinematics
 {
@@ -16,8 +17,26 @@ namespace kinematics
       aGoalEndEffector.cPitch_rad, aGoalEndEffector.cRoll_rad
     };
 
-    return denavitHartenberg.inverseKinematics(lEndEffector,
-                                               aCurrentConfiguration);
+    Configuration lConfiguration = aCurrentConfiguration;
+    lConfiguration.setResult(false);
+    prepareConfiguration(lConfiguration);
+
+    lConfiguration =
+        denavitHartenberg.inverseKinematics(lEndEffector, lConfiguration);
+
+    prepareConfiguration(lConfiguration);
+
+    return lConfiguration;
+  }
+
+  void
+      ConfigurationProvider::prepareConfiguration(Configuration& aConfiguration)
+  {
+    for (std::size_t i = 0; i < cInvertedJoints.size(); ++i)
+    {
+      aConfiguration.setTheta(cInvertedJoints[i],
+                              aConfiguration[cInvertedJoints[i]] * -1);
+    }
   }
 
 } // namespace kinematics

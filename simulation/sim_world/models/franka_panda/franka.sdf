@@ -397,7 +397,7 @@ x
       <child>link7</child>
       <pose>0.0 0 0.06 0 0 -0.785398</pose>
       <axis>
-        <xyz>0 0 -1</xyz>
+        <xyz>0 0 1</xyz>
       <limit> 
         <effort>12</effort>
         <lower>-100</lower>

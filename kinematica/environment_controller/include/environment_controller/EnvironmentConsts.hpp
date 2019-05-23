@@ -21,4 +21,4 @@ namespace environment_controller
   const double cMinDistanceToRobotarm_m = 2.0;
 } // namespace environment_controller
 
-#endif //ENVIRONMENT_CONSTS_HPP
+#endif // ENVIRONMENT_CONSTS_HPP
