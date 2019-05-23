@@ -8,6 +8,8 @@ namespace kinematics
   /**
    * @brief Data Class that collects and protects a configuration that describes
    * all needed values to control a robotarm
+   * It also gives information about whether or not this configuration describes
+   * a
    */
   class Configuration
   {
@@ -35,7 +37,7 @@ namespace kinematics
      */
     const double& operator[](std::size_t aIndex) const;
     /**
-     * @brief Describes whether a configuration has been succesfully created by
+     * @brief Describes whether a configuration has been succesfully found by
      * a inverse kinematics algorithm
      *
      * @return true

@@ -36,7 +36,11 @@ int main(int argc, char** argv)
     kinematics::Configuration lGoalConfiguration =
         lConfigurationProvider->inverseKinematics(lGoalEndEffector,
                                                   lCurrentConfiguration);
-    ROS_INFO("result: %i", lGoalConfiguration.result());
+    ROS_INFO("Goal: [%.5f, %.5f, %.5f, %.5f, %.5f, %.5f] \t result: %i",
+             lGoalEndEffector.cX_m, lGoalEndEffector.cY_m,
+             lGoalEndEffector.cZ_m, lGoalEndEffector.cRoll_rad,
+             lGoalEndEffector.cPitch_rad, lGoalEndEffector.cYaw_rad,
+             lGoalConfiguration.result());
     lRobotControlPub.publish(1.0, lGoalConfiguration);
 
     lCurrentConfiguration = lGoalConfiguration;
