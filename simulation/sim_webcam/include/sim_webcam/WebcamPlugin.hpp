@@ -39,14 +39,15 @@ namespace gazebo
 
     /**
      * Gets executed when there is data being published.
+     * @param pointer to the message
      */
     void callback(const sensor_msgs::ImageConstPtr aMsg);
 
     /**
      * Setup the sensor plugin. Gets executed when the model (SDF file) gets
      * loaded
-     * @param sensor pointer to the sensor
-     * @param sdf pointer to the sdf (defined in the model file) element of the
+     * @param aModel pointer to the sensor
+     * @param aSdf pointer to the Sdf (defined in the model file) element of the
      * sensor
      */
     virtual void Load(sensors::SensorPtr aModel, sdf::ElementPtr aSdf);

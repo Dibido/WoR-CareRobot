@@ -20,7 +20,7 @@ namespace gazebo
   {
 
     CameraPlugin::Load(aModel, aSdf);
-
+    //The variables are set in the utils class and the CameraPlugin class
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
