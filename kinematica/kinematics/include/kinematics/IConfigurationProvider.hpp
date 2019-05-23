@@ -21,13 +21,15 @@ namespace kinematics
      * http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/DDD+-+Kinematics+interface
      * @pre aGoalPosition uses the Tait-Bryan convention to describes the angles
      * yaw, pitch and roll
-     * @post result in Configuration has been set to the result of the
+     * @post result() in Configuration returns the solution of the
      * inverseKinematics algorithm
      * @post If result is true, Configuration gives a configuration needed to
      * reach the EndEffector
      * @param aGoalPosition
      * @param aCurrentConfiguration
-     * @return Configuration
+     * @return Configuration If execution was succesfull contains the
+     * configuration needed to reach the endeffector, if unsuccesful the
+     * configuration in this object is undefined and should not be used.
      */
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalPosition,
