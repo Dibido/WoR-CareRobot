@@ -66,9 +66,8 @@ namespace kinematics
     {
       aVariable = constrainRadian(aVariable);
     }
-    bool result = (mType == eJoint::STATIC ||
-                   (mMinValue < aVariable && aVariable < mMaxValue));
-    return result;
+    return (mType == eJoint::STATIC ||
+            (mMinValue < aVariable && aVariable < mMaxValue));
   }
 
   double Link::constrainVariable(double aVariable) const

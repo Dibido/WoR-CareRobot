@@ -122,14 +122,14 @@ namespace kinematics
       {
 #define PARTIAL_SWEEP
 #ifdef PARTIAL_SWEEP
-        double curValue = configuration[lThetaIndex];
+        double lCurValue = configuration[lThetaIndex];
         if (mRobotConfiguration[lRobotConfigurationIndex].isWithinConstraints(
-                curValue) == false)
+                lCurValue) == false)
         {
 #endif
-          double newValue = mRobotConfiguration[lRobotConfigurationIndex]
-                                .generateRandomVariable();
-          configuration.setTheta(lThetaIndex, newValue);
+          double lNewValue = mRobotConfiguration[lRobotConfigurationIndex]
+                                 .generateRandomVariable();
+          configuration.setTheta(lThetaIndex, lNewValue);
 #ifdef PARTIAL_SWEEP
         }
 #endif
