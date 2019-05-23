@@ -23,7 +23,7 @@ namespace robotcontroller
      * @return Configuration
      */
     virtual void
-        publishGripper(const robotcontroller::GripperData& gripperData) = 0;
+        moveGripper(const robotcontroller::GripperData& gripperData) = 0;
   };
 } // namespace robotcontroller
 

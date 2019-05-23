@@ -38,8 +38,7 @@ namespace robotcontroller
      * @param lSf Speedfactor for the robotarm movement speed
      * @param lConfiguration Configuration of the robotarm
      */
-    virtual void
-        publishGripper(const robotcontroller::GripperData& aGripperData);
+    virtual void moveGripper(const robotcontroller::GripperData& aGripperData);
 
       private:
     ros::NodeHandle& mN;

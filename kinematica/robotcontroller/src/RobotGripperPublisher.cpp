@@ -14,7 +14,7 @@ namespace robotcontroller
   {
   }
 
-  void RobotGripperPublisher::publishGripper(
+  void RobotGripperPublisher::moveGripper(
       const robotcontroller::GripperData& aGripperData)
   {
     robotcontroller_msgs::Gripper lMsg;
