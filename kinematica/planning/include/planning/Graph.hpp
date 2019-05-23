@@ -11,7 +11,7 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 #include "Vertex.hpp"
-#include "environment_controller/Obstacle.hpp"
+#include "planning/Obstacle.hpp"
 #include <vector>
 
 namespace planning
@@ -55,7 +55,7 @@ namespace planning
      *
      * @author Gianni Monteban
      */
-    void addObstacle(const environment_controller::Obstacle& obstacle);
+    void addObstacle(const Obstacle& obstacle);
 
     /**
      * @brief remove a specified obstacle from the graph
@@ -64,7 +64,7 @@ namespace planning
      *
      * @author Gianni Monteban
      */
-    void removeObstacle(const environment_controller::Obstacle& obstacle);
+    void removeObstacle(const Obstacle& obstacle);
 
     /**
      * @brief remove all obstacles
@@ -84,7 +84,7 @@ namespace planning
     std::vector<Vertex> calculateNeighbours(const Vertex& aVertex);
 
       private:
-    std::vector<environment_controller::Obstacle> mObstacles;
+    std::vector<Obstacle> mObstacles;
     Vertex mEndPoint;
     /**
      * @brief Checks whether if the given point is within any of the known
@@ -101,6 +101,6 @@ namespace planning
     bool isPointInAnObstacle(const Vertex& aVertex) const;
   };
 
-} // namespace astar
+} // namespace planning
 
 #endif // GRAPH_HPP

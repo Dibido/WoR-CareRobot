@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(environment_controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
   std_msgs
-  planning
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_environment_controller
-  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs planning
+  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -119,14 +118,21 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  SYSTEM
   ${catkin_INCLUDE_DIRS}
 )
 
 add_library(lib_environment_controller
-src/environment_controller/ObstacleSubscriber.cpp)
+src/environment_controller/ObstaclesSubscriber.cpp
+src/environment_controller/Object.cpp
+src/environment_controller/Position.cpp
+src/environment_controller/EnvironmentController.cpp
+src/environment_controller/SafetyController.cpp)
+
+add_dependencies(lib_environment_controller
+${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(lib_environment_controller 
-lib_planning
 ${catkin_LIBRARIES}
 )
 ## Declare a C++ library

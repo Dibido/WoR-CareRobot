@@ -5,101 +5,80 @@
 namespace kinematics
 {
 
-  std::vector<Link> createConfiguration()
-  {
-    std::vector<Link> joints;
-    // The official config, uses the modified Denavit-Hartenberg
-    // parameters Joint 1
-    joints.push_back(Link(0, 0, 0.333, eJoint::REVOLUTE, degree2Radian(-166),
-                          degree2Radian(166)));
-    // Joint 2
-    joints.push_back(Link(0, -M_PI_2, 0.0, eJoint::REVOLUTE,
-                          degree2Radian(-101), degree2Radian(101)));
-    // Joint 3
-    joints.push_back(Link(0.0, M_PI_2, 0.316, eJoint::REVOLUTE,
-                          degree2Radian(-166), degree2Radian(166)));
-    // Joint 4
-    joints.push_back(Link(0.0825, M_PI_2, 0.0, eJoint::REVOLUTE,
-                          degree2Radian(-176), degree2Radian(-4)));
-    // Joint 5
-    joints.push_back(Link(-0.0825, -M_PI_2, 0.384, eJoint::REVOLUTE,
-                          degree2Radian(-166), degree2Radian(166)));
-    // Joint 6
-    joints.push_back(Link(0.0, M_PI_2, 0.0, eJoint::REVOLUTE, degree2Radian(-1),
-                          degree2Radian(215)));
-    // Joint 7 -> This joint and the next have been combined to simplify
-    // this prototype
-    joints.push_back(Link(0.088, M_PI_2, 0, eJoint::REVOLUTE,
-                          degree2Radian(-166), degree2Radian(166)));
-    // flange
-    joints.push_back(Link(0.0, 0.0, 0.107, 0.0, eJoint::STATIC));
-    return joints;
-  }
-
   TEST(DenavitHartenberg, InverseKinematicsSuccess)
   {
-    DenavitHartenberg denavitHartenberg(createConfiguration());
-    std::vector<double> currentBigTheta = { 0, 0, 0, 0, 0, 0, 0 };
-    std::vector<double> goalBigTheta = { 0,      M_PI * 1.2, M_PI * 0.7,
-                                         M_PI_4, M_PI * 0.3, M_PI_4,
-                                         0 };
+    DenavitHartenberg denavitHartenberg;
+    Configuration currentBigTheta;
+    Configuration goaaBigTheta;
+    goaaBigTheta.setTheta(0, 0);
+    goaaBigTheta.setTheta(1, M_PI * 1.2);
+    goaaBigTheta.setTheta(2, M_PI * 0.7);
+    goaaBigTheta.setTheta(3, M_PI_4);
+    goaaBigTheta.setTheta(4, M_PI * 0.3);
+    goaaBigTheta.setTheta(5, M_PI_4);
+    goaaBigTheta.setTheta(6, 0);
 
-    Matrix<double, 6, 1> goalEndEffector =
-        denavitHartenberg.forwardKinematicsYPR(goalBigTheta);
+    Matrix<double, 6, 1> aGoalEndEffector =
+        denavitHartenberg.forwardKinematicsYPR(goaaBigTheta);
 
-    std::vector<double> foundConfiguration =
-        denavitHartenberg.inverseKinematics(goalEndEffector, currentBigTheta);
+    Configuration foundConfiguration =
+        denavitHartenberg.inverseKinematics(aGoalEndEffector, currentBigTheta);
     Matrix<double, 6, 1> foundEndEffector =
         denavitHartenberg.forwardKinematicsYPR(foundConfiguration);
 
     EXPECT_EQ(true, transformationMatrixEquals(
-                        goalEndEffector, foundEndEffector, cIkEpsilon_m,
+                        aGoalEndEffector, foundEndEffector, cIkEpsilon_m,
                         cIkEpsilon_rad, cDhTransformPosRadSplit));
+    EXPECT_EQ(true, foundConfiguration.result());
   }
 
   TEST(DenavitHartenberg, InverseKinematicsFail)
   {
-    DenavitHartenberg denavitHartenberg(createConfiguration());
-    std::vector<double> currentBigTheta = { 0, 0, 0, 0, 0, 0, 0 };
+    DenavitHartenberg denavitHartenberg;
+    Configuration currentBigTheta;
 
     Matrix<double, 6, 1> impossibleEndEffector{ 1, 0, 0, 0, 0, 0 };
 
-    std::vector<double> foundConfiguration2 =
-        denavitHartenberg.inverseKinematics(impossibleEndEffector,
-                                            currentBigTheta);
+    Configuration foundConfiguration2 = denavitHartenberg.inverseKinematics(
+        impossibleEndEffector, currentBigTheta);
     Matrix<double, 6, 1> foundEndEffector2 =
         denavitHartenberg.forwardKinematicsYPR(foundConfiguration2);
 
     EXPECT_EQ(false, transformationMatrixEquals(
                          impossibleEndEffector, foundEndEffector2, cIkEpsilon_m,
                          cIkEpsilon_rad, cDhTransformPosRadSplit));
+    EXPECT_EQ(false, foundConfiguration2.result());
   }
 
   TEST(DenavitHartenberg, ForwardKinematics)
   {
+    Configuration bigTheta;
 
-    std::vector<Link> jointsSimplify;
-    std::vector<double> bigTheta = { 0, 0 };
-
-    jointsSimplify.push_back(Link(0, 0, 2, eJoint::REVOLUTE, -M_PI, M_PI));
-    jointsSimplify.push_back(
-        Link(0, -M_PI_2, 0, eJoint::REVOLUTE, -M_PI, M_PI));
-    jointsSimplify.push_back(Link(0, M_PI_2, 2, 0, eJoint::STATIC));
-
-    DenavitHartenberg denavitHartenberg(jointsSimplify);
+    DenavitHartenberg denavitHartenberg;
 
     const auto endEffector = denavitHartenberg.forwardKinematicsYPR(bigTheta);
-    const Matrix<double, 6, 1> expectedEndEffector{ 0, 0, 4, 0, 0, 0 };
+    const Matrix<double, 6, 1> expectedEndEffector{ 0.088, 0.0, 0.9259999999,
+                                                    0.0,   0.0, 3.141592653 };
 
     EXPECT_EQ(true, equals(expectedEndEffector,
                            denavitHartenberg.forwardKinematicsYPR(bigTheta),
-                           std::numeric_limits<double>::epsilon(), 10));
+                           0.000000001));
 
-    std::vector<double> bigTheta2 = { 0, M_PI_4 };
-    const Matrix<double, 6, 1> expectedEndEffector2{ sqrt(2), 0, sqrt(2) + 2, 0,
-                                                     M_PI_4,  0 };
+    Configuration bigTheta2;
+    bigTheta2.setTheta(0, M_PI / 5);
+    bigTheta2.setTheta(1, M_PI / 3);
+    bigTheta2.setTheta(2, M_PI / 2);
+    bigTheta2.setTheta(3, M_PI * 1.5);
+    bigTheta2.setTheta(4, M_PI * 1.7);
+    bigTheta2.setTheta(5, M_PI / 8);
+    bigTheta2.setTheta(6, M_PI / 2);
+
+    const Matrix<double, 6, 1> expectedEndEffector2{
+      0.03297219602, 0.520015779,  0.410671164,
+      0.6283185307,  0.1047197551, 1.963495408
+    };
     EXPECT_EQ(true, equals(expectedEndEffector2,
                            denavitHartenberg.forwardKinematicsYPR(bigTheta2),
-                           std::numeric_limits<double>::epsilon(), 10));
+                           0.000000001));
   }
 } // namespace kinematics

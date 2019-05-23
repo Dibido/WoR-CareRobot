@@ -1,11 +1,12 @@
 #ifndef KINEMATICS_DENAVITHARTENBERG_HPP
 #define KINEMATICS_DENAVITHARTENBERG_HPP
 
-#include "kinematics/Joint.hpp"
+#include "kinematics/Configuration.hpp"
+#include "kinematics/KinematicsDefines.hpp"
 #include "kinematics/Link.hpp"
-
+#include "kinematics/RobotConfiguration.hpp"
+#include <array>
 #include <matrix/Matrix.hpp>
-#include <vector>
 
 /**
  * @brief Contains functions and classes to calculate end effector position of a
@@ -15,12 +16,6 @@
  */
 namespace kinematics
 {
-  const double cIkBeta = 0.3;
-  const double cIkEpsilon_m = 0.000001;
-  const double cIkEpsilon_rad = M_PI / 180 * 3;
-  const std::size_t cIkMaxIterations = 1000;
-  const std::size_t cDhTransformPosRadSplit = 3;
-
   /**
    * @brief Calculates End Effector position and Configuration using
    * Denavit-Hartenberg parameters
@@ -30,12 +25,10 @@ namespace kinematics
   {
       public:
     /**
-     * @brief Construct a Denavit-Hartenberg object using a set of Links
+     * @brief Construct a Denavit-Hartenberg object
      * @author Emiel Bosman
-     *
-     * @param lLinkConfig
      */
-    explicit DenavitHartenberg(const std::vector<Link>& lLinkConfig);
+    DenavitHartenberg();
     DenavitHartenberg(const DenavitHartenberg&) = default;
     ~DenavitHartenberg() = default;
 
@@ -45,43 +38,42 @@ namespace kinematics
      * @brief Calculate end effector position and rotation
      * @author Emiel Bosman
      *
-     * @param lBigTheta The variable to use when calculating the transformation
+     * @param aBigTheta The variable to use when calculating the transformation
      * matrix for each Link
-     * @param lStart Link to start with (0-indexed)
-     * @param lEnd Link to end at
+     * @param aStart Link to start with (0-indexed)
+     * @param aEnd Link to end at
      * @return Matrix<double, 6, 1> The calculated end effector position
      * described in x,y and z position and yaw pitch roll rotation
      * ~~~
      * [ x y z yaw pitch roll ]
      * ~~~
      */
-    Matrix<double, 6, 1>
-        forwardKinematicsYPR(const std::vector<double>& bigTheta,
-                             std::size_t lStart = 0,
-                             std::size_t lEnd = 0) const;
+    Matrix<double, 6, 1> forwardKinematicsYPR(const Configuration& aBigTheta,
+                                              std::size_t aStart = 0,
+                                              std::size_t aEnd = 0) const;
 
     /**
      * @brief Run inverse kinematics to find the required Big Theta to reach a
      * given goal
      * @author Emiel Bosman
      *
-     * @param lGoal Goal to reach
-     * @param lCurrentBigTheta Starting position
-     * @return std::vector<double>
+     * @param aGoal Goal to reach
+     * @param aCurrentBigTheta Starting position
+     * @return std::array<double, cKinematicsDoF>
      */
-    std::vector<double>
-        inverseKinematics(const Matrix<double, 6, 1>& lGoal,
-                          const std::vector<double>& lCurrentBigTheta) const;
+    Configuration
+        inverseKinematics(const Matrix<double, 6, 1>& aGoal,
+                          const Configuration& aCurrentBigTheta) const;
 
       private:
     /**
      * @brief Calculate end effector position and rotation
      * @author Emiel Bosman
      *
-     * @param lBigTheta The variable to use when calculating the transformation
+     * @param aBigTheta The variable to use when calculating the transformation
      * matrix for each Link
-     * @param lStart Link to start with (0-indexed)
-     * @param lEnd Link to end at
+     * @param aStart Link to start with (0-indexed)
+     * @param aEnd Link to end at
      * @return Matrix<double, 4, 4> The calculated Forward
      * Kinematics including a 3x3 Rotational matrix and a 1x3
      * positional matrix
@@ -92,11 +84,11 @@ namespace kinematics
      * [ 0   0   0   1  ]
      * ~~~
      */
-    Matrix<double, 4, 4> forwardKinematics(const std::vector<double>& lBigTheta,
-                                           std::size_t lStart = 0,
-                                           std::size_t lEnd = 0) const;
+    Matrix<double, 4, 4> forwardKinematics(const Configuration& aBigTheta,
+                                           std::size_t aStart = 0,
+                                           std::size_t aEnd = 0) const;
 
-    const std::vector<Link> mLinkConfiguration;
+    const RobotConfiguration mRobotConfiguration;
   };
 
 } // namespace kinematics

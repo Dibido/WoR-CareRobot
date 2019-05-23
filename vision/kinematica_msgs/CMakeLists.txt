@@ -52,7 +52,7 @@ add_message_files(
   FILES
   Object.msg
   Obstacles.msg
-#   Message2.msg
+  Cup.msg
 )
 
 ## Generate services in the 'srv' folder
