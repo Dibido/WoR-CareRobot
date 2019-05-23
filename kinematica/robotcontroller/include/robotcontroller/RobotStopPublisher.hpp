@@ -27,12 +27,14 @@ namespace robotcontroller
                        const std::string& lTopic,
                        const uint16_t lQueue_size);
 
+    ~RobotStopPublisher() = default;
+
     /**
      * @brief Publishes a Stop msg to the robot_command topic
      *
-     * @param stop
+     * @param aStop
      */
-    void publish(const bool lStop);
+    void publish(const bool aStop);
 
       private:
     ros::NodeHandle& mN;
