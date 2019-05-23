@@ -16,11 +16,13 @@ namespace robotcontroller
         cEpsilon_outer_m(anEpsilonInner_m)
   {
     if (aWidth_m < 0.0 || aWidth_m > cMaxWidth_m)
-      throw std::invalid_argument("Width_m must be between 0.0 and 0.08: " +
+      throw std::invalid_argument("Width_m must be between 0.0 and " +
+                                  std::to_string(cMaxWidth_m) + ": " +
                                   std::to_string(aWidth_m));
 
     if (aSpeedfactor < 0.0 || aSpeedfactor > cMaxSpeedfactor)
-      throw std::invalid_argument("Speedfactor must be between 0.0 and 1.0: " +
+      throw std::invalid_argument("Speedfactor must be between 0.0 and " +
+                                  std::to_string(cMaxSpeedfactor) + ": " +
                                   std::to_string(aSpeedfactor));
 
     // if(aForce_nm) No check yet. At the moment it's not clear what the ranges
