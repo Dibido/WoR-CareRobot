@@ -81,15 +81,6 @@ TEST(updateJointController, update)
   EXPECT_EQ(0, jointController1.getCurrentPos());
 }
 
-// TEST(updateJointController, run)
-// {
-//   gazebo::physics::JointPtr joint;
-//   gazebo::JointController jointController1(joint, "mName1", 0, -1, 1, -1, 1, 2);
-//   jointController1.setCurrentPos;
-
-//   EXPECT_EQ(0, jointController1.getCurrentVel());
-//   EXPECT_EQ(0, jointController1.getCurrentPos());
-// }
 
 TEST(equalsDoubleJointController, equalsDouble)
 {
