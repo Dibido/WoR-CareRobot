@@ -29,6 +29,7 @@ namespace environment_controller
      * @return Position& the position strcut
      */
     Position& position();
+    const Position& position() const;
 
     /**
      * @brief getter & setter for height
@@ -36,26 +37,28 @@ namespace environment_controller
      * @return double& the height
      */
     double& height_m();
-
+    const double& height_m() const;
     /**
      * @brief getter & setter for width
      *
      * @return double& the widht
      */
     double& width_m();
+    const double& width_m() const;
     /**
      * @brief getter & setter for depth
      *
      * @return double& the depth
      */
     double& depth_m();
-
+    const double& depth_m() const;
     /**
      * @brief getter & setter for direction
      *
      * @return double& the direction
      */
     double& direction_rad();
+    const double& direction_rad() const;
 
     /**
      * @brief getter & setter for speed
@@ -63,19 +66,21 @@ namespace environment_controller
      * @return double& the speed
      */
     double& speed_ms();
-
+    const double& speed_ms() const;
     /**
      * @brief getter & setter for measurementTime
      *
      * @return ros::Time& the time the object was measured
      */
     ros::Time& measurementTime();
+    const ros::Time& measurementTime() const;
     /**
      * @brief getter & setter for sensorId
      *
      * @return uint8_t& the sensorId
      */
     uint8_t& sensorId();
+    const uint8_t& sensorId() const;
 
       private:
     Position mPosition;         ///< @see Position.hpp for correct values

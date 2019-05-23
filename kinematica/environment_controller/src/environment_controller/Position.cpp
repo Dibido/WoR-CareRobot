@@ -25,6 +25,15 @@ namespace environment_controller
     return mX_m;
   }
 
+  const double& Position::x_m() const
+  {
+    if (mX_m > cMaxRange_m || mX_m < cMinRange_m)
+    {
+      throw std::range_error("Xpos is out of range");
+    }
+    return mX_m;
+  }
+
   double& Position::y_m()
   {
     if (mY_m > cMaxRange_m || mY_m < cMinRange_m)
@@ -34,7 +43,25 @@ namespace environment_controller
     return mY_m;
   }
 
+  const double& Position::y_m() const
+  {
+    if (mY_m > cMaxRange_m || mY_m < cMinRange_m)
+    {
+      throw std::range_error("Ypos is out of range");
+    }
+    return mY_m;
+  }
+
   double& Position::z_m()
+  {
+    if (mZ_m > cMaxRange_m || mZ_m < cMinRange_m)
+    {
+      throw std::range_error("Zpos is out of range");
+    }
+    return mZ_m;
+  }
+
+  const double& Position::z_m() const
   {
     if (mZ_m > cMaxRange_m || mZ_m < cMinRange_m)
     {

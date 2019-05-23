@@ -38,18 +38,21 @@ namespace environment_controller
      * @return double& x
      */
     double& x_m();
+    const double& x_m() const;
     /**
      * @brief getter & setter
      *
      * @return double& y
      */
     double& y_m();
+    const double& y_m() const;
     /**
      * @brief getter & setter
      *
      * @return double& z
      */
     double& z_m();
+    const double& z_m() const;
 
       private:
     double mX_m; ///< must be between cMinRange_m and cMaxRange_m
