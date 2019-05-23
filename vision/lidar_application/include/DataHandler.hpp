@@ -36,24 +36,24 @@ class DataHandler
 
   /**
    * @brief Returns mLidarData, the most recently received lidar data
-   * @precondition: -
-   * @postcondition: mNewDataAvailable will be false
+   * @pre: -
+   * @post: mNewDataAvailable will be false
    * @return LidarData 
    */
   LidarData getLidarData();
   
   /**
    * @brief Handles incoming messages on defined topic (see constants in cpp)
-   * @precondition: ros::init() must've ben called
-   * @postcondition: Received data is stored in mLidarData, mNewDataAvailable will be true
+   * @pre: ros::init() must've ben called
+   * @post: Received data is stored in mLidarData, mNewDataAvailable will be true
    * @param aLidarDataMessage 
    */
   void dataReceiveCallback(const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage);
 
   /**
    * @brief Publishes object data on topic
-   * @precondition: -
-   * @postcondition: Data is published on rostopic
+   * @pre: -
+   * @post: Data is published on rostopic
    * @param aData - X,Y of objects
    * @param aHeight - Z of the object
    */

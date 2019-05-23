@@ -2,6 +2,9 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
+#include <ros/console.h>
+#include <ros/ros.h>
+
 // Declare a test
 TEST(TestSuite, testCase2)
 {
@@ -12,6 +15,9 @@ TEST(TestSuite, testCase2)
 int main(int argc, char** argv)
 {
 		  testing::InitGoogleTest(&argc, argv);
+
+      std::vector<std::pair<std::string, std::string>> lRemappings;
+      ros::init(lRemappings, "ObjectDetection");
 		  // ros::init(argc, argv, "tester");
 		  // ros::NodeHandle nh;
 		  return RUN_ALL_TESTS();

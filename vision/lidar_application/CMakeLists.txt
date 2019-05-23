@@ -43,7 +43,7 @@ target_link_libraries(${PROJECT_NAME}_main ${catkin_LIBRARIES})
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/ObjectDetection_Unittest.cpp src/ObjectDetection.cpp src/DataHandler.cpp src/LidarData.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/ObjectDetection_Unittests.cpp unitTests/DataHandler_Unittests.cpp unitTests/LidarData_Unittests.cpp src/ObjectDetection.cpp src/DataHandler.cpp src/LidarData.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
   
 if(CODE_COVERAGE)
@@ -57,6 +57,12 @@ if(CODE_COVERAGE)
   set(COVERAGE_LCOV_EXCLUDES
     '*/gtest/*'
     '/*/c++/*'
+    '*/boost/*'
+    '*/ros/*'
+    '*/geometry_msgs/*'
+    '*/kinematica_msgs'
+    '*/sensor_interfaces'
+    '*/include/*'
     '*/*.py'
     '*/unitTests/*.cpp'
     '*/*main.cpp'

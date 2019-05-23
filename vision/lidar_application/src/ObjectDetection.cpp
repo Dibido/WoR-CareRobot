@@ -1,10 +1,10 @@
 #include "../include/ObjectDetection.hpp"
 
 // Declaration of namespace variables
-const double ObjectDetectionConstants::cMaxDistanceDifference_m = 0.2;
+const double ObjectDetectionConstants::cDefaultMaxDistanceDifference_m = 0.2;
 const double ObjectDetectionConstants::cLidarHeight_m = 0.5;
 
-ObjectDetection::ObjectDetection() : mInitialized(false)
+ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m) : mInitialized(false), mMaxDistanceDifference_m(aMaxDistanceDifference_m)
 {
 }
 
@@ -29,6 +29,7 @@ void ObjectDetection::run()
 
         detectObjects();
 
+        printPublishData();
         mDataHandler.publishData(mDetectedObjects, ObjectDetectionConstants::cLidarHeight_m);
       }
       else
@@ -44,11 +45,7 @@ void ObjectDetection::detectObjects()
 {
   // Checking preconditions
   if ((mInitialScan.mDistances_m.size() == 0) ||
-      (mMostRecentScan.mDistances_m.size() == 0) ||
-      (mInitialScan.mDistances_m.size() !=
-       mMostRecentScan.mDistances_m.size()) ||
-      (!validateLidarData(mInitialScan)) ||
-      (!validateLidarData(mMostRecentScan)))
+      (mMostRecentScan.mDistances_m.size() == 0))
   {
     throw std::logic_error("Preconditions of detectObjects weren't met");
   }
@@ -77,11 +74,11 @@ void ObjectDetection::detectObjects()
 
     // There is a positive change compared to initial scan (object came closer)
     if ((lDistanceDifference_m >
-         ObjectDetectionConstants::cMaxDistanceDifference_m))
+         mMaxDistanceDifference_m))
     {
       // Current measurement wasn't taken of the same object as previous angle
       if (std::abs(lCurrentDistance_m - lPreviousDistance_m) >
-          ObjectDetectionConstants::cMaxDistanceDifference_m)
+          mMaxDistanceDifference_m)
       {
         // If lObject contains valid info (it won't at first iteration)
         if ((lObject.mDistances_m.size() > 0))  
@@ -113,15 +110,6 @@ void ObjectDetection::detectObjects()
   }
 
   mPublishData = convertVectorsTo2D(lObjectList);
-
-  std::cout << "Detected objects:" << std::endl;
-
-  for(auto lPair : mPublishData)
-  {
-    std::cout << "(" << std::to_string(lPair.first) << "," << std::to_string(lPair.second) << ")" << std::endl;
-  }
-  
-  std::cout << std::endl;
 }
 
 std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
@@ -151,13 +139,6 @@ std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
 std::pair<double, double>
     ObjectDetection::getAverageMeasurement(LidarData& aData) const
 {
-  if (!validateLidarData(aData))
-  {
-    throw std::logic_error(
-        "getAverageMeasurement was used wrongly, aData.mAngles size is not "
-        "equal to aData.mDistances_m");
-  }
-
   double lAverageAngle = 0.0;
   double lAverageDistance_m = 0.0;
 
@@ -181,14 +162,14 @@ std::pair<double, double>
   return std::make_pair(lAverageAngle, lAverageDistance_m);
 }
 
-bool ObjectDetection::validateLidarData(LidarData& aData) const
+void ObjectDetection::printPublishData() const
 {
-  if (aData.mAngles.size() == aData.mDistances_m.size())
+  std::cout << "Detected objects:" << std::endl;
+
+  for(auto lPair : mPublishData)
   {
-    return true;
+    std::cout << "(" << std::to_string(lPair.first) << "," << std::to_string(lPair.second) << ")" << std::endl;
   }
-  else
-  {
-    return false;
-  }
+  
+  std::cout << std::endl;
 }

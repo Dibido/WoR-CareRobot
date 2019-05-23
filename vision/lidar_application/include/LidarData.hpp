@@ -17,8 +17,8 @@ struct LidarData
 
   /**
    * @brief Clears mAngles and mDistances_m
-   * @precondition: -
-   * @postcondition: mAngles and mDistances_m contain no elements
+   * @pre: -
+   * @post: mAngles and mDistances_m contain no elements
    */
   void reset();
 
@@ -39,8 +39,8 @@ struct LidarData
    * @brief Adds samples to the existing angles/distances, 
    * aAngles and aDistances_m MUST be of 
    * same size, otherwise an exception is thrown.
-   * @precondition: -
-   * @postcondition: Given values are added to mAngles/mDistances_m
+   * @pre: -
+   * @post: Given values are added to mAngles/mDistances_m
    * @param aAngles - angles in radians
    * @param aDistances_m - corresponding distances in meters
    */
@@ -48,8 +48,8 @@ struct LidarData
 
   /**
    * @brief Adds sample to the existing angles/distances
-   * @precondition: -
-   * @postcondition: Given values are added to mAngles/mDistances_m
+   * @pre: -
+   * @post: Given values are added to mAngles/mDistances_m
    * @param aAngles - angle in radians
    * @param aDistances_m - corresponding distances in meters
    */
