@@ -1,4 +1,5 @@
 #include "location_component/DetectAGV.hpp"
+#include "location_component/PosCalculation.hpp"
 #include <ctime>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -34,6 +35,10 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
 int main(int argc, char** argv)
 {
+  location_component::PosCalculation pos;
+  /* std::cout << pos.calculateAGVLocation(cv::Point(200, 100), cv::Size(400,
+   * 400)) << std::endl; */
+
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
   cv::namedWindow("view");

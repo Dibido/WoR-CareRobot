@@ -91,7 +91,7 @@
     </model>
 
 <model name="my_camera">
-      <pose>0.35 -4 1.8 0 1.570796 0</pose>
+      <pose>0.25 -4 1.8 0 1.570796 0</pose>
       <static>true</static>
       <link name="link">
         <sensor name="webcam" type="camera">  

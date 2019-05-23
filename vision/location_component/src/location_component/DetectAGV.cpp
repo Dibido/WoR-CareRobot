@@ -1,5 +1,6 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/CupScanner.hpp"
+#include "location_component/PosCalculation.hpp"
 #include <ros/ros.h>
 
 namespace location_component
@@ -60,13 +61,25 @@ namespace location_component
           cv::Mat displayCups;
           (*lDetectedAGV).agvFrame.copyTo(displayCups);
 
+          PosCalculation lPosCalculator;
+
           for (const auto& detectedCup : lDetectedCups)
           {
             cv::circle(displayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), 0);
+            ROS_INFO_STREAM(
+                "Cup found at: " << lPosCalculator.calculateCupLocation(
+                    (*lDetectedAGV).mMidpoint,
+                    cv::Size(aFrame.cols, aFrame.rows), detectedCup.mMidpoint,
+                    cv::Size(displayCups.cols, displayCups.rows)));
           }
 
           imshow("display ", displayCups);
+
+          ROS_INFO_STREAM(
+              "AGV found at: " << lPosCalculator.calculateAGVLocation(
+                  (*lDetectedAGV).mMidpoint,
+                  cv::Size(aFrame.cols, aFrame.rows)));
         }
       }
     }

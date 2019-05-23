@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_genera
    sensor_msgs
  )
 
-catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs)
+catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs geometry_msgs)
 
 find_package(Threads REQUIRED)
 find_package(sensor_msgs)
@@ -32,7 +32,7 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
+add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp)
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
