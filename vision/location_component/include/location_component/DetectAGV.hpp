@@ -15,6 +15,7 @@ namespace location_component
   {
     std::vector<cv::Point> mCorners;
     cv::Point mMidpoint;
+    cv::Mat agvFrame;
   };
 
   class DetectAGV

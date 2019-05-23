@@ -53,15 +53,21 @@ namespace location_component
         {
           CupScanner lCupScanner;
           std::vector<DetectedCup> lDetectedCups =
-              lCupScanner.detectCups(aFrame);
+              lCupScanner.detectCups((*lDetectedAGV).agvFrame);
 
           aFrame.copyTo(mCapturedFrame);
 
+          cv::Mat displayCups;
+          (*lDetectedAGV).agvFrame.copyTo(displayCups);
+
           for (const auto& detectedCup : lDetectedCups)
           {
-            cv::circle(mCapturedFrame, detectedCup.mMidpoint, 10,
+            cv::circle(displayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), CV_FILLED);
           }
+
+          imshow("display ", displayCups);
+
         }
       }
     }
@@ -116,6 +122,8 @@ namespace location_component
 
       if (lContours.at(0).size() == cCornersOfObject)
       {
+        lDetectedAGV.agvFrame = lDisFrame(lBoundRect);
+
         std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
         lPoints.push_back(getMidPoint(lContours.at(0)));
 
