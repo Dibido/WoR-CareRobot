@@ -42,7 +42,8 @@ namespace gazebo
      * @param aMsg: The gazebo formatted message recieved from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
-    sensor_msgs::LaserScan convertToLaserScan(ConstLaserScanStampedPtr& aMsg);
+    sensor_msgs::LaserScan
+        convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const;
 
     /**
      * @brief Convert the LaserScan message to
@@ -51,7 +52,7 @@ namespace gazebo
      * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(sensor_msgs::LaserScan aMsg);
+        convertToLidarData(const sensor_msgs::LaserScan aMsg) const;
 
     // Variables
     std::string mFrameName;

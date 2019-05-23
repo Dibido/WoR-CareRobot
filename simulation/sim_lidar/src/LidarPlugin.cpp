@@ -109,12 +109,12 @@ namespace gazebo
   void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
   {
     // Convert to LaserScan message
-    sensor_msgs::LaserScan lLaserMessage = convertToLaserScan(aMsg);
+    const sensor_msgs::LaserScan lLaserMessage = convertToLaserScan(aMsg);
     // Publish message
     mRosPub.publish(lLaserMessage);
 
     // Convert to LidarData message
-    sensor_interfaces::LidarData lLidarDataMessage =
+    const sensor_interfaces::LidarData lLidarDataMessage =
         convertToLidarData(lLaserMessage);
     // Publish message
     mLidarDataPub.publish(lLidarDataMessage);
@@ -125,7 +125,7 @@ namespace gazebo
   }
 
   sensor_msgs::LaserScan
-      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg)
+      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const
   {
     sensor_msgs::LaserScan lLaserMessage;
     float lAngleMin = static_cast<float>(aMsg->scan().angle_min());
@@ -151,7 +151,7 @@ namespace gazebo
   }
 
   sensor_interfaces::LidarData
-      LidarPlugin::convertToLidarData(sensor_msgs::LaserScan aMsg)
+      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
   {
     sensor_interfaces::LidarData lLidarDataMessage;
     float lAngleMax = static_cast<float>(aMsg.angle_max);
