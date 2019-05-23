@@ -37,7 +37,7 @@ namespace environment_controller
 
   double& Object::height_m()
   {
-    if (mHeight_m >= cMaxRange || mHeight_m <= cMinRange)
+    if (mHeight_m >= cMaxRange_m || mHeight_m <= cMinRange_m)
     {
       throw std::range_error("height is out of range");
     }
@@ -46,7 +46,7 @@ namespace environment_controller
 
   double& Object::width_m()
   {
-    if (mWidth_m >= cMaxRange || mWidth_m <= cMinRange)
+    if (mWidth_m >= cMaxRange_m || mWidth_m <= cMinRange_m)
     {
       throw std::range_error("width is out of range");
     }
@@ -55,7 +55,7 @@ namespace environment_controller
 
   double& Object::depth_m()
   {
-    if (mDepth_m >= cMaxRange || mDepth_m <= cMinRange)
+    if (mDepth_m >= cMaxRange_m || mDepth_m <= cMinRange_m)
     {
       throw std::range_error("depth is out of range");
     }
@@ -73,7 +73,7 @@ namespace environment_controller
 
   double& Object::speed_ms()
   {
-    if (mSpeed_ms >= cToFast_ms || mSpeed_ms <= cToSlow_ms)
+    if (mSpeed_ms >= cTooFast_ms || mSpeed_ms < cTooSlow_ms)
     {
       throw std::range_error("speed is out of range");
     }
@@ -82,10 +82,6 @@ namespace environment_controller
 
   ros::Time& Object::measurementTime()
   {
-    if (mMeasurementTime == ros::Time(0))
-    {
-      throw std::range_error("time is out of range");
-    }
     return mMeasurementTime;
   }
   uint8_t& Object::sensorId()

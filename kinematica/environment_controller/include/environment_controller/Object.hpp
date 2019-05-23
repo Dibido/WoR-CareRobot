@@ -79,12 +79,12 @@ namespace environment_controller
 
       private:
     Position mPosition;         ///< @see Position.hpp for correct values
-    double mHeight_m;           ///< must be between -100 and 100 meters
-    double mWidth_m;            ///< must be between -100 and 100 meters
-    double mDepth_m;            ///< must be between -100 and 100 meters
-    double mDirecton_rad;       ///< must be between -PI and PI
-    double mSpeed_ms;           ///< must be between 0 and 10 M/S
-    ros::Time mMeasurementTime; ///< cannot be 0
+    double mHeight_m;           ///< must be between cMinRange_m and cMaxRange_m
+    double mWidth_m;            ///< must be between cMinRange_m and cMaxRange_m
+    double mDepth_m;            ///< must be between cMinRange_m and cMaxRange_m
+    double mDirecton_rad;       ///< must be between cLow_rad and cHigh_rad
+    double mSpeed_ms;           ///< must be between cTooSlow_ms and cTooFast_ms
+    ros::Time mMeasurementTime; ///< no contraint
     uint8_t mSensorId;          ///< sensorId needs to exsist
   };
 

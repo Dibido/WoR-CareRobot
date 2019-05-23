@@ -52,9 +52,9 @@ namespace environment_controller
     double& z_m();
 
       private:
-    double mX_m; ///< must be between -100 and 100
-    double mY_m; ///< must be between -100 and 100
-    double mZ_m; ///< must be between -100 and 100
+    double mX_m; ///< must be between cMinRange_m and cMaxRange_m
+    double mY_m; ///< must be between cMinRange_m and cMaxRange_m
+    double mZ_m; ///< must be between cMinRange_m and cMaxRange_m
   };
 } // namespace environment_controller
 

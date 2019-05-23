@@ -41,5 +41,6 @@ namespace environment_controller
 
   void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)
   {
+    // TODO check obstacles
   }
 } // namespace environment_controller
