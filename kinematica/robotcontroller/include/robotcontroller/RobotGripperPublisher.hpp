@@ -1,8 +1,8 @@
 #ifndef ROBOTCONTROL_PUBLISHER_HPP
 #define ROBOTCONTROL_PUBLISHER_HPP
 
-#include "kinematics/Configuration.hpp"
-#include "robotcontroller_msgs/Control.h"
+#include "robotcontroller/IGripperControl.hpp"
+#include "robotcontroller_msgs/Gripper.h"
 #include "ros/ros.h"
 
 #include <iostream>
@@ -16,7 +16,7 @@ namespace robotcontroller
    * @brief Publisher for controlling the robotarm
    *
    */
-  class RobotControlPublisher
+  class RobotGripperPublisher : public IGripperControl
   {
       public:
     /**
@@ -26,25 +26,25 @@ namespace robotcontroller
      * @param lTopic Topic on which the message will be published
      * @param lQueue_size Number of messages that will be queued
      */
-    RobotControlPublisher(ros::NodeHandle& lN,
+    RobotGripperPublisher(ros::NodeHandle& lN,
                           const std::string& lTopic,
                           const uint16_t lQueue_size);
 
-    ~RobotControlPublisher() = default;
+    ~RobotGripperPublisher() = default;
+
     /**
      * @brief Publishes a Control msg to the robot_command topic
      *
      * @param lSf Speedfactor for the robotarm movement speed
      * @param lConfiguration Configuration of the robotarm
      */
-    void publish(const double lSf,
-                 const kinematics::Configuration& lConfiguration);
+    virtual void moveGripper(const robotcontroller::GripperData& aGripperData);
 
       private:
     ros::NodeHandle& mN;
     const std::string& cTopic;
     const uint16_t cQueue_size;
-    ros::Publisher mRobotControl_pub;
+    ros::Publisher mRobotGripper_pub;
   };
 } // namespace robotcontroller
 
