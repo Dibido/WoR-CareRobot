@@ -14,8 +14,8 @@ namespace location_component
   void PosCalculation::getWorldPos()
   {
 	
-	xpos * (100 / AGVDepth) * CupHeight;
-	ypos * (100 / AGVDepth) * CupHeight;
+	xpos * (100 / cAGVDepth) * cCupHeight;
+	ypos * (100 / cAGVDepth) * cCupHeight;
   }
 
 
