@@ -16,47 +16,48 @@ namespace kinematics
   class Link
   {
       public:
+    Link();
     /**
      * @brief Construct a new Link object
      * @author Emiel Bosman
      *
-     * @param lA_m Link length
-     * @param lAlpha_rad Link twist
-     * @param lD_m Link offset
-     * @param lTheta_rad Joint angle
-     * @param lType
-     * @param lMinValue Radians if lType is REVOLUTE, meters if lType is
-     * PRISMATIC, unused if lType is STATIC
-     * @param lMaxValue Radians if lType is REVOLUTE, meters if lType is
-     * PRISMATIC, unused if lType is STATIC
+     * @param aA_m Link length
+     * @param aAlpha_rad Link twist
+     * @param aD_m Link offset
+     * @param aTheta_rad Joint angle
+     * @param aType
+     * @param aMinValue Radians if aType is REVOLUTE, meters if aType is
+     * PRISMATIC, unused if aType is STATIC
+     * @param aMaxValue Radians if aType is REVOLUTE, meters if aType is
+     * PRISMATIC, unused if aType is STATIC
      */
-    Link(double lA_m,
-         double lAlpha_rad,
-         double lD_m,
-         double lTheta_rad,
-         eJoint lType,
-         double lMinValue = 0,
-         double lMaxValue = 0);
+    Link(double aA_m,
+         double aAlpha_rad,
+         double aD_m,
+         double aTheta_rad,
+         eJoint aType,
+         double aMinValue = 0,
+         double aMaxValue = 0);
 
     /**
      * @brief Construct a new Link object, sets the static value
      * to 0
      * @author Emiel Bosman
-     * @param lA_m Link Length
-     * @param lAlpha_rad Link Twist
-     * @param lConstant Value of the constant value (mD_m or
+     * @param aA_m Link Length
+     * @param aAlpha_rad Link Twist
+     * @param aConstant Value of the constant value (mD_m or
      * mTheta_rad)
-     * @param lType Type of Joint (eJoint::PRISMATIC sets
+     * @param aType Type of Joint (eJoint::PRISMATIC sets
      * mTheta_rad, eJoint::REVOLUTE sets mD_rad)
-     * @param lMinValue
-     * @param lMaxValue
+     * @param aMinValue
+     * @param aMaxValue
      */
-    Link(double lA_m,
-         double lAlpha_rad,
-         double lConstant,
-         eJoint lType,
-         double lMinValue,
-         double lMaxValue);
+    Link(double aA_m,
+         double aAlpha_rad,
+         double aConstant,
+         eJoint aType,
+         double aMinValue,
+         double aMaxValue);
     ~Link() = default;
     Link(const Link&) = default;
     Link& operator=(const Link&) = default;
@@ -64,7 +65,7 @@ namespace kinematics
     /**
      * @brief Get the Transformation Matrix for a given Link
      * @author Emiel Bosman
-     * @param lVariable Changing value for this Link (meters or radians)
+     * @param aVariable Changing value for this Link (meters or radians)
      * @return Matrix<double, 4, 4> The TransformationMatrix
      * ~~~
      * [ r00 r11 r12 tx ]
@@ -73,7 +74,9 @@ namespace kinematics
      * [ 0   0   0   1  ]
      * ~~~
      */
-    Matrix<double, 4, 4> transformationMatrix(double lVariable) const;
+    Matrix<double, 4, 4> transformationMatrix(double aVariable) const;
+
+    double generateRandomVariable() const;
 
     double getA() const;
     double getAlpha() const;
@@ -82,28 +85,28 @@ namespace kinematics
     eJoint getType() const;
 
     /**
-     * @brief Checks wether variable falls within lMinValue and lMaxValue
+     * @brief Checks wether variable falls within aMinValue and aMaxValue
      * In case of a REVOLUTE joint, variable is first translated to fall between
      * -M_PI and M_PI
      * @author Emiel Bosman
      *
-     * @param lVariable (meters or radians)
+     * @param aVariable (meters or radians)
      * @return true
      * @return false
      */
-    bool isWithinConstraints(double lVariable) const;
+    bool isWithinConstraints(double aVariable) const;
 
     /**
-     * @brief Constrains a variable to be between lMinValue and lMaxValue
+     * @brief Constrains a variable to be between aMinValue and aMaxValue
      * In case of a REVOLUTE joint, the variable is first translated to fall
      * between -M_PI and M_PI
      * @author Emiel Bosman
-     * @param lVariable Variable to constrain, if variable already falls between
-     * lMinValue and lMaxValue the variable is returned unchanged (meters or
+     * @param aVariable Variable to constrain, if variable already falls between
+     * aMinValue and aMaxValue the variable is returned unchanged (meters or
      * radians)
      * @return double
      */
-    double constrainVariable(double lVariable) const;
+    double constrainVariable(double aVariable) const;
 
       private:
     /**
@@ -112,12 +115,12 @@ namespace kinematics
      * @author Emiel Bosman
      * @see
      * https://en.wikipedia.org/wiki/Denavit%E2%80%93Hartenberg_parameters#Modified_DH_parameters
-     * @param lD_m
-     * @param lTheta_rad
+     * @param aD_m
+     * @param aTheta_rad
      * @return Matrix<double, 4, 4>
      */
-    Matrix<double, 4, 4> calculateTransformationMatrix(double lD_m,
-                                                       double lTheta_rad) const;
+    Matrix<double, 4, 4> calculateTransformationMatrix(double aD_m,
+                                                       double aTheta_rad) const;
 
     double mA_m;
     double mAlpha_rad;

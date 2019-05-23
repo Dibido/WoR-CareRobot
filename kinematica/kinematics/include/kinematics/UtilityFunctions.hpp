@@ -36,13 +36,37 @@ namespace kinematics
    *
    * @param lhs
    * @param rhs
-   * @param lEpsilon
+   * @param aEpsilon
    * @return true
    * @return false
    */
-  inline bool doubleEquals(double lhs, double rhs, double lEpsilon)
+  inline bool doubleEquals(double lhs, double rhs, double aEpsilon)
   {
-    return std::fabs(lhs - rhs) < lEpsilon;
+    return std::fabs(lhs - rhs) <= aEpsilon;
+  }
+
+  /**
+   * @brief Checks if two radian are equal
+   *
+   * @pre lhs and rhs are within the range of -M_PI and M_PI
+   * @param lhs
+   * @param rhs
+   * @param aEpsilon Amount that lhs and rhs can differ
+   * @return true
+   * @return false
+   */
+  inline bool radianEquals(double lhs, double rhs, double aEpsilon)
+  {
+    // Get the lowest value
+    double lowest = lhs;
+    double highest = rhs;
+    if (lhs > rhs)
+    {
+      lowest = rhs;
+      highest = lhs;
+    }
+    return doubleEquals(lowest, highest, aEpsilon) ||
+           doubleEquals(lowest + M_PI * 2, highest, aEpsilon);
   }
 
   /**
@@ -52,35 +76,52 @@ namespace kinematics
    * @author Emiel Bosman
    * @param lhs
    * @param rhs
-   * @param lEpsilon_m Epsilon to use for the left positional values
-   * @param lEpsilon_rad Epsilon to use for the right rotational values
-   * @param lEpsilonSplit Index at which to change which epsilon to use
+   * @param aEpsilon_m Epsilon to use for the left positional values
+   * @param aEpsilon_rad Epsilon to use for the right rotational values
+   * @param aEpsilonSplit Index at which to change which epsilon to use
    * @return true
    * @return false
    */
   template <std::size_t M>
   inline bool transformationMatrixEquals(const Matrix<double, M, 1>& lhs,
                                          const Matrix<double, M, 1>& rhs,
-                                         double lEpsilon_m,
-                                         double lEpsilon_rad,
-                                         std::size_t lEpsilonSplit)
+                                         double aEpsilon_m,
+                                         double aEpsilon_rad,
+                                         std::size_t aEpsilonSplit)
   {
-    assert(M > lEpsilonSplit);
-    for (std::size_t i = 0; i < lEpsilonSplit; ++i)
+    assert(M > aEpsilonSplit);
+    for (std::size_t i = 0; i < aEpsilonSplit; ++i)
     {
-      if (doubleEquals(lhs[i][0], rhs[i][0], lEpsilon_m) == false)
+      if (doubleEquals(lhs[i][0], rhs[i][0], aEpsilon_m) == false)
       {
         return false;
       }
     }
-    for (std::size_t i = lEpsilonSplit; i < M; ++i)
+    for (std::size_t i = aEpsilonSplit; i < M; ++i)
     {
-      if (doubleEquals(lhs[i][0], rhs[i][0], lEpsilon_rad) == false)
+      if (radianEquals(lhs[i][0], rhs[i][0], aEpsilon_rad) == false)
       {
         return false;
       }
     }
     return true;
+  }
+
+  /**
+   * @brief Constrain a radian between -M_PI and M_PI
+   *
+   * @param aRadian
+   * @return double
+   */
+  inline double constrainRadian(double aRadian)
+  {
+    aRadian = std::fmod(aRadian + M_PI, M_PI * 2);
+    if (aRadian < 0)
+    {
+      aRadian += M_PI * 2;
+    }
+    aRadian -= M_PI;
+    return aRadian;
   }
 } // namespace kinematics
 #endif // KINEMATICS_UTILITYFUNCTIONS_HPP

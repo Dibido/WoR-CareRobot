@@ -6,7 +6,7 @@ namespace kinematics
 
   TEST(JacobiMatrix, StraightUp)
   {
-    std::vector<double> bigTheta = { 0, 0, 0, 0, 0, 0, 0 };
+    Configuration bigTheta;
 
     Matrix<double, 6, 7> expectedJacobian{ { 0, 0.593, 0, -0.277, 0, 0.107, 0 },
                                            { 0.088, 0, 0.088, 0, 0.088, 0, 0 },
@@ -21,8 +21,14 @@ namespace kinematics
 
   TEST(JacobiMatrix, ConfigurationOne)
   {
-    std::vector<double> bigTheta = { M_PI / 5,   M_PI / 3, M_PI / 2, M_PI * 1.5,
-                                     M_PI * 1.7, M_PI / 8, M_PI / 2 };
+    Configuration bigTheta;
+    bigTheta.setTheta(0, M_PI / 5);
+    bigTheta.setTheta(1, M_PI / 3);
+    bigTheta.setTheta(2, M_PI / 2);
+    bigTheta.setTheta(3, M_PI * 1.5);
+    bigTheta.setTheta(4, M_PI * 1.7);
+    bigTheta.setTheta(5, M_PI / 8);
+    bigTheta.setTheta(6, M_PI / 2);
 
     Matrix<double, 6, 7> expectedJacobian{
       { -0.52001, 0.062837, -0.22047, 0.22963, -0.098359, -0.077367, 0.0 },

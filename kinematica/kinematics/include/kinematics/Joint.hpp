@@ -38,12 +38,12 @@ namespace kinematics
     /**
      * @brief Convert eJoint to a string value
      *
-     * @param lJoint
+     * @param aJoint
      * @return const std::string
      */
-    static const std::string toString(eJoint lJoint)
+    static std::string toString(eJoint aJoint)
     {
-      switch (lJoint)
+      switch (aJoint)
       {
       case eJoint::PRISMATIC:
         return "prismatic";

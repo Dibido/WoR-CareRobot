@@ -1,8 +1,7 @@
 #ifndef ROBOTCONTROL_PUBLISHER_HPP
 #define ROBOTCONTROL_PUBLISHER_HPP
 
-#include "kinematics/DenavitHartenberg.hpp"
-#include "kinematics/UtilityFunctions.hpp"
+#include "kinematics/Configuration.hpp"
 #include "robotcontroller_msgs/Control.h"
 #include "ros/ros.h"
 
@@ -31,13 +30,15 @@ namespace robotcontroller
                           const std::string& lTopic,
                           const uint16_t lQueue_size);
 
+    ~RobotControlPublisher() = default;
     /**
      * @brief Publishes a Control msg to the robot_command topic
      *
      * @param lSf Speedfactor for the robotarm movement speed
      * @param lConfiguration Configuration of the robotarm
      */
-    void publish(const double lSf, const std::vector<double>& lConfiguration);
+    void publish(const double lSf,
+                 const kinematics::Configuration& lConfiguration);
 
       private:
     ros::NodeHandle& mN;

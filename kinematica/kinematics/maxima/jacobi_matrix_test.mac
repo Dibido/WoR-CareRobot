@@ -42,7 +42,7 @@ JacobiSubst : subst([
    t_7 = 0
 ], Jacobian);
 
-stringout"JacobiStraightUp, float(%);
+stringout("JacobiSubst", float(%));
 
 JacobiSubst : subst([
    t_1 = %pi/5,
@@ -54,3 +54,30 @@ JacobiSubst : subst([
    t_7 = %pi/2
 ], Jacobian);
 stringout("JacobiOne", float(%));
+
+
+fpprintprec: 10;
+
+StraigtUp : subst([
+   t_1 = 0,
+   t_2 = 0,
+   t_3 = 0,
+   t_4 = 0,
+   t_5 = 0,
+   t_6 = 0,
+   t_7 = 0
+],TransformationABG);
+
+stringout("StraightUp", float(%));
+
+RandomConfig : subst([
+   t_1 = %pi/5,
+   t_2 = %pi/3,
+   t_3 = %pi/2,
+   t_4 = %pi*1.5,
+   t_5 = %pi*1.7,
+   t_6 = %pi/8,
+   t_7 = %pi/4
+],TransformationABG);
+
+stringout("RandomConfig", float(%));

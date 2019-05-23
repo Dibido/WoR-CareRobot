@@ -13,6 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+include(CTest)
+enable_testing()
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -103,9 +106,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES robotcontroller
-   CATKIN_DEPENDS robotcontroller_msgs roscpp lib_kinematics
+  INCLUDE_DIRS include
+  LIBRARIES lib_robotcontrol
+  CATKIN_DEPENDS robotcontroller_msgs roscpp kinematics
 #  DEPENDS system_lib
 )
 
@@ -121,8 +124,48 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp src/RobotStopPublisher.cpp)
-target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
+# add_executable(robotcontrol 
+# src/RobotControl.cpp 
+
+# )
+
+add_library(lib_robotcontrol
+src/RobotControlPublisher.cpp 
+src/RobotStopPublisher.cpp
+src/RobotGripperPublisher.cpp )
+
+add_dependencies(lib_robotcontrol
+${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
+
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()
+# target_link_libraries(robotcontrol lib_robotcontrol lib_kinematics)
   
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

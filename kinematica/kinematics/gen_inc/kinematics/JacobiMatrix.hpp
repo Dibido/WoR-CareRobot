@@ -1,5 +1,6 @@
 #ifndef KINEMATICS_JACOBIMATRIX_HPP
 #define KINEMATICS_JACOBIMATRIX_HPP
+#include "kinematics/Configuration.hpp"
 #include "matrix/Matrix.hpp"
 #include <cmath>
 #include <vector>
@@ -891,27 +892,25 @@ std::pow((Ct1*(Ct2*(Ct3*(Ct4*(St5*St7+Ct5*Ct6*Ct7)-Ct7*St4*St6)-St3*(Ct6*Ct7*St5
   /**
    * @brief Calculates the jacobian for a 7-DoF robotarm
    *
-   * @param lBigTheta
+   * @param aBigTheta
    * @return Matrix<double, 6, 7>
    */
-  Matrix<double, 6, 7>
-      calculateJacobiMatrix(const std::vector<double>& lBigTheta)
+  Matrix<double, 6, 7> calculateJacobiMatrix(const Configuration& aBigTheta)
   {
-    assert(lBigTheta.size() == 7);
-    const double lCosT1 = std::cos(lBigTheta[0]);
-    const double lSinT1 = std::sin(lBigTheta[0]);
-    const double lCosT2 = std::cos(lBigTheta[1]);
-    const double lSinT2 = std::sin(lBigTheta[1]);
-    const double lCosT3 = std::cos(lBigTheta[2]);
-    const double lSinT3 = std::sin(lBigTheta[2]);
-    const double lCosT4 = std::cos(lBigTheta[3]);
-    const double lSinT4 = std::sin(lBigTheta[3]);
-    const double lCosT5 = std::cos(lBigTheta[4]);
-    const double lSinT5 = std::sin(lBigTheta[4]);
-    const double lCosT6 = std::cos(lBigTheta[5]);
-    const double lSinT6 = std::sin(lBigTheta[5]);
-    const double lCosT7 = std::cos(lBigTheta[6]);
-    const double lSinT7 = std::sin(lBigTheta[6]);
+    const double lCosT1 = std::cos(aBigTheta[0]);
+    const double lSinT1 = std::sin(aBigTheta[0]);
+    const double lCosT2 = std::cos(aBigTheta[1]);
+    const double lSinT2 = std::sin(aBigTheta[1]);
+    const double lCosT3 = std::cos(aBigTheta[2]);
+    const double lSinT3 = std::sin(aBigTheta[2]);
+    const double lCosT4 = std::cos(aBigTheta[3]);
+    const double lSinT4 = std::sin(aBigTheta[3]);
+    const double lCosT5 = std::cos(aBigTheta[4]);
+    const double lSinT5 = std::sin(aBigTheta[4]);
+    const double lCosT6 = std::cos(aBigTheta[5]);
+    const double lSinT6 = std::sin(aBigTheta[5]);
+    const double lCosT7 = std::cos(aBigTheta[6]);
+    const double lSinT7 = std::sin(aBigTheta[6]);
     // clang-format off
     Matrix<double, 6, 7> lJacobian{
       { CalcJ11(lCosT1, lSinT1, lCosT2, lSinT2, lCosT3, lSinT3, lCosT4, lSinT4, lCosT5, lSinT5, lCosT6, lSinT6, lCosT7, lSinT7),
