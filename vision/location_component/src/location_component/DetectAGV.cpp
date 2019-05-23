@@ -63,11 +63,10 @@ namespace location_component
           for (const auto& detectedCup : lDetectedCups)
           {
             cv::circle(displayCups, detectedCup.mMidpoint, 10,
-                       cv::Scalar(255, 0, 0), CV_FILLED);
+                       cv::Scalar(255, 0, 0), 0);
           }
 
           imshow("display ", displayCups);
-
         }
       }
     }

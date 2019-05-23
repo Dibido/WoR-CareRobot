@@ -11,12 +11,18 @@ namespace location_component
   {
   }
 
-  void PosCalculation::getWorldPos()
+  cv::Point2f PosCalculation::calculateCupLocation(cv::Point aScreenPos)
   {
-	
-	xpos * (100 / cAGVDepth) * cCupHeight;
-	ypos * (100 / cAGVDepth) * cCupHeight;
   }
 
+  cv::Point2f PosCalculation::calculateAGVLocation(cv::Point aScreenPos)
+  {
+  }
+
+  void PosCalculation::getWorldPos()
+  {
+    xpos*(100 / cAGVDepth) * cCupHeight;
+    ypos*(100 / cAGVDepth) * cCupHeight;
+  }
 
 } // namespace location_component
