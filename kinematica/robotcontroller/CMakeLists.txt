@@ -103,9 +103,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES robotcontroller
-   CATKIN_DEPENDS robotcontroller_msgs roscpp lib_kinematics
+  INCLUDE_DIRS include
+  LIBRARIES lib_robotcontrol
+  CATKIN_DEPENDS robotcontroller_msgs roscpp kinematics
 #  DEPENDS system_lib
 )
 
@@ -121,8 +121,21 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(robotcontrol src/RobotControl.cpp src/RobotControlPublisher.cpp)
-target_link_libraries(robotcontrol lib_kinematics ${catkin_LIBRARIES})
+# add_executable(robotcontrol 
+# src/RobotControl.cpp 
+
+# )
+
+add_library(lib_robotcontrol
+src/RobotControlPublisher.cpp 
+src/RobotStopPublisher.cpp )
+
+add_dependencies(lib_robotcontrol
+${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
+
+# target_link_libraries(robotcontrol lib_robotcontrol lib_kinematics)
   
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

@@ -15,21 +15,22 @@ namespace kinematics
   {
     /**
      * @brief Construct a new Euler Angles object using rotation matrix
-     *
+     * Uses the Tait-Bryan convention
+     * @see https://en.wikipedia.org/wiki/Euler_angles#Tait%E2%80%93Bryan_angles
      * @tparam M
      * @tparam N
-     * @param lRotationMatrix
+     * @param aRotationMatrix
      */
     template <std::size_t M, std::size_t N>
-    explicit EulerAngles(const Matrix<double, M, N>& lRotationMatrix);
+    explicit EulerAngles(const Matrix<double, M, N>& aRotationMatrix);
     /**
      * @brief Construct a new Euler Angles object using yaw, pitch and roll
      *
-     * @param lYaw_rad
-     * @param lPitch_rad
-     * @param lRoll_rad
+     * @param aYaw_rad
+     * @param aPitch_rad
+     * @param aRoll_rad
      */
-    EulerAngles(double lYaw_rad, double lPitch_rad, double lRoll_rad);
+    EulerAngles(double aYaw_rad, double aPitch_rad, double aRoll_rad);
     /**
      * @brief Calculate the rotation matrix based on current yaw, pitch and roll
      * values

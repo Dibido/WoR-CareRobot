@@ -10,46 +10,11 @@
     </include>
 
     <include>
-      <uri>model://franka_panda</uri>
+      <uri>model://franka_panda_2</uri>
     </include>
 
     <model name="table_model">
       <pose>0.55 0 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model2">
-      <pose>0.55 1.5 0 0 0 1.570796</pose>
-      <include>
-	      <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model3">
-      <pose>0.55 -1.5 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model4">
-      <pose>0.55 -3 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model5">
-      <pose>0.55 3 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="table_model6">
-      <pose>0.55 -4.5 0 0 0 1.570796</pose>
       <include>
         <uri>model://table</uri>
       </include>
@@ -66,6 +31,13 @@
       <pose>0.55 0 0.95 0 0 0</pose>
       <include>
         <uri>model://lidar_model</uri>
+      </include>
+    </model>
+
+    <model name="cup_model">
+      <pose>0.38 -5.04 1.07</pose>
+      <include>
+        <uri>model://ica_cup</uri>
       </include>
     </model>
 
@@ -108,6 +80,13 @@
       <pose>0 -1 1.2 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="sim_child">
+      <pose>1.5 -6 0 0 0 0.5</pose>
+      <include>
+        <uri>model://child</uri>
       </include>
     </model>
 
