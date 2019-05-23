@@ -1,6 +1,7 @@
+#include "environment_controller/CupSubscriber.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
 #include "environment_controller/ObstaclesSubscriber.hpp"
-#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/SafetyController.hpp"
 #include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
@@ -10,14 +11,23 @@ int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
 
-
   ros::init(argc, argv, cControlTopic);
-  environment_controller::EnvironmentController lEnvironmentController =
-      environment_controller::EnvironmentController();
-  environment_controller::SafetyController lSafetyController =
-      environment_controller::SafetyController(std::make_shared<environment_controller::EnvironmentController>(lEnvironmentController));
+
+  std::shared_ptr<environment_controller::EnvironmentController>
+      lEnvironmentController =
+          std::make_shared<environment_controller::EnvironmentController>();
+
+  std::shared_ptr<environment_controller::SafetyController> lSafetyController =
+      std::make_shared<environment_controller::SafetyController>(
+          lEnvironmentController);
+
   environment_controller::ObstaclesSubscriber lObstacleSubscriber =
-      environment_controller::ObstaclesSubscriber(std::make_shared<environment_controller::SafetyController>(lSafetyController),environment_controller::cObstacleTopicName);
+      environment_controller::ObstaclesSubscriber(
+          lSafetyController, environment_controller::cObstacleTopicName);
+
+  environment_controller::CupSubscriber lCupSubscriber =
+      environment_controller::CupSubscriber(
+          environment_controller::cCupTopicName, lEnvironmentController);
 
   ros::NodeHandle lControlNode;
   ros::NodeHandle lStopNode;

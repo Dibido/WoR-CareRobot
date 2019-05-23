@@ -11,6 +11,7 @@
 #ifndef ENVIRONMENT_CONTROLLER_HPP
 #define ENVIRONMENT_CONTROLLER_HPP
 
+#include "Cup.hpp"
 #include "IObstacles.hpp"
 #include "ros/ros.h"
 
@@ -31,18 +32,26 @@ namespace environment_controller
 
     /**
      * @brief provideObstacles will pass along all obstacles to the Controller
-     * 
+     *
      * @param aObstacles Obstacles which will be passed on.
      */
     void provideObstacles(const Obstacles& aObstacles);
 
-
     /**
-     * @brief executeHardstop Will pass along the executeHardstop to the controller
-     * 
-     * @param hardstop If hardstop is true a hardstop has to be executed. If hardstop is false the hardstop has to be lifted.
+     * @brief executeHardstop Will pass along the executeHardstop to the
+     * controller
+     *
+     * @param hardstop If hardstop is true a hardstop has to be executed. If
+     * hardstop is false the hardstop has to be lifted.
      */
     void executeHardstop(bool hardstop);
+
+    /**
+     * @brief provide the cup position so the robot can move
+     *
+     * @param aCup the cup to move to
+     */
+    void provideCup(const Cup& aCup);
   };
 } // namespace environment_controller
 
