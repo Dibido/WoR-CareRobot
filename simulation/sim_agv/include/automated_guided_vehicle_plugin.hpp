@@ -4,6 +4,17 @@
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
+#include "ros/callback_queue.h"
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include <gazebo/gazebo.hh>
+#include <gazebo/msgs/msgs.hh>
+#include <gazebo/transport/transport.hh>
+#include <sensor_msgs/Range.h>
+#include <ros/subscribe_options.h>
+#include <sstream>
+#include <string>
+#include <thread>
 
 #include <sim_agv/agv_path.h>
 #include <sim_agv/agv_speed.h>
@@ -43,6 +54,8 @@ public:
    */
   void onUpdate();
 
+  void callback(const sensor_msgs::RangeConstPtr aMsg);
+
 private:
   // Movement
   bool movingForward;
@@ -51,11 +64,24 @@ private:
   double speedZ;
   Position startPos;
   Position endPos;
+  uint8_t mNoflines = 0;
+  bool mWhiteLineDetected = false;
 
   // ROS
   ros::NodeHandlePtr rosNode;
   ros::Subscriber rosSubPath;
   ros::Subscriber rosSubSpeed;
+  ros::Publisher mAgvPublisher;
+
+  ros::Subscriber mRosSub;
+  ros::CallbackQueue mRosQueue;
+  std::thread mRosQueueThread;
+
+  /**
+    * Handles incoming ros messages
+    *
+    */
+  void QueueThread();
 
   // GAZEBO
   event::ConnectionPtr updateConnection;

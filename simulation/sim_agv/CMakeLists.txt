@@ -7,10 +7,14 @@ project(sim_agv)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-	gazebo_ros
+  gazebo_ros
+  gazebo_msgs
+  gazebo_plugins
 	roscpp
-	std_msgs
-	message_generation
+  std_msgs
+  sensor_msgs
+  message_generation
+  sensor_interfaces
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -44,6 +48,12 @@ add_message_files(
 
 generate_messages(
   DEPENDENCIES)
+
+  catkin_package(
+    DEPENDS
+    roscpp
+    gazebo_ros
+    sensor_interfaces)
 
 catkin_package(
 #  INCLUDE_DIRS include
