@@ -6,13 +6,15 @@
 
 namespace environment_controller
 {
+  typedef Object Obstacle;
+  typedef std::vector<Obstacle> Obstacles;
 
-  typedef std::vector<Object> Obstacles;
   /**
-   * @brief
-   * @pre an sensor detected an obstacle
+   * @brief the class of the interface obstacle
+   * @pre a sensor detected an potential obstacle
    * @post the obstacle will be checked if it is in range of the robotarm, if
    * this is the case the robotarm will stop
+   * @see Object.hpp for correct values
    */
   class IObstacles
   {
@@ -32,7 +34,7 @@ namespace environment_controller
     /**
      * @brief virtual interface
      *
-     * @param aObstacles
+     * @param aObstacles The obstacles that are found
      */
     virtual void parseObstacles(const Obstacles& aObstacles) = 0;
   };
