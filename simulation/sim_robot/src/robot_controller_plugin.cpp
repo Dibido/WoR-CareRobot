@@ -1,8 +1,8 @@
 #include <memory>
 
 #include "sim_robot/stopCommand.h"
-#include "sim_robot/gripper.h"
 #include "robotcontroller_msgs/Control.h"
+#include "robotcontroller_msgs/Gripper.h"
 #include <regex>
 
 #include <sim_robot/robot_controller_plugin.hpp>
@@ -14,7 +14,7 @@ namespace gazebo
 {
   // Topic for serial robot commands
   const char* COMMAND_TOPIC = "/robot_command";
-  const char* COMMAND_GRIPPER_TOPIC = "/robot_gripper_command";
+  const char* COMMAND_GRIPPER_TOPIC = "/robot_gripper";
   const char* STOP_TOPIC = "/robot_stop";
   // Defines to read attributes / elements from the sdf file
   const char* SDF_JOINT_INFO_ELEMENT = "joint_info";
@@ -139,7 +139,7 @@ namespace gazebo
 
 
   void RobotControllerPlugin::commandGripperCallBack(
-      const sim_robot::gripperPtr& msg)
+      const robotcontroller_msgs::GripperPtr& msg)
   {
     double width = msg->width * - 1 + 1; //Width needs to be inverted.
     double speedfactor = msg->speedfactor;

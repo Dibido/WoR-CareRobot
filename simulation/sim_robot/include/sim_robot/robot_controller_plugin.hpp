@@ -51,7 +51,7 @@ namespace gazebo
      * Callback method for receiving an incoming gripper command
      * @param msg: string message to parse and apply
      */
-    void commandGripperCallBack(const sim_robot::gripperPtr& msg);
+    void commandGripperCallBack(const robotcontroller_msgs::GripperPtr& msg);
 
 
     /**
