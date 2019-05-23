@@ -6,7 +6,7 @@
 #include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
-
+ 
 int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
