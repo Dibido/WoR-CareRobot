@@ -48,6 +48,13 @@ namespace gazebo
     void commandCallBackFloat(const robotcontroller_msgs::ControlPtr& fmsg);
 
     /**
+     * Callback method for receiving an incoming gripper command
+     * @param msg: string message to parse and apply
+     */
+    void commandGripperCallBack(const sim_robot::gripperPtr& msg);
+
+
+    /**
      * Callback method for receiving an incoming robot command
      * @param msg: string message to parse and apply
      */
@@ -99,6 +106,7 @@ namespace gazebo
     // Ros variables
     ros::NodeHandlePtr rosNode;
     ros::Subscriber rosSubCommands;
+    ros::Subscriber rosSubCommandGripper;
     ros::Subscriber rosSubStop;
     ros::Publisher rosPub;
     ros::CallbackQueue rosQueue;

@@ -1,6 +1,7 @@
 #include <memory>
 
 #include "sim_robot/stopCommand.h"
+#include "sim_robot/gripper.h"
 #include "robotcontroller_msgs/Control.h"
 #include <regex>
 
@@ -13,6 +14,7 @@ namespace gazebo
 {
   // Topic for serial robot commands
   const char* COMMAND_TOPIC = "/robot_command";
+  const char* COMMAND_GRIPPER_TOPIC = "/robot_gripper_command";
   const char* STOP_TOPIC = "/robot_stop";
   // Defines to read attributes / elements from the sdf file
   const char* SDF_JOINT_INFO_ELEMENT = "joint_info";
@@ -72,6 +74,11 @@ namespace gazebo
     rosSubCommands =
         rosNode->subscribe(gazebo::COMMAND_TOPIC, 1,
                            &RobotControllerPlugin::commandCallBackFloat, this);
+
+    rosSubCommandGripper =
+        rosNode->subscribe(gazebo::COMMAND_GRIPPER_TOPIC, 1,
+                           &RobotControllerPlugin::commandGripperCallBack, this);
+
     rosSubStop = rosNode->subscribe(gazebo::STOP_TOPIC, 1,
                                     &RobotControllerPlugin::stopCallBack, this);
 
@@ -129,6 +136,22 @@ namespace gazebo
       stopJoint(c);
     }
   } // namespace gazebo
+
+
+  void RobotControllerPlugin::commandGripperCallBack(
+      const sim_robot::gripperPtr& msg)
+  {
+    double width = msg->width * - 1 + 1; //Width needs to be inverted.
+    double speedfactor = msg->speedfactor;
+    
+    //? These message variables are currently not used.
+    // double force = msg->force;
+    // double epsilon_inner = msg->epsilon_inner;
+    // double epsilon_outer = msg->epsilon_outer;
+    
+    channelJointMap.at(7)
+          .moveTheta(width, speedfactor, /*time*/ 0, updateRate);
+  }
 
   // PRIVATE
   void RobotControllerPlugin::commandCallBack(

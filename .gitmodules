@@ -1,0 +1,15 @@
+[submodule "universal/rplidar_ros"]
+	path = universal/rplidar_ros
+	url = https://github.com/Slamtec/rplidar_ros.git
+[submodule "universal/roboticsgroup_gazebo_plugins"]
+	path = universal/roboticsgroup_gazebo_plugins
+	url = https://github.com/roboticsgroup/roboticsgroup_gazebo_plugins
+[submodule "universal/mimic_joint_gazebo_tutorial.git"]
+	path = universal/mimic_joint_gazebo_tutorial.git
+	url = https://github.com/mintar/mimic_joint_gazebo_tutorial.git
+[submodule "universal/rosbridge_suite"]
+	path = universal/rosbridge_suite
+	url = https://github.com/RobotWebTools/rosbridge_suite
+[submodule "universal/rosauth"]
+	path = universal/rosauth
+	url = https://github.com/GT-RAIL/rosauth

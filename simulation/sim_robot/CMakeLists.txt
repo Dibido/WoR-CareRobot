@@ -35,6 +35,7 @@ add_message_files(
   FILES
   commands.msg
   stopCommand.msg
+  gripper.msg
 )
 generate_messages(
   DEPENDENCIES
