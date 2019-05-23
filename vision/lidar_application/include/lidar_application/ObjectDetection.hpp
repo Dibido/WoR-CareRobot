@@ -1,15 +1,17 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
-#include "../include/DataHandler.hpp"
-#include "../include/LidarData.hpp"
+#include "../include/lidar_application/DataHandler.hpp"
+#include "../include/lidar_application/LidarData.hpp"
 
 #include <cmath>
 #include <iostream>
 #include <math.h>
 #include <vector>
 
-namespace ObjectDetectionConstants
+namespace lidar_application
+{
+namespace objectdetection_constants
 {
   // Maximum difference allowed between measurement for them to be considered as
   // measurements of the same object
@@ -27,9 +29,9 @@ class ObjectDetection
    * two adjacent measurements to still assume its the same object. Example: [Theta => Distance]
    * [0.0 => 1.5], [1.0, 1.6]. The difference in meters here is 0.1, if that is under or equal to aMaxDistanceDifference_m,
    * both these measurements are taken of the same object.   */
-  explicit ObjectDetection(double aMaxDistanceDifference_m = ObjectDetectionConstants::cDefaultMaxDistanceDifference_m);
+  explicit ObjectDetection(double aMaxDistanceDifference_m = objectdetection_constants::cDefaultMaxDistanceDifference_m);
 
-  ~ObjectDetection();
+  ~ObjectDetection() = default;
 
   /**
    * @brief Run function, blocking function that handles all logic
@@ -92,5 +94,6 @@ class ObjectDetection
   // measurements of the same object. If (0.0 => 1.50 and 1.0 =>)
   const double mMaxDistanceDifference_m;
 };
+}
 
 #endif // OBJECTDETECTION_H_

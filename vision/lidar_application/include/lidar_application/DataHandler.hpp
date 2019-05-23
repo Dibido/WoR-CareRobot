@@ -1,7 +1,7 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
-#include "../include/LidarData.hpp"
+#include "../include/lidar_application/LidarData.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -14,7 +14,8 @@
 
 #include <iostream>
 
-
+namespace lidar_application
+{
 class DataHandler
 {
   public:
@@ -30,7 +31,7 @@ class DataHandler
    */
   DataHandler(std::string& aReceiveTopic, std::string& aPublishTopic);
 
-  ~DataHandler();
+  ~DataHandler() = default;
 
   bool isNewDataAvailable() const;
 
@@ -71,5 +72,6 @@ class DataHandler
 
   bool mNewDataAvailable;
 };
+}
 
 #endif /* DATAHANDLER_H */

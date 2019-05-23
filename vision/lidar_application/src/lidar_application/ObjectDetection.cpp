@@ -1,24 +1,22 @@
-#include "../include/ObjectDetection.hpp"
+#include "../include/lidar_application/ObjectDetection.hpp"
 
+namespace lidar_application
+{
 // Declaration of namespace variables
-const double ObjectDetectionConstants::cDefaultMaxDistanceDifference_m = 0.2;
-const double ObjectDetectionConstants::cLidarHeight_m = 0.5;
+const double objectdetection_constants::cDefaultMaxDistanceDifference_m = 0.2;
+const double objectdetection_constants::cLidarHeight_m = 0.5;
 
 ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m) : mInitialized(false), mMaxDistanceDifference_m(aMaxDistanceDifference_m)
 {
 }
 
-ObjectDetection::~ObjectDetection()
-{
-}
-
 void ObjectDetection::run()
 {
-  while (true)
-  {
-    // Sleep for a millisec
-    ros::Duration(0.001).sleep();
+  // Hertz rate of 100, max 10 ms in between cycles
+  ros::Rate lRate(100);
 
+  while (ros::ok())
+  {
     ros::spinOnce();
 
     if (mDataHandler.isNewDataAvailable())
@@ -30,7 +28,7 @@ void ObjectDetection::run()
         detectObjects();
 
         printPublishData();
-        mDataHandler.publishData(mDetectedObjects, ObjectDetectionConstants::cLidarHeight_m);
+        mDataHandler.publishData(mDetectedObjects, objectdetection_constants::cLidarHeight_m);
       }
       else
       {
@@ -38,6 +36,7 @@ void ObjectDetection::run()
         mInitialized = true;
       }
     }
+    lRate.sleep();
   }
 }
 
@@ -172,4 +171,5 @@ void ObjectDetection::printPublishData() const
   }
   
   std::cout << std::endl;
+}
 }

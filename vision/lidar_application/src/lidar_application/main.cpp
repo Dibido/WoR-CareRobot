@@ -1,4 +1,4 @@
-#include "../include/ObjectDetection.hpp"
+#include "../include/lidar_application/ObjectDetection.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -18,6 +18,6 @@ int main(int argc, char **argv)
     lMaxDifference_m = strtod(argv[1], NULL);
   }
 
-  ObjectDetection lObjectDetector(lMaxDifference_m);
+  lidar_application::ObjectDetection lObjectDetector(lMaxDifference_m);
   lObjectDetector.run();
 }

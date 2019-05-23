@@ -1,5 +1,7 @@
-#include "../include/LidarData.hpp"
+#include "../include/lidar_application/LidarData.hpp"
 
+namespace lidar_application
+{
 LidarData::LidarData()
 {
 }
@@ -41,4 +43,5 @@ void LidarData::addLidarData(double aAngle, double aDistance_m)
 {
   mAngles.push_back(aAngle);
   mDistances_m.push_back(aDistance_m);
+}
 }

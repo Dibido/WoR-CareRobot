@@ -1,6 +1,8 @@
-#include "DataHandler.hpp"
+#include "../include/lidar_application/DataHandler.hpp"
 
-namespace DataHandlerConstants
+namespace lidar_application
+{
+namespace datahandler_constants
 {
   const std::string cReceiveTopicName = "/sensor/lidar";
   const std::string cPublishTopicName = "/detectedObjects";
@@ -12,9 +14,9 @@ namespace DataHandlerConstants
 DataHandler::DataHandler() : mNewDataAvailable(false)
 {
   mLidarSubscriber = mNodeHandler.subscribe(
-      DataHandlerConstants::cReceiveTopicName, 1000, &DataHandler::dataReceiveCallback, this);
+      datahandler_constants::cReceiveTopicName, 1000, &DataHandler::dataReceiveCallback, this);
 
-  mObjectPublisher = mNodeHandler.advertise<kinematica_msgs::Obstacles>(DataHandlerConstants::cPublishTopicName, 1000);
+  mObjectPublisher = mNodeHandler.advertise<kinematica_msgs::Obstacles>(datahandler_constants::cPublishTopicName, 1000);
 }
 
 /**
@@ -30,10 +32,6 @@ DataHandler::DataHandler(std::string& aReceiveTopic, std::string& aPublishTopic)
 
   mObjectPublisher =
       mNodeHandler.advertise<kinematica_msgs::Obstacles>(aPublishTopic, 1000);
-}
-
-DataHandler::~DataHandler()
-{
 }
 
 bool DataHandler::isNewDataAvailable() const
@@ -82,4 +80,5 @@ void DataHandler::publishData(std::vector<std::pair<double, double>>& aData, dou
 
     mObjectPublisher.publish(lObstacleList);
     ros::spinOnce();
+}
 }

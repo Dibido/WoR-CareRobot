@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 
+namespace lidar_application
+{
 /**
  * @brief This struct contains data of a full 360-degree scan of a lidar.
  * Values in mAngles and mDistances are coupled by index.
@@ -26,6 +28,8 @@ struct LidarData
    * @brief Default constructor
    */
   LidarData();
+
+  ~LidarData() = default;
 
   /**
    * @brief Construct a new Lidar Data object, aAngles and aDistances_m MUST be of 
@@ -55,5 +59,6 @@ struct LidarData
    */
   void addLidarData(double aAngle, double aDistance_m);
 };
+}
 
 #endif // LIDARDATA_H_
