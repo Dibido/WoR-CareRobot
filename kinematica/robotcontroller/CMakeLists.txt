@@ -130,6 +130,8 @@ add_library(lib_robotcontrol
 src/RobotControlPublisher.cpp 
 src/RobotStopPublisher.cpp )
 
+add_dependencies(lib_robotcontrol
+${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
 

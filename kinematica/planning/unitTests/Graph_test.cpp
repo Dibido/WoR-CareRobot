@@ -11,7 +11,7 @@ namespace planning
 
   TEST(GraphRemoveObstacle, RemoveObastacleDontExist)
   {
-    environment_controller::Obstacle ob;
+    planning::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.removeObstacle(ob));
@@ -26,7 +26,7 @@ namespace planning
 
   TEST(GraphAddObstacle, addObstacle)
   {
-    environment_controller::Obstacle ob;
+    planning::Obstacle ob;
     Graph graph;
 
     EXPECT_NO_THROW(graph.addObstacle(ob));
@@ -34,7 +34,7 @@ namespace planning
 
   TEST(GraphAddObstacle, addObstacleAndRemove)
   {
-    environment_controller::Obstacle ob;
+    planning::Obstacle ob;
     Graph graph;
 
     graph.addObstacle(ob);

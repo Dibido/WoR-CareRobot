@@ -14,12 +14,15 @@ namespace robotcontroller
   {
   }
 
-  void RobotControlPublisher::publish(const double lSf,
-                                      const std::vector<double>& lConfiguration)
+  void RobotControlPublisher::publish(
+      const double lSf,
+      const kinematics::Configuration& lConfiguration)
   {
     robotcontroller_msgs::Control lMsg;
 
-    lMsg.theta = lConfiguration;
+    lMsg.theta.resize(lConfiguration.size);
+    std::copy(lConfiguration.getConfiguration().begin(),
+              lConfiguration.getConfiguration().end(), lMsg.theta.begin());
     lMsg.sf = lSf;
 
     mRobotControl_pub.publish(lMsg);
