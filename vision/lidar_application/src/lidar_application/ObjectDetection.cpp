@@ -1,10 +1,7 @@
-#include "../include/lidar_application/ObjectDetection.hpp"
+#include "ObjectDetection.hpp"
 
 namespace lidar_application
 {
-// Declaration of namespace variables
-const double objectdetection_constants::cDefaultMaxDistanceDifference_m = 0.2;
-const double objectdetection_constants::cLidarHeight_m = 0.5;
 
 ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m) : mInitialized(false), mMaxDistanceDifference_m(aMaxDistanceDifference_m)
 {

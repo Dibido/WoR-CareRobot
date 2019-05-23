@@ -1,4 +1,4 @@
-#include "../include/lidar_application/DataHandler.hpp"
+#include "DataHandler.hpp"
 
 namespace lidar_application
 {
@@ -24,7 +24,7 @@ DataHandler::DataHandler() : mNewDataAvailable(false)
  * @param aReceiveTopic - Topic name on which data will be received
  * @param aPublishTopic - Topic name on which data will be published
  */
-DataHandler::DataHandler(std::string& aReceiveTopic, std::string& aPublishTopic)
+DataHandler::DataHandler(const std::string& aReceiveTopic, const std::string& aPublishTopic)
     : mNewDataAvailable(false)
 {
   mLidarSubscriber = mNodeHandler.subscribe(
@@ -61,7 +61,7 @@ void DataHandler::dataReceiveCallback(
   }
 }
 
-void DataHandler::publishData(std::vector<std::pair<double, double>>& aData, double aHeight_m) const
+void DataHandler::publishData(const std::vector<std::pair<double, double>>& aData, double aHeight_m) const
 {
     kinematica_msgs::Object lObject;
     kinematica_msgs::Obstacles lObstacleList;

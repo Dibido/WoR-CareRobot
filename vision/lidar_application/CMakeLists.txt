@@ -27,7 +27,7 @@ CATKIN_DEPENDS roscpp
 )
 
 include_directories(
-  include
+  include/${PROJECT_NAME}
   SYSTEM
   ${catkin_INCLUDE_DIRS}
 )

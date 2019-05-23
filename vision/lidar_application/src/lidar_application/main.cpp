@@ -1,4 +1,4 @@
-#include "../include/lidar_application/ObjectDetection.hpp"
+#include "ObjectDetection.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>

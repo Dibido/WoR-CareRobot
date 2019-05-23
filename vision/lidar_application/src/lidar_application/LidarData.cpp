@@ -1,4 +1,4 @@
-#include "../include/lidar_application/LidarData.hpp"
+#include "LidarData.hpp"
 
 namespace lidar_application
 {
@@ -11,7 +11,7 @@ LidarData::LidarData(std::vector<double>& aAngles,
 {
   if (!(aAngles.size() == aDistances_m.size()))
   {
-    throw std::logic_error("mAngles size wasn't equal to mDistances_m size");
+    throw std::logic_error("mAngles size isn't equal to mDistances_m size");
   }
 
   mAngles = aAngles;

@@ -6,9 +6,11 @@
 
 
 #define private public
-#include "../include/LidarData.hpp"
-#include "../include/DataHandler.hpp"
+#include "LidarData.hpp"
+#include "DataHandler.hpp"
 #undef private
+
+using namespace lidar_application;
 
 TEST(LidarData, Constructor_UnequalVectorSizes)
 {

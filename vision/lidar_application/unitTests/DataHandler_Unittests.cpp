@@ -2,8 +2,10 @@
 #include <gtest/gtest.h>
 
 #define private public
-#include "../include/DataHandler.hpp"
+#include "DataHandler.hpp"
 #undef private
+
+using namespace lidar_application;
 
 TEST(DataHandler, ConstructorTopicNames)
 {

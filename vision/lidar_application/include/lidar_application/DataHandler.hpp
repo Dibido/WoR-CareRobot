@@ -1,7 +1,7 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
-#include "../include/lidar_application/LidarData.hpp"
+#include "LidarData.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -29,7 +29,7 @@ class DataHandler
    * @param aReceiveTopic - Topic name on which data will be received
    * @param aPublishTopic - Topic name on which data will be published
    */
-  DataHandler(std::string& aReceiveTopic, std::string& aPublishTopic);
+  DataHandler(const std::string& aReceiveTopic, const std::string& aPublishTopic);
 
   ~DataHandler() = default;
 
@@ -58,7 +58,7 @@ class DataHandler
    * @param aData - X,Y of objects
    * @param aHeight - Z of the object
    */
-  void publishData(std::vector<std::pair<double, double>>& aData, double aHeight_m) const;
+  void publishData(const std::vector<std::pair<double, double>>& aData, double aHeight_m) const;
 
   private:
   ros::NodeHandle mNodeHandler;

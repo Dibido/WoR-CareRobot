@@ -5,8 +5,10 @@
 #include <ros/ros.h>
 
 #define private public
-#include "../include/ObjectDetection.hpp"
+#include "ObjectDetection.hpp"
 #undef private
+
+using namespace lidar_application;
 
 TEST(ObjectDetection, detectObjects_scenario1)
 {

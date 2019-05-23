@@ -1,8 +1,8 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
-#include "../include/lidar_application/DataHandler.hpp"
-#include "../include/lidar_application/LidarData.hpp"
+#include "DataHandler.hpp"
+#include "LidarData.hpp"
 
 #include <cmath>
 #include <iostream>
@@ -15,9 +15,10 @@ namespace objectdetection_constants
 {
   // Maximum difference allowed between measurement for them to be considered as
   // measurements of the same object
-  extern const double cDefaultMaxDistanceDifference_m;
+  const double cDefaultMaxDistanceDifference_m = 0.2;
 
-  extern const double cLidarHeight_m; // Z position of lidar
+  // Z position of lidar
+  const double cLidarHeight_m = 0.5;
 } // namespace ObjectDetectionConstants
 
 class ObjectDetection
