@@ -50,7 +50,7 @@ int main(int argc, char** argv)
              lGoalEndEffector.cZ_m, lGoalEndEffector.cRoll_rad,
              lGoalEndEffector.cPitch_rad, lGoalEndEffector.cYaw_rad,
              lGoalConfiguration.result());
-    lRobotControlPub.publish(1.0, lGoalConfiguration);
+    lRobotControlPub.publish(.1, lGoalConfiguration);
 
     lCurrentConfiguration = lGoalConfiguration;
     ros::spinOnce();
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 kinematics::EndEffector GetEndEffector()
 {
   static int8_t iterator = -1;
-  ++iterator;
+  // ++iterator;
   switch (iterator)
   {
   case 1:
@@ -75,6 +75,6 @@ kinematics::EndEffector GetEndEffector()
     return kinematics::EndEffector(0.786246, 0.00, 0.276516, 0, 0, M_PI);
   default:
     iterator = 0;
-    return kinematics::EndEffector(0.088, 0, 0.927, 0, 0, -M_PI);
+    return kinematics::EndEffector(0.5, -0.15, 1.1, M_PI_2, M_PI_2 ,0 );
   }
 }
