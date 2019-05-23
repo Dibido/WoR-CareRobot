@@ -20,7 +20,7 @@ namespace environment_controller
 {
   /**
    * @brief Safetycontroller is the class which will determine whether the
-   received obstacles are a "thread" to the robotarm or not.
+   received obstacles are a "threat" to the robotarm or not.
 
    * @author Martijn Vogelaar
    */
@@ -35,7 +35,7 @@ namespace environment_controller
      * supplied to be able to send hardstops and obstacles to.
      */
     SafetyController(
-        std::shared_ptr<EnvironmentController> aEnvironmentController);
+        const std::shared_ptr<EnvironmentController>& aEnvironmentController);
 
     /**
      * @brief Destroy the EnvironmentController object
@@ -45,12 +45,12 @@ namespace environment_controller
     ~SafetyController() = default;
 
     /**
-     * @brief areObstaclesAThread checks whether the received obstacles are a
+     * @brief areObstaclesAThreat checks whether the received obstacles are a
      * threat or not.
      *
      * @param obstacles Obstacles which will be checked w
      */
-    void areObstaclesAThread(const Obstacles& aObstacles);
+    void areObstaclesAThreat(const Obstacles& aObstacles);
 
       private:
     std::shared_ptr<EnvironmentController> mEnvironmentController;

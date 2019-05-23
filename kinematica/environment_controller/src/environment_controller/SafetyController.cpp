@@ -4,14 +4,14 @@
 namespace environment_controller
 {
   SafetyController::SafetyController(
-      std::shared_ptr<EnvironmentController> aEnvironmentController)
+      const std::shared_ptr<EnvironmentController>& aEnvironmentController)
       : mEnvironmentController(aEnvironmentController)  {
   }
 
-  void SafetyController::areObstaclesAThread(const Obstacles& aObstacles)
+  void SafetyController::areObstaclesAThreat(const Obstacles& aObstacles)
   {
     bool lAllObstaclesSafe = true;
-    for (Obstacle lObstacle : aObstacles)
+    for (const Obstacle& lObstacle : aObstacles)
     {
       if (isObstacleToClose(lObstacle))
       {

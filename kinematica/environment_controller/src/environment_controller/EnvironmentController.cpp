@@ -8,12 +8,10 @@ namespace environment_controller
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)
   {
-    std::cout << "Added :" << aObstacles.size() << " obstacles!" << std::endl;
   }
 
   void EnvironmentController::executeHardstop(bool hardstop)
   {
-    std::cout << "Hardstop: " << hardstop << std::endl;
   }
 
 } // namespace environment_controller

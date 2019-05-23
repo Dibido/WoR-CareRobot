@@ -19,8 +19,6 @@
 
 namespace environment_controller
 {
-  const uint8_t cQueueSize = 100;
-
   /**
    * @brief implements the interface for obstacles, this class receives the ros
    * messages for obstacles
@@ -35,9 +33,9 @@ namespace environment_controller
      *
      * @param aSubName
      *
-     * @author Gianni Monteba&
+     * @author Gianni Monteban
      */
-    ObstaclesSubscriber(std::shared_ptr<SafetyController> aSafetyController,
+    ObstaclesSubscriber(const std::shared_ptr<SafetyController>& aSafetyController,
                         const std::string& aSubName);
 
     /**
