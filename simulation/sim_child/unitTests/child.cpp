@@ -7,6 +7,7 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
+const double lMaximumDeviation = 0.0005;
 
 sdf::ElementPtr createChildEmptyElement()
 {
@@ -16,7 +17,6 @@ sdf::ElementPtr createChildEmptyElement()
   sdfPlugin->AddAttribute("filename", "string", "libmodel_child.so", true);
   return sdfPlugin;
 }
-
 
 sdf::ElementPtr createChildElement(std::string aVelocity, std::string aAngle)
 {
@@ -76,16 +76,33 @@ TEST(Child, calculateXVelocity)
   gazebo::Child lChild;
   lChild.mAngle = 0;
   lChild.mVelocity = 10;
-  EXPECT_EQ(lChild.calculateXVelocity(), 10);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 10, lMaximumDeviation);
+  lChild.mAngle = 360;
+  EXPECT_NEAR(lChild.calculateXVelocity(), 10, lMaximumDeviation);
   lChild.mAngle = -180;
-  EXPECT_EQ(lChild.calculateXVelocity(), -10);
+  EXPECT_NEAR(lChild.calculateXVelocity(), -10, lMaximumDeviation);
   lChild.mAngle = -90;
-  EXPECT_EQ(lChild.calculateXVelocity(), 0);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 0, lMaximumDeviation);
   lChild.mAngle = 90;
-  EXPECT_EQ(lChild.calculateXVelocity(), 0);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 0, lMaximumDeviation);
+  lChild.mAngle = 45;
+  EXPECT_NEAR(lChild.calculateXVelocity(), 7.07107, lMaximumDeviation);
 }
 
 TEST(Child, calculateYVelocity)
 {
-  
+  gazebo::Child lChild;
+  lChild.mAngle = 0;
+  lChild.mVelocity = 10;
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  lChild.mAngle = 360;
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  lChild.mAngle = -180;
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  lChild.mAngle = -90;
+  EXPECT_NEAR(lChild.calculateYVelocity(), -10, lMaximumDeviation);
+  lChild.mAngle = 90;
+  EXPECT_NEAR(lChild.calculateYVelocity(), 10, lMaximumDeviation);
+  lChild.mAngle = 45;
+  EXPECT_NEAR(lChild.calculateYVelocity(), 7.07107, lMaximumDeviation);
 }
