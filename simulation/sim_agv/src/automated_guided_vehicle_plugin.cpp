@@ -124,7 +124,7 @@ namespace gazebo
     if (mDirectionChangeInterval <
         (currentTime - mLastDirectionChangeInterval).Double())
     {
-      ROS_DEBUG("***** CHANGE DIRECTION *****");
+
       mMovingForward = !mMovingForward;
 
       mLastDirectionChangeInterval = mWorld->SimTime();
@@ -181,8 +181,6 @@ namespace gazebo
       differenceZ = -differenceZ;
     }
 
-    ROS_DEBUG("Diff X: %f \nDiff Y: %f\nDiff Z: %f\nChangeInterval: %f",
-              differenceX, differenceY, differenceZ, mDirectionChangeInterval);
     mSpeedX = differenceX / mDirectionChangeInterval;
     mSpeedY = differenceY / mDirectionChangeInterval;
     mSpeedZ = differenceZ / mDirectionChangeInterval;
