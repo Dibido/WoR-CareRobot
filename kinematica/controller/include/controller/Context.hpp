@@ -76,7 +76,8 @@ namespace controller
     std::shared_ptr<robotcontroller::RobotStopPublisher>& robotStop();
     std::shared_ptr<kinematics::ConfigurationProvider>& configurationProvider();
     kinematics::Configuration& configuration();
-
+    environment_controller::Cup& cup();
+    
       private:
     std::shared_ptr<planning::Graph> mGraph;
     std::shared_ptr<planning::AStar> mAstar;

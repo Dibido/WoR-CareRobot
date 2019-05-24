@@ -131,4 +131,9 @@ namespace controller
   {
     return mConfigurationProvider;
   }
+  environment_controller::Cup& Context::cup()
+  {
+    return mCup;
+  }
+
 } // namespace controller
