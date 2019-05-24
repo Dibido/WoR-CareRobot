@@ -3,9 +3,8 @@
 #include <QDebug>
 #include <QProcess>
 
-MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent),
-  ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
 }
@@ -18,6 +17,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_water_btn_clicked()
 {
   QProcess process;
-  process.startDetached("roslaunch src/wor-18-19-s2/simulation/sim_world/launch/world.launch world:=current_world paused:=false");
+  process.startDetached(
+      "roslaunch src/wor-18-19-s2/simulation/sim_world/launch/world.launch "
+      "world:=current_world paused:=false");
   process.waitForFinished();
 }

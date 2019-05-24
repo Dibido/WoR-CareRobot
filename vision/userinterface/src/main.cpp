@@ -1,9 +1,9 @@
 #include "mainwindow.hpp"
-#include <QApplication>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <QApplication>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "userinterface");
 
