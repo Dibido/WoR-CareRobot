@@ -21,9 +21,9 @@ namespace controller
     /**
      * @brief Constructor
      *
-     * @param anState State to start with
+     * @param aState State to start with
      */
-    State(const State& anState) = delete;
+    State(const State& aState) = delete;
 
     /**
      * @brief Destructor
@@ -34,27 +34,27 @@ namespace controller
     /**
      * @brief entryAction is being called when the State is being entered.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    virtual void entryAction(Context* context) = 0;
+    virtual void entryAction(Context* aContext) = 0;
 
     /**
      * @brief doActivity is continiously being called while the system is in the
      * State.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    virtual void doActivity(Context* context) = 0;
+    virtual void doActivity(Context* aContext) = 0;
 
     /**
      * @brief exitAction is being called when the State state is being exited.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    virtual void exitAction(Context* context) = 0;
+    virtual void exitAction(Context* aContext) = 0;
   };
 } // namespace controller
 #endif // STATE_HPP

@@ -12,19 +12,19 @@ namespace controller
   };
   WaitForCup::~WaitForCup(){};
 
-  void WaitForCup::entryAction(Context* context)
+  void WaitForCup::entryAction(Context* aContext)
   {
   }
 
-  void WaitForCup::doActivity(Context* context)
+  void WaitForCup::doActivity(Context* aContext)
   {
-    if (context->cup().timeOfArrival() <= ros::Time::now())
+    if (aContext->cup().timeOfArrival() <= ros::Time::now())
     {
-      context->setState(std::make_shared<CloseGripper>());
+      aContext->setState(std::make_shared<CloseGripper>());
     }
   }
 
-  void WaitForCup::exitAction(Context* context)
+  void WaitForCup::exitAction(Context* aContext)
   {
   }
 } // namespace controller

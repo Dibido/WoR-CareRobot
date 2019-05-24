@@ -12,19 +12,16 @@ namespace controller
   };
   ReleaseCup::~ReleaseCup(){};
 
-  void ReleaseCup::entryAction(Context* context)
+  void ReleaseCup::entryAction(Context* aContext)
   {
   }
 
-  void ReleaseCup::doActivity(Context* context)
+  void ReleaseCup::doActivity(Context* aContext)
   {
-
-    // Verschil in width  / 0.1 is de tijd die het duurt voordat de gripper open
-    // is if (gripper.opened){
-    context->setState(std::make_shared<Ready>());
+    aContext->setState(std::make_shared<Ready>());
   }
 
-  void ReleaseCup::exitAction(Context* context)
+  void ReleaseCup::exitAction(Context* aContext)
   {
   }
 } // namespace controller

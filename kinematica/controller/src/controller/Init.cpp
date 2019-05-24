@@ -15,18 +15,18 @@ namespace controller
 
   Init::~Init(){};
 
-  void Init::entryAction(Context* context)
+  void Init::entryAction(Context* aContext)
   {
-    context->configuration() = kinematics::Configuration();
-    context->robotControl()->publish(cSpeedFactor, context->configuration());
+    aContext->configuration() = kinematics::Configuration();
+    aContext->robotControl()->publish(cSpeedFactor, aContext->configuration());
   }
 
-  void Init::doActivity(Context* context)
+  void Init::doActivity(Context* aContext)
   {
-    context->setState(std::make_shared<Ready>());
+    aContext->setState(std::make_shared<Ready>());
   }
 
-  void Init::exitAction(Context* context)
+  void Init::exitAction(Context* aContext)
   {
   }
 } // namespace controller

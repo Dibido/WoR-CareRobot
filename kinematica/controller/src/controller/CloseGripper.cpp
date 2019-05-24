@@ -6,6 +6,7 @@
 #include "controller/CloseGripper.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/Ready.hpp"
+#include "controller/ControllerConsts.hpp"
 
 namespace controller
 {
@@ -14,26 +15,24 @@ namespace controller
   };
   CloseGripper::~CloseGripper(){};
 
-  void CloseGripper::entryAction(Context* context)
+  void CloseGripper::entryAction(Context* aContext)
   {
-    context->gripperData() = robotcontroller::GripperData(
-        context->cup().object().width_m(), cSpeedFactor);
-    context->robotGripper()->moveGripper(context->gripperData());
+    aContext->gripperData() = robotcontroller::GripperData(
+        aContext->cup().object().width_m(), cSpeedFactor);
+    aContext->robotGripper()->moveGripper(aContext->gripperData());
     mGripperCloseTime =
-        ros::Time::now() + ros::Duration(0.08 / 0.1 / cSpeedFactor);
+        ros::Time::now() + ros::Duration(cGripperWidth_m / cGripperSpeed_ms / cSpeedFactor);
   }
 
-  void CloseGripper::doActivity(Context* context)
+  void CloseGripper::doActivity(Context* aContext)
   {
-    // Verschil in width  / 0.1 is de tijd die het duurt voordat de gripper open
-    // is
     if (ros::Time::now() >= mGripperCloseTime)
     {
-      context->setState(std::make_shared<Ready>());
+      aContext->setState(std::make_shared<Ready>());
     }
   }
 
-  void CloseGripper::exitAction(Context* context)
+  void CloseGripper::exitAction(Context* aContext)
   {
   }
 } // namespace controller

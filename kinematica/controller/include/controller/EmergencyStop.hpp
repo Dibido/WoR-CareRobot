@@ -29,27 +29,27 @@ namespace controller
      * @brief entryAction is being called when the EmergencyStop state is being
      * entered.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void entryAction(Context* context);
+    void entryAction(Context* aContext);
 
     /**
      * @brief doActivity is continiously being called while the system is in the
      * EmergencyStop.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void doActivity(Context* context);
+    void doActivity(Context* aContext);
     /**
      * @brief exitAction is being called when the EmergencyStop state is being
      * exited.
      *
-     * @param context is an object which gives the states a interface to the
+     * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void exitAction(Context* context);
+    void exitAction(Context* aContext);
   };
 } // namespace controller
 #endif // EMERGENCY_STOP_HPP

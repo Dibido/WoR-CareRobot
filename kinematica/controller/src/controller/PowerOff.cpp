@@ -13,15 +13,15 @@ namespace controller
 
   PowerOff::~PowerOff(){};
 
-  void PowerOff::entryAction(Context* context)
+  void PowerOff::entryAction(Context* aContext)
   {
   }
 
-  void PowerOff::doActivity(Context* context)
+  void PowerOff::doActivity(Context* aContext)
   {
   }
 
-  void PowerOff::exitAction(Context* context)
+  void PowerOff::exitAction(Context* aContext)
   {
   }
 } // namespace controller
