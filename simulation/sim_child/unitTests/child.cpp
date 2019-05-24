@@ -7,7 +7,7 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
-const double lMaximumDeviation = 0.0005;
+const double cMaximumDeviation = 0.0005;
 
 sdf::ElementPtr createChildEmptyElement()
 {
@@ -76,17 +76,17 @@ TEST(Child, calculateXVelocity)
   gazebo::Child lChild;
   lChild.mAngle = 0;
   lChild.mVelocity = 10;
-  EXPECT_NEAR(lChild.calculateXVelocity(), 10, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 10, cMaximumDeviation);
   lChild.mAngle = 360;
-  EXPECT_NEAR(lChild.calculateXVelocity(), 10, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 10, cMaximumDeviation);
   lChild.mAngle = -180;
-  EXPECT_NEAR(lChild.calculateXVelocity(), -10, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), -10, cMaximumDeviation);
   lChild.mAngle = -90;
-  EXPECT_NEAR(lChild.calculateXVelocity(), 0, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 0, cMaximumDeviation);
   lChild.mAngle = 90;
-  EXPECT_NEAR(lChild.calculateXVelocity(), 0, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 0, cMaximumDeviation);
   lChild.mAngle = 45;
-  EXPECT_NEAR(lChild.calculateXVelocity(), 7.07107, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateXVelocity(), 7.07107, cMaximumDeviation);
 }
 
 TEST(Child, calculateYVelocity)
@@ -94,15 +94,15 @@ TEST(Child, calculateYVelocity)
   gazebo::Child lChild;
   lChild.mAngle = 0;
   lChild.mVelocity = 10;
-  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, cMaximumDeviation);
   lChild.mAngle = 360;
-  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, cMaximumDeviation);
   lChild.mAngle = -180;
-  EXPECT_NEAR(lChild.calculateYVelocity(), 0, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), 0, cMaximumDeviation);
   lChild.mAngle = -90;
-  EXPECT_NEAR(lChild.calculateYVelocity(), -10, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), -10, cMaximumDeviation);
   lChild.mAngle = 90;
-  EXPECT_NEAR(lChild.calculateYVelocity(), 10, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), 10, cMaximumDeviation);
   lChild.mAngle = 45;
-  EXPECT_NEAR(lChild.calculateYVelocity(), 7.07107, lMaximumDeviation);
+  EXPECT_NEAR(lChild.calculateYVelocity(), 7.07107, cMaximumDeviation);
 }
