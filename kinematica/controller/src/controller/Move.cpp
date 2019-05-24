@@ -5,25 +5,38 @@
 // Local
 #include "controller/Move.hpp"
 #include "controller/ReleaseCup.hpp"
-namespace controller{
-Move::Move(){
+#include "controller/WaitForCup.hpp"
 
-};
-Move::~Move(){};
-
-void Move::entryAction(Context* context)
+namespace controller
 {
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
+  Move::Move(){
 
-void Move::doActivity(Context* context)
-{
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-  context->setState(std::make_shared<ReleaseCup>());
-}
+  };
+  Move::~Move(){};
 
-void Move::exitAction(Context* context)
-{
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
-}
+  void Move::entryAction(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    // Kinematica bereken configuratie
+    // Beweeg robotarm
+  }
+
+  void Move::doActivity(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+    // Hoogste verschil in theta / 180 / speedfactor = tijd die de robotarm over
+    // de beweging doet.
+
+    // If !cupReceived && reachedLocation
+    context->setState(std::make_shared<ReleaseCup>());
+
+    // If cupReceived && reachedLocation && cup.timeOfArrival > ros::now()
+    // context->setState(std::make_shared<WaitForCup>());
+  }
+
+  void Move::exitAction(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+  }
+} // namespace controller

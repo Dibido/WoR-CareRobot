@@ -15,7 +15,7 @@ Context::Context()
 
 void Context::setState(const std::shared_ptr<State>& state)
 {
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
+  //std::cout << __PRETTY_FUNCTION__ << std::endl;
 
   if (currentState)
   {
