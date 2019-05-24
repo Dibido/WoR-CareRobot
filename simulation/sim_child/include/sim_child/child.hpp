@@ -38,6 +38,12 @@ namespace gazebo
      *
      */
     void onUpdate();
+    
+    /**
+     * @brief updates cureent velocity. Function is used by onUpdate.
+     * 
+     */
+    void updateVelocity();
 
     /**
      * @brief Destroy the Child object
@@ -46,6 +52,12 @@ namespace gazebo
     virtual ~Child() = default;
 
       private:
+    double calculateXVelocity();
+    double calculateYVelocity();
+    void loadConfig(sdf::ElementPtr aSdf);
+    double loadVelocity(sdf::ElementPtr aSdf);
+    double loadAngle(sdf::ElementPtr aSdf);
+
     physics::ModelPtr mModel;
     event::ConnectionPtr mUpdateConnection;
     double mVelocity = 0;
