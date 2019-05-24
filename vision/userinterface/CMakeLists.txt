@@ -9,6 +9,10 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -fPIC)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp)
 
+#Enable CTest which is used for the codecoverage
+include(CTest)
+enable_testing()
+
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Qt5Widgets CONFIG)
@@ -204,6 +208,7 @@ add_executable(${PROJECT_NAME} ${Srcs})
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
