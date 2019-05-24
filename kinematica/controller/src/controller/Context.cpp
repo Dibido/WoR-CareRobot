@@ -31,6 +31,7 @@ namespace controller
                 cQueue_size)),
         mConfigurationProvider(
             std::make_shared<kinematics::ConfigurationProvider>()),
+        mCurrentState(std::make_shared<Init>()),
         mCup(environment_controller::Cup(
             environment_controller::Object(
                 environment_controller::Position(0.0, 0.0, 0.0),
@@ -41,7 +42,8 @@ namespace controller
                 0.0,
                 ros::Time(0),
                 0),
-            ros::Time(0)))
+            ros::Time(0))),
+        mGripperData(0.0, 0.0)
   {
   }
 
@@ -131,9 +133,14 @@ namespace controller
   {
     return mConfigurationProvider;
   }
+
   environment_controller::Cup& Context::cup()
   {
     return mCup;
   }
 
+  robotcontroller::GripperData& Context::gripperData()
+  {
+    return mGripperData;
+  }
 } // namespace controller

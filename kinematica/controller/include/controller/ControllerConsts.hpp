@@ -13,6 +13,7 @@ namespace controller
   const double cGripperSpeed_ms = 0.1;
   const double cJoint1To4Speed_rads = 2.61799;
   const double cJoint5To7Speed_rads = M_PI;
+  const double cSpeedFactor = 0.5;
 
 } // namespace controller
 

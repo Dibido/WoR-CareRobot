@@ -7,6 +7,7 @@
 #include "kinematics/ConfigurationProvider.hpp"
 #include "planning/AStar.hpp"
 #include "planning/Graph.hpp"
+#include "robotcontroller/GripperData.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "robotcontroller/RobotGripperPublisher.hpp"
 #include "robotcontroller/RobotStopPublisher.hpp"
@@ -77,7 +78,8 @@ namespace controller
     std::shared_ptr<kinematics::ConfigurationProvider>& configurationProvider();
     kinematics::Configuration& configuration();
     environment_controller::Cup& cup();
-    
+    robotcontroller::GripperData& gripperData();
+
       private:
     std::shared_ptr<planning::Graph> mGraph;
     std::shared_ptr<planning::AStar> mAstar;
@@ -93,6 +95,7 @@ namespace controller
     kinematics::Configuration mConfiguration;
     std::shared_ptr<State> mCurrentState;
     environment_controller::Cup mCup;
+    robotcontroller::GripperData mGripperData;
   };
 } // namespace controller
 #endif // Context_HPP

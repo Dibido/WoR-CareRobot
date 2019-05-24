@@ -50,6 +50,9 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* context);
+
+      private:
+    ros::Time mGripperCloseTime;
   };
 
 } // namespace controller

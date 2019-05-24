@@ -1,4 +1,5 @@
 #include "controller/Init.hpp"
+#include "controller/ControllerConsts.hpp"
 #include "controller/Ready.hpp"
 // Library
 #include <chrono>
@@ -16,17 +17,16 @@ namespace controller
 
   void Init::entryAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    context->configuration() = kinematics::Configuration();
+    context->robotControl()->publish(cSpeedFactor, context->configuration());
   }
 
   void Init::doActivity(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
     context->setState(std::make_shared<Ready>());
   }
 
   void Init::exitAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller

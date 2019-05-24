@@ -13,19 +13,18 @@ namespace controller
 
   void Ready::entryAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    context->cup().object().width_m() = 0.0;
   }
 
   void Ready::doActivity(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
-
-    // If location received
-    context->setState(std::make_shared<Move>());
+    if (context->cup().object().width_m() > 0.0)
+    {
+      context->setState(std::make_shared<Move>());
+    }
   }
 
   void Ready::exitAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller
