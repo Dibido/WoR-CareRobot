@@ -1,12 +1,14 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/PosCalculation.hpp"
+#include "location_component/RosServiceCup.hpp"
 #include <ros/ros.h>
 
 namespace location_component
 {
 
-  DetectAGV::DetectAGV() : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3)
+  DetectAGV::DetectAGV(ros::NodeHandle& nh)
+      : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3), rosServiceCup(nh)
   {
   }
 
@@ -27,12 +29,21 @@ namespace location_component
             lDetectedFrame->mDetectedAGV.mMidpoint,
             lDetectedFrame->mAGVFrameSize, detectedCup.mMidpoint,
             lDetectedFrame->mCupFrameSize);
-        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+        ros::Time lCupPredictedArrivalTime =
+            lPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
+                                                 ros::Time::now());
 
+        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
         ROS_INFO_STREAM("Current time " << ros::Time::now());
         ROS_INFO_STREAM("Cup is expected to arrive at "
-                        << lPosCalculator.predictCupArrivalTime(
-                               lCupLocation_m.y, ros::Time::now()));
+                        << lCupPredictedArrivalTime);
+
+        environment_controller::Object object(
+            environment_controller::Position(lCupLocation_m.x, lCupLocation_m.y,
+                                             lCupLocation_m.z),
+            0, 0, 0, 0, 0, ros::Time::now(), 0);
+
+        environment_controller::Cup cup(object, lCupPredictedArrivalTime);
       }
 
       ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(

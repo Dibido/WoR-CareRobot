@@ -1,15 +1,15 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/PosCalculation.hpp"
+#include "location_component/RosServiceCup.hpp"
+#include "std_msgs/String.h"
 #include <ctime>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/ros.h>
 #include <vector>
-#include "location_component/RosServiceCup.hpp"
-#include "std_msgs/String.h"
 
-location_component::DetectAGV d;
+std::shared_ptr<location_component::DetectAGV> d;
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
@@ -20,7 +20,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
     cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
 
-    d.detectUpdate(srcMatrix, displayMatrix);
+    d->detectUpdate(srcMatrix, displayMatrix);
     cv::imshow("view", displayMatrix);
 
     int c = cv::waitKey(10);
@@ -37,38 +37,24 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "image_listener");
+  ros::init(argc, argv, "location_component");
   ros::NodeHandle nh;
+  d = std::make_shared<location_component::DetectAGV>(nh);
 
   ros::Rate loop_rate(10);
 
+  cv::namedWindow("view");
+  image_transport::ImageTransport it(nh);
+  const std::string cTopicName = "/sensor/webcam/img_raw";
+  image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
+
   while (ros::ok())
   {
-    location_component::RosServiceCup test(nh);
-
-    environment_controller::Object object(environment_controller::Position(0,0,0), 0,0,0,0,0,ros::Time(2000000000),0);
-
-    environment_controller::Cup cup(object,ros::Time(2000000000));
-
-    test.foundCup(cup);
-
-    location_component::PosCalculation pos;
-    
-    ros::spinOnce();
-
     loop_rate.sleep();
+    ros::spinOnce();
   }
 
-
-  // /* std::cout << pos.calculateAGVLocation(cv::Point(200, 100), cv::Size(400,
-  //  * 400)) << std::endl; */
-
-  // cv::namedWindow("view");
-  // image_transport::ImageTransport it(nh);
-  // const std::string cTopicName = "/sensor/webcam/img_raw";
-  // image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
-  // ros::spin();
-  // cv::destroyWindow("view");
+  cv::destroyWindow("view");
 
   return 0;
 }

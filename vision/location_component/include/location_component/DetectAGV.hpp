@@ -2,6 +2,7 @@
 #define DETECTAGV_HPP
 
 #include "location_component/CupScanner.hpp"
+#include "location_component/RosServiceCup.hpp"
 #include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
@@ -30,7 +31,7 @@ namespace location_component
   class DetectAGV
   {
       public:
-    DetectAGV();
+    DetectAGV(ros::NodeHandle& nh);
     ~DetectAGV();
 
     /**
@@ -101,6 +102,7 @@ namespace location_component
       private:
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
+    RosServiceCup rosServiceCup;
   };
 } // namespace location_component
 
