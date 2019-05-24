@@ -61,10 +61,7 @@ namespace commands
 
     for (uint16_t i = 0; i < commandTheta.size(); ++i)
     {
-      if (i >= 5 && speedFactor > mMaxSpeed) // Joint 5,6,7 are slower
-      {
-        speedFactor = mMaxSpeed;
-      }
+   
       Command command(eCommandType::MOVE,                       // type
                       static_cast<jointChannel_t>(i),           // channel
                       static_cast<jointRad_t>(commandTheta[i]), // rad
