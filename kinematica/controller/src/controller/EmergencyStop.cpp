@@ -12,18 +12,18 @@ namespace controller
   };
   EmergencyStop::~EmergencyStop(){};
 
-  void EmergencyStop::entryAction(Context* context)
+  void EmergencyStop::entryAction(Context* aContext)
   {
-    context->robotStop()->publish(true);
+    aContext->robotStop()->publish(true);
   }
 
-  void EmergencyStop::doActivity(Context* context)
+  void EmergencyStop::doActivity(Context* aContext)
   {
-    // context->setState(std::make_shared<Init>());
+    // aContext->setState(std::make_shared<Init>());
   }
 
-  void EmergencyStop::exitAction(Context* context)
+  void EmergencyStop::exitAction(Context* aContext)
   {
-    context->robotStop()->publish(false);
+    aContext->robotStop()->publish(false);
   }
 } // namespace controller

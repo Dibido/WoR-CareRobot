@@ -15,6 +15,7 @@ namespace controller
   const double cJoint5To7Speed_rads = M_PI;
   const double cSpeedFactor = 0.5;
   const double cJointSpeed_rads = M_PI / 180 * 150;
+  const double cGripperWidth_m = 0.08;
 } // namespace controller
 
 #endif // CONTROLLER_CONSTS_HPP

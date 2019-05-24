@@ -21,7 +21,7 @@ namespace controller
   /**
    * @class Context
    *
-   * @brief Context is a class which gives the states a interface to the
+   * @brief Context is a class which gives the states an interface to the
    * "outside world".
    *
    */
@@ -41,7 +41,7 @@ namespace controller
      */
     void setState(const std::shared_ptr<State>& state);
     /**
-     * @brief Run is mthe function which takes care of the handling of the
+     * @brief Run is the function which takes care of the handling of the
      * EventQueue and calling the doActivity functions of the different states.
      */
     void run();

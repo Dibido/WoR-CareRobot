@@ -18,28 +18,28 @@ namespace controller
   };
   Move::~Move(){};
 
-  void Move::entryAction(Context* context)
+  void Move::entryAction(Context* aContext)
   {
     const double lSpeedFactor = 0.5;
 
     kinematics::EndEffector lEndEffector = kinematics::EndEffector(
-        context->cup().object().position().x_m(),
-        context->cup().object().position().y_m(),
-        context->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
+        aContext->cup().object().position().x_m(),
+        aContext->cup().object().position().y_m(),
+        aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
     kinematics::Configuration lConfiguration =
-        context->configurationProvider()->inverseKinematics(
-            lEndEffector, context->configuration());
-    context->robotControl()->publish(0.5, lConfiguration);
+        aContext->configurationProvider()->inverseKinematics(
+            lEndEffector, aContext->configuration());
+    aContext->robotControl()->publish(0.5, lConfiguration);
 
     double lMaxDeltaTheta = 0;
     for (size_t i = 0; i < lConfiguration.size; ++i)
     {
       if (lMaxDeltaTheta <
-          std::abs(lConfiguration[i] - context->configuration()[i]))
+          std::abs(lConfiguration[i] - aContext->configuration()[i]))
       {
         lMaxDeltaTheta =
-            std::abs(lConfiguration[i] - context->configuration()[i]);
+            std::abs(lConfiguration[i] - aContext->configuration()[i]);
       }
     }
 
@@ -48,16 +48,16 @@ namespace controller
         ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / lSpeedFactor);
   }
 
-  void Move::doActivity(Context* context)
+  void Move::doActivity(Context* aContext)
   {
     if (ros::Time::now() >= mArrivalTime)
     {
-      // context->setState(std::make_shared<ReleaseCup>());
-      context->setState(std::make_shared<WaitForCup>());
+      // aContext->setState(std::make_shared<ReleaseCup>());
+      aContext->setState(std::make_shared<WaitForCup>());
     }
   }
 
-  void Move::exitAction(Context* context)
+  void Move::exitAction(Context* aContext)
   {
   }
 } // namespace controller

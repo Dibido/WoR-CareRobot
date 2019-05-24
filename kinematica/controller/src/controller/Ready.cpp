@@ -11,20 +11,20 @@ namespace controller
 
   Ready::~Ready(){};
 
-  void Ready::entryAction(Context* context)
+  void Ready::entryAction(Context* aContext)
   {
-    context->cup().object().width_m() = 0.0;
+    aContext->cup().object().width_m() = 0.0;
   }
 
-  void Ready::doActivity(Context* context)
+  void Ready::doActivity(Context* aContext)
   {
-    if (context->cup().object().width_m() > 0.0)
+    if (aContext->cup().object().width_m() > 0.0)
     {
-      context->setState(std::make_shared<Move>());
+      aContext->setState(std::make_shared<Move>());
     }
   }
 
-  void Ready::exitAction(Context* context)
+  void Ready::exitAction(Context* aContext)
   {
   }
 } // namespace controller
