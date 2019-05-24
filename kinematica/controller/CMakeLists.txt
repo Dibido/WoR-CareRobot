@@ -124,18 +124,18 @@ include_directories(
 )
 
 add_executable(main_application 
-src/RobotControl.cpp
-src/Context.cpp
-src/EmergencyStop.cpp
-src/Init.cpp
-src/SoftStop.cpp
-src/State.cpp
-src/CloseGripper.cpp
-src/Move.cpp
-src/Ready.cpp
-src/ReleaseCup.cpp
-src/WaitForCup.cpp
-src/PowerOff.cpp)
+src/Main.cpp
+src/controller/Context.cpp
+src/controller/EmergencyStop.cpp
+src/controller/Init.cpp
+src/controller/SoftStop.cpp
+src/controller/State.cpp
+src/controller/CloseGripper.cpp
+src/controller/Move.cpp
+src/controller/Ready.cpp
+src/controller/ReleaseCup.cpp
+src/controller/WaitForCup.cpp
+src/controller/PowerOff.cpp)
 
 add_dependencies(main_application
 ${catkin_EXPORTED_TARGETS})

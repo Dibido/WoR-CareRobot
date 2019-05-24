@@ -5,7 +5,7 @@
 // Local
 #include "controller/Move.hpp"
 #include "controller/Ready.hpp"
-
+namespace controller{
 Ready::Ready(){};
 
 Ready::~Ready(){};
@@ -24,4 +24,5 @@ void Ready::doActivity(Context* context)
 void Ready::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

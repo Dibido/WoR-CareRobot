@@ -8,7 +8,7 @@
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
-
+namespace controller{
 Context::Context()
 {
 }
@@ -41,4 +41,5 @@ void Context::run()
       setState(std::make_shared<PowerOff>());
     }
   }
+}
 }

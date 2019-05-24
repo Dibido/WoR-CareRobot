@@ -5,6 +5,7 @@
 // Local
 #include "controller/Move.hpp"
 #include "controller/ReleaseCup.hpp"
+namespace controller{
 Move::Move(){
 
 };
@@ -24,4 +25,5 @@ void Move::doActivity(Context* context)
 void Move::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

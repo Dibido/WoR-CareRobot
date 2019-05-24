@@ -4,7 +4,7 @@
 
 // Local
 #include "controller/EmergencyStop.hpp"
-
+namespace controller{
 EmergencyStop::EmergencyStop(){
 
 };
@@ -23,4 +23,5 @@ void EmergencyStop::doActivity(Context* context)
 void EmergencyStop::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

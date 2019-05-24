@@ -6,7 +6,7 @@
 #include <memory>
 #include <ros/ros.h>
 #include <thread>
-
+namespace controller{
 Init::Init(){
 
 };
@@ -27,4 +27,6 @@ void Init::doActivity(Context* context)
 void Init::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+}
 }

@@ -5,7 +5,7 @@
 // Local
 #include "controller/Ready.hpp"
 #include "controller/ReleaseCup.hpp"
-
+namespace controller{
 ReleaseCup::ReleaseCup(){
 
 };
@@ -25,4 +25,5 @@ void ReleaseCup::doActivity(Context* context)
 void ReleaseCup::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

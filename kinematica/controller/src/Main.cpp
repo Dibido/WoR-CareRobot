@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
   ros::init(argc, argv, cControlTopic);
-  Context ctx = Context();
+  controller::Context ctx = controller::Context();
   ctx.run();
 
   // environment_controller::EnvironmentController lEnvironmentController =

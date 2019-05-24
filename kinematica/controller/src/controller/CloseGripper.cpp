@@ -4,7 +4,7 @@
 
 // Local
 #include "controller/CloseGripper.hpp"
-
+namespace controller{
 CloseGripper::CloseGripper(){
 
 };
@@ -23,4 +23,5 @@ void CloseGripper::doActivity(Context* context)
 void CloseGripper::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

@@ -5,7 +5,7 @@
 #include <memory>
 #include <ros/ros.h>
 #include <thread>
-
+namespace controller{
 PowerOff::PowerOff(){
 
 };
@@ -25,4 +25,5 @@ void PowerOff::doActivity(Context* context)
 void PowerOff::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

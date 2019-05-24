@@ -4,7 +4,7 @@
 
 // Local
 #include "controller/SoftStop.hpp"
-
+namespace controller{
 SoftStop::SoftStop(){
 
 };
@@ -23,4 +23,5 @@ void SoftStop::doActivity(Context* context)
 void SoftStop::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }

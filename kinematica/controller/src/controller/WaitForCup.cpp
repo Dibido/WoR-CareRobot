@@ -4,7 +4,7 @@
 
 // Local
 #include "controller/WaitForCup.hpp"
-
+namespace controller{
 WaitForCup::WaitForCup(){
 
 };
@@ -23,4 +23,5 @@ void WaitForCup::doActivity(Context* context)
 void WaitForCup::exitAction(Context* context)
 {
   // std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 }
