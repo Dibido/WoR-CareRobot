@@ -39,15 +39,15 @@ namespace location_component
         ROS_INFO_STREAM("Cup is expected to arrive at "
                         << lCupPredictedArrivalTime);
 
-        environment_controller::Object object(
+        environment_controller::Object lObject(
             environment_controller::Position(lCupLocation_m.x, cArmY_m,
                                              lCupLocation_m.z),
             cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
             cAGVSpeed_m_s, ros::Time::now(), 0);
 
-        environment_controller::Cup cup(object, lCupPredictedArrivalTime);
+        environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
-        rosServiceCup.foundCup(cup);
+        rosServiceCup.foundCup(lCup);
       }
 
       ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(
@@ -104,20 +104,20 @@ namespace location_component
 
           aFrame.copyTo(mCapturedFrame);
 
-          cv::Mat displayCups;
-          lDetectedAGV->agvFrame.copyTo(displayCups);
+          cv::Mat lDisplayCups;
+          lDetectedAGV->agvFrame.copyTo(lDisplayCups);
 
           lDetectedFrame->mCupFrameSize =
-              cv::Size(displayCups.cols, displayCups.rows);
+              cv::Size(lDisplayCups.cols, lDisplayCups.rows);
           lDetectedFrame->mAGVFrameSize = cv::Size(aFrame.cols, aFrame.rows);
 
           for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
           {
-            cv::circle(displayCups, detectedCup.mMidpoint, 10,
+            cv::circle(lDisplayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), 0);
           }
 
-          imshow("display ", displayCups);
+          imshow("display ", lDisplayCups);
         }
       }
     }
