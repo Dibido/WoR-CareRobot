@@ -1,6 +1,7 @@
 #include "location_component/PosCalculation.hpp"
 #include <cmath>
 #include <opencv2/opencv.hpp>
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -13,9 +14,23 @@ namespace location_component
   {
   }
 
+  ros::Time PosCalculation::predictCupArrivalTime(
+      float aCupLocationY_m,
+      ros::Time aCurrentTime,
+      float aAGVSpeed_m_s /*= cAGVSpeed_m_s*/) const
+  {
+    float lDistanceToArm_m = std::fabs(cArmY_m - aCupLocationY_m);
+    float lCurrentTime_s = ( float )aCurrentTime.toSec();
+    float lTimeToArm_s = lDistanceToArm_m / aAGVSpeed_m_s;
+    float lPredictedArrivalTime_s = lCurrentTime_s + lTimeToArm_s;
+    return ros::Time(lPredictedArrivalTime_s);
+  }
+
   cv::Point3f PosCalculation::calculateCupLocation(cv::Point aAGVScreenPos,
                                                    cv::Size aAGVFrameSize,
+                                                   __attribute__((unused))
                                                    cv::Point aCupScreenPos,
+                                                   __attribute__((unused))
                                                    cv::Size aCupFrameSize) const
   {
     cv::Point3f lAGVLocation_m =

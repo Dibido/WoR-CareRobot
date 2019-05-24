@@ -2,6 +2,7 @@
 #define POSTCALCULATION_HPP
 
 #include <opencv2/opencv.hpp>
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -10,6 +11,8 @@ namespace location_component
   const float cCameraPosY_m = -4.0f;
   const float cCameraPosZ_m = 1.8f;
   const float cCameraFOV_rads = 1.047f;
+
+  const float cArmY_m = 0.0f;
 
   const float cCameraFlipX = -1.0f;
   const float cCameraFlipY = -1.0f;
@@ -20,13 +23,20 @@ namespace location_component
   const float cAGVWidth_m = 0.350f;
   const float cAGVHeight_m = 0.400f;
 
-  const float cAGVSpeed_m_s = 0.400f;
+  const float cAGVSpeed_m_s = 0.200f;
 
   class PosCalculation
   {
       public:
     PosCalculation();
     ~PosCalculation();
+
+    /**
+     * @brief Predicts the time when the cup arrives at the robot arm.
+     */
+    ros::Time predictCupArrivalTime(float aCupLocationY_m,
+                                    ros::Time aCurrentTime,
+                                    float aAGVSpeed_m_s = cAGVSpeed_m_s) const;
     /**
      * @brief Calculates the cup location.
      *
