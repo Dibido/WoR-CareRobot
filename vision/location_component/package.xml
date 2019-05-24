@@ -37,7 +37,5 @@
   <run_depend>sensor_msgs</run_depend>
   <run_depend>image_transport</run_depend>
 
- 
-
 </package>
 

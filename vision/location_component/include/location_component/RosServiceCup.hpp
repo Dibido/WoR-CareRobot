@@ -4,6 +4,7 @@
 #include "environment_controller/ICupProvider.hpp"
 #include "kinematica_msgs/Cup.h"
 #include <ros/ros.h>
+#include "std_msgs/String.h"
 
 namespace location_component
 {

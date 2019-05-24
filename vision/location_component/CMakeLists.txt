@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
 cv_bridge
 image_transport 
 message_generation 
+kinematica_msgs
 sensor_msgs
 environment_controller
 )

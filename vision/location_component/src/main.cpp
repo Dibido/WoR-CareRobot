@@ -7,6 +7,7 @@
 #include <ros/ros.h>
 #include <vector>
 #include "location_component/RosServiceCup.hpp"
+#include "std_msgs/String.h"
 
 location_component::DetectAGV d;
 
@@ -38,26 +39,36 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "image_listener");
   ros::NodeHandle nh;
-  location_component::RosServiceCup test(nh);
 
-  environment_controller::Object object(environment_controller::Position(0,0,0), 0,0,0,0,0,ros::Time(2000000000),0);
+  ros::Rate loop_rate(10);
 
-  environment_controller::Cup cup(object,ros::Time(2000000000));
+  while (ros::ok())
+  {
+    location_component::RosServiceCup test(nh);
 
-  test.foundCup(cup);
-  
-  location_component::PosCalculation pos;
+    environment_controller::Object object(environment_controller::Position(0,0,0), 0,0,0,0,0,ros::Time(2000000000),0);
+
+    environment_controller::Cup cup(object,ros::Time(2000000000));
+
+    test.foundCup(cup);
+
+    location_component::PosCalculation pos;
+    
+    ros::spinOnce();
+
+    loop_rate.sleep();
+  }
 
 
-  /* std::cout << pos.calculateAGVLocation(cv::Point(200, 100), cv::Size(400,
-   * 400)) << std::endl; */
+  // /* std::cout << pos.calculateAGVLocation(cv::Point(200, 100), cv::Size(400,
+  //  * 400)) << std::endl; */
 
-  cv::namedWindow("view");
-  image_transport::ImageTransport it(nh);
-  const std::string cTopicName = "/sensor/webcam/img_raw";
-  image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
-  ros::spin();
-  cv::destroyWindow("view");
+  // cv::namedWindow("view");
+  // image_transport::ImageTransport it(nh);
+  // const std::string cTopicName = "/sensor/webcam/img_raw";
+  // image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
+  // ros::spin();
+  // cv::destroyWindow("view");
 
   return 0;
 }
