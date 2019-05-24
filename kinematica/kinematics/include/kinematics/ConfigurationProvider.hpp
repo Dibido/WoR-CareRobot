@@ -18,16 +18,17 @@ namespace kinematics
 
     /**
      * @brief Finds a corresponding Configuration for a given EndEffector
-     *
+     * @see \link iConfigurationProvider \endlink
      * @param aGoalEndEffector
      * @param aCurrentConfiguration
      * @return Configuration
      */
     virtual Configuration
-        inverseKinematics(const EndEffector& aGoalPosition,
+        inverseKinematics(const EndEffector& aGoalEndEffector,
                           const Configuration& aCurrentConfiguration);
 
       private:
+    void prepareConfiguration(Configuration& configuration);
     DenavitHartenberg denavitHartenberg;
   };
 } // namespace kinematics
