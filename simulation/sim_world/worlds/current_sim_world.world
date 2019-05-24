@@ -28,7 +28,7 @@
     </model>
 
     <model name="lidar_model">
-      <pose>0.55 0 0.95 0 0 0</pose>
+      <pose>0.55 0 0.95 3.14 0 0</pose>
       <include>
         <uri>model://lidar_model</uri>
       </include>
