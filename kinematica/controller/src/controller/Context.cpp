@@ -53,8 +53,6 @@ namespace controller
 
   void Context::setState(const std::shared_ptr<State>& state)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
-
     if (mCurrentState)
     {
       mCurrentState->exitAction(this);

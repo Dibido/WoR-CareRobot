@@ -11,6 +11,8 @@
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "main_application");
+  ros::start();
+
   std::shared_ptr<controller::Context> lContext =
       std::make_shared<controller::Context>();
 

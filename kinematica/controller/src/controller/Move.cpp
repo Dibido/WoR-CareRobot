@@ -1,6 +1,7 @@
 // Library
 #include <iostream>
 #include <ros/ros.h>
+#include <ros/time.h>
 
 // Local
 #include "controller/ControllerConsts.hpp"
@@ -19,7 +20,6 @@ namespace controller
 
   void Move::entryAction(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
     const double lSpeedFactor = 0.5;
 
     kinematics::EndEffector lEndEffector = kinematics::EndEffector(
@@ -50,8 +50,6 @@ namespace controller
 
   void Move::doActivity(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
-
     if (ros::Time::now() >= mArrivalTime)
     {
       // context->setState(std::make_shared<ReleaseCup>());
@@ -61,6 +59,5 @@ namespace controller
 
   void Move::exitAction(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller

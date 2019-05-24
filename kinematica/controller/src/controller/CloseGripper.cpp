@@ -25,7 +25,6 @@ namespace controller
 
   void CloseGripper::doActivity(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
     // Verschil in width  / 0.1 is de tijd die het duurt voordat de gripper open
     // is
     if (ros::Time::now() >= mGripperCloseTime)
@@ -36,6 +35,5 @@ namespace controller
 
   void CloseGripper::exitAction(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller

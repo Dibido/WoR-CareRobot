@@ -18,7 +18,6 @@ namespace controller
 
   void ReleaseCup::doActivity(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
 
     // Verschil in width  / 0.1 is de tijd die het duurt voordat de gripper open
     // is if (gripper.opened){
@@ -27,6 +26,5 @@ namespace controller
 
   void ReleaseCup::exitAction(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller
