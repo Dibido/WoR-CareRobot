@@ -34,21 +34,17 @@ namespace gazebo
   void AutomatedGuidedVehiclePlugin::callback(
       const sensor_msgs::RangeConstPtr aMsg)
   {
-    if (aMsg->range <= 0.3)
+    mSecs = ros::Time::now().toSec();
+    if (mSecs - previousTime >= interval)
     {
-      mWhiteLineDetected = true;
-    }
-    if (mWhiteLineDetected)
-    {
-      std::cout<<"PUBLISHED"<<std::endl;
-      mWhiteLineDetected = false;
+      ROS_INFO("speed pushed : %f from: %d", this->speedY , aMsg->radiation_type);
+      previousTime = mSecs;
       sensor_interfaces::AGVSpeed speedMsg;
-      speedMsg.speed = 2; // this->speedY;
+      speedMsg.speed = ( float )this->speedY;
       mAgvPublisher = rosNode->advertise<sensor_interfaces::AGVSpeed>(
           gazebo::cAgvPublishTopic, 1);
       mAgvPublisher.publish(speedMsg);
     }
-    
   }
 
   /* virtual */ void
