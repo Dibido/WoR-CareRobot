@@ -17,23 +17,23 @@ namespace gazebo
     /**
      * @brief Construct a joint controller
      * @param joint : joint pointer to the gazebo physical joint
-     * @param name : Name of the joint
-     * @param channel : Index / Channel of the joint
-     * @param min_pw : Minimum pulse width
-     * @param max_pw : Maximum pulse width
-     * @param min_rad : Minimum radians (to move joint to)
-     * @param max_rad : Maximum radians (to move joint to)
-     * @param max_vel : Maximum velocity in radians per second (ex. M_PI_2 will
+     * @param mName : Name of the joint
+     * @param mChannel: Index / Channel of the joint
+     * @param mMinPw : Minimum pulse width
+     * @param mMaxPw : Maximum pulse width
+     * @param mMinRad : Minimum radians (to move joint to)
+     * @param mMaxRad : Maximum radians (to move joint to)
+     * @param mMaxVel : Maximum velocity in radians per second (ex. M_PI_2 will
      * result in 1 second per 90 degrees)
      */
     JointController(physics::JointPtr& joint,
-                    const std::string& name,
-                    jointChannel_t channel,
-                    jointPw_t min_pw,
-                    jointPw_t max_pw,
-                    jointRad_t min_rad,
-                    jointRad_t max_rad,
-                    jointVel_t max_vel);
+                    const std::string& mName,
+                    jointChannel_t mChannel,
+                    jointPw_t mMinPw,
+                    jointPw_t mMaxPw,
+                    jointRad_t mMinRad,
+                    jointRad_t mMaxRad,
+                    jointVel_t mMaxVel);
 
     JointController(const JointController& other);
     JointController& operator=(const JointController& other);
@@ -48,28 +48,28 @@ namespace gazebo
 
     /**
      *@brief Check if given pulse width is in valid range for this joint
-     * @param pw : pulse width to check if it is in range
+     * @param mPw : pulse width to check if it is in range
      * @return true if in range
      */
-    bool inRange(jointPw_t pw) const;
+    bool inRange(jointPw_t aPw) const;
 
     /**
      * Move the joint to given position with given speed, only if given pulse
      * width is in range
-     * @param pw : pulse width to move to
-     * @param speed : move with this speed (if faster than given time)
+     * @param mPw : pulse width to move to
+     * @param mSpeed : move with this speed (if faster than given time)
      * @param time : move in this time (if faster than speed)
      * @return true if move was successful
      */
-    bool move(jointPw_t pw,
-              jointVel_t speed,
-              commandTime_t time,
-              double updateRate);
+    bool move(jointPw_t aPw,
+              jointVel_t aSpeed,
+              commandTime_t aTime,
+              double aUpdateRate);
 
-    bool moveTheta(jointPw_t pw,
-                   jointVel_t speed,
-                   commandTime_t time,
-                   double updateRate);
+    bool moveTheta(jointRad_t aRad,
+                   jointVel_t aSpeedFactor,
+                   commandTime_t aTime,
+                   double aUpdateRate);
     /**
      *@brief Stop the joint movement
      */
@@ -78,20 +78,21 @@ namespace gazebo
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
     jointVel_t getCurrentVel() const;
+    double getCurrentForce() const;
 
     /**
      * @brief Hard set current position, no checks.
      * @param aCurrentPos.
      */
     void setCurrentPos(jointRad_t aCurrentPos);
-      /**
+    /**
      * @brief Hard set current velocity, no checks.
      * @param aCurrentVel.
      */
     void setCurrentVel(jointVel_t aCurrentVel);
 
       private:
-    double convertPw2Radians(jointPw_t pw) const;
+    double convertPw2Radians(jointPw_t aPw) const;
 
     /**
      *@brief Step once towards target position with step size
@@ -102,23 +103,24 @@ namespace gazebo
     physics::JointPtr joint;
 
     // Settings
-    std::string name;
-    jointChannel_t channel;
-    jointPw_t min_pw;
-    jointPw_t max_pw;
-    jointRad_t min_rad;
-    jointRad_t max_rad;
-    jointVel_t max_vel;
+    std::string mName;
+    jointChannel_t mChannel;
+    jointPw_t mMinPw;
+    jointPw_t mMaxPw;
+    jointRad_t mMinRad;
+    jointRad_t mMaxRad;
+    jointVel_t mMaxVel;
 
     // Current values
-    jointRad_t current_pos;
-    jointVel_t current_vel;
+    jointRad_t mCurrentPos;
+    jointVel_t mCurrentVel;
+    double mCurrentForce;
 
     // For movement simulation
-    jointRad_t target_pos;
-    jointRad_t step_size;
+    jointRad_t mTargetPos;
+    jointRad_t mStepSize;
   };
-
+  bool equalsDouble(const double& a, const double& b);
 } // namespace gazebo
 
 #endif // PROJECT_JOINTINFO_HPP

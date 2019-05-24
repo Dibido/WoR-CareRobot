@@ -14,4 +14,8 @@ namespace environment_controller
   {
   }
 
+  void EnvironmentController::provideCup(const Cup& aCup)
+  {
+  }
+
 } // namespace environment_controller
