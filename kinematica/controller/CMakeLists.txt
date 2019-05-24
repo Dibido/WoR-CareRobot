@@ -8,7 +8,6 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  environment_controller
   planning
   robotcontroller
   std_msgs
@@ -107,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES controller
-  CATKIN_DEPENDS environment_controller planning robotcontroller std_msgs kinematics
+  CATKIN_DEPENDS planning robotcontroller std_msgs kinematics
 #  DEPENDS system_lib
 )
 

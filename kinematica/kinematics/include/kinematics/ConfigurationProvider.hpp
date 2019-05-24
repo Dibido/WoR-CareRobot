@@ -2,8 +2,8 @@
 #define KINEMATICS_CONFIGURATIONPROVIDER_HPP
 
 #include "kinematics/DenavitHartenberg.hpp"
+#include "kinematics/EndEffector.hpp"
 #include "kinematics/IConfigurationProvider.hpp"
-
 namespace kinematics
 {
   class ConfigurationProvider : public IConfigurationProvider
