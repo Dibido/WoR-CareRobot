@@ -8,9 +8,6 @@ namespace lidar_application
     const std::string cPublishTopicName = "/detectedObjects";
   } // namespace datahandler_constants
 
-  /**
-   * @brief Default constructor
-   */
   DataHandler::DataHandler() : mNewDataAvailable(false)
   {
     mLidarSubscriber =
@@ -21,11 +18,6 @@ namespace lidar_application
         datahandler_constants::cPublishTopicName, 1000);
   }
 
-  /**
-   * @brief Construct a new Data Handler:: Data Handler object
-   * @param aReceiveTopic - Topic name on which data will be received
-   * @param aPublishTopic - Topic name on which data will be published
-   */
   DataHandler::DataHandler(const std::string& aReceiveTopic,
                            const std::string& aPublishTopic)
       : mNewDataAvailable(false)
@@ -74,10 +66,11 @@ namespace lidar_application
 
     for (size_t i = 0; i < aData.size(); ++i)
     {
-      environment_controller::Position lPosition(aData.at(i).first, aData.at(i).second, aHeight_m);
-      
-      environment_controller::Object lObject(lPosition, 0.0, 0.0, 0.0, 0.0,
-                                           0.0, ros::Time(), 0);
+      environment_controller::Position lPosition(aData.at(i).first,
+                                                 aData.at(i).second, aHeight_m);
+
+      environment_controller::Object lObject(lPosition, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                             ros::Time(), 0);
 
       lObstacleList.push_back(lObject);
     }
@@ -93,7 +86,7 @@ namespace lidar_application
 
     geometry_msgs::Point lPoint;
 
-    for(size_t i = 0; i < aObstacles.size(); ++i)
+    for (size_t i = 0; i < aObstacles.size(); ++i)
     {
       lPoint.x = aObstacles.at(i).position().x_m();
       lPoint.y = aObstacles.at(i).position().y_m();

@@ -2,11 +2,10 @@
 #include <gtest/gtest.h>
 
 #include <ros/ros.h>
-#include <ros/console.h>
 
 #define private public
-#include "lidar_application/LidarData.hpp"
 #include "lidar_application/DataHandler.hpp"
+#include "lidar_application/LidarData.hpp"
 #undef private
 
 using namespace lidar_application;
