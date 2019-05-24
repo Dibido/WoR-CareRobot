@@ -45,7 +45,14 @@ namespace gazebo
     AutomatedGuidedVehiclePlugin();
     virtual ~AutomatedGuidedVehiclePlugin();
 
-    virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
+    /**
+     * Setup the sensor plugin. Gets executed when the model (SDF file) gets
+     * loaded
+     * @param aModel: pointer to the sensor
+     * @param aSdf: pointer to the Sdf (defined in the model file) element of
+     * the sensor
+     */
+    virtual void Load(physics::ModelPtr aModel, sdf::ElementPtr aSdf);
 
     /*
      * @author Wouter van Uum
@@ -56,31 +63,31 @@ namespace gazebo
 
     /**
      * Gets executed when there is data being published.
-     * 
+     *
      */
-    void callback( const sensor_msgs::RangeConstPtr aMsg);
+    void callback(const sensor_msgs::RangeConstPtr aMsg);
 
       private:
     // Movement
-    bool movingForward;
-    double speedX;
-    double speedY;
-    double speedZ;
-    Position startPos;
-    Position endPos;
+    bool mMovingForward;
+    double mSpeedX;
+    double mSpeedY;
+    double mSpeedZ;
+    Position mStartPos;
+    Position mEndPos;
 
     // ROS
-    ros::NodeHandlePtr rosNode;
-    ros::Subscriber rosSubPath;
-    ros::Subscriber rosSubSpeed;
+    ros::NodeHandlePtr mRosNode;
+    ros::Subscriber mRosSubPath;
+    ros::Subscriber mRosSubSpeed;
     ros::Publisher mAgvPublisher;
 
     ros::Subscriber mRosSub;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
     double mSecs;
-    double previousTime = 0;
-    double interval = 5;
+    double mPreviousTime = 0;
+    double mInterval = 5;
 
     /**
      * Handles incoming ros messages on a separate thread
@@ -89,49 +96,49 @@ namespace gazebo
     void QueueThread();
 
     // GAZEBO
-    event::ConnectionPtr updateConnection;
-    physics::WorldPtr world;
-    physics::ModelPtr model;
+    event::ConnectionPtr mUpdateConnection;
+    physics::WorldPtr mWorld;
+    physics::ModelPtr mModel;
 
     // Timer(s)
-    double directionChangeInterval;
-    common::Time lastDirectionChangeInterval;
+    double mDirectionChangeInterval;
+    common::Time mLastDirectionChangeInterval;
 
     // Parsing functions
 
     /*
      * @author Wouter van Uum
      * @brief Used to set the different variables of the AGV
-     * @param sdf: The sdf file which contains the different elements that need
+     * @param aSdf: The sdf file which contains the different elements that need
      * to be parsed
      */
-    void setVariablesSDF(const sdf::ElementPtr& sdf);
+    void setVariablesSDF(const sdf::ElementPtr& aSdf);
 
     /*
      * @author Wouter van Uum
      * @brief Used to parse a string position to a Position struct
-     * @param stringPosition: a string position that has to be parsed
+     * @param aStringPosition: a string position that has to be parsed
      */
-    Position parsePosition(const std::string& stringPosition);
+    Position parsePosition(const std::string& aStringPosition);
 
     /*
      * @author Wouter van Uum
      * @brief Used to calculate the x, y and z speed of the AGV. It uses the
      * directionChangeInterval and the two given positions to calculate the
      * speed.
-     * @param startingPosition: The start position of the AGV
-     * @param endingPosition: The end position of the AGV
+     * @param aStartingPosition: The start position of the AGV
+     * @param aEndingPosition: The end position of the AGV
      */
-    void calculateAGVSpeed(const Position& startingPosition,
-                           const Position& endingPosition);
+    void calculateAGVSpeed(const Position& aStartingPosition,
+                           const Position& aEndingPosition);
 
     /*
      * @author Wouter van Uum
      * @brief Used to check if all elemets that are required for the AGV are
      * present in the SDF file.
-     * @param sdf: The sdf file that has to be checked.
+     * @param aSdf: The sdf file that has to be checked.
      */
-    bool checkSDFElements(const sdf::ElementPtr& sdf);
+    bool checkSDFElements(const sdf::ElementPtr& aSdf);
 
     // Setter
     /*
@@ -140,32 +147,32 @@ namespace gazebo
      *Sets the AGV to the startPosition so that when the simulation starts (or
      *is going on) the AGV will start at its starting position and move
      *accordingly.
-     * @param givenDirectionChangeInterval: The amount of seconds the AGV has to
-     *travel between the two points startingPosition: The start position of the
-     *AGV endingPositon: The end position of the AGV
+     * @param aGivenDirectionChangeInterval: The amount of seconds the AGV has to
+     *travel between the two points aStartingPosition: The start position of the
+     *AGV aEndingPositon: The end position of the AGV
      */
-    void setAGVPath(double givenDirectionChangeInterval,
-                    const Position& startingPosition,
-                    const Position& endingPosition);
+    void setAGVPath(double aGivenDirectionChangeInterval,
+                    const Position& aStartingPosition,
+                    const Position& aEndingPosition);
 
     // ROS Functions
     /*
      * @author Wouter van Uum
      * @brief Used by a ros topic to set the path of the AGV
-     * @param msg: An agv_path message which containts the
+     * @param aMsg: An agv_path message which containts the
      * direcionChangeInterval, start- and endingposition.
      */
-    void setPathCallBack(const sim_agv::agv_path& msg);
+    void setPathCallBack(const sim_agv::agv_path& aMsg);
 
     /*
      * @author Wouter van Uum
      * @brief Used by a ros topic to set the speed of the AGV. It changes the
      * direciontChangeInterval and calculates the speeds with the new
      * direciontChangeInterval.
-     * @param msg: an agv_speed message which contains the
+     * @param aMsg: an agv_speed message which contains the
      * directionChangeInterval.
      */
-    void setSpeedCallBack(const sim_agv::agv_speed& msg);
+    void setSpeedCallBack(const sim_agv::agv_speed& aMsg);
   };
 
   GZ_REGISTER_MODEL_PLUGIN(AutomatedGuidedVehiclePlugin)

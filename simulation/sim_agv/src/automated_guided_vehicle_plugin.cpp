@@ -13,17 +13,17 @@ namespace gazebo
   const std::string cLineDataTopic = "/sensor/sonar";
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
-      : movingForward(true),
-        speedX(0),
-        speedY(0),
-        speedZ(0),
-        startPos(0, 0, 0),
-        endPos(0, 0, 0),
-        updateConnection(nullptr),
-        world(nullptr),
-        model(nullptr),
-        directionChangeInterval(0),
-        lastDirectionChangeInterval(0)
+      : mMovingForward(true),
+        mSpeedX(0),
+        mSpeedY(0),
+        mSpeedZ(0),
+        mStartPos(0, 0, 0),
+        mEndPos(0, 0, 0),
+        mUpdateConnection(nullptr),
+        mWorld(nullptr),
+        mModel(nullptr),
+        mDirectionChangeInterval(0),
+        mLastDirectionChangeInterval(0)
   {
   }
 
@@ -35,21 +35,21 @@ namespace gazebo
       const sensor_msgs::RangeConstPtr aMsg)
   {
     mSecs = ros::Time::now().toSec();
-    if (mSecs - previousTime >= interval)
+    if (mSecs - mPreviousTime >= mInterval)
     {
-      ROS_INFO("speed pushed : %f from: %d", this->speedY , aMsg->radiation_type);
-      previousTime = mSecs;
+      ROS_INFO("speed pushed : %f from: %d", this->mSpeedY , aMsg->radiation_type);
+      mPreviousTime = mSecs;
       sensor_interfaces::AGVSpeed speedMsg;
-      speedMsg.speed = ( float )this->speedY;
-      mAgvPublisher = rosNode->advertise<sensor_interfaces::AGVSpeed>(
+      speedMsg.speed = ( float )this->mSpeedY;
+      mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
           gazebo::cAgvPublishTopic, 1);
       mAgvPublisher.publish(speedMsg);
     }
   }
 
   /* virtual */ void
-      AutomatedGuidedVehiclePlugin::Load(physics::ModelPtr _model,
-                                         sdf::ElementPtr sdf)
+      AutomatedGuidedVehiclePlugin::Load(physics::ModelPtr aModel,
+                                         sdf::ElementPtr aSdf)
   {
     if (!ros::isInitialized())
     {
@@ -60,24 +60,24 @@ namespace gazebo
     }
 
     // Set model and world for the rest of the plugin
-    model = _model;
-    world = model->GetWorld();
+    mModel = aModel;
+    mWorld = mModel->GetWorld();
 
     // Set variables AGV
-    setVariablesSDF(sdf);
+    setVariablesSDF(aSdf);
 
     // Begin listening to AGV_PATH_TOPIC
-    rosNode = std::make_unique<ros::NodeHandle>(model->GetName().c_str());
-    rosSubPath = rosNode->subscribe(
+    mRosNode = std::make_unique<ros::NodeHandle>(mModel->GetName().c_str());
+    mRosSubPath = mRosNode->subscribe(
         AGV_PATH_TOPIC, 1, &AutomatedGuidedVehiclePlugin::setPathCallBack,
         this);
-    rosSubSpeed = rosNode->subscribe(
+    mRosSubSpeed = mRosNode->subscribe(
         AGV_PATH_SPEED, 1, &AutomatedGuidedVehiclePlugin::setSpeedCallBack,
         this);
     ROS_INFO("TOPICS CREATED");
 
     // Start updating the plugin every itteration of the simulation
-    updateConnection = event::Events::ConnectWorldUpdateBegin(
+    mUpdateConnection = event::Events::ConnectWorldUpdateBegin(
         std::bind(&AutomatedGuidedVehiclePlugin::onUpdate, this));
 
     ros::SubscribeOptions so =
@@ -85,19 +85,19 @@ namespace gazebo
             gazebo::cLineDataTopic, 1,
             boost::bind(&AutomatedGuidedVehiclePlugin::callback, this, _1),
             ros::VoidPtr(), &this->mRosQueue);
-    mRosSub = rosNode->subscribe(so);
+    mRosSub = mRosNode->subscribe(so);
 
     this->mRosQueueThread = std::thread(
         std::bind(&AutomatedGuidedVehiclePlugin::QueueThread, this));
 
     ROS_INFO("\nThe AutomatedGuideVehiclePlugin is attach to model: %s",
-             model->GetName().c_str());
+             mModel->GetName().c_str());
   }
 
   void AutomatedGuidedVehiclePlugin::QueueThread()
   {
     static const double timeout = 0.01;
-    while (this->rosNode->ok())
+    while (this->mRosNode->ok())
     {
       this->mRosQueue.callAvailable(ros::WallDuration(timeout));
     }
@@ -106,36 +106,36 @@ namespace gazebo
   void AutomatedGuidedVehiclePlugin::onUpdate()
   {
     // std::cerr<<"\n*************\n UPDATE \n*************\n";
-    common::Time currentTime = world->SimTime();
+    common::Time currentTime = mWorld->SimTime();
 
     // Determine if AGV should move forward or backwards and move accordingly
-    if (movingForward)
+    if (mMovingForward)
     {
-      this->model->SetLinearVel(
-          ignition::math::Vector3d(speedX, speedY, speedZ));
+      this->mModel->SetLinearVel(
+          ignition::math::Vector3d(mSpeedX, mSpeedY, mSpeedZ));
     }
     else
     {
-      this->model->SetLinearVel(
-          ignition::math::Vector3d(-speedX, -speedY, -speedZ));
+      this->mModel->SetLinearVel(
+          ignition::math::Vector3d(-mSpeedX, -mSpeedY, -mSpeedZ));
     }
 
     // Timer to change direction
-    if (directionChangeInterval <
-        (currentTime - lastDirectionChangeInterval).Double())
+    if (mDirectionChangeInterval <
+        (currentTime - mLastDirectionChangeInterval).Double())
     {
       ROS_DEBUG("***** CHANGE DIRECTION *****");
-      movingForward = !movingForward;
+      mMovingForward = !mMovingForward;
 
-      lastDirectionChangeInterval = world->SimTime();
+      mLastDirectionChangeInterval = mWorld->SimTime();
     }
   }
 
-  void AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& sdf)
+  void AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& aSdf)
   {
     // Checking Elements that are relevant for the plugin and shutdown if some
     // are missing
-    if (!checkSDFElements(sdf))
+    if (!checkSDFElements(aSdf))
     {
       ROS_WARN(
           "****************************\nOne or more elements are missing. "
@@ -146,53 +146,53 @@ namespace gazebo
 
     // Setting variables
     double directionChangeIntervalSDF =
-        sdf->Get<double>("directionChangeInterval");
+        aSdf->Get<double>("directionChangeInterval");
 
     // Parse the starting and ending position
     Position startingPosition =
-        parsePosition(sdf->Get<std::string>("startPose"));
-    Position endingPosition = parsePosition(sdf->Get<std::string>("endPose"));
+        parsePosition(aSdf->Get<std::string>("startPose"));
+    Position endingPosition = parsePosition(aSdf->Get<std::string>("endPose"));
 
     // Set the variables of the AGV
     setAGVPath(directionChangeIntervalSDF, startingPosition, endingPosition);
   }
 
   void AutomatedGuidedVehiclePlugin::calculateAGVSpeed(
-      const Position& startPosition,
-      const Position& endPosition)
+      const Position& aStartPosition,
+      const Position& aEndPosition)
   {
-    double differenceX = std::abs(startPosition.x - endPosition.x);
-    double differenceY = std::abs(startPosition.y - endPosition.y);
-    double differenceZ = std::abs(startPosition.z - endPosition.z);
+    double differenceX = std::abs(aStartPosition.x - aEndPosition.x);
+    double differenceY = std::abs(aStartPosition.y - aEndPosition.y);
+    double differenceZ = std::abs(aStartPosition.z - aEndPosition.z);
 
     // See if direction has to be positive or negative.
-    if (startPosition.x > endPosition.x)
+    if (aStartPosition.x > aEndPosition.x)
     {
       differenceX = -differenceX;
     }
 
-    if (startPosition.y > endPosition.y)
+    if (aStartPosition.y > aEndPosition.y)
     {
       differenceY = -differenceY;
     }
 
-    if (startPosition.z > endPosition.z)
+    if (aStartPosition.z > aEndPosition.z)
     {
       differenceZ = -differenceZ;
     }
 
     ROS_DEBUG("Diff X: %f \nDiff Y: %f\nDiff Z: %f\nChangeInterval: %f",
-              differenceX, differenceY, differenceZ, directionChangeInterval);
-    speedX = differenceX / directionChangeInterval;
-    speedY = differenceY / directionChangeInterval;
-    speedZ = differenceZ / directionChangeInterval;
+              differenceX, differenceY, differenceZ, mDirectionChangeInterval);
+    mSpeedX = differenceX / mDirectionChangeInterval;
+    mSpeedY = differenceY / mDirectionChangeInterval;
+    mSpeedZ = differenceZ / mDirectionChangeInterval;
   }
 
   Position AutomatedGuidedVehiclePlugin::parsePosition(
-      const std::string& stringPosition)
+      const std::string& aStringPosition)
   {
     std::vector<double> result;
-    std::istringstream stringStreamStartPose(stringPosition);
+    std::istringstream stringStreamStartPose(aStringPosition);
     for (double pose; stringStreamStartPose >> pose;)
       result.push_back(pose);
 
@@ -202,11 +202,11 @@ namespace gazebo
   }
 
   bool
-      AutomatedGuidedVehiclePlugin::checkSDFElements(const sdf::ElementPtr& sdf)
+      AutomatedGuidedVehiclePlugin::checkSDFElements(const sdf::ElementPtr& aSdf)
   {
     bool allElementsPresent = true;
 
-    if (!sdf->HasElement("directionChangeInterval"))
+    if (!aSdf->HasElement("directionChangeInterval"))
     {
       ROS_WARN(
           "SDF Error: directionChangeInterval tag is missing in the sdf "
@@ -214,13 +214,13 @@ namespace gazebo
       allElementsPresent = false;
     }
 
-    if (!sdf->HasElement("startPose"))
+    if (!aSdf->HasElement("startPose"))
     {
       ROS_WARN("SDF Error: startPose tag is missing in the sdf file\n");
       allElementsPresent = false;
     }
 
-    if (!sdf->HasElement("endPose"))
+    if (!aSdf->HasElement("endPose"))
     {
       ROS_WARN("SDF Error: endPose tag is missing in the sdf file\n");
       allElementsPresent = false;
@@ -230,51 +230,51 @@ namespace gazebo
   }
 
   void AutomatedGuidedVehiclePlugin::setPathCallBack(
-      const sim_agv::agv_path& msg)
+      const sim_agv::agv_path& aMsg)
   {
-    Position setStartPosition(msg.startPosX, msg.startPosY, msg.startPosZ);
-    Position setEndPosition(msg.endPosX, msg.endPosY, msg.endPosZ);
-    double setDirectionChangeInterval = msg.changeDirectionInterval;
+    Position setStartPosition(aMsg.startPosX, aMsg.startPosY, aMsg.startPosZ);
+    Position setEndPosition(aMsg.endPosX, aMsg.endPosY, aMsg.endPosZ);
+    double setDirectionChangeInterval = aMsg.changeDirectionInterval;
 
     setAGVPath(setDirectionChangeInterval, setStartPosition, setEndPosition);
   }
 
   void AutomatedGuidedVehiclePlugin::setAGVPath(
-      double givenDirectionChangeInterval,
-      const Position& startingPosition,
-      const Position& endingPosition)
+      double aGivenDirectionChangeInterval,
+      const Position& aStartingPosition,
+      const Position& aEndingPosition)
   {
-    directionChangeInterval = givenDirectionChangeInterval;
-    startPos = startingPosition;
-    endPos = endingPosition;
-    movingForward = true;
+    mDirectionChangeInterval = aGivenDirectionChangeInterval;
+    mStartPos = aStartingPosition;
+    mEndPos = aEndingPosition;
+    mMovingForward = true;
 
     // Set model to the starting positiong
-    ignition::math::Pose3<double> pose(startPos.x, startPos.y, startPos.z, 0.0,
+    ignition::math::Pose3<double> pose(mStartPos.x, mStartPos.y, mStartPos.z, 0.0,
                                        0.0, 0.0);
-    model->SetWorldPose(pose);
+    mModel->SetWorldPose(pose);
 
     // Calculate and set the speed of the AGV
-    calculateAGVSpeed(startPos, endPos);
+    calculateAGVSpeed(mStartPos, mEndPos);
 
     // Set Timers
-    lastDirectionChangeInterval = world->SimTime();
+    mLastDirectionChangeInterval = mWorld->SimTime();
   }
 
   void AutomatedGuidedVehiclePlugin::setSpeedCallBack(
-      const sim_agv::agv_speed& msg)
+      const sim_agv::agv_speed& aMsg)
   {
     double elapsedTime =
-        (world->SimTime() - lastDirectionChangeInterval).Double();
-    double percentageLeft = elapsedTime / directionChangeInterval;
+        (mWorld->SimTime() - mLastDirectionChangeInterval).Double();
+    double percentageLeft = elapsedTime / mDirectionChangeInterval;
 
-    lastDirectionChangeInterval =
-        world->SimTime().Double() -
-        (percentageLeft * msg.changeDirectionInterval);
+    mLastDirectionChangeInterval =
+        mWorld->SimTime().Double() -
+        (percentageLeft * aMsg.changeDirectionInterval);
 
-    ROS_INFO("changeDirectionInterval: %f", msg.changeDirectionInterval);
-    directionChangeInterval = msg.changeDirectionInterval;
-    calculateAGVSpeed(startPos, endPos);
+    ROS_INFO("changeDirectionInterval: %f", aMsg.changeDirectionInterval);
+    mDirectionChangeInterval = aMsg.changeDirectionInterval;
+    calculateAGVSpeed(mStartPos, mEndPos);
   }
 
 } // namespace gazebo
