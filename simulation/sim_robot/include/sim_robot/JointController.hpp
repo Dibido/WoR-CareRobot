@@ -75,6 +75,8 @@ namespace gazebo
      */
     void stop();
 
+    jointRad_t converseScaleToRad(double scale, double minScale = 0, double maxScale = 1);
+
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
     jointVel_t getCurrentVel() const;
