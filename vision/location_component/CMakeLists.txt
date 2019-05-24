@@ -13,6 +13,8 @@ sensor_msgs
 environment_controller
 )
 
+
+
 ## Generate messages in the 'msg' folder
  # add_message_files(
  #   DIRECTORY
@@ -34,6 +36,7 @@ catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_m
 find_package(Threads REQUIRED)
 find_package(sensor_msgs)
 find_package(OpenCV)
+find_package(OpenCV 3.2.0 REQUIRED)
 
 include(CTest)
 enable_testing()
@@ -46,12 +49,13 @@ add_executable(location_component src/main.cpp src/location_component/DetectAGV.
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-
+target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
