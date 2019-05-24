@@ -5,48 +5,49 @@
 
 namespace gazebo
 {
-  bool equalsDouble(const double& a, const double& b, uint16_t aPrecision = 100)
+  bool equalsDouble(const double& a, const double& b)
   {
+    uint16_t aPrecision = 100;
     auto precision = std::numeric_limits<double>::epsilon() * aPrecision;
     return precision >= std::abs(a - b);
   }
 
   JointController::JointController(physics::JointPtr& joint,
-                                   const std::string& name,
-                                   jointChannel_t channel,
-                                   jointPw_t min_pw,
-                                   jointPw_t max_pw,
-                                   jointRad_t min_rad,
-                                   jointRad_t max_rad,
-                                   jointVel_t max_vel)
+                                   const std::string& mName,
+                                   jointChannel_t mChannel,
+                                   jointPw_t mMinPw,
+                                   jointPw_t mMaxPw,
+                                   jointRad_t mMinRad,
+                                   jointRad_t mMaxRad,
+                                   jointVel_t mMaxVel)
       : joint(joint),
-        name(name),
-        channel(channel),
-        min_pw(min_pw),
-        max_pw(max_pw),
-        min_rad(min_rad),
-        max_rad(max_rad),
-        max_vel(max_vel),
-        current_pos(0),
-        current_vel(0),
-        target_pos(0),
-        step_size(0)
+        mName(mName),
+        mChannel(mChannel),
+        mMinPw(mMinPw),
+        mMaxPw(mMaxPw),
+        mMinRad(mMinRad),
+        mMaxRad(mMaxRad),
+        mMaxVel(mMaxVel),
+        mCurrentPos(0),
+        mCurrentVel(0),
+        mTargetPos(0),
+        mStepSize(0)
   {
   }
 
   JointController::JointController(const JointController& other)
       : joint(other.joint),
-        name(other.name),
-        channel(other.channel),
-        min_pw(other.min_pw),
-        max_pw(other.max_pw),
-        min_rad(other.min_rad),
-        max_rad(other.max_rad),
-        max_vel(other.max_vel),
-        current_pos(other.current_pos),
-        current_vel(other.current_vel),
-        target_pos(other.target_pos),
-        step_size(other.step_size)
+        mName(other.mName),
+        mChannel(other.mChannel),
+        mMinPw(other.mMinPw),
+        mMaxPw(other.mMaxPw),
+        mMinRad(other.mMinRad),
+        mMaxRad(other.mMaxRad),
+        mMaxVel(other.mMaxVel),
+        mCurrentPos(other.mCurrentPos),
+        mCurrentVel(other.mCurrentVel),
+        mTargetPos(other.mTargetPos),
+        mStepSize(other.mStepSize)
   {
   }
 
@@ -60,17 +61,17 @@ namespace gazebo
     if (this != &other)
     {
       joint = other.joint;
-      name = other.name;
-      channel = other.channel;
-      min_pw = other.min_pw;
-      max_pw = other.max_pw;
-      min_rad = other.min_rad;
-      max_rad = other.max_rad;
-      current_pos = other.current_pos;
-      max_vel = other.max_vel;
-      current_vel = other.current_vel;
-      target_pos = other.target_pos;
-      step_size = other.step_size;
+      mName = other.mName;
+      mChannel = other.mChannel;
+      mMinPw = other.mMinPw;
+      mMaxPw = other.mMaxPw;
+      mMinRad = other.mMinRad;
+      mMaxRad = other.mMaxRad;
+      mCurrentPos = other.mCurrentPos;
+      mMaxVel = other.mMaxVel;
+      mCurrentVel = other.mCurrentVel;
+      mTargetPos = other.mTargetPos;
+      mStepSize = other.mStepSize;
     }
     return *this;
   }
@@ -81,16 +82,16 @@ namespace gazebo
     {
       return true;
     }
-    return joint == other.joint && name == other.name &&
-           channel == other.channel && equalsDouble(min_pw, other.min_pw) &&
-           equalsDouble(max_pw, other.max_pw) &&
-           equalsDouble(min_rad, other.min_rad) &&
-           equalsDouble(max_rad, other.max_rad) &&
-           equalsDouble(current_pos, other.current_pos) &&
-           equalsDouble(max_vel, other.max_vel) &&
-           equalsDouble(current_vel, other.current_vel) &&
-           equalsDouble(target_pos, other.target_pos) &&
-           equalsDouble(step_size, other.step_size);
+    return joint == other.joint && mName == other.mName &&
+           mChannel == other.mChannel && equalsDouble(mMinPw, other.mMinPw) &&
+           equalsDouble(mMaxPw, other.mMaxPw) &&
+           equalsDouble(mMinRad, other.mMinRad) &&
+           equalsDouble(mMaxRad, other.mMaxRad) &&
+           equalsDouble(mCurrentPos, other.mCurrentPos) &&
+           equalsDouble(mMaxVel, other.mMaxVel) &&
+           equalsDouble(mCurrentVel, other.mCurrentVel) &&
+           equalsDouble(mTargetPos, other.mTargetPos) &&
+           equalsDouble(mStepSize, other.mStepSize);
   }
 
   bool JointController::operator!=(const JointController& other) const
@@ -103,111 +104,111 @@ namespace gazebo
     run();
     if (joint)
     {
-      joint->SetVelocity(0, current_vel);
+      joint->SetVelocity(0, mCurrentVel);
       joint->SetForce(0, 0);
-      joint->SetPosition(0, current_pos);
+      joint->SetPosition(0, mCurrentPos);
     }
   }
 
-  bool JointController::moveTheta(jointRad_t rad,
-                                  jointVel_t speed,
-                                  commandTime_t time,
-                                  double updateRate)
+  bool JointController::moveTheta(jointRad_t aRad,
+                                  jointVel_t aSpeedFactor,
+                                  commandTime_t aTime,
+                                  double aUpdateRate)
   {
 
-    target_pos = rad;
+    mTargetPos = aRad;
 
-    if (equalsDouble(target_pos, current_pos))
+    if (equalsDouble(mTargetPos, mCurrentPos))
     {
       return false;
     }
 
-    auto distance = std::abs(target_pos - current_pos);
+    auto distance = std::abs(mTargetPos - mCurrentPos);
 
-    if (speed <= 0 && time == 0)
+    if (aSpeedFactor <= 0 && aTime == 0)
     {
-      speed = 0.1;
+      aSpeedFactor = 0.1;
     }
-    if (speed > 0)
+    if (aSpeedFactor > 0)
     {
-      current_vel = M_PI_2 * speed;
+      mCurrentVel = M_PI_2 * aSpeedFactor;
     }
     else
     {
-      current_vel = 0;
+      mCurrentVel = 0;
     }
-    if (time > 0)
+    if (aTime > 0)
     {
-      auto time_vel = distance * (1000.0 / time);
-      current_vel = time_vel > current_vel ? time_vel : current_vel;
+      auto time_vel = distance * (1000.0 / aTime);
+      mCurrentVel = time_vel > mCurrentVel ? time_vel : mCurrentVel;
     }
 
-    if (current_vel > max_vel)
+    if (mCurrentVel > mMaxVel)
     {
       ROS_WARN("Joint [%s] speed to high! Using max [%f] instead of [%f]",
-               name.c_str(), max_vel, getCurrentVel());
-      current_vel = max_vel;
+               mName.c_str(), mMaxVel, getCurrentVel());
+      mCurrentVel = mMaxVel;
     }
 
-    step_size = ((distance / updateRate) * (current_vel / distance));
+    mStepSize = ((distance / aUpdateRate) * (mCurrentVel / distance));
 
-    ROS_DEBUG("Joint [%s] moving to [%f] in [%f] rad per sec", name.c_str(),
-              target_pos, current_vel);
+    ROS_DEBUG("Joint [%s] moving to [%f] in [%f] rad per sec", mName.c_str(),
+              mTargetPos, mCurrentVel);
 
     return true;
   }
-  bool JointController::move(jointPw_t pw,
-                             jointVel_t speed,
-                             commandTime_t time,
-                             double updateRate)
+  bool JointController::move(jointPw_t aPw,
+                             jointVel_t aSpeed,
+                             commandTime_t aTime,
+                             double aUpdateRate)
   {
-    if (inRange(pw))
+    if (inRange(aPw))
     {
-      target_pos = convertPw2Radians(pw);
+      mTargetPos = convertPw2Radians(aPw);
 
-      if (equalsDouble(target_pos, current_pos))
+      if (equalsDouble(mTargetPos, mCurrentPos))
       {
         return false;
       }
 
-      auto distance = std::abs(target_pos - current_pos);
+      auto distance = std::abs(mTargetPos - mCurrentPos);
 
-      if (speed <= 0 && time == 0)
+      if (aSpeed <= 0 && aTime == 0)
       {
-        speed = 1000;
+        aSpeed = 1000;
       }
-      if (speed > 0)
+      if (aSpeed > 0)
       {
-        current_vel = M_PI_2 / (1000 / speed);
+        mCurrentVel = M_PI_2 / (1000 / aSpeed);
       }
       else
       {
-        current_vel = 0;
+        mCurrentVel = 0;
       }
-      if (time > 0)
+      if (aTime > 0)
       {
-        auto time_vel = distance * (1000.0 / time);
-        current_vel = time_vel > current_vel ? time_vel : current_vel;
+        auto time_vel = distance * (1000.0 / aTime);
+        mCurrentVel = time_vel > mCurrentVel ? time_vel : mCurrentVel;
       }
 
-      if (current_vel > max_vel)
+      if (mCurrentVel > mMaxVel)
       {
         ROS_WARN("Joint [%s] speed to high! Using max [%f] instead of [%f]",
-                 name.c_str(), max_vel, current_vel);
-        current_vel = max_vel;
+                 mName.c_str(), mMaxVel, mCurrentVel);
+        mCurrentVel = mMaxVel;
       }
 
-      step_size = ((distance / updateRate) * (current_vel / distance));
+      mStepSize = ((distance / aUpdateRate) * (mCurrentVel / distance));
 
-      ROS_DEBUG("Joint [%s] moving to [%f] in [%f] rad per sec", name.c_str(),
-                target_pos, current_vel);
+      ROS_DEBUG("Joint [%s] moving to [%f] in [%f] rad per sec", mName.c_str(),
+                mTargetPos, mCurrentVel);
 
       return true;
     }
     else
     {
-      ROS_WARN("PW [%f] not in range for joint [%s] (min [%f] - max [%f])", pw,
-               name.c_str(), min_pw, max_pw);
+      ROS_WARN("PW [%f] not in range for joint [%s] (min [%f] - max [%f])", aPw,
+               mName.c_str(), mMinPw, mMaxPw);
       return false;
     }
   }
@@ -215,17 +216,17 @@ namespace gazebo
   void JointController::stop()
   {
     setCurrentVel(0);
-    target_pos = current_pos;
+    mTargetPos = mCurrentPos;
   }
 
-  bool JointController::inRange(jointPw_t pw) const
+  bool JointController::inRange(jointPw_t aPw) const
   {
-    return (pw >= min_pw && pw <= max_pw);
+    return (aPw >= mMinPw && aPw <= mMaxPw);
   }
 
-  jointRad_t JointController::convertPw2Radians(jointPw_t pw) const
+  jointRad_t JointController::convertPw2Radians(jointPw_t aPw) const
   {
-    return (pw - min_pw) * (max_rad - min_rad) / (max_pw - min_pw) + min_rad;
+    return (aPw - mMinPw) * (mMaxRad - mMinRad) / (mMaxPw - mMinPw) + mMinRad;
   }
 
   void JointController::run()
@@ -235,39 +236,43 @@ namespace gazebo
       // Nowhere to run to
       return;
     }
-    if (std::abs(getTargetPos() - getCurrentPos()) < step_size)
+    if (std::abs(getTargetPos() - getCurrentPos()) < mStepSize)
     {
       // Next step is the last one
       setCurrentPos(getTargetPos());
     }
     else
     {
-      target_pos > current_pos ? current_pos += step_size
-                               : current_pos -= step_size;
+      mTargetPos > mCurrentPos ? mCurrentPos += mStepSize
+                               : mCurrentPos -= mStepSize;
     }
   }
 
   jointRad_t JointController::getTargetPos() const
   {
-    return target_pos;
+    return mTargetPos;
   }
 
   jointRad_t JointController::getCurrentPos() const
   {
-    return current_pos;
+    return mCurrentPos;
+  }
+  double JointController::getCurrentForce() const
+  {
+    return mCurrentForce;
   }
 
   void JointController::setCurrentPos(jointRad_t aCurrentPos)
   {
-    current_pos = aCurrentPos;
+    mCurrentPos = aCurrentPos;
   }
 
   jointVel_t JointController::getCurrentVel() const
   {
-    return current_vel;
+    return mCurrentVel;
   }
   void JointController::setCurrentVel(jointVel_t aCurrentVel)
   {
-    current_vel = aCurrentVel;
+    mCurrentVel = aCurrentVel;
   }
 } // namespace gazebo

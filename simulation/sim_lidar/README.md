@@ -3,6 +3,10 @@
 Met deze package wordt de lidar gesimuleerd. De package bestaat uit een library plugin die 
 gebruikt wordt in de lidar model.
 
+# Design
+
+http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/DDD+-+Design+LIDAR
+
 ## Build
 
 Build de plugin met catkin
@@ -21,13 +25,13 @@ Launch file arguments
 Data op topics:
 * /sensor/lidar/scan
     * laser scan data van de lidar
+* /sensor/lidar
+    * scan data opgesteld in een LidarData message
 
 ## Test
-
-### User test
-
-* Confluence pagina: http://wor.wiki.icaprojecten.nl/confluence/display/UCOSAX/User+test+-+Lidar+plugin
+Unittests:
+LidarDataConversion:
+* Test de conversie van een LaserScan message naar een LidarData message
 
 ## Current problems
-
 * Geen
