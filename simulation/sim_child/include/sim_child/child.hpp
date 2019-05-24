@@ -40,7 +40,7 @@ namespace gazebo
     void onUpdate();
     
     /**
-     * @brief updates cureent velocity. Function is used by onUpdate.
+     * @brief updates current velocity. Function is used by onUpdate.
      * 
      */
     void updateVelocity();
