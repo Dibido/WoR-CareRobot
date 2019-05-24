@@ -20,21 +20,44 @@ namespace location_component
   const float cAGVWidth_m = 0.350f;
   const float cAGVHeight_m = 0.400f;
 
+  const float cAGVSpeed_m_s = 0.400f;
+
   class PosCalculation
   {
       public:
     PosCalculation();
     ~PosCalculation();
+    /**
+     * @brief Calculates the cup location.
+     *
+     * @param aAGVScreenPos The position of the AGV on the screen.
+     * @param aAGVFrameSize The size of the AGV screen frame.
+     * @param aCupScreenPos The size of the cup on the cup screen.
+     * @param aCupFrameSize The size of the cup screen frame.
+     */
     cv::Point3f calculateCupLocation(cv::Point aAGVScreenPos,
                                      cv::Size aAGVFrameSize,
                                      cv::Point aCupScreenPos,
-                                     cv::Size aCupFrameSize);
+                                     cv::Size aCupFrameSize) const;
+    /**
+     * @brief Calculates the AGV location in the world based on screen
+     * coordinates.
+     *
+     * @param aScreenPos The position of the AGV on the screen.
+     * @param aFrameSize The size of the screen frame.
+     */
     cv::Point3f calculateAGVLocation(cv::Point aScreenPos,
-                                     cv::Size aAGVFrameSize);
+                                     cv::Size aAGVFrameSize) const;
 
       private:
+    /**
+     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
+     *
+     * @param aScreenPos The size of the cup on the cup screen.
+     * @param aFrameSize The size of the cup screen frame.
+     */
     cv::Point2f calculateRelativeCupLocation(cv::Point aScreenPos,
-                                             cv::Size aFrameSize);
+                                             cv::Size aFrameSize) const;
   };
 } // namespace location_component
 

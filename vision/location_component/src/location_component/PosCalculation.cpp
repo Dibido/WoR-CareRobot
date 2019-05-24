@@ -16,7 +16,7 @@ namespace location_component
   cv::Point3f PosCalculation::calculateCupLocation(cv::Point aAGVScreenPos,
                                                    cv::Size aAGVFrameSize,
                                                    cv::Point aCupScreenPos,
-                                                   cv::Size aCupFrameSize)
+                                                   cv::Size aCupFrameSize) const
   {
     cv::Point3f lAGVLocation_m =
         calculateAGVLocation(aAGVScreenPos, aAGVFrameSize);
@@ -42,8 +42,9 @@ namespace location_component
     return lCupLocation_m;
   }
 
-  cv::Point2f PosCalculation::calculateRelativeCupLocation(cv::Point aScreenPos,
-                                                           cv::Size aFrameSize)
+  cv::Point2f
+      PosCalculation::calculateRelativeCupLocation(cv::Point aScreenPos,
+                                                   cv::Size aFrameSize) const
   {
     float lXPosFactor =
         static_cast<float>(aScreenPos.x) / static_cast<float>(aFrameSize.width);
@@ -54,7 +55,7 @@ namespace location_component
   }
 
   cv::Point3f PosCalculation::calculateAGVLocation(cv::Point aScreenPos,
-                                                   cv::Size aFrameSize)
+                                                   cv::Size aFrameSize) const
   {
     // AGV location if it was in the middle of the screen.
     cv::Point3f lAGVLocationMiddle_m =
