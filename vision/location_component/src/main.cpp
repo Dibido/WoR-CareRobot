@@ -18,7 +18,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
     cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
 
-    d.detectFrame(srcMatrix, displayMatrix);
+    d.detectUpdate(srcMatrix, displayMatrix);
     cv::imshow("view", displayMatrix);
 
     int c = cv::waitKey(10);
