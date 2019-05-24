@@ -201,11 +201,33 @@ add_executable(${PROJECT_NAME} ${Srcs})
 ## Testing ##
 #############
 
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_userinterface.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+#Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
 
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )
+endif()
