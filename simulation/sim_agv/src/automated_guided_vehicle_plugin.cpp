@@ -105,7 +105,7 @@ namespace gazebo
 
   void AutomatedGuidedVehiclePlugin::onUpdate()
   {
-    // std::cerr<<"\n*************\n UPDATE \n*************\n";
+
     common::Time currentTime = mWorld->SimTime();
 
     // Determine if AGV should move forward or backwards and move accordingly
