@@ -53,6 +53,7 @@ namespace kinematics
   }
 
   const std::array<double, cKinematicsDoF>&
+      // cppcheck-suppress unusedFunction
       Configuration::getConfiguration() const
   {
     return mConfiguration;
