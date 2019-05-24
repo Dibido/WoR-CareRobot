@@ -7,9 +7,9 @@ int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "userinterface");
 
-  QApplication a(argc, argv);
-  MainWindow w;
-  w.show();
+  QApplication application(argc, argv);
+  MainWindow homewindow;
+  homewindow.show();
 
-  return a.exec();
+  return application.exec();
 }
