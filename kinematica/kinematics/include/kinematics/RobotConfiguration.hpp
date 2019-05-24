@@ -4,17 +4,17 @@
 #include "kinematics/KinematicsDefines.hpp"
 #include "kinematics/Link.hpp"
 
-/**
- * @brief Define PARTIAL_RANDOMISE to only randomise joints that
- * do not confirm to constraint limits in the configuration
- *
- * If PARTIAL_RANDOMISE is not defined, all joints will be randomised
- *
- */
-#define PARTIAL_RANDOMISE
-
 namespace kinematics
 {
+  /**
+   * @brief Define cPartialRandomise to only randomise joints that
+   * do not confirm to constraint limits in the configuration
+   *
+   * If cPartialRandomise is not defined, all joints will be randomised
+   *
+   */
+  const bool cPartialRandomise = true;
+
   /**
    * @brief Describes the Denavit-Hartenberg parameters for a Robot
    *

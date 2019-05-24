@@ -84,18 +84,18 @@ namespace kinematics
       }
       else
       {
-#ifdef PARTIAL_RANDOMISE
         double lCurValue = configuration[lThetaIndex];
-        if (operator[](lRobotConfigurationIndex)
-                .isWithinConstraints(lCurValue) == false)
+        if (cPartialRandomise == false || operator[](lRobotConfigurationIndex)
+                                                  .isWithinConstraints(
+                                                      lCurValue) == false)
         {
-#endif
+
           double lNewValue = operator[](lRobotConfigurationIndex)
                                  .generateRandomVariable();
           configuration.setTheta(lThetaIndex, lNewValue);
-#ifdef PARTIAL_RANDOMISE
+          ROS_DEBUG("RobotConfiguration: randomiseConfiguration: joint: %i %i",
+                    lRobotConfigurationIndex, lNewValue);
         }
-#endif
         ++lThetaIndex;
       }
     }
