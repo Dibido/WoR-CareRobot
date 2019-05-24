@@ -1,5 +1,5 @@
-#ifndef KINEMATICS_ICONFIGURATIONPROVIDER_HPP
-#define KINEMATICS_ICONFIGURATIONPROVIDER_HPP
+#ifndef KINEMATICS_ICONFIGURATIONPROVIDER_HPP_
+#define KINEMATICS_ICONFIGURATIONPROVIDER_HPP_
 
 #include "kinematics/Configuration.hpp"
 #include "kinematics/EndEffector.hpp"
@@ -37,4 +37,4 @@ namespace kinematics
   };
 } // namespace kinematics
 
-#endif // KINEMATICS_ICONFIGURATIONPROVIDER_HPP
+#endif // KINEMATICS_ICONFIGURATIONPROVIDER_HPP_

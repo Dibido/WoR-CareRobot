@@ -1,8 +1,4 @@
 #include "controller/Context.hpp"
-#include "environment_controller/EnvironmentConsts.hpp"
-#include "environment_controller/EnvironmentController.hpp"
-#include "environment_controller/ObstaclesSubscriber.hpp"
-#include "environment_controller/SafetyController.hpp"
 #include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
