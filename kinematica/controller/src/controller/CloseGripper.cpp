@@ -5,6 +5,7 @@
 // Local
 #include "controller/CloseGripper.hpp"
 #include "controller/Ready.hpp"
+
 namespace controller
 {
   CloseGripper::CloseGripper(){

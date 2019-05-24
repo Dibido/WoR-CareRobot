@@ -4,6 +4,9 @@
 // Local
 #include "Context.hpp"
 #include "State.hpp"
+#include "ros/time.h"
+
+#include <memory>
 namespace controller
 {
   /**
@@ -50,6 +53,9 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* context);
+
+      private:
+    ros::Time mArrivalTime;
   };
 } // namespace controller
 #endif // MOVE_HPP
