@@ -20,17 +20,24 @@ namespace location_component
   {
     cv::Point3f lAGVLocation_m =
         calculateAGVLocation(aAGVScreenPos, aAGVFrameSize);
-    cv::Point2f lRelativeCupLocation =
-        calculateRelativeCupLocation(aCupScreenPos, aCupFrameSize);
+    /* cv::Point2f lRelativeCupLocation = */
+    /*     calculateRelativeCupLocation(aCupScreenPos, aCupFrameSize); */
 
-    cv::Point2f lCupDeviationMiddle_m =
-        cv::Point2f((lRelativeCupLocation.x - 0.5f) * cAGVWidth_m,
-                    (lRelativeCupLocation.y - 0.5f) * cAGVHeight_m);
+    /*     cv::Point2f lCupDeviationMiddle_m = */
+    /*         cv::Point2f((lRelativeCupLocation.x - 0.5f) * cAGVWidth_m, */
+    /*                     (lRelativeCupLocation.y - 0.5f) * cAGVHeight_m) */
+    /*         * 1.0f; */
 
-    cv::Point3f lCupLocation_m =
-        cv::Point3f(lAGVLocation_m.x + (lCupDeviationMiddle_m.y * cCameraFlipX),
-                    lAGVLocation_m.y + (lCupDeviationMiddle_m.x * cCameraFlipY),
-                    lAGVLocation_m.z);
+    /*     cv::Point3f lCupLocation_m = */
+    /*         cv::Point3f(lAGVLocation_m.x + (lCupDeviationMiddle_m.y *
+     * cCameraFlipX), */
+    /*                     lAGVLocation_m.y + (lCupDeviationMiddle_m.x *
+     * cCameraFlipY), */
+    /*                     lAGVLocation_m.z + cCupHeight_m); */
+
+    // For the moment, assume the cup is at the middle of the AGV.
+    cv::Point3f lCupLocation_m = cv::Point3f(lAGVLocation_m.x, lAGVLocation_m.y,
+                                             lAGVLocation_m.z + cCupHeight_m);
 
     return lCupLocation_m;
   }
@@ -72,8 +79,8 @@ namespace location_component
     // The 2D AGV deviation from the middle of the screen calculated to the
     // world size.
     cv::Point2f lAGVPlaneDeviation_m =
-        cv::Point2f(lAGVPlaneFrameSize_m.x * (lXPosFactor - 0.5),
-                    lAGVPlaneFrameSize_m.y * (lYPosFactor - 0.5));
+        cv::Point2f(lAGVPlaneFrameSize_m.x * (lXPosFactor - 0.5f),
+                    lAGVPlaneFrameSize_m.y * (lYPosFactor - 0.5f));
 
     cv::Point3f lAGVLocation_m = cv::Point3f(
         lAGVLocationMiddle_m.x + (lAGVPlaneDeviation_m.y * cCameraFlipX),
