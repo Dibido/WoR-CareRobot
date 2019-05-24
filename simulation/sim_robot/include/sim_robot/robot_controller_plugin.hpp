@@ -28,7 +28,7 @@ namespace gazebo
     virtual ~RobotControllerPlugin() = default;
 
     /**
-     * Load the robot controller plugin, overrides the Load from ModelPlugin
+     * @brief Load the robot controller plugin, overrides the Load from ModelPlugin
      * @param _parent: parent model
      * @param _sdf: the sdf (xml) in the robot model, within the <plugin>
      * element
