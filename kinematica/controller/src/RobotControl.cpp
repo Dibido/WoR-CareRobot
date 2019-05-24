@@ -56,11 +56,11 @@ int main(int argc, char** argv)
              lGoalEndEffector.cZ_m, lGoalEndEffector.cRoll_rad,
              lGoalEndEffector.cPitch_rad, lGoalEndEffector.cYaw_rad,
              lGoalConfiguration.result());
-    lRobotControlPub.publish(1.0, lGoalConfiguration);
+    lRobotControlPub.publish(1, lGoalConfiguration);
 
     lCurrentConfiguration = lGoalConfiguration;
     ros::spinOnce();
-    lLoop_rate.sleep();
+    lLoop.sleep();
   }
 
   return 0;
@@ -72,15 +72,17 @@ kinematics::EndEffector GetEndEffector()
   ++iterator;
   switch (iterator)
   {
+  case 0:
+    return kinematics::EndEffector(0.5, -0.2, 0.4, M_PI_2, M_PI_2 ,0 );
   case 1:
-    return kinematics::EndEffector(0.18937, 0.294939, 0.737341, 1, -1.5, -M_PI);
+    return kinematics::EndEffector(0.5, -0.2, 0.5, M_PI_2, M_PI_2 ,0 );
   case 2:
-    return kinematics::EndEffector(-0.224580, -0.21499, 0.993990, -2.925026,
-                                   -0.679329, -2.146552);
-  case 3:
-    return kinematics::EndEffector(0.786246, 0.00, 0.276516, 0, 0, M_PI);
+    // return kinematics::EndEffector(0.5, -0.15, 0.1, M_PI_2, M_PI_2 ,0 );
+  // case 3:
+  //   return kinematics::EndEffector(0.3, -0.2, 0.6, M_PI_2, M_PI_2 ,0 );
   default:
-    iterator = 0;
-    return kinematics::EndEffector(0.088, 0, 0.927, 0, 0, -M_PI);
+    ROS_ASSERT_MSG(false, "No more configurations");
+    // iterator = 0;
+    // return kinematics::EndEffector(0.5, -0.2, 0.1, M_PI_2, M_PI_2 ,0 );
   }
 }
