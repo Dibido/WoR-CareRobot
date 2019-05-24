@@ -21,7 +21,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
 
     d->detectUpdate(srcMatrix, displayMatrix);
-    cv::imshow("view", displayMatrix);
+    /* cv::imshow("view", displayMatrix); */
 
     int c = cv::waitKey(10);
     if (c == 27)
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
   ros::Rate loop_rate(10);
 
-  cv::namedWindow("view");
+  /* cv::namedWindow("view"); */
   image_transport::ImageTransport it(nh);
   const std::string cTopicName = "/sensor/webcam/img_raw";
   image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     ros::spinOnce();
   }
 
-  cv::destroyWindow("view");
+  /* cv::destroyWindow("view"); */
 
   return 0;
 }

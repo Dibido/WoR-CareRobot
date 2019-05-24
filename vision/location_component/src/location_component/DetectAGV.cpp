@@ -117,7 +117,7 @@ namespace location_component
                        cv::Scalar(255, 0, 0), 0);
           }
 
-          imshow("display ", lDisplayCups);
+          /* imshow("display ", lDisplayCups); */
         }
       }
     }

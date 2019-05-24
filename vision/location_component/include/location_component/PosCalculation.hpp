@@ -9,7 +9,7 @@ namespace location_component
   // Camera position
   const float cCameraPosX_m = 0.35f;
   const float cCameraPosY_m = -4.0f;
-  const float cCameraPosZ_m = 1.8f;
+  const float cCameraPosZ_m = 0.8f;
   const float cCameraFOV_rads = 1.047f;
 
   const float cArmY_m = 0.0f;
@@ -24,7 +24,7 @@ namespace location_component
   const float cAGVWidth_m = 0.350f;
   const float cAGVHeight_m = 0.400f;
 
-  const float cAGVSpeed_m_s = 0.200f;
+  const float cAGVSpeed_m_s = 0.220f;
 
   class PosCalculation
   {
