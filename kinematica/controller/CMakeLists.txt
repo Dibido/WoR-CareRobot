@@ -105,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES controller
+  LIBRARIES lib_controller
   CATKIN_DEPENDS planning robotcontroller std_msgs kinematics
 #  DEPENDS system_lib
 )
@@ -133,7 +133,10 @@ src/controller/Move.cpp
 src/controller/Ready.cpp
 src/controller/ReleaseCup.cpp
 src/controller/WaitForCup.cpp
-src/controller/PowerOff.cpp)
+src/controller/PowerOff.cpp
+src/environment_controller/Cup.cpp
+src/environment_controller/Position.cpp
+src/environment_controller/Object.cpp)
 
 add_dependencies(lib_controller
 ${catkin_EXPORTED_TARGETS})

@@ -93,6 +93,8 @@ namespace environment_controller
     uint8_t mSensorId;          ///< sensorId needs to exsist
   };
 
+  typedef Object Obstacle;
+  typedef std::vector<Obstacle> Obstacles;
 } // namespace environment_controller
 
 #endif // OBJECT_HPP

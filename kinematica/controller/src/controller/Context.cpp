@@ -1,8 +1,9 @@
 // Local
 #include "controller/Context.hpp"
+#include "controller/ControllerConsts.hpp"
 #include "controller/Init.hpp"
 #include "controller/PowerOff.hpp"
-#include "controller/ControllerConsts.hpp"
+#include "environment_controller/Position.hpp"
 // Libary
 #include <chrono>
 #include <iostream>
@@ -29,7 +30,18 @@ namespace controller
                 cRobotStopTopicName,
                 cQueue_size)),
         mConfigurationProvider(
-            std::make_shared<kinematics::ConfigurationProvider>())
+            std::make_shared<kinematics::ConfigurationProvider>()),
+        mCup(environment_controller::Cup(
+            environment_controller::Object(
+                environment_controller::Position(0.0, 0.0, 0.0),
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                ros::Time(0),
+                0),
+            ros::Time(0)))
   {
   }
 
@@ -63,6 +75,30 @@ namespace controller
     }
   }
 
+  void Context::foundCup(const environment_controller::Cup& aCup)
+  {
+    mCup = aCup;
+  }
+
+  void Context::hardStop(bool aStop)
+  {
+    mRobotStopPublisher->publish(aStop);
+  }
+
+  void Context::provideObstacles(
+      const environment_controller::Obstacles& aObstacles)
+  {
+    for (const environment_controller::Obstacle& lObstacle : aObstacles)
+    {
+      // TODO environment_controller Obstacle to planning obstalce
+    }
+  }
+
+  kinematics::Configuration& Context::configuration()
+  {
+    return mConfiguration;
+  }
+
   std::shared_ptr<planning::Graph>& Context::graph()
   {
     return mGraph;
@@ -90,7 +126,8 @@ namespace controller
     return mRobotStopPublisher;
   }
 
-  std::shared_ptr<kinematics::ConfigurationProvider>& Context::configuration()
+  std::shared_ptr<kinematics::ConfigurationProvider>&
+      Context::configurationProvider()
   {
     return mConfigurationProvider;
   }

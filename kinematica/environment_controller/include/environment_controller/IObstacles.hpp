@@ -1,14 +1,11 @@
 #ifndef I_OBSTACLE_HPP
 #define I_OBSTACLE_HPP
 
-#include "Object.hpp"
+#include "environment_controller/Object.hpp"
 #include <vector>
 
 namespace environment_controller
 {
-  typedef Object Obstacle;
-  typedef std::vector<Obstacle> Obstacles;
-
   /**
    * @brief the class of the interface obstacle
    * @pre a sensor detected an potential obstacle

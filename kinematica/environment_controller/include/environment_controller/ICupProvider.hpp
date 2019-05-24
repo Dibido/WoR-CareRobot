@@ -1,7 +1,7 @@
 #ifndef ICUP_PROVIDER_HPP
 #define ICUP_PROVIDER_HPP
 
-#include "Cup.hpp"
+#include "environment_controller/Cup.hpp"
 
 namespace environment_controller
 {

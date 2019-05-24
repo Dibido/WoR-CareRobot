@@ -2,6 +2,8 @@
 #define CONTEXT_HPP
 
 #include "State.hpp"
+#include "environment_controller/Cup.hpp"
+#include "environment_controller/Object.hpp"
 #include "kinematics/ConfigurationProvider.hpp"
 #include "planning/AStar.hpp"
 #include "planning/Graph.hpp"
@@ -43,6 +45,26 @@ namespace controller
     void run();
 
     /**
+     * @brief a cup is found
+     *
+     * @param aCup the cup that will be picked up
+     */
+    void foundCup(const environment_controller::Cup& aCup);
+
+    /**
+     * @brief stop the robotarm
+     *
+     * @param aStop
+     */
+    void hardStop(bool aStop);
+
+    /**
+     * @brief present obstacles that are found
+     *
+     * @param aObstacles
+     */
+    void provideObstacles(const environment_controller::Obstacles& aObstacles);
+    /**
      * @brief getters & setters
      *
      */
@@ -52,7 +74,8 @@ namespace controller
     std::shared_ptr<robotcontroller::RobotControlPublisher>& robotControl();
     std::shared_ptr<robotcontroller::RobotGripperPublisher>& robotGripper();
     std::shared_ptr<robotcontroller::RobotStopPublisher>& robotStop();
-    std::shared_ptr<kinematics::ConfigurationProvider>& configuration();
+    std::shared_ptr<kinematics::ConfigurationProvider>& configurationProvider();
+    kinematics::Configuration& configuration();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -66,7 +89,9 @@ namespace controller
         mRobotGripperPublisher;
     std::shared_ptr<robotcontroller::RobotStopPublisher> mRobotStopPublisher;
     std::shared_ptr<kinematics::ConfigurationProvider> mConfigurationProvider;
+    kinematics::Configuration mConfiguration;
     std::shared_ptr<State> mCurrentState;
+    environment_controller::Cup mCup;
   };
 } // namespace controller
 #endif // Context_HPP
