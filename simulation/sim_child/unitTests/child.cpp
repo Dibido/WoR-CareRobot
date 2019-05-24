@@ -7,25 +7,77 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
+
+sdf::ElementPtr createChildEmptyElement()
+{
+  sdf::ElementPtr sdfPlugin = std::make_shared<sdf::Element>();
+  sdfPlugin->SetName("plugin");
+  sdfPlugin->AddAttribute("name", "string", "model_child", true);
+  sdfPlugin->AddAttribute("filename", "string", "libmodel_child.so", true);
+}
+
+
+sdf::ElementPtr createChildElement(std::string aVelocity, std::string aAngle)
+{
+  sdf::ElementPtr sdfVelocity = std::make_shared<sdf::Element>();
+  sdf::ElementPtr sdfAngle = std::make_shared<sdf::Element>();
+  sdf::ElementPtr sdfPlugin = createChildEmptyElement();
+  
+  sdfVelocity->AddValue("double", aVelocity, true);
+  sdfVelocity->SetName("velocity");
+  sdfAngle->AddValue("double", aAngle, true);
+  sdfAngle->SetName("angle");
+  sdfPlugin->InsertElement(sdfAngle);
+  sdfPlugin->InsertElement(sdfVelocity);
+
+  return sdfPlugin;
+}
+
 TEST(Child, loadVelocity)
 {
+  gazebo::Child lChild;
+  sdf::ElementPtr lVelocityEmpty = createChildEmptyElement();
+  sdf::ElementPtr lVelocityZero = createChildElement("0", "0");
+  sdf::ElementPtr lVelocityOne = createChildElement("1", "0");
+  EXPECT_EQ(lChild.loadVelocity(lVelocityEmpty), 0);
+  EXPECT_EQ(lChild.loadVelocity(lVelocityZero), 0);
+  EXPECT_EQ(lChild.loadVelocity(lVelocityOne), 1);
+}
 
-//       std::cout << aSdf->ToString("") << std::endl;
+TEST(Child, loadAngle)
+{
+  gazebo::Child lChild;
+  sdf::ElementPtr lAngleEmpty = createChildEmptyElement();
+  sdf::ElementPtr lAngleZero = createChildElement("0", "0");
+  sdf::ElementPtr lAngleOne = createChildElement("0", "1");
+  EXPECT_EQ(lChild.loadAngle(lAngleEmpty), 0);
+  EXPECT_EQ(lChild.loadAngle(lAngleZero), 0);
+  EXPECT_EQ(lChild.loadAngle(lAngleOne), 1);
+}
 
-
-//   // sdf::ElementPtr newSdf = std::make_shared<sdf::Element>();
-//   // sdf::readString(
-//   //   "<?xml version='1.0'?><sdf version='1.6'><model name='child'><plugin name='model_child'><velocity>2</velocity><angle>90</angle></plugin></model></sdf>", 
-//   //   newSdf);
-//   // newSdf->AddElement("plugin");
-//   sdf::ElementPtr sdfVelocity = std::make_shared<sdf::Element>();
-//   newSdf->AddValue("double", "0.0", true);
-//   newSdf->SetName("velocity");
+TEST(Child, loadConfig)
+{
+  gazebo::Child lChild;
   
-//   // newSdf->AddAttribute("velocity", "double", "0", true);
-//   // newSdf->AddAttribute("angle", "double", "0", true);
+  sdf::ElementPtr lAngleEmpty = createChildEmptyElement();
+  sdf::ElementPtr lEverythingZero = createChildElement("0", "0");
+  sdf::ElementPtr lEverythingOne = createChildElement("1", "1");
+  EXPECT_EQ(lChild.loadAngle(lAngleEmpty), 0);
+  EXPECT_EQ(lChild.loadVelocity(lVelocityEmpty), 0);
+  EXPECT_EQ(lChild.loadAngle(lEverythingZero), 0);
+  EXPECT_EQ(lChild.loadVelocity(lEverythingZero), 0);
+  EXPECT_EQ(lChild.loadAngle(lEverythingOne), 1);
+  EXPECT_EQ(lChild.loadVelocity(lEverythingOne), 1);
+}
 
-//   std::cout <<"readstring" << std::endl;
-//   std::cout << newSdf->ToString("") << std::endl;
+TEST(Child, calculateXVelocity)
+{
+  gazebo::Child lChild;
 
+//   lChild.calculateXVelocity();
+}
+
+TEST(Child, calculateYVelocity)
+{
+  
 }
