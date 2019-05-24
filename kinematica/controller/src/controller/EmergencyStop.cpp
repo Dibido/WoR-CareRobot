@@ -14,17 +14,18 @@ namespace controller
 
   void EmergencyStop::entryAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    context->robotStop()->publish(true);
   }
 
   void EmergencyStop::doActivity(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
-    context->setState(std::make_shared<Init>());
+    // std::cout << __PRETTY_FUNCTION__ << std::endl;
+    // context->setState(std::make_shared<Init>());
   }
 
   void EmergencyStop::exitAction(Context* context)
   {
-    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    context->robotStop()->publish(false);
+    // std::cout << __PRETTY_FUNCTION__ << std::endl;
   }
 } // namespace controller

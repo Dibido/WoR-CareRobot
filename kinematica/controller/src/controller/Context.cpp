@@ -1,8 +1,10 @@
 // Local
 #include "controller/Context.hpp"
 #include "controller/ControllerConsts.hpp"
+#include "controller/EmergencyStop.hpp"
 #include "controller/Init.hpp"
 #include "controller/PowerOff.hpp"
+#include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
 // Libary
 #include <chrono>
@@ -31,7 +33,7 @@ namespace controller
                 cQueue_size)),
         mConfigurationProvider(
             std::make_shared<kinematics::ConfigurationProvider>()),
-        mCurrentState(std::make_shared<Init>()),
+        mCurrentState(std::make_shared<PowerOff>()),
         mCup(environment_controller::Cup(
             environment_controller::Object(
                 environment_controller::Position(0.0, 0.0, 0.0),
@@ -45,6 +47,8 @@ namespace controller
             ros::Time(0))),
         mGripperData(0.0, 0.0)
   {
+    setState(std::make_shared<Init>());
+    mCurrentState->doActivity(this);
   }
 
   void Context::setState(const std::shared_ptr<State>& state)
@@ -62,18 +66,16 @@ namespace controller
 
   void Context::run()
   {
-    if (!mCurrentState)
+    mCurrentStateMutex.lock();
+    mCurrentState->doActivity(this);
+    mCurrentStateMutex.unlock();
+    while ((typeid(*mCurrentState) != typeid(EmergencyStop) ||
+            typeid(*mCurrentState) != typeid(Ready)) &&
+           ros::ok())
     {
-      setState(std::make_shared<Init>());
-    }
-    int i = 0;
-    while (ros::ok() && typeid(*mCurrentState) != typeid(PowerOff))
-    {
+      mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
-      if (++i > 10000)
-      {
-        setState(std::make_shared<PowerOff>());
-      }
+      mCurrentStateMutex.unlock();
     }
   }
 
@@ -84,7 +86,13 @@ namespace controller
 
   void Context::hardStop(bool aStop)
   {
-    mRobotStopPublisher->publish(aStop);
+    mCurrentStateMutex.lock();
+    if (aStop)
+      setState(std::make_shared<EmergencyStop>());
+    else
+      setState(std::make_shared<Init>());
+
+    mCurrentStateMutex.unlock();
   }
 
   void Context::provideObstacles(

@@ -1,5 +1,7 @@
 #include "environment_controller/EnvironmentController.hpp"
 #include "environment_controller/SafetyController.hpp"
+
+#include <thread>
 namespace environment_controller
 {
   EnvironmentController::EnvironmentController(
@@ -21,6 +23,7 @@ namespace environment_controller
   void EnvironmentController::provideCup(const Cup& aCup)
   {
     mContext->foundCup(aCup);
+    std::thread(&controller::Context::run, mContext).detach();
   }
 
 } // namespace environment_controller

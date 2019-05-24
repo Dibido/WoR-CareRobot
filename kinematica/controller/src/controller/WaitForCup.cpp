@@ -19,8 +19,9 @@ namespace controller
 
   void WaitForCup::doActivity(Context* context)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
-    if (context->cup().timeOfArrival() >= ros::Time::now())
+    // std::cout << __PRETTY_FUNCTION__ << context->cup().timeOfArrival() << " "
+    // <<ros::Time::now() << std::endl;
+    if (context->cup().timeOfArrival() <= ros::Time::now())
     {
       context->setState(std::make_shared<CloseGripper>());
     }

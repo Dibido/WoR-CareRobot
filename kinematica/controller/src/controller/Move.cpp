@@ -33,7 +33,7 @@ namespace controller
     context->robotControl()->publish(0.5, lConfiguration);
 
     double lMaxDeltaTheta = 0;
-    for (size_t i = 0; lConfiguration.size; ++i)
+    for (size_t i = 0; i < lConfiguration.size; ++i)
     {
       if (lMaxDeltaTheta <
           std::abs(lConfiguration[i] - context->configuration()[i]))

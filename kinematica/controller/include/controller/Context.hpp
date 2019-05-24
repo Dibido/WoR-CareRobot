@@ -12,6 +12,7 @@
 #include "robotcontroller/RobotGripperPublisher.hpp"
 #include "robotcontroller/RobotStopPublisher.hpp"
 #include <memory>
+#include <mutex>
 #include <vector>
 
 namespace controller
@@ -96,6 +97,8 @@ namespace controller
     std::shared_ptr<State> mCurrentState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
+
+    std::mutex mCurrentStateMutex;
   };
 } // namespace controller
 #endif // Context_HPP
