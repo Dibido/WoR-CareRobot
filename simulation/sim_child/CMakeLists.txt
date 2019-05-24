@@ -32,7 +32,8 @@ enable_testing()
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/child.cpp)
 
-add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} model_child)
+add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS} ${GAZEBO_EXPORTED_TARGETS})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build

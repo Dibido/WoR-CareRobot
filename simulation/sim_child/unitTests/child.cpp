@@ -14,6 +14,7 @@ sdf::ElementPtr createChildEmptyElement()
   sdfPlugin->SetName("plugin");
   sdfPlugin->AddAttribute("name", "string", "model_child", true);
   sdfPlugin->AddAttribute("filename", "string", "libmodel_child.so", true);
+  return sdfPlugin;
 }
 
 
@@ -59,11 +60,11 @@ TEST(Child, loadConfig)
 {
   gazebo::Child lChild;
   
-  sdf::ElementPtr lAngleEmpty = createChildEmptyElement();
+  sdf::ElementPtr lEmpty = createChildEmptyElement();
   sdf::ElementPtr lEverythingZero = createChildElement("0", "0");
   sdf::ElementPtr lEverythingOne = createChildElement("1", "1");
-  EXPECT_EQ(lChild.loadAngle(lAngleEmpty), 0);
-  EXPECT_EQ(lChild.loadVelocity(lVelocityEmpty), 0);
+  EXPECT_EQ(lChild.loadAngle(lEmpty), 0);
+  EXPECT_EQ(lChild.loadVelocity(lEmpty), 0);
   EXPECT_EQ(lChild.loadAngle(lEverythingZero), 0);
   EXPECT_EQ(lChild.loadVelocity(lEverythingZero), 0);
   EXPECT_EQ(lChild.loadAngle(lEverythingOne), 1);
@@ -73,8 +74,11 @@ TEST(Child, loadConfig)
 TEST(Child, calculateXVelocity)
 {
   gazebo::Child lChild;
-
-//   lChild.calculateXVelocity();
+  lChild.mAngle = 0;
+  lChild.mVelocity = 10;
+  EXPECT_EQ(lChild.calculateXVelocity(), 10);
+  lChild.mAngle = -180;
+  EXPECT_EQ(lChild.calculateXVelocity(), -10);
 }
 
 TEST(Child, calculateYVelocity)
