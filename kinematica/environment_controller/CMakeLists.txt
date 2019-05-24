@@ -118,13 +118,16 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  SYSTEM
   ${catkin_INCLUDE_DIRS}
 )
 
 add_library(lib_environment_controller
 src/environment_controller/ObstaclesSubscriber.cpp
 src/environment_controller/Object.cpp
-src/environment_controller/Position.cpp)
+src/environment_controller/Position.cpp
+src/environment_controller/EnvironmentController.cpp
+src/environment_controller/SafetyController.cpp)
 
 add_dependencies(lib_environment_controller
 ${catkin_EXPORTED_TARGETS})

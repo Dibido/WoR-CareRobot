@@ -76,6 +76,8 @@ namespace kinematics
      */
     Matrix<double, 4, 4> transformationMatrix(double aVariable) const;
 
+    double generateRandomVariable() const;
+
     double getA() const;
     double getAlpha() const;
     double getTheta() const;
