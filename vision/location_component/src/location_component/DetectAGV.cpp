@@ -2,6 +2,7 @@
 #include "location_component/CupScanner.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
+#include <cmath>
 #include <ros/ros.h>
 
 namespace location_component
@@ -39,11 +40,14 @@ namespace location_component
                         << lCupPredictedArrivalTime);
 
         environment_controller::Object object(
-            environment_controller::Position(lCupLocation_m.x, lCupLocation_m.y,
+            environment_controller::Position(lCupLocation_m.x, cArmY_m,
                                              lCupLocation_m.z),
-            0, 0, 0, 0, 0, ros::Time::now(), 0);
+            cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
+            cAGVSpeed_m_s, ros::Time::now(), 0);
 
         environment_controller::Cup cup(object, lCupPredictedArrivalTime);
+
+        rosServiceCup.foundCup(cup);
       }
 
       ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(

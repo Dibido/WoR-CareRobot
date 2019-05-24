@@ -18,6 +18,7 @@ namespace location_component
   const float cCameraFlipY = -1.0f;
 
   const float cCupHeight_m = 0.099f;
+  const float cCupDiameter_m = 0.071f;
   const float cAGVDepth_m = 0.680f;
 
   const float cAGVWidth_m = 0.350f;
