@@ -6,6 +6,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/ros.h>
 #include <vector>
+#include "location_component/RosServiceCup.hpp"
 
 location_component::DetectAGV d;
 
@@ -35,12 +36,22 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 
 int main(int argc, char** argv)
 {
+  ros::init(argc, argv, "image_listener");
+  ros::NodeHandle nh;
+  location_component::RosServiceCup test(nh);
+
+  environment_controller::Object object(environment_controller::Position(0,0,0), 0,0,0,0,0,ros::Time(2000000000),0);
+
+  environment_controller::Cup cup(object,ros::Time(2000000000));
+
+  test.foundCup(cup);
+  
   location_component::PosCalculation pos;
+
+
   /* std::cout << pos.calculateAGVLocation(cv::Point(200, 100), cv::Size(400,
    * 400)) << std::endl; */
 
-  ros::init(argc, argv, "image_listener");
-  ros::NodeHandle nh;
   cv::namedWindow("view");
   image_transport::ImageTransport it(nh);
   const std::string cTopicName = "/sensor/webcam/img_raw";
