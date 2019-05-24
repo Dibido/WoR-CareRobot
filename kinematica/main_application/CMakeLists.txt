@@ -1,17 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(controller)
+project(main_application)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  planning
-  robotcontroller
-  std_msgs
-  kinematics
+  controller
+  environment_controller
 )
 
 ## System dependencies are found with CMake's conventions
@@ -71,7 +69,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   std_msgs
+#   std_msgs  # Or other packages containing msgs
 # )
 
 ################################################
@@ -104,9 +102,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-#  LIBRARIES controller
-  CATKIN_DEPENDS planning robotcontroller std_msgs kinematics
+#  INCLUDE_DIRS include
+#  LIBRARIES main_application
+  CATKIN_DEPENDS controller environment_controller
 #  DEPENDS system_lib
 )
 
@@ -117,31 +115,27 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  SYSTEM
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(lib_controller
-src/controller/Context.cpp
-src/controller/EmergencyStop.cpp
-src/controller/Init.cpp
-src/controller/SoftStop.cpp
-src/controller/State.cpp
-src/controller/CloseGripper.cpp
-src/controller/Move.cpp
-src/controller/Ready.cpp
-src/controller/ReleaseCup.cpp
-src/controller/WaitForCup.cpp
-src/controller/PowerOff.cpp)
+add_executable(main_application 
+src/Main.cpp
+)
 
-add_dependencies(lib_controller
+add_dependencies(main_application
 ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(main_application 
+lib_controller
+lib_environment_controller
+${catkin_LIBRARIES}
+)
 
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/controller.cpp
+#   src/${PROJECT_NAME}/main_application.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -152,7 +146,7 @@ ${catkin_EXPORTED_TARGETS})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/controller_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/main_application_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -209,7 +203,7 @@ ${catkin_EXPORTED_TARGETS})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_controller.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_main_application.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

@@ -1,6 +1,4 @@
 #include "controller/Context.hpp"
-#include "kinematics/ConfigurationProvider.hpp"
-#include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
 #include <memory>
 #include <stdlib.h>
