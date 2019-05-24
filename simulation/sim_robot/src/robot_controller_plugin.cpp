@@ -143,11 +143,11 @@ namespace gazebo
 
 
   void RobotControllerPlugin::commandGripperCallBack(
-      const robotcontroller_msgs::GripperPtr& msg)
+      const robotcontroller_msgs::GripperPtr& aMsg)
   {
     double width = channelJointMap.at(7)
-          .converseScaleToRad(msg->width, 0.08, 0.0); //Width needs to be inverted.
-    double speedfactor = msg->speedfactor;
+          .converseScaleToRad(aMsg->width, 0.08, 0.0); //Width needs to be inverted.
+    double speedfactor = aMsg->speedfactor;
 
     
     //? These message variables are currently not used.
