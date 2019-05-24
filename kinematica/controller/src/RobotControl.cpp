@@ -1,3 +1,4 @@
+#include "controller/Context.hpp"
 #include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
 #include "environment_controller/ObstaclesSubscriber.hpp"
@@ -5,57 +6,61 @@
 #include "kinematics/ConfigurationProvider.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "ros/ros.h"
-
+#include <memory>
+#include <stdlib.h>
 kinematics::EndEffector GetEndEffector();
 
 int main(int argc, char** argv)
 {
   const std::string cControlTopic = "robot_command";
-
   ros::init(argc, argv, cControlTopic);
-  environment_controller::EnvironmentController lEnvironmentController =
-      environment_controller::EnvironmentController();
-  environment_controller::SafetyController lSafetyController =
-      environment_controller::SafetyController(
-          std::make_shared<environment_controller::EnvironmentController>(
-              lEnvironmentController));
-  environment_controller::ObstaclesSubscriber lObstacleSubscriber =
-      environment_controller::ObstaclesSubscriber(
-          std::make_shared<environment_controller::SafetyController>(
-              lSafetyController),
-          environment_controller::cObstacleTopicName);
+  Context ctx = Context();
+  ctx.run();
 
-  ros::NodeHandle lControlNode;
-  ros::NodeHandle lStopNode;
+  // environment_controller::EnvironmentController lEnvironmentController =
+  //     environment_controller::EnvironmentController();
+  // environment_controller::SafetyController lSafetyController =
+  //     environment_controller::SafetyController(
+  //         std::make_shared<environment_controller::EnvironmentController>(
+  //             lEnvironmentController));
+  // environment_controller::ObstaclesSubscriber lObstacleSubscriber =
+  //     environment_controller::ObstaclesSubscriber(
+  //         std::make_shared<environment_controller::SafetyController>(
+  //             lSafetyController),
+  //         environment_controller::cObstacleTopicName);
 
-  ros::Rate lLoop_rate(environment_controller::cRate);
+  // ros::NodeHandle lControlNode;
+  // ros::NodeHandle lStopNode;
 
-  robotcontroller::RobotControlPublisher lRobotControlPub(
-      lControlNode, cControlTopic, environment_controller::cQueue_size);
+  // ros::Rate lLoop_rate(environment_controller::cRate);
 
-  std::shared_ptr<kinematics::IConfigurationProvider> lConfigurationProvider =
-      std::make_shared<kinematics::ConfigurationProvider>();
+  // robotcontroller::RobotControlPublisher lRobotControlPub(
+  //     lControlNode, cControlTopic, environment_controller::cQueue_size);
 
-  kinematics::Configuration lCurrentConfiguration;
+  // std::shared_ptr<kinematics::IConfigurationProvider> lConfigurationProvider
+  // =
+  //     std::make_shared<kinematics::ConfigurationProvider>();
 
-  while (ros::ok())
-  {
-    kinematics::EndEffector lGoalEndEffector = GetEndEffector();
+  // kinematics::Configuration lCurrentConfiguration;
 
-    kinematics::Configuration lGoalConfiguration =
-        lConfigurationProvider->inverseKinematics(lGoalEndEffector,
-                                                  lCurrentConfiguration);
-    ROS_INFO("Goal: [%.5f, %.5f, %.5f, %.5f, %.5f, %.5f] \t result: %i",
-             lGoalEndEffector.cX_m, lGoalEndEffector.cY_m,
-             lGoalEndEffector.cZ_m, lGoalEndEffector.cRoll_rad,
-             lGoalEndEffector.cPitch_rad, lGoalEndEffector.cYaw_rad,
-             lGoalConfiguration.result());
-    lRobotControlPub.publish(1.0, lGoalConfiguration);
+  // while (ros::ok())
+  // {
+  //   kinematics::EndEffector lGoalEndEffector = GetEndEffector();
 
-    lCurrentConfiguration = lGoalConfiguration;
-    ros::spinOnce();
-    lLoop_rate.sleep();
-  }
+  //   kinematics::Configuration lGoalConfiguration =
+  //       lConfigurationProvider->inverseKinematics(lGoalEndEffector,
+  //                                                 lCurrentConfiguration);
+  //   ROS_INFO("Goal: [%.5f, %.5f, %.5f, %.5f, %.5f, %.5f] \t result: %i",
+  //            lGoalEndEffector.cX_m, lGoalEndEffector.cY_m,
+  //            lGoalEndEffector.cZ_m, lGoalEndEffector.cRoll_rad,
+  //            lGoalEndEffector.cPitch_rad, lGoalEndEffector.cYaw_rad,
+  //            lGoalConfiguration.result());
+  //   lRobotControlPub.publish(1.0, lGoalConfiguration);
+
+  //   lCurrentConfiguration = lGoalConfiguration;
+  //   ros::spinOnce();
+  //   lLoop_rate.sleep();
+  // }
 
   return 0;
 }
