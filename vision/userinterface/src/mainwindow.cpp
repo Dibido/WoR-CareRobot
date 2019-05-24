@@ -23,6 +23,6 @@ void MainWindow::on_water_btn_clicked()
    */
   QProcess process;
   process.startDetached(
-      "roslaunch src/wor-18-19-s2/simulation/sim_world/launch/world.launch "
+      "roslaunch sim_world world.launch "
       "world:=current_world paused:=false");
 }
