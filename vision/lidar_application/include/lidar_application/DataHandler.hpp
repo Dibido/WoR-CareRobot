@@ -2,22 +2,21 @@
 #define DATAHANDLER_H
 
 #include "environment_controller/IObstacles.hpp"
-
 #include "lidar_application/LidarData.hpp"
-
 #include <ros/ros.h>
 #include <ros/console.h>
-
 #include <sensor_interfaces/LidarData.h>
 #include <kinematica_msgs/Object.h>
 #include <kinematica_msgs/Obstacles.h>
-
 #include "geometry_msgs/Point.h"
-
 #include <iostream>
 
 namespace lidar_application
 {
+  /**
+   * @brief Datahandler takes care of input/output (lidar) data. It implements
+   * the IObstacles interface, for more information see that description.
+   */
 class DataHandler : public environment_controller::IObstacles
 {
   public:
