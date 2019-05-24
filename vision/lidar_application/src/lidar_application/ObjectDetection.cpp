@@ -60,8 +60,8 @@ namespace lidar_application
     LidarData lObject;
 
     /* The first object that is detected, this is stored seperately
-    so if we detect an object at end of range, we can check if this is the same object
-    as this firstobject */
+    so if we detect an object at end of range, we can check if this is the same
+    object as this firstobject */
     LidarData lFirstObject;
 
     double lPreviousDistance_m = 0.0;
@@ -87,7 +87,7 @@ namespace lidar_application
           if ((lObject.mDistances_m.size() > 0))
           {
             // If first object hasn't been stored yet, store it
-            if(lFirstObject.mAngles.size() == 0)
+            if (lFirstObject.mAngles.size() == 0)
             {
               lFirstObject = lObject;
             }
@@ -96,7 +96,7 @@ namespace lidar_application
               // Add centerpoint of this object to list
               lObjectList.push_back(getAverageMeasurement(lObject));
             }
-            
+
             lObject.reset();
           }
         }
@@ -120,15 +120,17 @@ namespace lidar_application
 
       lPreviousDistance_m = lCurrentDistance_m;
     }
- 
-    // If there is a valid object detected at end of range, and there has been detected a first object
+
+    // If there is a valid object detected at end of range, and there has been
+    // detected a first object
     if (lObject.mAngles.size() > 0 && lFirstObject.mAngles.size() > 0)
     {
-      std::cout << "test" << std::endl;
-      // If the last measurement of this object, is close to the first measurement of the first object
-      if(std::abs(lObject.mDistances_m.back() - lFirstObject.mDistances_m.front()) <= mMaxDistanceDifference_m)
+      // If the last measurement of this object, is close to the first
+      // measurement of the first object
+      if (std::abs(lObject.mDistances_m.back() -
+                   lFirstObject.mDistances_m.front()) <=
+          mMaxDistanceDifference_m)
       {
-        std::cout << "test2" << std::endl;
         // Add the first object data to this object
         lObject.addLidarData(lFirstObject.mAngles, lFirstObject.mDistances_m);
       }
