@@ -13,7 +13,7 @@ environment_controller
  # add_message_files(
  #   DIRECTORY
  #   msg
- #   FILES ResizedImage.msg
+ #   FILES ResizedImage.msg Cup.msg
  # )
 
 

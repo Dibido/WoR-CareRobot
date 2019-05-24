@@ -6,19 +6,60 @@ commands::Command::Command(eCommandType aType,
                            jointPw_t aPwm,
                            jointVel_t aSpeed,
                            commandTime_t aTime)
-    : type(aType), mChannel(aChannel), mPwm(aPwm), mSpeed(aSpeed), mTime(aTime)
+    : mType(aType), mChannel(aChannel), mPwm(aPwm), mSpeed(aSpeed), mTime(aTime)
 {
 }
 commands::Command::Command(eCommandType aType,
                            jointChannel_t aChannel,
                            jointRad_t aRad,
                            jointVel_t aSpeedFactor)
-    : type(aType), mChannel(aChannel), mRad(aRad), mSpeedFactor(aSpeedFactor)
+    : mType(aType), mChannel(aChannel), mRad(aRad), mSpeedFactor(aSpeedFactor)
 {
 }
+
+commands::Command::Command(const Command& other)
+    : mType(other.mType),
+      mChannel(other.mChannel),
+      mRad(other.mRad),
+      mSpeedFactor(other.mSpeedFactor),
+      mTime(other.mTime)
+
+{
+}
+
+commands::Command& commands::Command::operator=(const Command& other)
+{
+  if (this != &other)
+  {
+    mType = other.mType;
+    mChannel = other.mChannel;
+    mRad = other.mRad;
+    mSpeedFactor = other.mSpeedFactor;
+    mPwm = other.mPwm;
+    mSpeed = other.mSpeed;
+    mTime = other.mTime;
+  }
+  return *this;
+}
+
+bool commands::Command::operator==(const Command& other) const
+{
+  if (this == &other)
+  {
+    return true;
+  }
+  return mType == other.mType && mChannel == other.mChannel &&
+         mRad == other.mRad && mSpeedFactor == other.mSpeedFactor;
+}
+
+bool commands::Command::operator!=(const Command& other) const
+{
+  return !(Command::operator==(other));
+}
+
 commands::eCommandType commands::Command::getType() const
 {
-  return type;
+  return mType;
 }
 
 jointChannel_t commands::Command::getChannel() const

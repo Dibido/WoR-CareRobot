@@ -127,7 +127,10 @@ src/environment_controller/ObstaclesSubscriber.cpp
 src/environment_controller/Object.cpp
 src/environment_controller/Position.cpp
 src/environment_controller/EnvironmentController.cpp
-src/environment_controller/SafetyController.cpp)
+src/environment_controller/SafetyController.cpp
+src/environment_controller/Cup.cpp
+src/environment_controller/CupSubscriber.cpp
+)
 
 add_dependencies(lib_environment_controller
 ${catkin_EXPORTED_TARGETS})

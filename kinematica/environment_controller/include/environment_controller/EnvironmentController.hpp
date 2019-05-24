@@ -11,6 +11,7 @@
 #ifndef ENVIRONMENT_CONTROLLER_HPP
 #define ENVIRONMENT_CONTROLLER_HPP
 
+#include "Cup.hpp"
 #include "IObstacles.hpp"
 #include "ros/ros.h"
 
@@ -44,6 +45,13 @@ namespace environment_controller
      * hardstop is false the hardstop has to be lifted.
      */
     void executeHardstop(bool hardstop);
+
+    /**
+     * @brief provide the cup position so the robot can move
+     *
+     * @param aCup the cup to move to
+     */
+    void provideCup(const Cup& aCup);
   };
 } // namespace environment_controller
 
