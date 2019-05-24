@@ -1,8 +1,8 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
-#include "DataHandler.hpp"
-#include "LidarData.hpp"
+#include "lidar_application/DataHandler.hpp"
+#include "lidar_application/LidarData.hpp"
 
 #include <cmath>
 #include <iostream>

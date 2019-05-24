@@ -6,8 +6,8 @@
 
 
 #define private public
-#include "LidarData.hpp"
-#include "DataHandler.hpp"
+#include "lidar_application/LidarData.hpp"
+#include "lidar_application/DataHandler.hpp"
 #undef private
 
 using namespace lidar_application;

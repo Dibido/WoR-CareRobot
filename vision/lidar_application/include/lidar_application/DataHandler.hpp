@@ -1,7 +1,9 @@
 #ifndef DATAHANDLER_H
 #define DATAHANDLER_H
 
-#include "LidarData.hpp"
+#include "environment_controller/IObstacles.hpp"
+
+#include "lidar_application/LidarData.hpp"
 
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -16,7 +18,7 @@
 
 namespace lidar_application
 {
-class DataHandler
+class DataHandler : public environment_controller::IObstacles
 {
   public:
   /**
@@ -52,13 +54,20 @@ class DataHandler
   void dataReceiveCallback(const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage);
 
   /**
-   * @brief Publishes object data on topic
+   * @brief First translates data to the right type,
+   * then publishes object data on topic using the parseObstacle function.
    * @pre: -
    * @post: Data is published on rostopic
    * @param aData - X,Y of objects
    * @param aHeight - Z of the object
    */
-  void publishData(const std::vector<std::pair<double, double>>& aData, double aHeight_m) const;
+  void publishData(const std::vector<std::pair<double, double>>& aData, double aHeight_m);
+
+  /**
+   * @brief Publishes objects using mObjectPublisher
+   * @param aObstacles - The obstacles
+   */
+  virtual void parseObstacles(const environment_controller::Obstacles& aObstacles);
 
   private:
   ros::NodeHandle mNodeHandler;
