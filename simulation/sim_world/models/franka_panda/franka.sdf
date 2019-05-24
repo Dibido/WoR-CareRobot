@@ -6,71 +6,115 @@
       <debug></debug>
 
       <joint_info name="_joint1" channel="0">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-2.8973</min_pw>
+        <max_pw>2.8973</max_pw>
+        <min_rad>-2.8973</min_rad>
+        <max_rad>2.8973</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint2" channel="1">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-1.763</min_pw>
+        <max_pw>1.763</max_pw>
+        <min_rad>-1.763</min_rad>
+        <max_rad>1.763</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint3" channel="2">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-2.8973</min_pw>
+        <max_pw>2.8973</max_pw>
+        <min_rad>-2.8973</min_rad>
+        <max_rad>2.8973</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint4" channel="3">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-3.0718</min_pw>
+        <max_pw>-0.0697</max_pw>
+        <min_rad>-3.0718</min_rad>
+        <max_rad>-0.0697</max_rad>
         <max_vel>150</max_vel>
       </joint_info>
 
       <joint_info name="_joint5" channel="4">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-2.8973</min_pw>
+        <max_pw>2.8973</max_pw>
+        <min_rad>-2.8973</min_rad>
+        <max_rad>2.8973</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 
       <joint_info name="_joint6" channel="5">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-0.0175</min_pw>
+        <max_pw>3.7525</max_pw>
+        <min_rad>-0.0175</min_rad>
+        <max_rad>3.7525</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 x
       <joint_info name="_joint7" channel="6">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>-3.857231089</min_pw>
+        <max_pw>1.937368911</max_pw>
+        <min_rad>−3.857231089</min_rad>
+        <max_rad>1.937368911</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 
       <joint_info name="_jointH1" channel="7">
-        <min_pw>-100</min_pw>
-        <max_pw>100</max_pw>
-        <min_rad>-100</min_rad>
-        <max_rad>100</max_rad>
+        <min_pw>0</min_pw>
+        <max_pw>0.0395</max_pw>
+        <min_rad>0</min_rad>
+        <max_rad>0.0395</max_rad>
         <max_vel>2.870</max_vel>
       </joint_info>
    </plugin>
 
-  
+   <link name="stance">
+    <kinematic>1</kinematic>
+      <pose>0 0 0.5 0 0 0</pose>
+      <inertial>
+        <mass>150</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <iyy>1</iyy>
+          <izz>1</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="stance_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.15</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="stance_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.15</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+    </link>
 
     <joint name="world_to_stance" type="fixed">
         <parent>world</parent>
@@ -86,7 +130,7 @@ x
 
     <link name="link0">
       <kinematic>1</kinematic>
-	      <pose>0 0 0 0 0 0</pose>
+	      <pose>0 0 1 0 0 0</pose>
       <visual name="visual0">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -114,7 +158,7 @@ x
 
     <link name="link1">
       <kinematic>1</kinematic>
-      <pose>0 0 0.333 0 0 0</pose>
+      <pose>0 0 1.333 0 0 0</pose>
       <visual name="visual1">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -147,8 +191,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -156,7 +200,7 @@ x
 
     <link name="link2">
       <kinematic>1</kinematic>
-      <pose>0 0 0.333 -1.57079632679 0 0</pose>
+      <pose>0 0 1.333 -1.57079632679 0 0</pose>
       <visual name="visual2">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -189,8 +233,8 @@ x
         <xyz>0 1 0</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-1.8326</lower>
+        <upper>1.8326</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -199,7 +243,7 @@ x
 
     <link name="link3">
       <kinematic>1</kinematic>
-      <pose>0 0 0.649 0 0 0</pose>
+      <pose>0 0 1.649 0 0 0</pose>
       <visual name="visual3">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -232,8 +276,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -241,7 +285,7 @@ x
 
     <link name="link4">
       <kinematic>1</kinematic>
-      <pose>0.0825 0 0.649 1.57079632679 0 0</pose>
+      <pose>0.0825 0 1.649 1.57079632679 0 0</pose>
       <visual name="visual4">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -274,8 +318,8 @@ x
         <xyz>0 -1 0</xyz>
       <limit> 
         <effort>87</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
@@ -283,7 +327,7 @@ x
 
     <link name="link5">
       <kinematic>1</kinematic>
-      <pose>0 0 1.033 0 0 0</pose>
+      <pose>0 0 2.033 0 0 0</pose>
       <visual name="visual5">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -316,8 +360,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -325,7 +369,7 @@ x
 
     <link name="link6">
       <kinematic>1</kinematic>
-      <pose>0 0 1.033 1.57079632679 0 0</pose>
+      <pose>0 0 2.033 1.57079632679 0 0</pose>
       <visual name="visual6">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -358,8 +402,8 @@ x
         <xyz>0 -1 0</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-0.0873</lower>
+        <upper>3.8223</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -367,7 +411,7 @@ x
 
     <link name="link7">
       <kinematic>1</kinematic>
-      <pose>0.088 0 1.033 3.14159265359 0 -0.785398</pose> <!-- -0.785398-->
+      <pose>0.088 0 2.033 3.14159265359 0 -0.785398</pose> <!-- -0.785398-->
       <visual name="visual7">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -400,8 +444,8 @@ x
         <xyz>0 0 1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -410,7 +454,7 @@ x
 
     <link name="link8">
       <kinematic>1</kinematic>
-      <pose>0.088 0 0.927 3.14159265359 0 0</pose>
+      <pose>0.088 0 1.927 3.14159265359 0 0</pose>
       <visual name="visual8">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -443,8 +487,8 @@ x
         <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-100</lower>
-        <upper>100</upper>
+        <lower>-2.9671</lower>
+        <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -452,7 +496,7 @@ x
 
     <link name="link9">
       <kinematic>1</kinematic>
-      <pose>0.088 -0.04 0.8685 3.14159265359 0 0</pose>
+      <pose>0.088 -0.04 1.8685 3.14159265359 0 0</pose>
       <visual name="visual9">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -502,8 +546,8 @@ x
       <axis>
         <xyz>0 1 0</xyz>
         <limit> 
-          <lower>-100</lower>
-          <upper>100</upper>
+          <lower>0</lower>
+          <upper>0.0395</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>
         </limit>
@@ -513,7 +557,7 @@ x
 
     <link name="link10">
       <kinematic>1</kinematic>
-      <pose>0.088 0.04 0.8685 3.14159265359 0 3.14159265359</pose>
+      <pose>0.088 0.04 1.8685 3.14159265359 0 3.14159265359</pose>
       <visual name="visual10">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -564,8 +608,8 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
         <limit> 
-          <lower>-100</lower>
-          <upper>100</upper>
+          <lower>0</lower>
+          <upper>0.0395</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>
         </limit>

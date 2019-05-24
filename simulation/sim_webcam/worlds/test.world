@@ -9,88 +9,7 @@
       <uri>model://sun</uri>
     </include>
 
-    <include>
-      <uri>model://franka_panda_2</uri>
-    </include>
-
-    <model name="table_model">
-      <pose>0.55 0 0 0 0 1.570796</pose>
-      <include>
-        <uri>model://table</uri>
-      </include>
-    </model>
-
-    <model name="kinect_1">
-      <pose>0 0 2.98 0 1.570796 0</pose>
-      <include>
-        <uri>model://kinect_one</uri>
-      </include>
-    </model>
-
-    <model name="lidar_model">
-      <pose>0.55 0 0.95 0 0 0</pose>
-      <include>
-        <uri>model://lidar_model</uri>
-      </include>
-    </model>
-
-    <model name="cup_model">
-      <pose>0.38 -5.04 1.07</pose>
-      <include>
-        <uri>model://ica_cup</uri>
-      </include>
-    </model>
-
-    <model name="cup_model">
-      <pose>0.35 -4.89 1.07</pose>
-      <include>
-        <uri>model://ica_cup</uri>
-      </include>
-    </model>
-
-    <model name="agv">
-      <pose>0.35 -5 1.05</pose>
-      <include>
-	      <uri>model://agv</uri>
-      </include>
-    </model>
-
-    <model name="ultrasonic1">
-      <pose>0 -4 1.2 0 0 0</pose>
-      <include>
-        <uri>model://hcsr04</uri>
-      </include>
-    </model>
-
-    <model name="ultrasonic2">
-      <pose>0 -3 1.2 0 0 0</pose>
-      <include>
-        <uri>model://hcsr04</uri>
-      </include>
-    </model>
-
-    <model name="ultrasonic3">
-      <pose>0 -2 1.2 0 0 0</pose>
-      <include>
-        <uri>model://hcsr04</uri>
-      </include>
-    </model>
-
-    <model name="ultrasonic4">
-      <pose>0 -1 1.2 0 0 0</pose>
-      <include>
-        <uri>model://hcsr04</uri>
-      </include>
-    </model>
-
-    <model name="sim_child">
-      <pose>1.5 -6 0 0 0 0.5</pose>
-      <include>
-        <uri>model://child</uri>
-      </include>
-    </model>
-
-<model name="my_camera">
+  <model name="my_camera">
       <pose>0.35 -4 1.8 0 1.570796 0</pose>
       <static>true</static>
       <link name="link">
@@ -147,4 +66,3 @@
     </physics>
   </world>
 </sdf>
-

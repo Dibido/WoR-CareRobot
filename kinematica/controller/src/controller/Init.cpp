@@ -23,6 +23,8 @@ namespace controller
 
   void Init::doActivity(Context* context)
   {
+    context->configuration() = kinematics::Configuration();
+    context->robotControl()->publish(cSpeedFactor, context->configuration());
     context->setState(std::make_shared<Ready>());
   }
 

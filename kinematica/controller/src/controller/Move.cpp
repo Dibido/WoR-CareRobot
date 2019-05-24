@@ -25,7 +25,7 @@ namespace controller
     kinematics::EndEffector lEndEffector = kinematics::EndEffector(
         context->cup().object().position().x_m(),
         context->cup().object().position().y_m(),
-        context->cup().object().position().z_m(), 0, M_PI_2, 0);
+        context->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
     kinematics::Configuration lConfiguration =
         context->configurationProvider()->inverseKinematics(
