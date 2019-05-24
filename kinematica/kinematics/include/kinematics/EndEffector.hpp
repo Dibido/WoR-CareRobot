@@ -5,6 +5,7 @@ namespace kinematics
 {
   /**
    * @brief Describes an EndEffector
+   *
    * all mYaw_rad, mPitch_rad, mRoll_rad are constrained between -M_PI and M_PI
    */
   struct EndEffector

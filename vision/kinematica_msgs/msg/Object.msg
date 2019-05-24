@@ -1,5 +1,6 @@
+# See http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/DDD+-+Object+interface
 geometry_msgs/Point position_m
-float64 height_m 
+float64 height_m
 float64 width_m
 float64 depth_m
 uint8 sensorID

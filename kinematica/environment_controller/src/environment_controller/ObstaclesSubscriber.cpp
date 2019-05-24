@@ -1,12 +1,17 @@
 #include "environment_controller/ObstaclesSubscriber.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
+#include "environment_controller/SafetyController.hpp"
 #include "kinematica_msgs/Object.h"
 
 namespace environment_controller
 {
-  ObstaclesSubscriber::ObstaclesSubscriber(const std::string& aSubName)
-      : mSubscriber(mHandle.subscribe(
+  ObstaclesSubscriber::ObstaclesSubscriber(
+      const std::shared_ptr<SafetyController>& aSafetyController,
+      const std::string& aSubName)
+      : mSafetyController(aSafetyController),
+        mSubscriber(mHandle.subscribe(
             aSubName,
-            cQueueSize,
+            cQueue_size,
             &environment_controller::ObstaclesSubscriber::obstaclesCallback,
             this))
   {
@@ -37,9 +42,10 @@ namespace environment_controller
     }
     if (lObstacles.size())
       parseObstacles(lObstacles);
-  } // namespace environment_controller
+  }
 
   void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)
   {
+    mSafetyController->areObstaclesAThreat(aObstacles);
   }
 } // namespace environment_controller

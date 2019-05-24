@@ -8,32 +8,26 @@ namespace kinematics
   {
     // Joint 0
     mRobotConfiguration[0] = (kinematics::Link(
-        0, 0, 0.333, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-166), kinematics::degree2Radian(166)));
+        0, 0, 0.333, kinematics::eJoint::REVOLUTE, -2.8973, 2.8973));
     // Joint 1
     mRobotConfiguration[1] = (kinematics::Link(
-        0, -M_PI_2, 0.0, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-101), kinematics::degree2Radian(101)));
+        0, -M_PI_2, 0.0, kinematics::eJoint::REVOLUTE, -1.7628, 1.7628));
     // Joint 2
     mRobotConfiguration[2] = (kinematics::Link(
-        0.0, M_PI_2, 0.316, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-166), kinematics::degree2Radian(166)));
+        0.0, M_PI_2, 0.316, kinematics::eJoint::REVOLUTE, -2.8973, 2.8973));
     // Joint 3
     mRobotConfiguration[3] = (kinematics::Link(
-        0.0825, M_PI_2, 0.0, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-176), kinematics::degree2Radian(-4)));
+        0.0825, M_PI_2, 0.0, kinematics::eJoint::REVOLUTE, -3.0718, -0.0698));
     // Joint 4
-    mRobotConfiguration[4] = (kinematics::Link(
-        -0.0825, -M_PI_2, 0.384, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-166), kinematics::degree2Radian(166)));
+    mRobotConfiguration[4] =
+        (kinematics::Link(-0.0825, -M_PI_2, 0.384, kinematics::eJoint::REVOLUTE,
+                          -2.8973, 2.8973));
     // Joint 5
     mRobotConfiguration[5] = (kinematics::Link(
-        0.0, M_PI_2, 0.0, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-1), kinematics::degree2Radian(215)));
+        0.0, M_PI_2, 0.0, kinematics::eJoint::REVOLUTE, -0.0175, 3.7525));
     // Joint 6
     mRobotConfiguration[6] = (kinematics::Link(
-        0.088, M_PI_2, 0, kinematics::eJoint::REVOLUTE,
-        kinematics::degree2Radian(-166), kinematics::degree2Radian(166)));
+        0.088, M_PI_2, 0, kinematics::eJoint::REVOLUTE, -2.8973, 2.8973));
     // flange
     mRobotConfiguration[7] =
         (kinematics::Link(0.0, 0.0, 0.107, 0.0, kinematics::eJoint::STATIC));

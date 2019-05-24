@@ -30,6 +30,7 @@ namespace robotcontroller
                           const std::string& lTopic,
                           const uint16_t lQueue_size);
 
+    ~RobotControlPublisher() = default;
     /**
      * @brief Publishes a Control msg to the robot_command topic
      *

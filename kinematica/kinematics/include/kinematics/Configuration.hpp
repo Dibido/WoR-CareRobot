@@ -8,6 +8,8 @@ namespace kinematics
   /**
    * @brief Data Class that collects and protects a configuration that describes
    * all needed values to control a robotarm
+   * It also gives information about whether or not this configuration has been
+   * reached by an inverse kinematics algorithm or other function
    */
   class Configuration
   {
@@ -18,8 +20,8 @@ namespace kinematics
      */
     Configuration();
     virtual ~Configuration() = default;
-    Configuration(const Configuration& copy) = default;
-    Configuration& operator=(const Configuration& copy) = default;
+    Configuration(const Configuration& copy);
+    Configuration& operator=(const Configuration& copy);
 
     /**
      * @brief Number of values in configuration
@@ -35,8 +37,8 @@ namespace kinematics
      */
     const double& operator[](std::size_t aIndex) const;
     /**
-     * @brief Describes whether a configuration has been succesfully created by
-     * a inverse kinematics algorithm
+     * @brief Describes whether a configuration has been succesfully found by
+     * an inverse kinematics algorithm
      *
      * @return true
      * @return false
