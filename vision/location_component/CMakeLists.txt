@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(location_component)
 
+SET(GCC_OPENCV_FLAGS "-lopencv_core -lopencv_highgui")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_OPENCV_FLAGS}")
+
 find_package(catkin REQUIRED COMPONENTS 
 cv_bridge
 image_transport 
