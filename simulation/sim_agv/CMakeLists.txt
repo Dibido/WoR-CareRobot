@@ -55,13 +55,6 @@ generate_messages(
     gazebo_ros
     sensor_interfaces)
 
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES sim_agv
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-)
-
 add_library(${PROJECT_NAME}_plugin SHARED src/automated_guided_vehicle_plugin.cpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})

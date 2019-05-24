@@ -46,8 +46,7 @@ namespace gazebo
     virtual ~AutomatedGuidedVehiclePlugin();
 
     /**
-     * Setup the sensor plugin. Gets executed when the model (SDF file) gets
-     * loaded
+     * @brief Setup the sensor plugin. Gets executed when the model (SDF file) gets loaded
      * @param aModel: pointer to the sensor
      * @param aSdf: pointer to the Sdf (defined in the model file) element of
      * the sensor
@@ -90,8 +89,7 @@ namespace gazebo
     double mInterval = 5;
 
     /**
-     * Handles incoming ros messages on a separate thread
-     * When a new message is available handle it using the callback
+     * @brief Handles incoming ros messages on a separate thread when a new message is available handle it using the callback
      */
     void QueueThread();
 
