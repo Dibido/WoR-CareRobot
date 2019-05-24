@@ -2,7 +2,7 @@
 #include "controller/Context.hpp"
 #include "controller/Init.hpp"
 #include "controller/PowerOff.hpp"
-
+#include "controller/ControllerConsts.hpp"
 // Libary
 #include <chrono>
 #include <iostream>
@@ -16,18 +16,18 @@ namespace controller
         mRobotControlPublisher(
             std::make_shared<robotcontroller::RobotControlPublisher>(
                 mRobotControlHandle,
-                "robot_command",
-                1000)),
+                cRobotCommandTopicName,
+                cQueue_size)),
         mRobotGripperPublisher(
             std::make_shared<robotcontroller::RobotGripperPublisher>(
                 mRobotGripperHandle,
-                "robot_gripper",
-                1000)),
+                cRobotGripperTopicName,
+                cQueue_size)),
         mRobotStopPublisher(
             std::make_shared<robotcontroller::RobotStopPublisher>(
                 mRobotStopHandle,
-                "robot_stop",
-                1000)),
+                cRobotStopTopicName,
+                cQueue_size)),
         mConfigurationProvider(
             std::make_shared<kinematics::ConfigurationProvider>())
   {

@@ -4,24 +4,27 @@
 
 // Local
 #include "controller/EmergencyStop.hpp"
-namespace controller{
-EmergencyStop::EmergencyStop(){
-
-};
-EmergencyStop::~EmergencyStop(){};
-
-void EmergencyStop::entryAction(Context* context)
+#include "controller/Init.hpp"
+namespace controller
 {
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
+  EmergencyStop::EmergencyStop(){
 
-void EmergencyStop::doActivity(Context* context)
-{
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
+  };
+  EmergencyStop::~EmergencyStop(){};
 
-void EmergencyStop::exitAction(Context* context)
-{
-  // std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
-}
+  void EmergencyStop::entryAction(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+  }
+
+  void EmergencyStop::doActivity(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+    context->setState(std::make_shared<Init>());
+  }
+
+  void EmergencyStop::exitAction(Context* context)
+  {
+    //std::cout << __PRETTY_FUNCTION__ << std::endl;
+  }
+} // namespace controller
