@@ -8,7 +8,6 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  environment_controller
   planning
   robotcontroller
   std_msgs
@@ -106,8 +105,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES controller
-  CATKIN_DEPENDS environment_controller planning robotcontroller std_msgs kinematics
+  LIBRARIES lib_controller
+  CATKIN_DEPENDS planning robotcontroller std_msgs kinematics
 #  DEPENDS system_lib
 )
 
@@ -123,18 +122,25 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(main_application 
-src/RobotControl.cpp)
+add_library(lib_controller
+src/controller/Context.cpp
+src/controller/EmergencyStop.cpp
+src/controller/Init.cpp
+src/controller/SoftStop.cpp
+src/controller/State.cpp
+src/controller/CloseGripper.cpp
+src/controller/Move.cpp
+src/controller/Ready.cpp
+src/controller/ReleaseCup.cpp
+src/controller/WaitForCup.cpp
+src/controller/PowerOff.cpp
+src/environment_controller/Cup.cpp
+src/environment_controller/Position.cpp
+src/environment_controller/Object.cpp)
 
-add_dependencies(main_application
+add_dependencies(lib_controller
 ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(main_application 
-lib_kinematics
-lib_planning
-lib_environment_controller
-${catkin_LIBRARIES}
-)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -147,7 +153,7 @@ ${catkin_LIBRARIES}
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
+## With catkin_make all packages are built within a single CMake aContext
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/controller_node.cpp)
 

@@ -8,11 +8,11 @@ namespace robotcontroller
    */
   struct GripperData
   {
-    const double cWidth_m;
-    const double cSpeedfactor;
-    const double cForce_nm;
-    const double cEpsilonInner_m;
-    const double cEpsilonOuter_m;
+    double cWidth_m;
+    double cSpeedfactor;
+    double cForce_nm;
+    double cEpsilonInner_m;
+    double cEpsilonOuter_m;
     /**
      * @brief Construct a new Gripper Data object
      *
@@ -22,12 +22,14 @@ namespace robotcontroller
      * @param anEpsilon_inner_m
      * @param anEpsilon_outer_m
      */
-    GripperData(const double aWidth_m,
-                const double aSpeedfactor,
-                const double aForce_nm,
-                const double anEpsilonInner_m,
-                const double anEpsilonOuter_m);
+    GripperData(double aWidth_m,
+                double aSpeedfactor,
+                double aForce_nm = 0.0,
+                double anEpsilonInner_m = 0.005,
+                double anEpsilonOuter_m = 0.005);
     ~GripperData() = default;
+
+    GripperData& operator=(const GripperData&) = default;
   };
 } // namespace robotcontroller
 

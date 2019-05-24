@@ -42,7 +42,6 @@ TEST(TestProtocol, parseCommandThetaSpeedFactor)
   EXPECT_NE(global_out, theta_out);
 }
 
-
 TEST(TestProtocol, parseCommandTheta)
 {
   commands::CommandParser parser;
@@ -85,4 +84,3 @@ TEST(TestProtocol, parseCommandStop)
   parser.parseCommandStop(true, out);
   EXPECT_EQ(global_out, out);
 }
-

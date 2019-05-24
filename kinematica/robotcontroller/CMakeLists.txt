@@ -132,7 +132,8 @@ include_directories(
 add_library(lib_robotcontrol
 src/RobotControlPublisher.cpp 
 src/RobotStopPublisher.cpp
-src/RobotGripperPublisher.cpp )
+src/RobotGripperPublisher.cpp
+src/GripperData.cpp )
 
 add_dependencies(lib_robotcontrol
 ${catkin_EXPORTED_TARGETS})
@@ -178,7 +179,7 @@ endif()
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
+## With catkin_make all packages are built within a single CMake aContext
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/robotcontroller_node.cpp)
 

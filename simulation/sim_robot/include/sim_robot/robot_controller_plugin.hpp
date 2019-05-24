@@ -28,7 +28,8 @@ namespace gazebo
     virtual ~RobotControllerPlugin() = default;
 
     /**
-     * @brief Load the robot controller plugin, overrides the Load from ModelPlugin
+     * @brief Load the robot controller plugin, overrides the Load from
+     * ModelPlugin
      * @param _parent: parent model
      * @param _sdf: the sdf (xml) in the robot model, within the <plugin>
      * element
@@ -49,10 +50,10 @@ namespace gazebo
 
     /**
      * @brief Callback method for receiving an incoming gripper command
-     * @param msg: custom message for controlling the gripper. see http://wor.wiki.icaprojecten.nl/confluence/pages/editpage.action?pageId=144212036#DDD-Aansturinginterface-IGripperControlinterface
+     * @param msg: custom message for controlling the gripper. see
+     * http://wor.wiki.icaprojecten.nl/confluence/pages/editpage.action?pageId=144212036#DDD-Aansturinginterface-IGripperControlinterface
      */
     void commandGripperCallBack(const robotcontroller_msgs::GripperPtr& Amsg);
-
 
     /**
      * @brief Callback method for receiving an incoming robot command

@@ -11,8 +11,9 @@
 #ifndef ENVIRONMENT_CONTROLLER_HPP
 #define ENVIRONMENT_CONTROLLER_HPP
 
-#include "Cup.hpp"
 #include "IObstacles.hpp"
+#include "controller/Context.hpp"
+#include "environment_controller/Cup.hpp"
 #include "ros/ros.h"
 
 namespace environment_controller
@@ -21,7 +22,7 @@ namespace environment_controller
   {
 
       public:
-    EnvironmentController();
+    EnvironmentController(const std::shared_ptr<controller::Context>& aContext);
 
     /**
      * @brief Destroy the EnvironmentController object
@@ -52,6 +53,9 @@ namespace environment_controller
      * @param aCup the cup to move to
      */
     void provideCup(const Cup& aCup);
+
+      private:
+    std::shared_ptr<controller::Context> mContext;
   };
 } // namespace environment_controller
 
