@@ -79,6 +79,10 @@ TEST(Child, calculateXVelocity)
   EXPECT_EQ(lChild.calculateXVelocity(), 10);
   lChild.mAngle = -180;
   EXPECT_EQ(lChild.calculateXVelocity(), -10);
+  lChild.mAngle = -90;
+  EXPECT_EQ(lChild.calculateXVelocity(), 0);
+  lChild.mAngle = 90;
+  EXPECT_EQ(lChild.calculateXVelocity(), 0);
 }
 
 TEST(Child, calculateYVelocity)
