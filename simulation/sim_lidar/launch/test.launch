@@ -9,6 +9,4 @@
     <arg name="debug" value="false"/>
     <arg name="verbose" value="false"/>
   </include>
-
-  <node name="tree" pkg="sim_world" type="prototype_body_lidar_quad_tree_node" />
 </launch>

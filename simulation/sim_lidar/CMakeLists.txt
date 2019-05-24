@@ -41,7 +41,7 @@ catkin_package(
 add_library(${PROJECT_NAME}_plugin SHARED
         src/LidarPlugin.cpp)
 
-add_dependencies(${PROJECT_NAME}_plugin sensor_interfaces)
+add_dependencies(${PROJECT_NAME}_plugin ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_plugin
         ${catkin_LIBRARIES}
@@ -49,13 +49,19 @@ target_link_libraries(${PROJECT_NAME}_plugin
         RayPlugin)
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/LidarPlugin_UnitTests.cpp)
+
+add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(${PROJECT_NAME}_unit_tests
+ ${catkin_LIBRARIES}
+ ${GAZEBO_LIBRARIES}
+ ${PROJECT_NAME}_plugin
+ RayPlugin)
   
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
   set(CMAKE_BUILD_TYPE Debug)
-
 
   include(../../cmake/CodeCoverage.cmake)
     
@@ -75,7 +81,6 @@ if(CODE_COVERAGE)
   )
 
   APPEND_COVERAGE_COMPILER_FLAGS()
-
 
   SETUP_TARGET_FOR_COVERAGE_LCOV(
           NAME ${PROJECT_NAME}_coverage
