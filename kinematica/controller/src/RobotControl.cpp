@@ -34,7 +34,7 @@ int main(int argc, char** argv)
   ros::NodeHandle lControlNode;
   ros::NodeHandle lStopNode;
 
-  ros::Duration lLoop(4);
+  ros::Rate lLoop_rate(environment_controller::cRate);
 
   robotcontroller::RobotControlPublisher lRobotControlPub(
       lControlNode, cControlTopic, environment_controller::cQueue_size);

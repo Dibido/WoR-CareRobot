@@ -49,7 +49,7 @@ namespace gazebo
 
     /**
      * Callback method for receiving an incoming gripper command
-     * @param msg: string message to parse and apply
+     * @param msg: custom message for controlling the gripper. see http://wor.wiki.icaprojecten.nl/confluence/pages/editpage.action?pageId=144212036#DDD-Aansturinginterface-IGripperControlinterface
      */
     void commandGripperCallBack(const robotcontroller_msgs::GripperPtr& msg);
 
