@@ -9,6 +9,9 @@
 
 #include <ros/ros.h>
 
+#include <algorithm>
+#include <iterator>
+
 namespace gazebo
 {
   class LidarPlugin : public RayPlugin
@@ -42,8 +45,7 @@ namespace gazebo
      * @param aMsg: The gazebo formatted message recieved from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
-    sensor_msgs::LaserScan
-        convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const;
+    sensor_msgs::LaserScan convertToLaserScan(ConstLaserScanStampedPtr& aMsg);
 
     /**
      * @brief Convert the LaserScan message to
@@ -52,7 +54,7 @@ namespace gazebo
      * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(const sensor_msgs::LaserScan aMsg) const;
+        convertToLidarData(const sensor_msgs::LaserScan aMsg);
 
     // Variables
     std::string mFrameName;
