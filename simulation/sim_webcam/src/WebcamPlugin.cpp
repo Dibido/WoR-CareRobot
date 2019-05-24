@@ -8,7 +8,7 @@ namespace gazebo
 
   GZ_REGISTER_SENSOR_PLUGIN(WebcamPlugin);
 
-  void WebcamPlugin::callback(const sensor_msgs::ImageConstPtr aMsg)
+  void WebcamPlugin::webcamDataCallback(const sensor_msgs::ImageConstPtr& aMsg)
   {
     mWebcamPublisher =
         mRosNode->advertise<sensor_msgs::Image>(gazebo::cWebcamPublishTopic, 1);
@@ -18,9 +18,8 @@ namespace gazebo
 
   void WebcamPlugin::Load(sensors::SensorPtr aModel, sdf::ElementPtr aSdf)
   {
-
     CameraPlugin::Load(aModel, aSdf);
-    //The variables are set in the utils class and the CameraPlugin class
+    // The variables are set in the utils class and the CameraPlugin class
     this->parentSensor_ = this->parentSensor;
     this->width_ = this->width;
     this->height_ = this->height;
@@ -34,8 +33,7 @@ namespace gazebo
     {
       int argc = 0;
       char** argv = NULL;
-      ros::init(argc, argv, "WebcamPlugin",
-                ros::init_options::NoSigintHandler);
+      ros::init(argc, argv, "WebcamPlugin", ros::init_options::NoSigintHandler);
     }
 
     mRosNode.reset(new ros::NodeHandle("WebcamPlugin"));
@@ -43,8 +41,8 @@ namespace gazebo
     ros::SubscribeOptions so =
         ros::SubscribeOptions::create<sensor_msgs::Image>(
             gazebo::cWebcamDataTopic, 1,
-            boost::bind(&WebcamPlugin::callback, this, _1), ros::VoidPtr(),
-            &this->mRosQueue);
+            boost::bind(&WebcamPlugin::webcamDataCallback, this, _1),
+            ros::VoidPtr(), &this->mRosQueue);
     mRosSub = this->mRosNode->subscribe(so);
 
     this->mRosQueueThread =

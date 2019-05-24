@@ -39,30 +39,30 @@ namespace gazebo
 
     /**
      * Gets executed when there is data being published.
-     * @param pointer to the message
+     * @param aMsg: pointer to the message
      */
-    void callback(const sensor_msgs::ImageConstPtr aMsg);
+    void webcamDataCallback(const sensor_msgs::ImageConstPtr& aMsg);
 
     /**
      * Setup the sensor plugin. Gets executed when the model (SDF file) gets
      * loaded
-     * @param aModel pointer to the sensor
-     * @param aSdf pointer to the Sdf (defined in the model file) element of the
-     * sensor
+     * @param aModel: pointer to the sensor
+     * @param aSdf: pointer to the Sdf (defined in the model file) element of
+     * the sensor
      */
     virtual void Load(sensors::SensorPtr aModel, sdf::ElementPtr aSdf);
 
       private:
-      // Ros variables
+    // Ros variables
     std::unique_ptr<ros::NodeHandle> mRosNode;
     ros::Subscriber mRosSub;
     ros::Publisher mWebcamPublisher;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
 
-     /**
-     * Handles incoming ros messages
-     * 
+    /**
+     * Handles incoming ros messages on a separate thread
+     * When a new message is available handle it using the callback
      */
     void QueueThread();
   };
