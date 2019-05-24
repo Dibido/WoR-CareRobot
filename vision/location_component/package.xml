@@ -37,9 +37,7 @@
   <run_depend>sensor_msgs</run_depend>
   <run_depend>image_transport</run_depend>
 
-  <export>
-    <image_transport plugin="${prefix}/resized_plugins.xml"/>
-  </export>
+ 
 
 </package>
 

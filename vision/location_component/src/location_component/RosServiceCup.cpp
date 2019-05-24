@@ -27,6 +27,7 @@ namespace location_component
 
     object.timeOfArrival = aCup.timeOfArrival();
 
+    std::cout << " <> " << object.aSpeed <<std::endl;
     mCupPublisher.publish(object);
     ros::spinOnce();
   }
