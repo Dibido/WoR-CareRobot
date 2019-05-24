@@ -10,7 +10,7 @@
     <arg if="$(eval world == 'franka_empty')" name="world_name" value="$(find sim_world)/worlds/franka_empty.world"/>
     <arg if="$(eval world == 'child_with_lidar')" name="world_name" value="$(find sim_world)/worlds/child_with_lidar.world"/>
     <arg if="$(eval world == 'current_world')" name="world_name" value="$(find sim_world)/worlds/current_sim_world.world"/>
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="$(eval paused)"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="recording" value="false"/>

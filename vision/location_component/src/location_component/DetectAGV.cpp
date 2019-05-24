@@ -23,11 +23,16 @@ namespace location_component
       PosCalculation lPosCalculator;
       for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
       {
-        ROS_INFO_STREAM("Cup found at: " << lPosCalculator.calculateCupLocation(
-                            lDetectedFrame->mDetectedAGV.mMidpoint,
-                            lDetectedFrame->mAGVFrameSize,
-                            detectedCup.mMidpoint,
-                            lDetectedFrame->mCupFrameSize));
+        cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
+            lDetectedFrame->mDetectedAGV.mMidpoint,
+            lDetectedFrame->mAGVFrameSize, detectedCup.mMidpoint,
+            lDetectedFrame->mCupFrameSize);
+        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+
+        ROS_INFO_STREAM("Current time " << ros::Time::now());
+        ROS_INFO_STREAM("Cup is expected to arrive at "
+                        << lPosCalculator.predictCupArrivalTime(
+                               lCupLocation_m.y, ros::Time::now()));
       }
 
       ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(
