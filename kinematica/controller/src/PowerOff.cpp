@@ -12,17 +12,17 @@ PowerOff::PowerOff(){
 
 PowerOff::~PowerOff(){};
 
-void PowerOff::entryAction(Context& context)
+void PowerOff::entryAction(Context* context)
 {
-  //std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void PowerOff::doActivity(Context& context)
+void PowerOff::doActivity(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void PowerOff::exitAction(Context& context)
+void PowerOff::exitAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }

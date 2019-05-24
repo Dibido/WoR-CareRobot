@@ -35,7 +35,7 @@ class State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  virtual void entryAction(Context& context) = 0;
+  virtual void entryAction(Context* context) = 0;
 
   /**
    * @brief doActivity is continiously being called while the system is in the
@@ -44,7 +44,7 @@ class State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  virtual void doActivity(Context& context) = 0;
+  virtual void doActivity(Context* context) = 0;
 
   /**
    * @brief exitAction is being called when the State state is being exited.
@@ -52,6 +52,6 @@ class State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  virtual void exitAction(Context& context) = 0;
+  virtual void exitAction(Context* context) = 0;
 };
-#endif //STATE_HPP
+#endif // STATE_HPP

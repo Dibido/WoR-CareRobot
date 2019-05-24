@@ -10,17 +10,17 @@ EmergencyStop::EmergencyStop(){
 };
 EmergencyStop::~EmergencyStop(){};
 
-void EmergencyStop::entryAction(Context& context)
+void EmergencyStop::entryAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void EmergencyStop::doActivity(Context& context)
+void EmergencyStop::doActivity(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void EmergencyStop::exitAction(Context& context)
+void EmergencyStop::exitAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }

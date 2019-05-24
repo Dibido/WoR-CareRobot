@@ -10,17 +10,17 @@ WaitForCup::WaitForCup(){
 };
 WaitForCup::~WaitForCup(){};
 
-void WaitForCup::entryAction(Context& context)
+void WaitForCup::entryAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void WaitForCup::doActivity(Context& context)
+void WaitForCup::doActivity(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void WaitForCup::exitAction(Context& context)
+void WaitForCup::exitAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }

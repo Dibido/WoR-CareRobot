@@ -31,7 +31,7 @@ class EmergencyStop : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void entryAction(Context& context);
+  void entryAction(Context* context);
 
   /**
    * @brief doActivity is continiously being called while the system is in the
@@ -40,7 +40,7 @@ class EmergencyStop : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void doActivity(Context& context);
+  void doActivity(Context* context);
   /**
    * @brief exitAction is being called when the EmergencyStop state is being
    * exited.
@@ -48,6 +48,6 @@ class EmergencyStop : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void exitAction(Context& context);
+  void exitAction(Context* context);
 };
 #endif // EMERGENCY_STOP_HPP

@@ -31,7 +31,7 @@ class WaitForCup : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void entryAction(Context& context);
+  void entryAction(Context* context);
 
   /**
    * @brief doActivity is continiously being called while the system is in the
@@ -40,7 +40,7 @@ class WaitForCup : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void doActivity(Context& context);
+  void doActivity(Context* context);
   /**
    * @brief exitAction is being called when the WaitForCup state is being
    * exited.
@@ -48,6 +48,6 @@ class WaitForCup : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void exitAction(Context& context);
+  void exitAction(Context* context);
 };
-#endif //WAIT_FOR_CUP_HPP
+#endif // WAIT_FOR_CUP_HPP

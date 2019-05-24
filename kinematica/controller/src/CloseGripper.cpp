@@ -10,17 +10,17 @@ CloseGripper::CloseGripper(){
 };
 CloseGripper::~CloseGripper(){};
 
-void CloseGripper::entryAction(Context& context)
+void CloseGripper::entryAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void CloseGripper::doActivity(Context& context)
+void CloseGripper::doActivity(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-void CloseGripper::exitAction(Context& context)
+void CloseGripper::exitAction(Context* context)
 {
-//std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // std::cout << __PRETTY_FUNCTION__ << std::endl;
 }

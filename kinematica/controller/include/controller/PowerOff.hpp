@@ -25,12 +25,13 @@ class PowerOff : public State
    */
   ~PowerOff();
   /**
-   * @brief entryAction is being called when the PowerOff state is being entered.
+   * @brief entryAction is being called when the PowerOff state is being
+   * entered.
    *
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void entryAction(Context& context);
+  void entryAction(Context* context);
 
   /**
    * @brief doActivity is continiously being called while the system is in the
@@ -39,13 +40,13 @@ class PowerOff : public State
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void doActivity(Context& context);
+  void doActivity(Context* context);
   /**
    * @brief exitAction is being called when the PowerOff state is being exited.
    *
    * @param context is an object which gives the states a interface to the
    * "outside world".
    */
-  void exitAction(Context& context);
+  void exitAction(Context* context);
 };
 #endif // POWER_OFF_HPP
