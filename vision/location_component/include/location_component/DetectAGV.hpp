@@ -1,6 +1,8 @@
 #ifndef DETECTAGV_HPP
 #define DETECTAGV_HPP
 
+#include "location_component/CupScanner.hpp"
+#include "location_component/RosServiceCup.hpp"
 #include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
@@ -15,13 +17,28 @@ namespace location_component
   {
     std::vector<cv::Point> mCorners;
     cv::Point mMidpoint;
+    cv::Mat agvFrame;
+  };
+
+  struct DetectedFrame
+  {
+    DetectedAGV mDetectedAGV;
+    std::vector<DetectedCup> mDetectedCups;
+    cv::Size mAGVFrameSize;
+    cv::Size mCupFrameSize;
   };
 
   class DetectAGV
   {
       public:
-    DetectAGV();
+    DetectAGV(ros::NodeHandle& nh);
     ~DetectAGV();
+
+    /**
+     * @brief Calls the detectFrame function, and if an AGV and cups have been
+     * detected, sends a message.
+     */
+    void detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame);
 
     /**
      * @brief The detectFrame function will analyse the frame and decide what
@@ -36,7 +53,8 @@ namespace location_component
      * @param aDisplayFrame - This reference matrix is used to display the debug
      * information of the detected objects
      */
-    void detectFrame(const cv::Mat& aFrame, cv::Mat& aDisplayFrame);
+    boost::optional<DetectedFrame> detectFrame(const cv::Mat& aFrame,
+                                               cv::Mat& aDisplayFrame);
 
     /**
      * @brief This function will create a correct perspective image. If the
@@ -84,6 +102,7 @@ namespace location_component
       private:
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
+    RosServiceCup rosServiceCup;
   };
 } // namespace location_component
 
