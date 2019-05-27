@@ -1,7 +1,7 @@
 // Library
+#include "controller/ControllerConsts.hpp"
 #include <iostream>
 #include <ros/ros.h>
-
 // Local
 #include "controller/CloseGripper.hpp"
 #include "controller/WaitForCup.hpp"
@@ -14,6 +14,13 @@ namespace controller
 
   void WaitForCup::entryAction(Context* aContext)
   {
+    ros::Duration lDuration =
+        (aContext->cup().timeOfArrival() - ros::Time::now()) -
+        ros::Duration(cWaitTime_s);
+    if (lDuration > ros::Duration(0))
+    {
+      lDuration.sleep();
+    }
   }
 
   void WaitForCup::doActivity(Context* aContext)

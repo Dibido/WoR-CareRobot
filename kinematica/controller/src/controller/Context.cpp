@@ -149,4 +149,9 @@ namespace controller
   {
     return mGripperData;
   }
+
+  std::shared_ptr<State>& Context::currentState()
+  {
+    return mCurrentState;
+  }
 } // namespace controller

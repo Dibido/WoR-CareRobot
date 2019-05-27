@@ -1,4 +1,5 @@
 #include "environment_controller/EnvironmentController.hpp"
+#include "controller/EmergencyStop.hpp"
 #include "environment_controller/SafetyController.hpp"
 
 #include <thread>
@@ -17,7 +18,10 @@ namespace environment_controller
 
   void EnvironmentController::executeHardstop(bool hardstop)
   {
-    mContext->hardStop(hardstop);
+    if (typeid(*mContext->currentState()) ==
+            typeid(controller::EmergencyStop) ||
+        hardstop == true)
+      mContext->hardStop(hardstop);
   }
 
   void EnvironmentController::provideCup(const Cup& aCup)
