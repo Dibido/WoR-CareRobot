@@ -4,6 +4,10 @@ namespace location_component
 {
   AGV::AGV(double aSpeed) : mSpeed(aSpeed)
   {
+    if (aSpeed < 0)
+    {
+      throw std::range_error("AGV speed cannot be lower than zero");
+    }
   }
 
   double& AGV::speed()

@@ -8,7 +8,18 @@ namespace location_component
   struct AGV
   {
       public:
+    /**
+     * @brief Construct a new AGV object
+     * 
+     * @param aSpeed - The currect speed of the AGV in meters for each second
+     */
     AGV(double aSpeed);
+
+    /**
+     * @brief Defualt constructor/destructor
+     * 
+     * 
+     */
     AGV(const AGV& aAGV) = default;
     virtual ~AGV() = default;
 
