@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
     message_runtime
     roscpp
     sensor_msgs
-    std_msgs)
+    std_msgs
+    sensor_interfaces)
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -23,6 +24,12 @@ find_package(Boost REQUIRED COMPONENTS
 find_package(Gazebo REQUIRED)
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
+
+catkin_package(
+    DEPENDS
+    roscpp
+    gazebo_ros
+    sensor_interfaces)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)

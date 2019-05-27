@@ -13,6 +13,7 @@ namespace environment_controller
   struct Cup
   {
       public:
+
     /**
      * @brief Construct a new Cup object
      *

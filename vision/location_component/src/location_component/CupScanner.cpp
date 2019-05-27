@@ -31,14 +31,13 @@ namespace location_component
   {
     std::vector<DetectedCup> lDetectedCups;
 
-    cv::Mat lHSV;
-    cv::cvtColor(aImage, lHSV, CV_BGR2HSV);
-    cv::Mat lHSVChannels[3];
-    cv::split(lHSV, lHSVChannels);
-    cv::Mat lGrayscale = lHSVChannels[1];
+    cv::Mat lGrayscale, lHSV;
+    aImage.copyTo(lGrayscale);
+    aImage.copyTo(lHSV);
 
     cv::Mat lEdgesRaw, lEdges;
     cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
+
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
         [](uchar& s, __attribute__((unused)) const int position[]) {

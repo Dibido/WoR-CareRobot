@@ -2,7 +2,9 @@
 #include <regex>
 
 #include "robotcontroller_msgs/Control.h"
+#include "robotcontroller_msgs/Gripper.h"
 #include "sim_robot/stopCommand.h"
+#include <regex>
 
 #include <sim_robot/robot_controller_plugin.hpp>
 
@@ -12,8 +14,11 @@
 namespace gazebo
 {
   // Topic for serial robot commands
+
   const char* cCommandTopic = "/robot_command";
   const char* cStopTopic = "/robot_stop";
+  const char* cCommandGripperTopic = "/robot_gripper";
+
   // Defines to read attributes / elements from the sdf file
   const char* cSdfJointInfoElement = "joint_info";
   const char* cSdfJointNameAttr = "name";
@@ -72,6 +77,11 @@ namespace gazebo
     rosSubCommands =
         rosNode->subscribe(gazebo::cCommandTopic, 1,
                            &RobotControllerPlugin::commandCallBackFloat, this);
+
+    rosSubCommandGripper = rosNode->subscribe(
+        gazebo::cCommandGripperTopic, 1,
+        &RobotControllerPlugin::commandGripperCallBack, this);
+
     rosSubStop = rosNode->subscribe(gazebo::cStopTopic, 1,
                                     &RobotControllerPlugin::stopCallBack, this);
 
@@ -129,6 +139,21 @@ namespace gazebo
       stopJoint(c);
     }
   } // namespace gazebo
+
+  void RobotControllerPlugin::commandGripperCallBack(
+      const robotcontroller_msgs::GripperPtr& aMsg)
+  {
+    double width = channelJointMap.at(7).converseScaleToRad(
+        aMsg->width, 0.08, 0.0); // Width needs to be inverted.
+    double speedfactor = aMsg->speedfactor;
+
+    //? These message variables are currently not used.
+    // double force = msg->force;
+    // double epsilon_inner = msg->epsilon_inner;
+    // double epsilon_outer = msg->epsilon_outer;
+
+    channelJointMap.at(7).moveTheta(width, speedfactor, /*time*/ 0, updateRate);
+  }
 
   // PRIVATE
   void RobotControllerPlugin::commandCallBack(

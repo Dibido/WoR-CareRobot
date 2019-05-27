@@ -109,15 +109,14 @@ namespace gazebo
   void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
   {
     // Convert to LaserScan message
-    const sensor_msgs::LaserScan lLaserMessage = convertToLaserScan(aMsg);
-    // Publish message
-    mRosPub.publish(lLaserMessage);
-
+    sensor_msgs::LaserScan lLaserMessage = convertToLaserScan(aMsg);
     // Convert to LidarData message
-    const sensor_interfaces::LidarData lLidarDataMessage =
+    sensor_interfaces::LidarData lLidarDataMessage =
         convertToLidarData(lLaserMessage);
     // Publish message
     mLidarDataPub.publish(lLidarDataMessage);
+    // Publish message
+    mRosPub.publish(lLaserMessage);
 
     // Assert to check that the ranges and their angles are matched
     assert(lLidarDataMessage.measurement_angles.size() ==
@@ -125,7 +124,7 @@ namespace gazebo
   }
 
   sensor_msgs::LaserScan
-      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const
+      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg)
   {
     sensor_msgs::LaserScan lLaserMessage;
     float lAngleMin = static_cast<float>(aMsg->scan().angle_min());
@@ -142,8 +141,11 @@ namespace gazebo
     lLaserMessage.range_max = static_cast<float>(aMsg->scan().range_max());
     lLaserMessage.ranges.resize(
         static_cast<unsigned long>(aMsg->scan().ranges().size()));
-    std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(),
-              lLaserMessage.ranges.begin());
+
+    std::reverse_copy(aMsg->scan().ranges().begin(),
+                      aMsg->scan().ranges().end(),
+                      lLaserMessage.ranges.begin());
+
     lLaserMessage.angle_increment =
         static_cast<float>(2.0 * M_PI) /
         static_cast<float>(lLaserMessage.ranges.size());
@@ -151,7 +153,7 @@ namespace gazebo
   }
 
   sensor_interfaces::LidarData
-      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
+      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg)
   {
     sensor_interfaces::LidarData lLidarDataMessage;
     float lAngleMax = static_cast<float>(aMsg.angle_max);

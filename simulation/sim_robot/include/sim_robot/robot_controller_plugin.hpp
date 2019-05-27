@@ -28,7 +28,8 @@ namespace gazebo
     virtual ~RobotControllerPlugin() = default;
 
     /**
-     * Load the robot controller plugin, overrides the Load from ModelPlugin
+     * @brief Load the robot controller plugin, overrides the Load from
+     * ModelPlugin
      * @param _parent: parent model
      * @param _sdf: the sdf (xml) in the robot model, within the <plugin>
      * element
@@ -37,55 +38,62 @@ namespace gazebo
 
       private:
     /**
-     * Update hook, called every cycle by gazebo
+     * @brief Update hook, called every cycle by gazebo
      */
     void onUpdate();
     /**
-     * Callback method for receiving an incoming robot command
+     * @brief Callback method for receiving an incoming robot command
      * @param msg: double message to parse and apply
      */
 
     void commandCallBackFloat(const robotcontroller_msgs::ControlPtr& fmsg);
 
     /**
-     * Callback method for receiving an incoming robot command
+     * @brief Callback method for receiving an incoming gripper command
+     * @param msg: custom message for controlling the gripper. see
+     * http://wor.wiki.icaprojecten.nl/confluence/pages/editpage.action?pageId=144212036#DDD-Aansturinginterface-IGripperControlinterface
+     */
+    void commandGripperCallBack(const robotcontroller_msgs::GripperPtr& Amsg);
+
+    /**
+     * @brief Callback method for receiving an incoming robot command
      * @param msg: string message to parse and apply
      */
     void commandCallBack(const std_msgs::StringConstPtr& msg);
 
     /**
-     * Callback method for receiving an incoming stop command
+     * @brief Callback method for receiving an incoming stop command
      * @param smsg: bool message to parse and apply
      */
     void stopCallBack(const sim_robot::stopCommandPtr& smsg);
 
     /**
-     * Loads all joints, based on the joint_info elements in the sdf
+     * @brief Loads all joints, based on the joint_info elements in the sdf
      * @param _sdf: plugin element in the robot model sdf
      */
     void loadJointInfo(const sdf::ElementPtr& _sdf);
 
     /**
-     * Move a joint to given position with given speed
+     * @brief Move a joint to given position with given speed
      * @param channel: channel / index of the joint
      * @param pw: pulse width
      * @param speed: velocity
      */
     void moveJoint(const commands::Command& com);
     /**
-     * Move a joint to given position with given speed
+     * @brief Move a joint to given position with given speed
      * @param channel: channel / index of the joint
      * @param rad: radials
      * @param speedfactor: velocity
      */
     void moveJointTheta(const commands::Command& com);
     /**
-     * Stop a joint
+     * @brief Stop a joint
      * @param channel: channel / index of the joint
      */
     void stopJoint(const commands::Command& com);
     /**
-     * Loading errors
+     * @brief Loading errors
      * @param jointName: joint
      * @param element: element
      */
@@ -99,6 +107,7 @@ namespace gazebo
     // Ros variables
     ros::NodeHandlePtr rosNode;
     ros::Subscriber rosSubCommands;
+    ros::Subscriber rosSubCommandGripper;
     ros::Subscriber rosSubStop;
     ros::Publisher rosPub;
     ros::CallbackQueue rosQueue;

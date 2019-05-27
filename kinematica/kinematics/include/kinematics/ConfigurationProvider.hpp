@@ -2,8 +2,8 @@
 #define KINEMATICS_CONFIGURATIONPROVIDER_HPP
 
 #include "kinematics/DenavitHartenberg.hpp"
+#include "kinematics/EndEffector.hpp"
 #include "kinematics/IConfigurationProvider.hpp"
-
 namespace kinematics
 {
   class ConfigurationProvider : public IConfigurationProvider
@@ -25,7 +25,7 @@ namespace kinematics
      */
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalEndEffector,
-                          const Configuration& aCurrentConfiguration);
+                          const Configuration& aCurrentConfiguration) override;
 
       private:
     void prepareConfiguration(Configuration& configuration);

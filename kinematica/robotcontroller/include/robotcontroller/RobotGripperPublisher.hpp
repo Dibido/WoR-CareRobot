@@ -1,5 +1,5 @@
-#ifndef ROBOTCONTROL_PUBLISHER_HPP
-#define ROBOTCONTROL_PUBLISHER_HPP
+#ifndef ROBOT_GRIPPER_PUBLISHER_HPP
+#define ROBOT_GRIPPER_PUBLISHER_HPP
 
 #include "robotcontroller/IGripperControl.hpp"
 #include "robotcontroller_msgs/Gripper.h"
@@ -48,4 +48,4 @@ namespace robotcontroller
   };
 } // namespace robotcontroller
 
-#endif // ROBOTCONTROL_PUBLISHER_HPP
+#endif // ROBOT_GRIPPER_PUBLISHER_HPP

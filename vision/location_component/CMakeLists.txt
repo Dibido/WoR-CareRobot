@@ -1,29 +1,41 @@
 cmake_minimum_required(VERSION 2.8)
 project(location_component)
 
-find_package(catkin REQUIRED COMPONENTS cv_bridge image_transport message_generation sensor_msgs)
+SET(GCC_OPENCV_FLAGS "-lopencv_core -lopencv_highgui")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_OPENCV_FLAGS}")
+
+find_package(catkin REQUIRED COMPONENTS
+	cv_bridge
+	image_transport
+	message_generation
+	kinematica_msgs
+	sensor_msgs
+	environment_controller
+)
+
+
 
 ## Generate messages in the 'msg' folder
  # add_message_files(
  #   DIRECTORY
  #   msg
- #   FILES ResizedImage.msg
+ #   FILES ResizedImage.msg Cup.msg
  # )
 
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-   geometry_msgs
-   sensor_msgs
- )
+ # generate_messages(
+ #   DEPENDENCIES
+ #   std_msgs
+ #   geometry_msgs
+ #   sensor_msgs
+ # )
 
-catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs)
+catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs geometry_msgs environment_controller)
 
 find_package(Threads REQUIRED)
 find_package(sensor_msgs)
-find_package(OpenCV)
+find_package(OpenCV 3.2.0 REQUIRED)
 
 include(CTest)
 enable_testing()
@@ -32,16 +44,15 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
+add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp)
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
-target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-
+target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp)
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build

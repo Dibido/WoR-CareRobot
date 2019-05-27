@@ -157,7 +157,7 @@ target_link_libraries(${PROJECT_NAME}_main ${Boost_FILESYSTEM_LIBRARY} lib_plann
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
+## With catkin_make all packages are built within a single CMake aContext
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/planning_node.cpp)
 

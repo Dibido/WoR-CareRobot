@@ -20,12 +20,10 @@ namespace environment_controller
   {
     try
     {
-      Position lPos(aMsg->cup.position_m.x, aMsg->cup.position_m.y,
-                    aMsg->cup.position_m.z);
-      Object lObj(lPos, aMsg->cup.height_m, aMsg->cup.width_m,
-                  aMsg->cup.depth_m, aMsg->cup.direction_rad,
-                  aMsg->cup.speed_ms, aMsg->cup.measurementTime,
-                  aMsg->cup.sensorID);
+      Position lPos(aMsg->mX_m, aMsg->mY_m, aMsg->mZ_m);
+      Object lObj(lPos, aMsg->aHeight, aMsg->aWidth, aMsg->aDepth,
+                  aMsg->aDirection, aMsg->aSpeed, aMsg->aMeasurementTime,
+                  aMsg->aSensorId);
       Cup lCup(lObj, aMsg->timeOfArrival);
       foundCup(lCup);
     }
