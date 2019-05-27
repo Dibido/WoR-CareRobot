@@ -1,6 +1,7 @@
 <launch>
   <arg name="world" default="franka_agv" />
   <arg name="verbose" default="false" />
+  <arg name="all_nodes" default="true" />
 
   <env name="GAZEBO_MODEL_PATH" value="$(find sim_world)/models"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -21,7 +22,7 @@
 
   <include file="$(find sonar_interpreter)/launch/sonar_interpreter.launch" />
 
-  <node name="location_component" pkg="location_component" type="location_component" />
-  <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" />
-  <node name="main_application" pkg="main_application" type="main_application" />
+  <node if="$(arg all_nodes)" name="location_component" pkg="location_component" type="location_component" />
+  <node if="$(arg all_nodes)" name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" />
+  <node if="$(arg all_nodes)" name="main_application" pkg="main_application" type="main_application" />
 </launch>
