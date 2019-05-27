@@ -107,6 +107,38 @@ namespace kinematics
     return true;
   }
 
+  template <std::size_t M>
+  inline bool transformationMatrixCosineSim(const Matrix<double, M, 1>& lhs,
+                                            const Matrix<double, M, 1>& rhs,
+                                            double aCosineSimEpsilon,
+                                            double aEpsilon_rad,
+                                            std::size_t aEpsilonSplit)
+  {
+    assert(M > aEpsilonSplit);
+
+    Matrix<double, M, 1> lValsPos;
+    Matrix<double, M, 1> lRhsPos;
+
+    for (std::size_t i = 0; i < aEpsilonSplit; ++i)
+    {
+      lValsPos[i][0] = lhs[i][0];
+      lRhsPos[i][0] = rhs[i][0];
+    }
+    for (std::size_t i = aEpsilonSplit; i < M; ++i)
+    {
+      if (radianEquals(lhs[i][0], rhs[i][0], aEpsilon_rad) == false)
+      {
+        return false;
+      }
+    }
+
+    double cCosineSimPos = cosineSimilarity(lValsPos, lRhsPos);
+
+    std::cout << cCosineSimPos << std::endl;
+
+    return (cCosineSimPos > aCosineSimEpsilon) /* && (cCosineSimPos < 1.0)*/;
+  }
+
   /**
    * @brief Constrain a radian between -M_PI and M_PI
    *
