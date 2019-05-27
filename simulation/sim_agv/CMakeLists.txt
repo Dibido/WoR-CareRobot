@@ -7,10 +7,14 @@ project(sim_agv)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-	gazebo_ros
+  gazebo_ros
+  gazebo_msgs
+  gazebo_plugins
 	roscpp
-	std_msgs
-	message_generation
+  std_msgs
+  sensor_msgs
+  message_generation
+  sensor_interfaces
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -45,12 +49,11 @@ add_message_files(
 generate_messages(
   DEPENDENCIES)
 
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES sim_agv
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-)
+  catkin_package(
+    DEPENDS
+    roscpp
+    gazebo_ros
+    sensor_interfaces)
 
 add_library(${PROJECT_NAME}_plugin SHARED src/automated_guided_vehicle_plugin.cpp)
 

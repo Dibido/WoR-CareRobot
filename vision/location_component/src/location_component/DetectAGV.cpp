@@ -7,9 +7,15 @@
 
 namespace location_component
 {
+  DetectAGV::DetectAGV()
+      : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3), mRosServiceCup()
+  {
+  }
 
   DetectAGV::DetectAGV(ros::NodeHandle& nh)
-      : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3), rosServiceCup(nh)
+      : mPrevDetectedAGV(),
+        mCapturedFrame(0, 0, CV_8UC3),
+        mRosServiceCup(std::make_unique<RosServiceCup>(nh))
   {
   }
 
@@ -39,15 +45,18 @@ namespace location_component
         ROS_INFO_STREAM("Cup is expected to arrive at "
                         << lCupPredictedArrivalTime);
 
-        environment_controller::Object lObject(
-            environment_controller::Position(lCupLocation_m.x, cArmY_m,
-                                             lCupLocation_m.z),
-            cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
-            cAGVSpeed_m_s, ros::Time::now(), 0);
+        if (mRosServiceCup)
+        {
+          environment_controller::Object lObject(
+              environment_controller::Position(lCupLocation_m.x, cArmY_m,
+                                               lCupLocation_m.z),
+              cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
+              cAGVSpeed_m_s, ros::Time::now(), 0);
 
-        environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
+          environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
-        rosServiceCup.foundCup(lCup);
+          mRosServiceCup->foundCup(lCup);
+        }
       }
 
       ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(

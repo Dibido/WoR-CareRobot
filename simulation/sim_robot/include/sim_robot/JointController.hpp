@@ -23,8 +23,8 @@ namespace gazebo
      * @param mMaxPw : Maximum pulse width
      * @param mMinRad : Minimum radians (to move joint to)
      * @param mMaxRad : Maximum radians (to move joint to)
-     * @param mMaxVel : Maximum velocity in radians per second (ex. M_PI_2 will
-     * result in 1 second per 90 degrees)
+     * @param  : Maximum velocity in degrees per second (ex. 180 will
+     * result in 1 second per 180 degrees)
      */
     JointController(physics::JointPtr& joint,
                     const std::string& mName,
@@ -104,8 +104,17 @@ namespace gazebo
     void setCurrentVel(jointVel_t aCurrentVel);
 
       private:
+    /**
+     * @brief convert PW to radians.
+     * @param aPw argument to convert.
+     */
     double convertPw2Radians(jointPw_t aPw) const;
 
+    /**
+     * @brief convert degrees to radians.
+     * @param aPw argument to convert.
+     */
+    jointRad_t convertDegrees2Radians(jointVel_t mVel) const;
     /**
      *@brief Step once towards target position with step size
      */

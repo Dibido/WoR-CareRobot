@@ -25,7 +25,7 @@ namespace kinematics
      */
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalEndEffector,
-                          const Configuration& aCurrentConfiguration);
+                          const Configuration& aCurrentConfiguration) override;
 
       private:
     void prepareConfiguration(Configuration& configuration);
