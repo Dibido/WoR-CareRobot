@@ -34,6 +34,26 @@ sdf::ElementPtr createChildElement(std::string aVelocity, std::string aAngle)
   return sdfPlugin;
 }
 
+TEST(Child, loadConfig)
+{
+  gazebo::Child lChild;
+
+  sdf::ElementPtr lEmpty = createChildEmptyElement();
+  lChild.loadConfig(lEmpty);
+  EXPECT_EQ(lChild.mAngle, 0);
+  EXPECT_EQ(lChild.mVelocity, 0);
+  
+  sdf::ElementPtr lEverythingZero = createChildElement("0", "0");
+  lChild.loadConfig(lEverythingZero);
+  EXPECT_EQ(lChild.mAngle, 0);
+  EXPECT_EQ(lChild.mVelocity, 0);
+ 
+  sdf::ElementPtr lEverythingOne = createChildElement("1", "1");
+  lChild.loadConfig(lEverythingOne);
+  EXPECT_EQ(lChild.mAngle, 1);
+  EXPECT_EQ(lChild.mVelocity, 1);
+}
+
 TEST(Child, loadVelocity)
 {
   gazebo::Child lChild;
@@ -56,20 +76,6 @@ TEST(Child, loadAngle)
   EXPECT_EQ(lChild.loadAngle(lAngleOne), 1);
 }
 
-TEST(Child, loadConfig)
-{
-  gazebo::Child lChild;
-  
-  sdf::ElementPtr lEmpty = createChildEmptyElement();
-  sdf::ElementPtr lEverythingZero = createChildElement("0", "0");
-  sdf::ElementPtr lEverythingOne = createChildElement("1", "1");
-  EXPECT_EQ(lChild.loadAngle(lEmpty), 0);
-  EXPECT_EQ(lChild.loadVelocity(lEmpty), 0);
-  EXPECT_EQ(lChild.loadAngle(lEverythingZero), 0);
-  EXPECT_EQ(lChild.loadVelocity(lEverythingZero), 0);
-  EXPECT_EQ(lChild.loadAngle(lEverythingOne), 1);
-  EXPECT_EQ(lChild.loadVelocity(lEverythingOne), 1);
-}
 
 TEST(Child, calculateXVelocity)
 {
