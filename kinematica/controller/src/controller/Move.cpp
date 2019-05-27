@@ -46,6 +46,12 @@ namespace controller
     mArrivalTime =
         ros::Time::now() +
         ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / lSpeedFactor);
+    uint32_t time = mArrivalTime.toSec()-ros::Time::now().toSec() -1;
+    ros::Duration lDuration(time);
+    if (lDuration > ros::Duration(0))
+    {
+      lDuration.sleep();
+    }
   }
 
   void Move::doActivity(Context* aContext)
