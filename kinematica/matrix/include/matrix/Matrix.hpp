@@ -223,6 +223,18 @@ class Matrix
    * @see https://en.wikipedia.org/wiki/Moore–Penrose_inverse
    */
   Matrix<T, N, M> pseudoInverse() const;
+  /**
+   * @brief dotProduct for two matrices
+   * @see https://en.wikipedia.org/wiki/Dot_product
+   */
+  Matrix<T, M, N> dot(const Matrix<T, M, N>& rhs) const;
+
+  /**
+   * @brief Helper function for cosineSimilarity()
+   *
+   * @return T The sum of a dotProduct matrix
+   */
+  T dotSum() const;
   //@}
   /**
    * @name Other methods
@@ -258,6 +270,21 @@ bool equals(const Matrix<T, M, N>& lhs,
             const Matrix<T, M, N>& rhs,
             const T aPrecision = std::numeric_limits<T>::epsilon(),
             const unsigned long aFactor = 1);
+
+/**
+ * @brief Measures the similarity between two column- or row-vectors
+ * @see https://en.wikipedia.org/wiki/Cosine_similarity
+ *
+ * @tparam T
+ * @tparam M
+ * @tparam N
+ * @param lhs
+ * @param rhs
+ * @return true
+ * @return false
+ */
+template <typename T, const std::size_t M, const std::size_t N>
+T cosineSimilarity(const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs);
 
 #include "matrix/Matrix.inc"
 
