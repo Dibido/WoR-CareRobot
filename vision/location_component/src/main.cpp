@@ -21,6 +21,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
     cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
 
     d->detectUpdate(srcMatrix, displayMatrix);
+    // Disable debug windows for now.
     /* cv::imshow("view", displayMatrix); */
 
     int c = cv::waitKey(10);
@@ -43,6 +44,7 @@ int main(int argc, char** argv)
 
   ros::Rate loop_rate(10);
 
+  // Disable debug windows for now.
   /* cv::namedWindow("view"); */
   image_transport::ImageTransport it(nh);
   const std::string cTopicName = "/sensor/webcam/img_raw";
@@ -54,6 +56,7 @@ int main(int argc, char** argv)
     ros::spinOnce();
   }
 
+  // Disable debug windows for now.
   /* cv::destroyWindow("view"); */
 
   return 0;

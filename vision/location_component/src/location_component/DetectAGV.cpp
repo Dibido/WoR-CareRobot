@@ -117,6 +117,7 @@ namespace location_component
                        cv::Scalar(255, 0, 0), 0);
           }
 
+          // Disable debug windows for now.
           /* imshow("display ", lDisplayCups); */
         }
       }
