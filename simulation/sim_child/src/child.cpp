@@ -31,8 +31,7 @@ void gazebo::Child::onUpdate()
 void gazebo::Child::updateVelocity()
 {
   this->mModel->SetLinearVel(
-      ignition::math::Vector3d(calculateXVelocity(),
-                               calculateYVelocity(), 0));
+      ignition::math::Vector3d(calculateXVelocity(), calculateYVelocity(), 0));
 }
 
 void gazebo::Child::loadConfig(sdf::ElementPtr aSdf)

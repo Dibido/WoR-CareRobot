@@ -104,7 +104,6 @@ namespace gazebo
     void setCurrentVel(jointVel_t aCurrentVel);
 
       private:
-
     /**
      * @brief convert PW to radians.
      * @param aPw argument to convert.

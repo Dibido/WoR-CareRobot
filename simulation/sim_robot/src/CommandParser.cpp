@@ -61,7 +61,7 @@ namespace commands
 
     for (uint16_t i = 0; i < commandTheta.size(); ++i)
     {
-   
+
       Command command(eCommandType::MOVE,                       // type
                       static_cast<jointChannel_t>(i),           // channel
                       static_cast<jointRad_t>(commandTheta[i]), // rad

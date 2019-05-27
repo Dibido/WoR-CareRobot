@@ -37,7 +37,8 @@ namespace gazebo
     mSecs = ros::Time::now().toSec();
     if (mSecs - mPreviousTime >= mInterval)
     {
-      ROS_INFO("speed pushed : %f from: %d", this->mSpeedY , aMsg->radiation_type);
+      ROS_INFO("speed pushed : %f from: %d", this->mSpeedY,
+               aMsg->radiation_type);
       mPreviousTime = mSecs;
       sensor_interfaces::AGVSpeed speedMsg;
       speedMsg.speed = ( float )this->mSpeedY;
@@ -131,7 +132,8 @@ namespace gazebo
     }
   }
 
-  void AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& aSdf)
+  void
+      AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& aSdf)
   {
     // Checking Elements that are relevant for the plugin and shutdown if some
     // are missing
@@ -199,8 +201,8 @@ namespace gazebo
     return returnPosition;
   }
 
-  bool
-      AutomatedGuidedVehiclePlugin::checkSDFElements(const sdf::ElementPtr& aSdf)
+  bool AutomatedGuidedVehiclePlugin::checkSDFElements(
+      const sdf::ElementPtr& aSdf)
   {
     bool allElementsPresent = true;
 
@@ -248,8 +250,8 @@ namespace gazebo
     mMovingForward = true;
 
     // Set model to the starting positiong
-    ignition::math::Pose3<double> pose(mStartPos.x, mStartPos.y, mStartPos.z, 0.0,
-                                       0.0, 0.0);
+    ignition::math::Pose3<double> pose(mStartPos.x, mStartPos.y, mStartPos.z,
+                                       0.0, 0.0, 0.0);
     mModel->SetWorldPose(pose);
 
     // Calculate and set the speed of the AGV

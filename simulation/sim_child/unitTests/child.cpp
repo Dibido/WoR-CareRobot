@@ -23,7 +23,7 @@ sdf::ElementPtr createChildElement(std::string aVelocity, std::string aAngle)
   sdf::ElementPtr sdfVelocity = std::make_shared<sdf::Element>();
   sdf::ElementPtr sdfAngle = std::make_shared<sdf::Element>();
   sdf::ElementPtr sdfPlugin = createChildEmptyElement();
-  
+
   sdfVelocity->AddValue("double", aVelocity, true);
   sdfVelocity->SetName("velocity");
   sdfAngle->AddValue("double", aAngle, true);
@@ -59,7 +59,7 @@ TEST(Child, loadAngle)
 TEST(Child, loadConfig)
 {
   gazebo::Child lChild;
-  
+
   sdf::ElementPtr lEmpty = createChildEmptyElement();
   sdf::ElementPtr lEverythingZero = createChildElement("0", "0");
   sdf::ElementPtr lEverythingOne = createChildElement("1", "1");

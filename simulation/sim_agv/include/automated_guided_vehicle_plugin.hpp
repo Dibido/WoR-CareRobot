@@ -46,7 +46,8 @@ namespace gazebo
     virtual ~AutomatedGuidedVehiclePlugin();
 
     /**
-     * @brief Setup the sensor plugin. Gets executed when the model (SDF file) gets loaded
+     * @brief Setup the sensor plugin. Gets executed when the model (SDF file)
+     * gets loaded
      * @param aModel: pointer to the sensor
      * @param aSdf: pointer to the Sdf (defined in the model file) element of
      * the sensor
@@ -89,7 +90,8 @@ namespace gazebo
     double mInterval = 5;
 
     /**
-     * @brief Handles incoming ros messages on a separate thread when a new message is available handle it using the callback
+     * @brief Handles incoming ros messages on a separate thread when a new
+     * message is available handle it using the callback
      */
     void QueueThread();
 
@@ -145,9 +147,9 @@ namespace gazebo
      *Sets the AGV to the startPosition so that when the simulation starts (or
      *is going on) the AGV will start at its starting position and move
      *accordingly.
-     * @param aGivenDirectionChangeInterval: The amount of seconds the AGV has to
-     *travel between the two points aStartingPosition: The start position of the
-     *AGV aEndingPositon: The end position of the AGV
+     * @param aGivenDirectionChangeInterval: The amount of seconds the AGV has
+     *to travel between the two points aStartingPosition: The start position of
+     *the AGV aEndingPositon: The end position of the AGV
      */
     void setAGVPath(double aGivenDirectionChangeInterval,
                     const Position& aStartingPosition,

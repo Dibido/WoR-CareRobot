@@ -1,6 +1,7 @@
 <launch>
   <arg name="world" default="current_world" />
   <arg name="verbose" default="false" />
+  <arg name="all_nodes" default="true" />
   <arg name="paused" default="true" />
 
   <env name="GAZEBO_MODEL_PATH" value="$(find sim_world)/models"/>
@@ -21,4 +22,8 @@
   </include>
 
   <include file="$(find sonar_interpreter)/launch/sonar_interpreter.launch" />
+
+  <node if="$(arg all_nodes)" name="location_component" pkg="location_component" type="location_component" />
+  <node if="$(arg all_nodes)" name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" />
+  <node if="$(arg all_nodes)" name="main_application" pkg="main_application" type="main_application" />
 </launch>
