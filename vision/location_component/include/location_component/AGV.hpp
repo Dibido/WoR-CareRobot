@@ -13,7 +13,7 @@ namespace location_component
      * 
      * @param aSpeed - The currect speed of the AGV in meters for each second
      */
-    AGV(double aSpeed);
+    AGV(float aSpeed);
 
     /**
      * @brief Defualt constructor/destructor
@@ -28,11 +28,11 @@ namespace location_component
      *
      * @return Object& the object
      */
-    double& speed();
-    const double& speed() const;
+    float& speed();
+    const float& speed() const;
 
       private:
-    double mSpeed;
+    float mSpeed;
   };
 
 } // namespace location_component

@@ -4,7 +4,7 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/IAgvProvider.hpp"
 #include "ros/ros.h"
-#include "std_msgs/Float64.h"
+#include "std_msgs/Float32.h"
 
 namespace location_component
 {
@@ -34,7 +34,7 @@ namespace location_component
      * @param aAGV
      */
     virtual void publishAGVSpeed(const location_component::AGV& aAGV);
-    void AGVCallBack(const std_msgs::Float64& aSpeed);
+    void AGVCallBack(const std_msgs::Float32& aSpeed);
 
       private:
 

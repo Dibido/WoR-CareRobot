@@ -16,12 +16,11 @@ namespace location_component
 
   ros::Time PosCalculation::predictCupArrivalTime(
       float aCupLocationY_m,
-      ros::Time aCurrentTime,
-      float aAGVSpeed_m_s /*= cAGVSpeed_m_s*/) const
+      ros::Time aCurrentTime) const
   {
     float lDistanceToArm_m = std::fabs(cArmY_m - aCupLocationY_m);
     float lCurrentTime_s = ( float )aCurrentTime.toSec();
-    float lTimeToArm_s = lDistanceToArm_m / aAGVSpeed_m_s;
+    float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
     float lPredictedArrivalTime_s = lCurrentTime_s + lTimeToArm_s;
     return ros::Time(lPredictedArrivalTime_s);
   }
@@ -104,6 +103,16 @@ namespace location_component
         lAGVLocationMiddle_m.z);
 
     return lAGVLocation_m;
+  }
+
+  float PosCalculation::getAGVSpeed_m_s()
+  {
+    return mAGVSpeed_m_s;
+  }
+
+  void PosCalculation::setAGVSpeed_m_s(const float aAGVSpeed_m_s)
+  {
+    mAGVSpeed_m_s = aAGVSpeed_m_s;
   }
 
 } // namespace location_component

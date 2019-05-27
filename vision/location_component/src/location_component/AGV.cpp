@@ -2,7 +2,7 @@
 
 namespace location_component
 {
-  AGV::AGV(double aSpeed) : mSpeed(aSpeed)
+  AGV::AGV(float aSpeed) : mSpeed(aSpeed)
   {
     if (aSpeed < 0)
     {
@@ -10,7 +10,7 @@ namespace location_component
     }
   }
 
-  double& AGV::speed()
+  float& AGV::speed()
   {
     if (mSpeed < 0)
     {
@@ -19,7 +19,7 @@ namespace location_component
     return mSpeed;
   }
 
-  const double& AGV::speed() const
+  const float& AGV::speed() const
   {
     if (mSpeed < 0)
     {

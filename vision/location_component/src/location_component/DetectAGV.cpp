@@ -1,6 +1,5 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/CupScanner.hpp"
-#include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include <cmath>
 #include <ros/ros.h>
@@ -29,15 +28,14 @@ namespace location_component
         detectFrame(aFrame, aDisplayFrame);
     if (lDetectedFrame)
     {
-      PosCalculation lPosCalculator;
       for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
       {
-        cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
+        cv::Point3f lCupLocation_m = mPosCalculator.calculateCupLocation(
             lDetectedFrame->mDetectedAGV.mMidpoint,
             lDetectedFrame->mAGVFrameSize, detectedCup.mMidpoint,
             lDetectedFrame->mCupFrameSize);
         ros::Time lCupPredictedArrivalTime =
-            lPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
+            mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
                                                  ros::Time::now());
 
         ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
@@ -51,7 +49,7 @@ namespace location_component
               environment_controller::Position(lCupLocation_m.x, cArmY_m,
                                                lCupLocation_m.z),
               cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
-              cAGVSpeed_m_s, ros::Time::now(), 0);
+              mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
 
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
@@ -59,7 +57,7 @@ namespace location_component
         }
       }
 
-      ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(
+      ROS_INFO_STREAM("AGV found at: " << mPosCalculator.calculateAGVLocation(
                           lDetectedFrame->mDetectedAGV.mMidpoint,
                           lDetectedFrame->mAGVFrameSize));
     }
@@ -261,5 +259,12 @@ namespace location_component
 
     return cv::Point(lAverageX, lAverageY);
   }
+
+
+  void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)
+  {
+    mPosCalculator.setAGVSpeed_m_s(aAGV.speed());
+  }
+
 
 } // namespace location_component

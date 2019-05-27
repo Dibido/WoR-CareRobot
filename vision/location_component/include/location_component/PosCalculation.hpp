@@ -28,9 +28,6 @@ namespace location_component
   const float cAGVWidth_m = 0.350f;
   const float cAGVHeight_m = 0.400f;
 
-  // AGV speed
-  const float cAGVSpeed_m_s = 0.220f;
-
   class PosCalculation
   {
       public:
@@ -41,8 +38,7 @@ namespace location_component
      * @brief Predicts the time when the cup arrives at the robot arm.
      */
     ros::Time predictCupArrivalTime(float aCupLocationY_m,
-                                    ros::Time aCurrentTime,
-                                    float aAGVSpeed_m_s = cAGVSpeed_m_s) const;
+                                    ros::Time aCurrentTime) const;
     /**
      * @brief Calculates the cup location.
      *
@@ -65,6 +61,20 @@ namespace location_component
     cv::Point3f calculateAGVLocation(cv::Point aScreenPos,
                                      cv::Size aAGVFrameSize) const;
 
+    /**
+     * @brief A getter for the valiable cAGVSpeed_m_s
+     *
+     * @return float - The currect speed of the AGV
+     */
+    float getAGVSpeed_m_s();
+
+    /**
+     * @brief Set the AGVSpeed m s object
+     *
+     * @param aAGVSpeed_m_s - The value u would like cAGVSpeed_m_s to be
+     */
+    void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
+
       private:
     /**
      * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
@@ -74,6 +84,12 @@ namespace location_component
      */
     cv::Point2f calculateRelativeCupLocation(cv::Point aScreenPos,
                                              cv::Size aFrameSize) const;
+
+    /**
+     * @brief The most current speed of the AGV
+     * 
+     */
+    float mAGVSpeed_m_s = 0.220f;
   };
 } // namespace location_component
 

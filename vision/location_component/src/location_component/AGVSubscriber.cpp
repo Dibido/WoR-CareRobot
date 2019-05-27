@@ -14,11 +14,10 @@ namespace location_component
 
   void AGVSubscriber::publishAGVSpeed(const location_component::AGV& aAGV)
   {
-
-      
+      mDetectAGV->setAGVSpeed(aAGV);
   }
 
-  void AGVSubscriber::AGVCallBack(const std_msgs::Float64& aSpeed)
+  void AGVSubscriber::AGVCallBack(const std_msgs::Float32& aSpeed)
   {
     location_component::AGV mAGV(aSpeed.data);
     publishAGVSpeed(mAGV);

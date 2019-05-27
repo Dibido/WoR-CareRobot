@@ -40,7 +40,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& aMsg)
   }
   catch (cv_bridge::Exception& e)
   {
-    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
+    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", aMsg->encoding.c_str());
   }
 }
 
