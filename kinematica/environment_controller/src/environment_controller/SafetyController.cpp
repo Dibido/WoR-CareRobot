@@ -11,7 +11,6 @@ namespace environment_controller
 
   void SafetyController::areObstaclesAThreat(const Obstacles& aObstacles)
   {
-    ROS_ERROR("found obstacles %ul", aObstacles.size());
     bool lAllObstaclesSafe = true;
     for (const Obstacle& lObstacle : aObstacles)
     {
