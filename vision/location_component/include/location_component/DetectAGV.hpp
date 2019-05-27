@@ -31,6 +31,7 @@ namespace location_component
   class DetectAGV
   {
       public:
+    DetectAGV();
     DetectAGV(ros::NodeHandle& nh);
     ~DetectAGV();
 
@@ -102,7 +103,7 @@ namespace location_component
       private:
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
-    RosServiceCup rosServiceCup;
+    std::unique_ptr<RosServiceCup> mRosServiceCup;
   };
 } // namespace location_component
 
