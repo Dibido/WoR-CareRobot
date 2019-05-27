@@ -9,14 +9,11 @@ namespace location_component
   class IAgvProvider
   {
       public:
-    IAgvProvider(/* args */);
+    IAgvProvider(){};
     ~IAgvProvider() = default;
 
     virtual void publishAGVSpeed(const location_component::AGV& aAGV) = 0;
-
-      private:
-    ros::NodeHandle& mNodeHandle;
-    ros::Publisher mCupPublisher;
+    
   };
 
 } // namespace location_component

@@ -8,7 +8,7 @@ namespace location_component
   struct AGV
   {
       public:
-    AGV(float aSpeed);
+    AGV(double aSpeed);
     AGV(const AGV& aAGV) = default;
     virtual ~AGV() = default;
 
@@ -17,11 +17,11 @@ namespace location_component
      *
      * @return Object& the object
      */
-    float& speed();
-    const float& speed() const;
+    double& speed();
+    const double& speed() const;
 
       private:
-    float mSpeed;
+    double mSpeed;
   };
 
 } // namespace location_component
