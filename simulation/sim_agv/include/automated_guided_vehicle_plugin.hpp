@@ -86,7 +86,9 @@ namespace gazebo
     std::thread mRosQueueThread;
     double mSecs;
     double mPreviousTime = 0;
-    double mInterval = 5;
+    double mInterval = 3;
+    double mTimebetweenLines = 0;
+    bool mWhitelinedetected = true;
 
     /**
      * @brief Handles incoming ros messages on a separate thread when a new message is available handle it using the callback

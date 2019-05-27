@@ -35,15 +35,26 @@ namespace gazebo
       const sensor_msgs::RangeConstPtr aMsg)
   {
     mSecs = ros::Time::now().toSec();
+
+    if (aMsg->range > 0.30 && aMsg->range < 0.40)
+    {
+      if (mWhitelinedetected)
+      {
+        mTimebetweenLines = mSecs;
+        std::cout << (1 / mTimebetweenLines) << std::endl;
+        sensor_interfaces::AGVSpeed speedMsg;
+        speedMsg.speed = ( float ) (1 / mTimebetweenLines);//this->mSpeedY;
+        mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
+            gazebo::cAgvPublishTopic, 1);
+        mAgvPublisher.publish(speedMsg);
+      }
+      mWhitelinedetected = false;
+    }
     if (mSecs - mPreviousTime >= mInterval)
     {
-      ROS_INFO("speed pushed : %f from: %d", this->mSpeedY , aMsg->radiation_type);
+      mWhitelinedetected = true;
+      mTimebetweenLines = 0;
       mPreviousTime = mSecs;
-      sensor_interfaces::AGVSpeed speedMsg;
-      speedMsg.speed = ( float )this->mSpeedY;
-      mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
-          gazebo::cAgvPublishTopic, 1);
-      mAgvPublisher.publish(speedMsg);
     }
   }
 
@@ -131,7 +142,8 @@ namespace gazebo
     }
   }
 
-  void AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& aSdf)
+  void
+      AutomatedGuidedVehiclePlugin::setVariablesSDF(const sdf::ElementPtr& aSdf)
   {
     // Checking Elements that are relevant for the plugin and shutdown if some
     // are missing
@@ -199,8 +211,8 @@ namespace gazebo
     return returnPosition;
   }
 
-  bool
-      AutomatedGuidedVehiclePlugin::checkSDFElements(const sdf::ElementPtr& aSdf)
+  bool AutomatedGuidedVehiclePlugin::checkSDFElements(
+      const sdf::ElementPtr& aSdf)
   {
     bool allElementsPresent = true;
 
@@ -248,8 +260,8 @@ namespace gazebo
     mMovingForward = true;
 
     // Set model to the starting positiong
-    ignition::math::Pose3<double> pose(mStartPos.x, mStartPos.y, mStartPos.z, 0.0,
-                                       0.0, 0.0);
+    ignition::math::Pose3<double> pose(mStartPos.x, mStartPos.y, mStartPos.z,
+                                       0.0, 0.0, 0.0);
     mModel->SetWorldPose(pose);
 
     // Calculate and set the speed of the AGV
