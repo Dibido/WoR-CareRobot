@@ -37,6 +37,10 @@
 
 /** \author Jose Capriles, Bence Magyar, Moussab Bennehar. */
 
+#include "sim_sonar/GazeboRosSonar.hpp"
+#include <sdf/Param.hh>
+#include <sdf/sdf.hh>
+
 #include <algorithm>
 #include <assert.h>
 #include <string>
@@ -48,13 +52,9 @@
 #include <gazebo/sensors/SensorTypes.hh>
 #include <gazebo/sensors/SonarSensor.hh>
 #include <gazebo/transport/transport.hh>
-#include <sdf/Param.hh>
-#include <sdf/sdf.hh>
 
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
-
-#include "sim_sonar/GazeboRosSonar.hpp"
 
 namespace gazebo
 {
