@@ -17,14 +17,16 @@
 
 #include "Command.hpp"
 #include "CommandParser.hpp"
+#include "IRobotControlPlugin.hpp"
 #include "JointController.hpp"
-
 namespace gazebo
 {
   /**
    * Robot plugin, used in robot model which are loaded in Gazebo
    */
-  class RobotControllerPlugin : public ModelPlugin
+  class RobotControllerPlugin
+      : public ModelPlugin,
+        public i_robot_controller_plugin::IRobotControlPlugin
   {
       public:
     /**
@@ -57,6 +59,8 @@ namespace gazebo
      * @brief Callback method for receiving an incoming robot command
      * @param msg: double message to parse and apply
      */
+
+    void parseCallback(const data::CommandData& aCommand) override;
 
     void commandCallBackFloat(const robotcontroller_msgs::ControlPtr& aMsg);
 

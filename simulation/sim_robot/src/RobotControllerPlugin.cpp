@@ -104,6 +104,27 @@ namespace gazebo
       joint.second.update();
     }
   }
+
+  void RobotControllerPlugin::parseCallback(const data::CommandData& aCommand)
+  {
+    // aCommand.mSpeedFactor=fmsg->theta;
+    //  std::vector<double> incomingTheta = fmsg->theta;
+    //   jointVel_t speedFactor = fmsg->sf;
+
+    //   ROS_DEBUG("Received command: %f", incomingTheta);
+
+    //   std::vector<commands::Command> thetaContainer = {};
+
+    //   mParser.parseCommandTheta(incomingTheta, speedFactor, thetaContainer);
+    //   if (!this->mStop)
+    //   {
+    //     for (const auto& c : thetaContainer)
+    //     {
+
+    //       moveJointTheta(c);
+    //     }
+    //   }
+  }
   void RobotControllerPlugin::commandCallBackFloat(
       const robotcontroller_msgs::ControlPtr& fmsg)
   {
