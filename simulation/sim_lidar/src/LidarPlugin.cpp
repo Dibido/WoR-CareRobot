@@ -108,19 +108,24 @@ namespace gazebo
   // PRIVATE
   void LidarPlugin::OnScan(ConstLaserScanStampedPtr& aMsg)
   {
+    // Convert to LidarData
+    lidar_application::LidarData lLidarData = convertToLidarData(aMsg);
+    // Handle the LidarData
+    parseLidarData(lLidarData);
+  }
+
+  void LidarPlugin::parseLidarData(const lidar_application::LidarData& aMsg)
+  {
     // Convert to LaserScan message
     sensor_msgs::LaserScan lLaserMessage = convertToLaserScan(aMsg);
-    // Convert to LidarData message
+    // Publish message
+    mRosPub.publish(lLaserMessage);
+
+    // Convert to lidarMessage
     sensor_interfaces::LidarData lLidarDataMessage =
         convertToLidarData(lLaserMessage);
     // Publish message
     mLidarDataPub.publish(lLidarDataMessage);
-    // Publish message
-    mRosPub.publish(lLaserMessage);
-
-    // Assert to check that the ranges and their angles are matched
-    assert(lLidarDataMessage.measurement_angles.size() ==
-           lLidarDataMessage.distances.size());
   }
 
   sensor_msgs::LaserScan
@@ -142,14 +147,53 @@ namespace gazebo
     lLaserMessage.ranges.resize(
         static_cast<unsigned long>(aMsg->scan().ranges().size()));
 
-    std::reverse_copy(aMsg->scan().ranges().begin(),
-                      aMsg->scan().ranges().end(),
-                      lLaserMessage.ranges.begin());
+    std::copy(aMsg->scan().ranges().begin(), aMsg->scan().ranges().end(),
+              lLaserMessage.ranges.begin());
 
     lLaserMessage.angle_increment =
         static_cast<float>(2.0 * M_PI) /
         static_cast<float>(lLaserMessage.ranges.size());
     return lLaserMessage;
+  }
+
+  sensor_msgs::LaserScan LidarPlugin::convertToLaserScan(
+      const lidar_application::LidarData aLidarData)
+  {
+    sensor_msgs::LaserScan lLaserMessage;
+    lLaserMessage.range_min = static_cast<float>(-M_PI);
+    lLaserMessage.range_max = static_cast<float>(M_PI);
+    lLaserMessage.ranges.resize(
+        static_cast<unsigned long>(aLidarData.mDistances_m.size()));
+    std::reverse_copy(aLidarData.mDistances_m.begin(),
+                      aLidarData.mDistances_m.end(),
+                      lLaserMessage.ranges.begin());
+    lLaserMessage.angle_increment =
+        static_cast<float>(2.0 * M_PI) /
+        static_cast<float>(lLaserMessage.ranges.size());
+    return lLaserMessage;
+  }
+
+  lidar_application::LidarData
+      LidarPlugin::convertToLidarData(ConstLaserScanStampedPtr& aMsg)
+  {
+    lidar_application::LidarData lLidarData;
+    float lAngleMax = static_cast<float>(M_PI);
+    // Fill the angle array with the correct range. Add 1 PI so we get a range
+    // from 0..2 * Pi.
+    const float lAngleOffset = static_cast<float>(2.0 * M_PI) /
+                               static_cast<float>(aMsg->scan().ranges().size());
+
+    for (float lCurrentAngle = lAngleOffset;
+         lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));
+         lCurrentAngle += lAngleOffset)
+    {
+      lLidarData.mAngles.push_back(lCurrentAngle);
+    }
+    for (int i = 0; i < aMsg->scan().ranges().size(); i++)
+    {
+      lLidarData.mDistances_m.push_back(aMsg->scan().ranges().Get(i));
+    }
+    return lLidarData;
   }
 
   sensor_interfaces::LidarData
@@ -179,4 +223,5 @@ namespace gazebo
     }
     return lLidarDataMessage;
   }
+
 } // namespace gazebo
