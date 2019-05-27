@@ -1,6 +1,0 @@
-<launch>
-    <node name="main_appl" pkg="main_application" type="main_application" required="true" />
-    <node name="userinterface" pkg="userinterface" type="userinterface" required="true" />
-    <node name="location_component" pkg="location_component" type="location_component" required="true" />
-    <node name="lidar_application" pkg="lidar_application" type="lidar_application_main" required="true" />
-</launch>
