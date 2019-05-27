@@ -66,77 +66,14 @@ namespace kinematics
                                      cIkEpsilon_rad, cDhTransformPosRadSplit));
       if (lNewBigTheta.result() == true)
       {
-        if (isValidConfiguration(lNewBigTheta) == false)
+        if (mRobotConfiguration.isValidConfiguration(lNewBigTheta) == false)
         {
-          randomizeConfiguration(lNewBigTheta);
+          mRobotConfiguration.randomiseConfiguration(lNewBigTheta);
           lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
         }
       }
     }
     return lNewBigTheta;
-  }
-
-  bool DenavitHartenberg::isValidConfiguration(
-      const Configuration& aConfiguration) const
-  {
-    bool withinConstraints = true;
-
-    std::size_t lThetaIndex = 0;
-    for (std::size_t lRobotConfigurationIndex = 0;
-         lRobotConfigurationIndex < mRobotConfiguration.size;
-         ++lRobotConfigurationIndex)
-    {
-      if (mRobotConfiguration[lRobotConfigurationIndex].getType() ==
-          eJoint::STATIC)
-      {
-        // Do nothing
-      }
-      else
-      {
-        if (mRobotConfiguration[lRobotConfigurationIndex].isWithinConstraints(
-                aConfiguration[lThetaIndex]) == false)
-        {
-          withinConstraints = false;
-          break;
-        }
-        ++lThetaIndex;
-      }
-    }
-    return withinConstraints;
-  }
-
-  void DenavitHartenberg::randomizeConfiguration(
-      Configuration& configuration) const
-  {
-    std::size_t lThetaIndex = 0;
-    for (std::size_t lRobotConfigurationIndex = 0;
-         lRobotConfigurationIndex < mRobotConfiguration.size;
-         ++lRobotConfigurationIndex)
-    {
-      if (mRobotConfiguration[lRobotConfigurationIndex].getType() ==
-          eJoint::STATIC)
-      {
-        // Do nothing
-      }
-      else
-      {
-#define PARTIAL_SWEEP
-#ifdef PARTIAL_SWEEP
-        double lCurValue = configuration[lThetaIndex];
-        if (mRobotConfiguration[lRobotConfigurationIndex].isWithinConstraints(
-                lCurValue) == false)
-        {
-#endif
-          double lNewValue = mRobotConfiguration[lRobotConfigurationIndex]
-                                 .generateRandomVariable();
-          configuration.setTheta(lThetaIndex, lNewValue);
-#ifdef PARTIAL_SWEEP
-        }
-#endif
-        ++lThetaIndex;
-      }
-    }
-    configuration.setResult(false);
   }
 
   Matrix<double, 4, 4>

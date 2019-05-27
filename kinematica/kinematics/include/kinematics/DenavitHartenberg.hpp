@@ -88,22 +88,6 @@ namespace kinematics
                                            std::size_t aStart = 0,
                                            std::size_t aEnd = 0) const;
 
-    /**
-     * @brief Check if a configuration contains only valid values according to
-     * mRobotConfiguration
-     * @param aConfiguration
-     * @return bool
-     */
-    bool isValidConfiguration(const Configuration& aConfiguration) const;
-
-    /**
-     * @brief Generate a random and valid configuration based on
-     * mRobotConfiguration
-     *
-     * @param aConfiguration
-     */
-    void randomizeConfiguration(Configuration& aConfiguration) const;
-
     const RobotConfiguration mRobotConfiguration;
   };
 

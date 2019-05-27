@@ -43,4 +43,63 @@ namespace kinematics
     }
     return mRobotConfiguration[aIndex];
   }
+
+  bool RobotConfiguration::isValidConfiguration(
+      const Configuration& aConfiguration) const
+  {
+    bool lWithinConstraints = true;
+
+    std::size_t lThetaIndex = 0;
+    for (std::size_t lRobotConfigurationIndex = 0;
+         lRobotConfigurationIndex < size; ++lRobotConfigurationIndex)
+    {
+      if (operator[](lRobotConfigurationIndex).getType() == eJoint::STATIC)
+      {
+        // Do nothing
+      }
+      else
+      {
+        if (operator[](lRobotConfigurationIndex)
+                .isWithinConstraints(aConfiguration[lThetaIndex]) == false)
+        {
+          lWithinConstraints = false;
+          break;
+        }
+        ++lThetaIndex;
+      }
+    }
+    return lWithinConstraints;
+  }
+
+  void RobotConfiguration::randomiseConfiguration(
+      Configuration& configuration) const
+  {
+    std::size_t lThetaIndex = 0;
+    for (std::size_t lRobotConfigurationIndex = 0;
+         lRobotConfigurationIndex < size; ++lRobotConfigurationIndex)
+    {
+      if (operator[](lRobotConfigurationIndex).getType() == eJoint::STATIC)
+      {
+        // Do nothing
+      }
+      else
+      {
+        double lCurValue = configuration[lThetaIndex];
+        if (cPartialRandomise == false || operator[](lRobotConfigurationIndex)
+                                                  .isWithinConstraints(
+                                                      lCurValue) == false)
+        {
+
+          double lNewValue = operator[](lRobotConfigurationIndex)
+                                 .generateRandomVariable();
+          configuration.setTheta(lThetaIndex, lNewValue);
+          ROS_DEBUG("RobotConfiguration: randomiseConfiguration: joint: %i %i",
+                    lRobotConfigurationIndex, lNewValue);
+        }
+        ++lThetaIndex;
+      }
+    }
+    configuration.setResult(false);
+  }
+
 } // namespace kinematics
