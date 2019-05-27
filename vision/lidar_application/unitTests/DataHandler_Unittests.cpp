@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #define private public
-#include "DataHandler.hpp"
+#include "lidar_application/DataHandler.hpp"
 #undef private
 
 using namespace lidar_application;

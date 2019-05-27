@@ -1,10 +1,10 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 // Bring in my package's API, which is what I'm testing
-#include <ros/ros.h>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/plugins/RayPlugin.hh>
+#include <ros/ros.h>
 // Include messages
 #include <sensor_interfaces/LidarData.h>
 #include <sensor_msgs/LaserScan.h>
@@ -31,7 +31,8 @@ TEST(LidarData, LidarDataConversion)
   lLaserScanMessage.angle_min = static_cast<float>(-M_PI);
   lLaserScanMessage.angle_max = static_cast<float>(M_PI);
   lLaserScanMessage.angle_increment =
-      (lLaserScanMessage.angle_max - lLaserScanMessage.angle_min) / lNumberOfMeasurements;
+      (lLaserScanMessage.angle_max - lLaserScanMessage.angle_min) /
+      lNumberOfMeasurements;
   lLaserScanMessage.range_min = static_cast<float>(0.1);
   lLaserScanMessage.range_max = 3.0;
   lLaserScanMessage.ranges.clear();
@@ -48,9 +49,12 @@ TEST(LidarData, LidarDataConversion)
   ASSERT_EQ(lLaserScanMessage.ranges.size(), lLidarMessage.distances.size());
   // Check conversion
   EXPECT_EQ(lLaserScanMessage.header.frame_id, lLidarMessage.header.frame_id);
-  EXPECT_EQ(lLaserScanMessage.angle_increment, lLidarMessage.measurement_angles.at(0));
+  EXPECT_EQ(lLaserScanMessage.angle_increment,
+            lLidarMessage.measurement_angles.at(0));
   EXPECT_NEAR((lLaserScanMessage.angle_increment * lNumberOfMeasurements),
-              lLidarMessage.measurement_angles.at(lLidarMessage.measurement_angles.size() - 1), lMaximumDeviation);
+              lLidarMessage.measurement_angles.at(
+                  lLidarMessage.measurement_angles.size() - 1),
+              lMaximumDeviation);
   EXPECT_EQ(lLaserScanMessage.ranges, lLidarMessage.distances);
   float lExpectedAngle = 0.0;
   for (unsigned int i = 0; i < lLidarMessage.distances.size(); i++)

@@ -1,6 +1,8 @@
-// // https://stackoverflow.com/questions/13547771/g-project-compilation-with-boost-unit-test
+// //
+// https://stackoverflow.com/questions/13547771/g-project-compilation-with-boost-unit-test
 // #define BOOST_TEST_DYN_LINK                   // this is optional
-// #define BOOST_TEST_MODULE CommandParser_test  // specify the name of your test module
+// #define BOOST_TEST_MODULE CommandParser_test  // specify the name of your
+// test module
 
 // #include <boost/test/included/unit_test.hpp>  // include this to get main()
 
@@ -113,7 +115,8 @@
 // BOOST_AUTO_TEST_CASE(testStringIsMove_18)
 // {
 //   commands::CommandParser parser;
-//   BOOST_CHECK_EQUAL(parser.isMoveCommand("#100P200.2.2#100P200.2.2S300"), false);
+//   BOOST_CHECK_EQUAL(parser.isMoveCommand("#100P200.2.2#100P200.2.2S300"),
+//   false);
 // }
 // BOOST_AUTO_TEST_CASE(testStringIsMove_19)
 // {
@@ -329,8 +332,8 @@
 // {
 //   commands::CommandParser parser;
 //   std::vector<commands::Command> testContainer;
-//   parser.parseCommand("#0P1600#1P1543#2P700#3P1500#4P500#5P1450T500", testContainer);
-//   BOOST_CHECK(testContainer.size() == 6);
+//   parser.parseCommand("#0P1600#1P1543#2P700#3P1500#4P500#5P1450T500",
+//   testContainer); BOOST_CHECK(testContainer.size() == 6);
 //   BOOST_CHECK(testContainer.at(0).getType() == commands::MOVE);
 //   BOOST_CHECK(testContainer.at(0).getChannel() == 0);
 //   BOOST_CHECK(testContainer.at(0).getPwm() == 1600);
@@ -486,24 +489,24 @@
 // {
 //   commands::CommandParser parser;
 //   std::vector<commands::Command> testContainer;
-//   parser.parseCommand("#100P200", testContainer);                                      // 0
-//   parser.parseCommand("#100P200#100P200", testContainer);                              // 1, 2
-//   parser.parseCommand("#100P200T500", testContainer);                                  // 3
-//   parser.parseCommand("#100P200#100P200T500", testContainer);                          // 4, 5
-//   parser.parseCommand("geenCommando", testContainer);                                  // geen
-//   parser.parseCommand("#100P200S300", testContainer);                                  // 6
-//   parser.parseCommand("#100P200S300#100P200", testContainer);                          // 7, 8
-//   parser.parseCommand("#100P200#100P200S300", testContainer);                          // 9, 10
-//   parser.parseCommand("#100P200#100P200S300T500", testContainer);                      // 11, 12
-//   parser.parseCommand("#0P1600#1P1543#2P700#3P1500#4P500#5P1450T500", testContainer);  // 13...18
-//   parser.parseCommand("#0P1000", testContainer);                                       // 19
-//   parser.parseCommand("#0P-1000", testContainer);                                      // 20
-//   parser.parseCommand("#0P--1000", testContainer);                                     // geen
-//   parser.parseCommand("#0P1000.2", testContainer);                                     // 21
-//   parser.parseCommand("#0P1000.2.2", testContainer);                                   // geen
-//   parser.parseCommand("#0P-1000.2", testContainer);                                    // 22
-//   parser.parseCommand("#0P--1000.2", testContainer);                                   // geen
-//   parser.parseCommand("#0P-1000.2.2", testContainer);                                  // geen
+//   parser.parseCommand("#100P200", testContainer); // 0
+//   parser.parseCommand("#100P200#100P200", testContainer); // 1, 2
+//   parser.parseCommand("#100P200T500", testContainer); // 3
+//   parser.parseCommand("#100P200#100P200T500", testContainer); // 4, 5
+//   parser.parseCommand("geenCommando", testContainer); // geen
+//   parser.parseCommand("#100P200S300", testContainer); // 6
+//   parser.parseCommand("#100P200S300#100P200", testContainer); // 7, 8
+//   parser.parseCommand("#100P200#100P200S300", testContainer); // 9, 10
+//   parser.parseCommand("#100P200#100P200S300T500", testContainer); // 11, 12
+//   parser.parseCommand("#0P1600#1P1543#2P700#3P1500#4P500#5P1450T500",
+//   testContainer);  // 13...18 parser.parseCommand("#0P1000", testContainer);
+//   // 19 parser.parseCommand("#0P-1000", testContainer); // 20
+//   parser.parseCommand("#0P--1000", testContainer); // geen
+//   parser.parseCommand("#0P1000.2", testContainer); // 21
+//   parser.parseCommand("#0P1000.2.2", testContainer); // geen
+//   parser.parseCommand("#0P-1000.2", testContainer); // 22
+//   parser.parseCommand("#0P--1000.2", testContainer); // geen
+//   parser.parseCommand("#0P-1000.2.2", testContainer); // geen
 
 //   BOOST_CHECK(testContainer.size() == 23);
 // }

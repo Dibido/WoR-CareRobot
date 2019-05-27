@@ -1,5 +1,5 @@
 #ifndef ROBOTCONTROLLER_IGRIPPERCONTROL_HPP
-#define KINEMATICS_ICONFIGURATIONPROVIDER_HPP
+#define ROBOTCONTROLLER_IGRIPPERCONTROL_HPP
 
 #include "GripperData.hpp"
 
@@ -27,4 +27,4 @@ namespace robotcontroller
   };
 } // namespace robotcontroller
 
-#endif // KINEMATICS_ICONFIGURATIONPROVIDER_HPP
+#endif // ROBOTCONTROLLER_IGRIPPERCONTROL_HPP

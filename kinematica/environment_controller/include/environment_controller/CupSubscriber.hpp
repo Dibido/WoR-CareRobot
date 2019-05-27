@@ -1,9 +1,9 @@
 #ifndef CUP_SUBSCRIBER_HPP
 #define CUP_SUBSCRIBER_HPP
 
-#include "Cup.hpp"
 #include "EnvironmentController.hpp"
 #include "ICupProvider.hpp"
+#include "environment_controller/Cup.hpp"
 #include "kinematica_msgs/Cup.h"
 #include "ros/ros.h"
 

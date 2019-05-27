@@ -60,7 +60,7 @@ void GazeboGraspFix::InitValues()
 
 void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
-  std::cout << "Loading grasp-fix plugin" << std::endl;
+  std::cout  << "Loading grasp-fix plugin" << std::endl;
 
   // ++++++++++++ Read parameters and initialize fields  +++++++++++++++
 
@@ -70,7 +70,7 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   sdf::ElementPtr disableCollisionsOnAttachElem = _sdf->GetElement("disable_collisions_on_attach");
   if (!disableCollisionsOnAttachElem)
   {
-    std::cout << "GazeboGraspFix: Using default " << DEFAULT_DISABLE_COLLISIONS_ON_ATTACH
+    std::cout  << "GazeboGraspFix: Using default " << DEFAULT_DISABLE_COLLISIONS_ON_ATTACH
               << " because no <disable_collisions_on_attach> element specified." << std::endl;
     this->disableCollisionsOnAttach = DEFAULT_DISABLE_COLLISIONS_ON_ATTACH;
   }
@@ -81,13 +81,13 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     if ((str == "true") || (str == "1"))
       bVal = true;
     this->disableCollisionsOnAttach = bVal;
-    std::cout << "GazeboGraspFix: Using disable_collisions_on_attach " << this->disableCollisionsOnAttach << std::endl;
+    std::cout  << "GazeboGraspFix: Using disable_collisions_on_attach " << this->disableCollisionsOnAttach << std::endl;
   }
 
   sdf::ElementPtr forcesAngleToleranceElem = _sdf->GetElement("forces_angle_tolerance");
   if (!forcesAngleToleranceElem)
   {
-    std::cout << "GazeboGraspFix: Using default tolerance of " << DEFAULT_FORCES_ANGLE_TOLERANCE
+    std::cout  << "GazeboGraspFix: Using default tolerance of " << DEFAULT_FORCES_ANGLE_TOLERANCE
               << " because no <forces_angle_tolerance> element specified." << std::endl;
     this->forcesAngleTolerance = DEFAULT_FORCES_ANGLE_TOLERANCE * M_PI / 180;
   }
@@ -100,7 +100,7 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   double _updateSecs;
   if (!updateRateElem)
   {
-    std::cout << "GazeboGraspFix: Using  " << DEFAULT_UPDATE_RATE << " because no <updateRate_tag> element specified."
+    std::cout  << "GazeboGraspFix: Using  " << DEFAULT_UPDATE_RATE << " because no <updateRate_tag> element specified."
               << std::endl;
     _updateSecs = 1.0 / DEFAULT_UPDATE_RATE;
   }
@@ -109,47 +109,47 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
     int _rate = updateRateElem->Get<int>();
     double _updateRate = _rate;
     _updateSecs = 1.0 / _updateRate;
-    std::cout << "GazeboGraspFix: Using update rate " << _rate << std::endl;
+    std::cout  << "GazeboGraspFix: Using update rate " << _rate << std::endl;
   }
   this->updateRate = common::Time(0, common::Time::SecToNano(_updateSecs));
 
   sdf::ElementPtr maxGripCountElem = _sdf->GetElement("max_grip_count");
   if (!maxGripCountElem)
   {
-    std::cout << "GazeboGraspFix: Using  " << DEFAULT_MAX_GRIP_COUNT
+    std::cout  << "GazeboGraspFix: Using  " << DEFAULT_MAX_GRIP_COUNT
               << " because no <max_grip_count> element specified." << std::endl;
     this->maxGripCount = DEFAULT_MAX_GRIP_COUNT;
   }
   else
   {
     this->maxGripCount = maxGripCountElem->Get<int>();
-    std::cout << "GazeboGraspFix: Using max_grip_count " << this->maxGripCount << std::endl;
+    std::cout  << "GazeboGraspFix: Using max_grip_count " << this->maxGripCount << std::endl;
   }
 
   sdf::ElementPtr gripCountThresholdElem = _sdf->GetElement("grip_count_threshold");
   if (!gripCountThresholdElem)
   {
     this->gripCountThreshold = floor(this->maxGripCount / 2.0);
-    std::cout << "GazeboGraspFix: Using  " << this->gripCountThreshold
+    std::cout  << "GazeboGraspFix: Using  " << this->gripCountThreshold
               << " because no <grip_count_threshold> element specified." << std::endl;
   }
   else
   {
     this->gripCountThreshold = gripCountThresholdElem->Get<int>();
-    std::cout << "GazeboGraspFix: Using grip_count_threshold " << this->gripCountThreshold << std::endl;
+    std::cout  << "GazeboGraspFix: Using grip_count_threshold " << this->gripCountThreshold << std::endl;
   }
 
   sdf::ElementPtr releaseToleranceElem = _sdf->GetElement("release_tolerance");
   if (!releaseToleranceElem)
   {
-    std::cout << "GazeboGraspFix: Using  " << DEFAULT_RELEASE_TOLERANCE
+    std::cout  << "GazeboGraspFix: Using  " << DEFAULT_RELEASE_TOLERANCE
               << " because no <release_tolerance> element specified." << std::endl;
     this->releaseTolerance = DEFAULT_RELEASE_TOLERANCE;
   }
   else
   {
     this->releaseTolerance = releaseToleranceElem->Get<float>();
-    std::cout << "GazeboGraspFix: Using release_tolerance " << this->releaseTolerance << std::endl;
+    std::cout  << "GazeboGraspFix: Using release_tolerance " << this->releaseTolerance << std::endl;
   }
 
   // will contain all names of collision entities involved from all arms
@@ -213,7 +213,7 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
                << " multiple times, the grasp plugin may not work properly" << std::endl;
         continue;
       }
-      std::cout << "GazeboGraspFix: Adding collision scoped name " << collName << std::endl;
+      std::cout  << "GazeboGraspFix: Adding collision scoped name " << collName << std::endl;
       this->collisions[collName] = armName;
       collisionNames.push_back(collName);
     }
@@ -236,7 +236,7 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   std::string topic = contactManager->CreateFilter(model->GetScopedName(), collisionNames);
   if (!this->contactSub)
   {
-    std::cout << "Subscribing contact manager to topic " << topic << std::endl;
+    std::cout  << "Subscribing contact manager to topic " << topic << std::endl;
     bool latching = false;
     this->contactSub = this->node->Subscribe(topic, &GazeboGraspFix::OnContact, this, latching);
   }
@@ -315,7 +315,7 @@ bool GazeboGraspFix::objectAttachedToGripper(const std::string& gripperName, std
     return false;
   }
   const GazeboGraspGripper& gripper = gIt->second;
-  // std::cout<<"Gripper "<<gripperName<<" is involved in the grasp"<<std::endl;
+  // std::cout <<"Gripper "<<gripperName<<" is involved in the grasp"<<std::endl;
   if (gripper.isObjectAttached())
   {
     attachedToGripper = gripperName;
@@ -401,7 +401,7 @@ void GazeboGraspFix::OnUpdate()
   for (objIt = contPoints.begin(); objIt != contPoints.end(); ++objIt)
   {
     std::string objName = objIt->first;
-    // std::cout<<"Examining object collisions with "<<objName<<std::endl;
+    // std::cout <<"Examining object collisions with "<<objName<<std::endl;
 
     // create new entry in accumulated results map and get reference to fill in:
     ObjectContactInfo& objContInfo = objectContactInfo[objName];
@@ -413,7 +413,7 @@ void GazeboGraspFix::OnUpdate()
       std::string linkName = lIt->first;
       CollidingPoint& collP = lIt->second;
       ignition::math::Vector3d avgForce = collP.force / collP.sum;
-      // std::cout << "Found collision with "<<linkName<<": "<<avgForce.x<<", "<<avgForce.y<<", "<<avgForce.z<<" (avg
+      // std::cout  << "Found collision with "<<linkName<<": "<<avgForce.x<<", "<<avgForce.y<<", "<<avgForce.z<<" (avg
       // over "<<collP.sum<<")"<<std::endl;
       objContInfo.appliedForces.push_back(avgForce);
       // insert the gripper (if it doesn't exist yet) and increase contact counter
@@ -441,7 +441,7 @@ void GazeboGraspFix::OnUpdate()
     const std::string& objName = ocIt->first;
     const ObjectContactInfo& objContInfo = ocIt->second;
 
-    // std::cout<<"Number applied forces on "<<objName<<": "<<objContInfo.appliedForces.size()<<std::endl;
+    // std::cout <<"Number applied forces on "<<objName<<": "<<objContInfo.appliedForces.size()<<std::endl;
 
     float minAngleDiff = this->forcesAngleTolerance;  // 120 * M_PI/180;
     if (!checkGrip(objContInfo.appliedForces, minAngleDiff, 0.3))
@@ -450,7 +450,7 @@ void GazeboGraspFix::OnUpdate()
     // add to "gripped objects"
     grippedObjects.insert(objName);
 
-    // std::cout<<"Grasp Held: "<<objName<<" grip count: "<<this->gripCounts[objName]<<std::endl;
+    // std::cout <<"Grasp Held: "<<objName<<" grip count: "<<this->gripCounts[objName]<<std::endl;
 
     int& counts = this->gripCounts[objName];
     if (counts < this->maxGripCount)
@@ -460,7 +460,7 @@ void GazeboGraspFix::OnUpdate()
     if (counts <= this->gripCountThreshold)
       continue;
 
-    // std::cout<<"GRIPPING "<<objName<<", grip count "<<counts<<" (threshold
+    // std::cout <<"GRIPPING "<<objName<<", grip count "<<counts<<" (threshold
     // "<<this->gripCountThreshold<<")"<<std::endl;
 
     // find out if any of the grippers involved in the grasp is already grasping the object.
@@ -469,7 +469,7 @@ void GazeboGraspFix::OnUpdate()
     bool isAttachedToGripper = objectAttachedToGripper(objContInfo, attachedToGripper);
     if (isAttachedToGripper)
     {  // the object is already attached to a gripper, so it does not need to be attached.
-      // std::cout << "GazeboGraspFix has found that object "<<
+      // std::cout  << "GazeboGraspFix has found that object "<<
       //     gripper.attachedObject()<<" is already attached to gripper "<<gripperName;
       continue;
     }
@@ -493,7 +493,7 @@ void GazeboGraspFix::OnUpdate()
       continue;
     }
 
-    // std::cout<<"GazeboGraspFix: Attaching "<<objName<<" to gripper "<<graspingGripperName<<"!!!!!!!"<<std::endl;
+    // std::cout <<"GazeboGraspFix: Attaching "<<objName<<" to gripper "<<graspingGripperName<<"!!!!!!!"<<std::endl;
 
     // Store the array of contact poses which played part in the grip, sorted by colliding link.
     // Filter out all link names of other grippers, otherwise if the other gripper moves
@@ -509,10 +509,10 @@ void GazeboGraspFix::OnUpdate()
     {
       const std::string& collidingLink = contPointsIt->first;
       const CollidingPoint& collidingPoint = contPointsIt->second;
-      // std::cout<<"Checking initial contact with "<<collidingLink<<" and "<<graspingGripperName<<std::endl;
+      // std::cout <<"Checking initial contact with "<<collidingLink<<" and "<<graspingGripperName<<std::endl;
       if (graspingGripper.hasCollisionLink(collidingLink))
       {
-        // std::cout<<"Insert initial contact with "<<collidingLink<<std::endl;
+        // std::cout <<"Insert initial contact with "<<collidingLink<<std::endl;
         attGripConts[collidingLink] = collidingPoint;
       }
     }
@@ -537,13 +537,13 @@ void GazeboGraspFix::OnUpdate()
 
     if (grippedObjects.find(objName) != grippedObjects.end())
     {  // this object is one we just detected as "gripped", so no need to check for releasing it...
-      // std::cout<<"NOT considering "<<objName<<" for detachment."<<std::endl;
+      // std::cout <<"NOT considering "<<objName<<" for detachment."<<std::endl;
       continue;
     }
 
     // the object does not satisfy "gripped" criteria, so potentially has to be released.
 
-    // std::cout<<"NOT-GRIPPING "<<objName<<", grip count "<<gripCntIt->second<<" (threshold
+    // std::cout <<"NOT-GRIPPING "<<objName<<", grip count "<<gripCntIt->second<<" (threshold
     // "<<this->gripCountThreshold<<")"<<std::endl;
 
     if (gripCntIt->second > 0)
@@ -552,14 +552,14 @@ void GazeboGraspFix::OnUpdate()
     std::map<std::string, std::string>::iterator attIt = attachedObjects.find(objName);
     bool isAttached = (attIt != attachedObjects.end());
 
-    // std::cout<<"is attached: "<<isAttached<<std::endl;
+    // std::cout <<"is attached: "<<isAttached<<std::endl;
 
     if (!isAttached || (gripCntIt->second > this->gripCountThreshold))
       continue;
 
     const std::string& graspingGripperName = attIt->second;
 
-    // std::cout<<"Considering "<<objName<<" for detachment."<<std::endl;
+    // std::cout <<"Considering "<<objName<<" for detachment."<<std::endl;
 
     // Object should potentially be detached now.
     // However, this happens too easily when just considering the count, as the fingers
@@ -626,13 +626,13 @@ void GazeboGraspFix::OnUpdate()
       ignition::math::Vector3d newObjDist =
           currContactWorldPose - currObjWorldPose.Pos();  // new distance from contact to object
 
-      // std::cout<<"Obj Trans "<<cpInfo.collLink->GetName()<<": "<<relObjPos.x<<", "<<relObjPos.y<<",
-      // "<<relObjPos.z<<std::endl; std::cout<<"Cont Trans "<<cpInfo.collLink->GetName()<<": "<<relContactPos.x<<",
+      // std::cout <<"Obj Trans "<<cpInfo.collLink->GetName()<<": "<<relObjPos.x<<", "<<relObjPos.y<<",
+      // "<<relObjPos.z<<std::endl; std::cout <<"Cont Trans "<<cpInfo.collLink->GetName()<<": "<<relContactPos.x<<",
       // "<<relContactPos.y<<", "<<relContactPos.z<<std::endl;
 
       // the difference between these vectors should not be too large...
       float diff = fabs(oldObjDist.Length() - newObjDist.Length());
-      // std::cout<<"Diff for link "<<cpInfo.collLink->GetName()<<": "<<diff<<std::endl;
+      // std::cout <<"Diff for link "<<cpInfo.collLink->GetName()<<": "<<diff<<std::endl;
 
       if (diff > releaseTolerance)
       {
@@ -652,7 +652,7 @@ void GazeboGraspFix::OnUpdate()
       }
       GazeboGraspGripper& graspingGripper = gggIt->second;
       // Now, detach the object:
-      // std::cout<<"GazeboGraspFix: Detaching "<<objName<<" from gripper "<<graspingGripperName<<"!!!!!!!"<<std::endl;
+      // std::cout <<"GazeboGraspFix: Detaching "<<objName<<" from gripper "<<graspingGripperName<<"!!!!!!!"<<std::endl;
       graspingGripper.HandleDetach(objName);
       this->OnDetach(objName, graspingGripperName);
       gripCntIt->second = 0;
@@ -702,7 +702,7 @@ bool GazeboGraspFix::checkGrip(const std::vector<ignition::math::Vector3d>& forc
       _v2/=l2;
       float angle=acos(_v1.Dot(_v2));*/
       float angle = angularDistance(v1, v2);
-      // std::cout<<"Angular distance between v1.len="<<v1.GetLength()<<" and v2.len="<<v2.GetLength()<<":
+      // std::cout <<"Angular distance between v1.len="<<v1.GetLength()<<" and v2.len="<<v2.GetLength()<<":
       // "<<angle*180/M_PI<<std::endl;
       if (angle > minAngleDiff)
       {
@@ -711,10 +711,10 @@ bool GazeboGraspFix::checkGrip(const std::vector<ignition::math::Vector3d>& forc
           ratio = l2 / l1;
         else
           ratio = l1 / l2;
-        // std::cout<<"Got angle "<<angle<<", ratio "<<ratio<<std::endl;
+        // std::cout <<"Got angle "<<angle<<", ratio "<<ratio<<std::endl;
         if (ratio >= lengthRatio)
         {
-          // std::cout<<"checkGrip() is true"<<std::endl;
+          // std::cout <<"checkGrip() is true"<<std::endl;
           return true;
         }
       }
@@ -725,7 +725,7 @@ bool GazeboGraspFix::checkGrip(const std::vector<ignition::math::Vector3d>& forc
 
 void GazeboGraspFix::OnContact(const ConstContactsPtr& _msg)
 {
-  // std::cout<<"CONTACT! "<<std::endl;//<<_contact<<std::endl;
+  // std::cout <<"CONTACT! "<<std::endl;//<<_contact<<std::endl;
   // for all contacts...
   for (int i = 0; i < _msg->contact_size(); ++i)
   {
@@ -739,7 +739,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr& _msg)
       std::string name1 = collision1->GetScopedName();
       std::string name2 = collision2->GetScopedName();
 
-      // std::cout<<"OBJ CONTACT! "<<name1<<" / "<<name2<<std::endl;
+      // std::cout <<"OBJ CONTACT! "<<name1<<" / "<<name2<<std::endl;
       int count = _msg->contact(i).position_size();
 
       // Check to see if the contact arrays all have the same size.
@@ -825,24 +825,24 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr& _msg)
       ignition::math::Matrix4<double> contactInLocal = worldToLinkInv * worldToContact;
       ignition::math::Vector3d contactPosInLocal = contactInLocal.Translation();
 
-      // std::cout<<"---------"<<std::endl;
-      // std::cout<<"CNT in loc: "<<contactPosInLocal.x<<","<<contactPosInLocal.y<<","<<contactPosInLocal.z<<std::endl;
+      // std::cout <<"---------"<<std::endl;
+      // std::cout <<"CNT in loc: "<<contactPosInLocal.x<<","<<contactPosInLocal.y<<","<<contactPosInLocal.z<<std::endl;
 
       /*ignition::math::Vector3 sDiff=avgPos-linkWorldPose.pos;
-      std::cout<<"SIMPLE trans: "<<sDiff.x<<","<<sDiff.y<<","<<sDiff.z<<std::endl;
-      std::cout<<"coll world pose: "<<linkWorldPose.pos.x<<", "<<linkWorldPose.pos.y<<",
-      "<<linkWorldPose.pos.z<<std::endl; std::cout<<"contact avg pose: "<<avgPos.x<<", "<<avgPos.y<<",
+      std::cout <<"SIMPLE trans: "<<sDiff.x<<","<<sDiff.y<<","<<sDiff.z<<std::endl;
+      std::cout <<"coll world pose: "<<linkWorldPose.pos.x<<", "<<linkWorldPose.pos.y<<",
+      "<<linkWorldPose.pos.z<<std::endl; std::cout <<"contact avg pose: "<<avgPos.x<<", "<<avgPos.y<<",
       "<<avgPos.z<<std::endl;
 
       ignition::math::Vector3 lX=linkWorldPose.rot.GetXAxis();
       ignition::math::Vector3 lY=linkWorldPose.rot.GetYAxis();
       ignition::math::Vector3 lZ=linkWorldPose.rot.GetZAxis();
 
-      std::cout<<"World ori:
+      std::cout <<"World ori:
       "<<linkWorldPose.rot.x<<","<<linkWorldPose.rot.y<<","<<linkWorldPose.rot.z<<","<<linkWorldPose.rot.w<<std::endl;
-      std::cout<<"x axis: "<<lX.x<<","<<lX.y<<","<<lX.z<<std::endl;
-      std::cout<<"y axis: "<<lY.x<<","<<lY.y<<","<<lY.z<<std::endl;
-      std::cout<<"z axis: "<<lZ.x<<","<<lZ.y<<","<<lZ.z<<std::endl;*/
+      std::cout <<"x axis: "<<lX.x<<","<<lX.y<<","<<lX.z<<std::endl;
+      std::cout <<"y axis: "<<lY.x<<","<<lY.y<<","<<lY.z<<std::endl;
+      std::cout <<"z axis: "<<lZ.x<<","<<lZ.y<<","<<lZ.z<<std::endl;*/
 
       // now, get the pose of the object and compute it's relative position to the collision surface.
       ignition::math::Pose3d objWorldPose = objCollision->GetLink()->WorldPose();
@@ -863,7 +863,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr& _msg)
         p.objPos += objPosInLocal;
         p.sum++;
       }
-      // std::cout<<"Average force of contact= "<<avgForce.x<<", "<<avgForce.y<<", "<<avgForce.z<<" out of
+      // std::cout <<"Average force of contact= "<<avgForce.x<<", "<<avgForce.y<<", "<<avgForce.z<<" out of
       // "<<force.size()<<" vectors."<<std::endl;
     }
   }

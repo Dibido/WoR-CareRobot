@@ -51,6 +51,14 @@ namespace gazebo
   {
   }
 
+  jointRad_t JointController::converseScaleToRad(double aScale,
+                                                 double aMinScale,
+                                                 double aMaxScale)
+  {
+    return mMinRad + (mMaxRad - mMinRad) *
+                         ((aScale - aMinScale) / (aMaxScale - aMinScale));
+  }
+
   JointController& JointController::operator=(const JointController& other)
   {
     if (this != &other)

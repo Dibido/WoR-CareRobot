@@ -61,7 +61,7 @@ bool GazeboGraspGripper::Init(physics::ModelPtr& _model, const std::string& _gri
        ++fingerIt)
   {
     physics::LinkPtr link = this->model->GetLink(*fingerIt);
-    // std::cout<<"Got link "<<fingerLinkElem->Get<std::string>()<<std::endl;
+    // std::cout <<"Got link "<<fingerLinkElem->Get<std::string>()<<std::endl;
     if (!link.get())
     {
       gzerr << "GazeboGraspGripper ERROR: Link " << *fingerIt

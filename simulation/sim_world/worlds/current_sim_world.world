@@ -10,7 +10,7 @@
     </include>
 
     <include>
-      <uri>model://franka_panda_2</uri>
+      <uri>model://franka_panda</uri>
     </include>
 
     <model name="table_model">
@@ -35,18 +35,18 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.38 -5.04 1.07</pose>
+      <pose>0.35 -5.0 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
     </model>
 
-    <model name="cup_model">
-      <pose>0.35 -4.89 1.07</pose>
-      <include>
-        <uri>model://ica_cup</uri>
-      </include>
-    </model>
+    <!-- <model name="cup_model"> -->
+    <!--   <pose>0.35 -4.89 1.07</pose> -->
+    <!--   <include> -->
+    <!--     <uri>model://ica_cup</uri> -->
+    <!--   </include> -->
+    <!-- </model> -->
 
     <model name="agv">
       <pose>0.35 -5 1.05</pose>

@@ -9,4 +9,4 @@ typedef double jointRad_t;
 typedef double jointVel_t;
 typedef uint32_t commandTime_t;
 
-#endif  // PROJECT_TYPES_HPP
+#endif // PROJECT_TYPES_HPP

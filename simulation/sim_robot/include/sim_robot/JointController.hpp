@@ -75,6 +75,18 @@ namespace gazebo
      */
     void stop();
 
+    /**
+     * @brief converts a scale to the range of radials of this joint
+     *
+     * @param aScale the value that needs to be conversed
+     * @param aMinScale the minumum of the value range
+     * @param aMaxScale the maximum of the value range
+     * @return jointRad_t the converted value in radials.
+     */
+    jointRad_t converseScaleToRad(double aScale,
+                                  double aMinScale = 0,
+                                  double aMaxScale = 1);
+
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
     jointVel_t getCurrentVel() const;
