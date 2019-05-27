@@ -68,11 +68,12 @@ namespace controller
     mCurrentState->doActivity(this);
     mCurrentStateMutex.unlock();
     while (!(typeid(*mCurrentState) == typeid(EmergencyStop) ||
-            typeid(*mCurrentState) == typeid(Ready)) &&
+             typeid(*mCurrentState) == typeid(Ready)) &&
            ros::ok())
     {
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
+
       mCurrentStateMutex.unlock();
     }
   }

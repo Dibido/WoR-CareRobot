@@ -46,7 +46,7 @@ namespace controller
     mArrivalTime =
         ros::Time::now() +
         ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / lSpeedFactor);
-    uint32_t time = mArrivalTime.toSec()-ros::Time::now().toSec() -1;
+    uint32_t time = mArrivalTime.toSec() - ros::Time::now().toSec() - 1;
     ros::Duration lDuration(time);
     if (lDuration > ros::Duration(0))
     {
@@ -63,7 +63,7 @@ namespace controller
     }
   }
 
-  void Move::exitAction(Context* aContext)
+  void Move::exitAction(Context*)
   {
   }
 } // namespace controller

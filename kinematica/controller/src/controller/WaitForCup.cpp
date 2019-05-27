@@ -31,7 +31,7 @@ namespace controller
     }
   }
 
-  void WaitForCup::exitAction(Context* aContext)
+  void WaitForCup::exitAction(Context*)
   {
   }
 } // namespace controller

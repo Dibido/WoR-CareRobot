@@ -28,7 +28,7 @@ namespace controller
     aContext->setState(std::make_shared<Ready>());
   }
 
-  void Init::exitAction(Context* aContext)
+  void Init::exitAction(Context*)
   {
   }
 } // namespace controller
