@@ -1,4 +1,5 @@
 #include "location_component/DetectAGV.hpp"
+#include "location_component/Calibration.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
@@ -7,15 +8,19 @@
 
 namespace location_component
 {
-  DetectAGV::DetectAGV()
-      : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3), mRosServiceCup()
+  DetectAGV::DetectAGV(Calibration aCalibration)
+      : mPrevDetectedAGV(),
+        mCapturedFrame(0, 0, CV_8UC3),
+        mRosServiceCup(),
+        mCalibration(aCalibration)
   {
   }
 
-  DetectAGV::DetectAGV(ros::NodeHandle& nh)
+  DetectAGV::DetectAGV(ros::NodeHandle& nh, Calibration aCalibration)
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
-        mRosServiceCup(std::make_unique<RosServiceCup>(nh))
+        mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
+        mCalibration(aCalibration)
   {
   }
 
@@ -29,7 +34,7 @@ namespace location_component
         detectFrame(aFrame, aDisplayFrame);
     if (lDetectedFrame)
     {
-      PosCalculation lPosCalculator;
+      PosCalculation lPosCalculator(mCalibration);
       for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
       {
         cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
@@ -48,10 +53,11 @@ namespace location_component
         if (mRosServiceCup)
         {
           environment_controller::Object lObject(
-              environment_controller::Position(lCupLocation_m.x, cArmY_m,
-                                               lCupLocation_m.z),
-              cCupHeight_m, cCupDiameter_m, cCupDiameter_m, M_PI * -0.5f,
-              cAGVSpeed_m_s, ros::Time::now(), 0);
+              environment_controller::Position(
+                  lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
+              mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
+              mCalibration.mCupDiameter_m, M_PI * -0.5f,
+              mCalibration.mAGVSpeed_m_s, ros::Time::now(), 0);
 
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
