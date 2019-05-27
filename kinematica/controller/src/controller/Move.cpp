@@ -57,7 +57,7 @@ namespace controller
     }
   }
 
-  void Move::exitAction(Context* aContext)
+  void Move::exitAction(Context*)
   {
   }
 } // namespace controller
