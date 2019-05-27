@@ -51,6 +51,14 @@ namespace gazebo
   {
   }
 
+  jointRad_t JointController::converseScaleToRad(double aScale,
+                                                 double aMinScale,
+                                                 double aMaxScale)
+  {
+    return mMinRad + (mMaxRad - mMinRad) *
+                         ((aScale - aMinScale) / (aMaxScale - aMinScale));
+  }
+
   JointController& JointController::operator=(const JointController& other)
   {
     if (this != &other)
@@ -126,7 +134,8 @@ namespace gazebo
     }
     if (aSpeedFactor > 0)
     {
-      mCurrentVel = M_PI_2 * aSpeedFactor;
+      mCurrentVel = convertDegrees2Radians(mMaxVel);
+      mCurrentVel = mCurrentVel * aSpeedFactor;
     }
     else
     {
@@ -222,6 +231,12 @@ namespace gazebo
   jointRad_t JointController::convertPw2Radians(jointPw_t aPw) const
   {
     return (aPw - mMinPw) * (mMaxRad - mMinRad) / (mMaxPw - mMinPw) + mMinRad;
+  }
+
+  jointRad_t JointController::convertDegrees2Radians(jointVel_t mMaxVel) const
+  {
+
+    return (mMaxVel * M_PI) / 180;
   }
 
   void JointController::run()

@@ -81,7 +81,6 @@ TEST(updateJointController, update)
   EXPECT_EQ(0, jointController1.getCurrentPos());
 }
 
-
 TEST(equalsDoubleJointController, equalsDouble)
 {
   gazebo::physics::JointPtr joint;
