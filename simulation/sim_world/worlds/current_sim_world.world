@@ -28,7 +28,7 @@
     </model>
 
     <model name="lidar_model">
-      <pose>0.55 0 0.95 0 0 0</pose>
+      <pose>0.55 0 0.95 3.14 0 0</pose>
       <include>
         <uri>model://lidar_model</uri>
       </include>
@@ -56,28 +56,28 @@
     </model>
 
     <model name="ultrasonic1">
-      <pose>0 -4 1.2 0 0 0</pose>
+      <pose>0.10 -4 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic2">
-      <pose>0 -3 1.2 0 0 0</pose>
+      <pose>0.10 -3 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic3">
-      <pose>0 -2 1.2 0 0 0</pose>
+      <pose>0.10 -2 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic4">
-      <pose>0 -1 1.2 0 0 0</pose>
+      <pose>0.10 -1 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>

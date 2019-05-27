@@ -214,16 +214,16 @@ void GazeboRosSonar::OnScan(ConstSonarStampedPtr& _msg)
       ros::Time(static_cast<uint32_t>(_msg->time().sec()), static_cast<uint32_t>(_msg->time().nsec()));
   range_msg_.header.frame_id = this->frame_name_;
 
-  range_msg_.radiation_type = sensor_msgs::Range::ULTRASOUND;
+  range_msg_.radiation_type = sensor_msgs::Range::INFRARED;
 
   range_msg_.field_of_view = static_cast<float>(fov_);
   range_msg_.max_range = static_cast<float>(this->parent_sonar_sensor_->RangeMax());
   range_msg_.min_range = static_cast<float>(this->parent_sonar_sensor_->RangeMin());
 
   range_msg_.range = static_cast<float>(_msg->sonar().range());
-  if (range_msg_.range < range_msg_.max_range)
-    range_msg_.range = static_cast<float>(
-        std::min(range_msg_.range + this->GaussianKernel(0, gaussian_noise_), parent_sonar_sensor_->RangeMax()));
+  // if (range_msg_.range < range_msg_.max_range)
+  //   range_msg_.range = static_cast<float>(
+  //       std::min(range_msg_.range + this->GaussianKernel(0, gaussian_noise_), parent_sonar_sensor_->RangeMax()));
 
   this->pub_queue_->push(range_msg_, this->pub_);
 }
