@@ -11,7 +11,7 @@
 
 
     <include>
-      <uri>model://franka_panda_2</uri>
+      <uri>model://franka_panda</uri>
     </include>
 
     <model name="table_model">
