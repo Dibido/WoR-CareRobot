@@ -12,7 +12,7 @@ namespace controller
   };
   ReleaseCup::~ReleaseCup(){};
 
-  void ReleaseCup::entryAction(Context* aContext)
+  void ReleaseCup::entryAction(Context*)
   {
   }
 
@@ -21,7 +21,7 @@ namespace controller
     aContext->setState(std::make_shared<Ready>());
   }
 
-  void ReleaseCup::exitAction(Context* aContext)
+  void ReleaseCup::exitAction(Context*)
   {
   }
 } // namespace controller

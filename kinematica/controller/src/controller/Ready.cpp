@@ -24,7 +24,7 @@ namespace controller
     }
   }
 
-  void Ready::exitAction(Context* aContext)
+  void Ready::exitAction(Context*)
   {
   }
 } // namespace controller
