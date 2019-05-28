@@ -1,48 +1,23 @@
 #ifndef POSTCALCULATION_HPP
 #define POSTCALCULATION_HPP
 
+#include "location_component/Calibration.hpp"
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 
 namespace location_component
 {
-  // Camera position
-  const float cCameraPosX_m = 0.35f;
-  const float cCameraPosY_m = -4.0f;
-  const float cCameraPosZ_m = 0.8f;
-
-  // Camera FOV
-  const float cCameraFOV_rads = 1.047f;
-
-  // The position where the arm will pick up the cup
-  const float cArmY_m = 0.0f;
-
-  // Compensate for flipped camera
-  const float cCameraFlipX = -1.0f;
-  const float cCameraFlipY = -1.0f;
-
-  // Cup and AGV size
-  const float cCupHeight_m = 0.099f;
-  const float cCupDiameter_m = 0.071f;
-  const float cAGVDepth_m = 0.680f;
-  const float cAGVWidth_m = 0.350f;
-  const float cAGVHeight_m = 0.400f;
-
-  // AGV speed
-  const float cAGVSpeed_m_s = 0.220f;
-
   class PosCalculation
   {
       public:
-    PosCalculation();
+    PosCalculation(Calibration aCalibration = Calibration());
     ~PosCalculation();
 
     /**
      * @brief Predicts the time when the cup arrives at the robot arm.
      */
     ros::Time predictCupArrivalTime(float aCupLocationY_m,
-                                    ros::Time aCurrentTime,
-                                    float aAGVSpeed_m_s = cAGVSpeed_m_s) const;
+                                    ros::Time aCurrentTime) const;
     /**
      * @brief Calculates the cup location.
      *
@@ -73,6 +48,8 @@ namespace location_component
     cv::Point3f calculatePointLocation(cv::Point aScreenPos,
                                        cv::Size aFrameSize,
                                        float fObjectPositionZ_m) const;
+
+    Calibration mCalibration;
   };
 } // namespace location_component
 
