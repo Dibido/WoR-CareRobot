@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7.2 FATAL_ERROR)
 project(sim_child)
-add_compile_options(-Wall -Wconversion -Wextra -I -isystem -std=c++14)
+add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
 set(CMAKE_CXX_CPPCHECK "cppcheck" "–enable=all -Wall -Wextra -Wconversion --inline-suppr")
 
 find_package(gazebo REQUIRED)
