@@ -1,7 +1,9 @@
 // Library
+#include <chrono>
 #include <iostream>
 #include <ros/ros.h>
 #include <ros/time.h>
+#include <thread>
 
 // Local
 #include "controller/ControllerConsts.hpp"
@@ -31,9 +33,13 @@ namespace controller
     mArrivalTime = Move::calculateArrivalTime(aContext, lConfiguration);
     ros::Duration lDuration(mArrivalTime.toSec() - ros::Time::now().toSec() -
                             cWaitTime_s);
+    uint32_t lMovementDuration_ns = mArrivalTime.toNSec() -
+                                    ros::Time::now().toNSec() -
+                                    cWaitTime_s * pow(10, 9);
     if (lDuration > ros::Duration(0))
     {
-      lDuration.sleep();
+      std::this_thread::sleep_for(
+          std::chrono::nanoseconds(lMovementDuration_ns));
     }
   }
 
