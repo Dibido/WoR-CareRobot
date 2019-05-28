@@ -229,7 +229,7 @@ namespace lidar_application
   {
     ROS_INFO("Detected objects:");
 
-    for (auto lPair : mDetectedObjects)
+    for (const auto& lPair : mDetectedObjects)
     {
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
