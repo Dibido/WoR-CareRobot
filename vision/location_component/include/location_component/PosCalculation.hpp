@@ -46,15 +46,11 @@ namespace location_component
     /**
      * @brief Calculates the cup location.
      *
-     * @param aAGVScreenPos The position of the AGV on the screen.
-     * @param aAGVFrameSize The size of the AGV screen frame.
-     * @param aCupScreenPos The size of the cup on the cup screen.
-     * @param aCupFrameSize The size of the cup screen frame.
+     * @param aCupScreenPos The position of the cup on the screen.
+     * @param aAGVFrameSize The size of the screen frame.
      */
-    cv::Point3f calculateCupLocation(cv::Point aAGVScreenPos,
-                                     cv::Size aAGVFrameSize,
-                                     cv::Point aCupScreenPos,
-                                     cv::Size aCupFrameSize) const;
+    cv::Point3f calculateCupLocation(cv::Point aCupScreenPos,
+                                     cv::Size aAGVFrameSize) const;
     /**
      * @brief Calculates the AGV location in the world based on screen
      * coordinates.
@@ -67,13 +63,16 @@ namespace location_component
 
       private:
     /**
-     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
+     * @brief Calculates a point location in the world based on screen
+     * coordinates.
      *
-     * @param aScreenPos The size of the cup on the cup screen.
-     * @param aFrameSize The size of the cup screen frame.
+     * @param aScreenPos The position of the point on the screen.
+     * @param aFrameSize The size of the screen frame.
+     * @param fObjectPositionZ_m The Z-position of the object in the world.
      */
-    cv::Point2f calculateRelativeCupLocation(cv::Point aScreenPos,
-                                             cv::Size aFrameSize) const;
+    cv::Point3f calculatePointLocation(cv::Point aScreenPos,
+                                       cv::Size aFrameSize,
+                                       float fObjectPositionZ_m) const;
   };
 } // namespace location_component
 

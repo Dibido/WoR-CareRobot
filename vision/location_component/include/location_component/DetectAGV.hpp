@@ -17,7 +17,8 @@ namespace location_component
   {
     std::vector<cv::Point> mCorners;
     cv::Point mMidpoint;
-    cv::Mat agvFrame;
+    cv::Rect mBoundRect;
+    cv::Mat mAGVFrame;
   };
 
   struct DetectedFrame
