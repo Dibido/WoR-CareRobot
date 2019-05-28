@@ -62,16 +62,16 @@ namespace location_component
                                      cv::Size aAGVFrameSize) const;
 
     /**
-     * @brief A getter for the valiable cAGVSpeed_m_s
+     * @brief A getter for the variable cAGVSpeed_m_s
      *
      * @return float - The currect speed of the AGV
      */
     float getAGVSpeed_m_s();
 
     /**
-     * @brief Set the AGVSpeed m s object
+     * @brief Set the AGVSpeed m s object. The speed can only be bigger then zero
      *
-     * @param aAGVSpeed_m_s - The variable you would like cAGVSpeed_m_s to be
+     * @param aAGVSpeed_m_s - The value to be assigned to the mAGVSpeed_m_s variable
      */
     void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
 
