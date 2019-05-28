@@ -48,7 +48,7 @@ namespace location_component
     float getAGVSpeed_m_s() const;
 
     /**
-     * @brief Set the AGVSpeed m s object. The speed can only be bigger then zero
+     * @brief Set the AGVSpeed m s object. The speed can only be zero or bigger then zero
      *
      * @param aAGVSpeed_m_s - The value to be assigned to the mAGVSpeed_m_s variable
      */
