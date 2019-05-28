@@ -36,10 +36,13 @@ namespace location_component
       PosCalculation lPosCalculator(mCalibration);
       for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
       {
-        cv::Point3f lCupLocation_m = mPosCalculator.calculateCupLocation(
-            lDetectedFrame->mDetectedAGV.mMidpoint,
-            lDetectedFrame->mAGVFrameSize, detectedCup.mMidpoint,
-            lDetectedFrame->mCupFrameSize);
+        cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
+            // Cup midpoint is taken from within the bounding rectangle,
+            // so add the top-left corner of the bounding rectangle to the
+            // position.
+            detectedCup.mMidpoint +
+                lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
+            lDetectedFrame->mAGVFrameSize);
         ros::Time lCupPredictedArrivalTime =
             mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
                                                  ros::Time::now());
@@ -52,11 +55,11 @@ namespace location_component
         if (mRosServiceCup)
         {
           environment_controller::Object lObject(
-          environment_controller::Position(
-              lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
-          mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
-          mCalibration.mCupDiameter_m, M_PI * -0.5f,
-          mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
+              environment_controller::Position(
+                  lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
+              mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
+              mCalibration.mCupDiameter_m, M_PI * -0.5f,
+              mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
 
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
@@ -113,13 +116,13 @@ namespace location_component
           CupScanner lCupScanner;
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
-              lCupScanner.detectCups(lDetectedAGV->agvFrame);
+              lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
           lDetectedFrame->mDetectedAGV = (*lDetectedAGV);
 
           aFrame.copyTo(mCapturedFrame);
 
           cv::Mat lDisplayCups;
-          lDetectedAGV->agvFrame.copyTo(lDisplayCups);
+          lDetectedAGV->mAGVFrame.copyTo(lDisplayCups);
 
           lDetectedFrame->mCupFrameSize =
               cv::Size(lDisplayCups.cols, lDisplayCups.rows);
@@ -187,18 +190,16 @@ namespace location_component
       std::vector<std::vector<cv::Point>> lContours(1);
       getContoursMat(lDisFrame, lContours);
 
-      if (lContours.at(0).size() == cCornersOfObject)
-      {
-        lDetectedAGV.agvFrame = lDisFrame(lBoundRect);
+      lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
-        std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
-        lPoints.push_back(getMidPoint(lContours.at(0)));
+      std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
+      lPoints.push_back(getMidPoint(lContours.at(0)));
 
-        cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
-                                 lTransmtx.inv());
+      cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
+                               lTransmtx.inv());
 
-        lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
-      }
+      lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
+      lDetectedAGV.mBoundRect = lBoundRect;
 
       return lDetectedAGV;
     }

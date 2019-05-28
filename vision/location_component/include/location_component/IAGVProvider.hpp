@@ -1,8 +1,8 @@
 #ifndef IAGV_PROVIDER_HPP
 #define IAGV_PROVIDER_HPP
 
-#include <ros/ros.h>
 #include "location_component/AGV.hpp"
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -13,7 +13,6 @@ namespace location_component
     ~IAGVProvider() = default;
 
     virtual void publishAGVSpeed(const location_component::AGV& aAGV) = 0;
-    
   };
 
 } // namespace location_component

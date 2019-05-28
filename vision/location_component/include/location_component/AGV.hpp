@@ -10,7 +10,7 @@ namespace location_component
       public:
     /**
      * @brief Construct a new AGV object
-     * 
+     *
      * @param aSpeed - The currect speed of the AGV in meters for each second
      */
     AGV(float aSpeed);

@@ -4,8 +4,8 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/IAGVProvider.hpp"
 #include "ros/ros.h"
-#include "std_msgs/Float32.h"
 #include "sensor_interfaces/AGVSpeed.h"
+#include "std_msgs/Float32.h"
 
 namespace location_component
 {
@@ -38,7 +38,6 @@ namespace location_component
     void AGVCallBack(const sensor_interfaces::AGVSpeedPtr& aSpeed);
 
       private:
-
     /**
      * @brief Ros variable used to subscribe to the topic
      *
@@ -47,14 +46,15 @@ namespace location_component
     ros::Subscriber mSubscriber;
 
     /**
-     * @brief Pointer to the DetectAGV object that is used to detect agv and the cups
-     * 
+     * @brief Pointer to the DetectAGV object that is used to detect agv and the
+     * cups
+     *
      */
     std::shared_ptr<DetectAGV> mDetectAGV;
 
     /**
      * @brief The Queue size for the receiving messages from the AGV
-     * 
+     *
      */
     const unsigned cQueue_size = 1000;
   };

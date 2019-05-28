@@ -16,9 +16,8 @@ namespace location_component
   {
   }
 
-  ros::Time PosCalculation::predictCupArrivalTime(
-      float aCupLocationY_m,
-      ros::Time aCurrentTime) const
+  ros::Time PosCalculation::predictCupArrivalTime(float aCupLocationY_m,
+                                                  ros::Time aCurrentTime) const
   {
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
     float lCurrentTime_s = ( float )aCurrentTime.toSec();
@@ -27,89 +26,66 @@ namespace location_component
     return ros::Time(lPredictedArrivalTime_s);
   }
 
-  cv::Point3f PosCalculation::calculateCupLocation(cv::Point aAGVScreenPos,
-                                                   cv::Size aAGVFrameSize,
-                                                   __attribute__((unused))
-                                                   cv::Point aCupScreenPos,
-                                                   __attribute__((unused))
-                                                   cv::Size aCupFrameSize) const
+  cv::Point3f PosCalculation::calculateCupLocation(cv::Point aCupScreenPos,
+                                                   cv::Size aAGVFrameSize) const
   {
-    cv::Point3f lAGVLocation_m =
-        calculateAGVLocation(aAGVScreenPos, aAGVFrameSize);
-    /* cv::Point2f lRelativeCupLocation = */
-    /*     calculateRelativeCupLocation(aCupScreenPos, aCupFrameSize); */
-
-    /*     cv::Point2f lCupDeviationMiddle_m = */
-    /*         cv::Point2f((lRelativeCupLocation.x - 0.5f) * cAGVWidth_m, */
-    /*                     (lRelativeCupLocation.y - 0.5f) * cAGVHeight_m) */
-    /*         * 1.0f; */
-
-    /*     cv::Point3f lCupLocation_m = */
-    /*         cv::Point3f(lAGVLocation_m.x + (lCupDeviationMiddle_m.y *
-     * cCameraFlipX), */
-    /*                     lAGVLocation_m.y + (lCupDeviationMiddle_m.x *
-     * cCameraFlipY), */
-    /*                     lAGVLocation_m.z + cCupHeight_m); */
-
-    // For the moment, assume the cup is at the middle of the AGV.
-    cv::Point3f lCupLocation_m =
-        cv::Point3f(lAGVLocation_m.x, lAGVLocation_m.y,
-                    lAGVLocation_m.z + mCalibration.mCupHeight_m);
+    cv::Point3f lCupLocation_m = calculatePointLocation(
+        aCupScreenPos, aAGVFrameSize,
+        mCalibration.mCameraPosZ_m - mCalibration.mAGVDepth_m +
+            mCalibration.mCupHeight_m);
 
     return lCupLocation_m;
-  }
-
-  cv::Point2f
-      PosCalculation::calculateRelativeCupLocation(cv::Point aScreenPos,
-                                                   cv::Size aFrameSize) const
-  {
-    float lXPosFactor =
-        static_cast<float>(aScreenPos.x) / static_cast<float>(aFrameSize.width);
-    float lYPosFactor = static_cast<float>(aScreenPos.y) /
-                        static_cast<float>(aFrameSize.height);
-
-    return cv::Point2f(lXPosFactor, lYPosFactor);
   }
 
   cv::Point3f PosCalculation::calculateAGVLocation(cv::Point aScreenPos,
                                                    cv::Size aFrameSize) const
   {
-    // AGV location if it was in the middle of the screen.
-    cv::Point3f lAGVLocationMiddle_m =
+    return calculatePointLocation(aScreenPos, aFrameSize,
+                                  mCalibration.mCameraPosZ_m -
+                                      mCalibration.mAGVDepth_m);
+  }
+
+  cv::Point3f
+      PosCalculation::calculatePointLocation(cv::Point aScreenPos,
+                                             cv::Size aFrameSize,
+                                             float aObjectPositionZ_m) const
+  {
+    // Point location if it was in the middle of the screen.
+    cv::Point3f lObjectLocationMiddle_m =
         cv::Point3f(mCalibration.mCameraPosX_m, mCalibration.mCameraPosY_m,
-                    mCalibration.mCameraPosZ_m - mCalibration.mAGVDepth_m);
+                    aObjectPositionZ_m);
 
     // The length of a ruler if it was stretched horizontally across the screen
-    // on the AGV track.
-    float lAGVPlaneFrameWidth_m =
-        mCalibration.mAGVDepth_m *
+    // on the Object track.
+    float lObjectPlaneFrameWidth_m =
+        (mCalibration.mCameraPosZ_m - aObjectPositionZ_m) *
         std::tan(mCalibration.mCameraFOV_rads / 2.0f) * 2.0f;
     // The size of the plane created by two rulers for the whole screen.
-    cv::Point2f lAGVPlaneFrameSize_m = cv::Point2f(
-        lAGVPlaneFrameWidth_m, lAGVPlaneFrameWidth_m *
-                                   static_cast<float>(aFrameSize.height) /
-                                   static_cast<float>(aFrameSize.width));
+    cv::Point2f lObjectPlaneFrameSize_m = cv::Point2f(
+        lObjectPlaneFrameWidth_m, lObjectPlaneFrameWidth_m *
+                                      static_cast<float>(aFrameSize.height) /
+                                      static_cast<float>(aFrameSize.width));
 
-    // The factor of the AGV position on the frame [0.0, 1.0]
+    // The factor of the Object position on the frame [0.0, 1.0]
     float lXPosFactor =
         static_cast<float>(aScreenPos.x) / static_cast<float>(aFrameSize.width);
     float lYPosFactor = static_cast<float>(aScreenPos.y) /
                         static_cast<float>(aFrameSize.height);
 
-    // The 2D AGV deviation from the middle of the screen calculated to the
+    // The 2D Object deviation from the middle of the screen calculated to the
     // world size.
-    cv::Point2f lAGVPlaneDeviation_m =
-        cv::Point2f(lAGVPlaneFrameSize_m.x * (lXPosFactor - 0.5f),
-                    lAGVPlaneFrameSize_m.y * (lYPosFactor - 0.5f));
+    cv::Point2f lObjectPlaneDeviation_m =
+        cv::Point2f(lObjectPlaneFrameSize_m.x * (lXPosFactor - 0.5f),
+                    lObjectPlaneFrameSize_m.y * (lYPosFactor - 0.5f));
 
-    cv::Point3f lAGVLocation_m =
-        cv::Point3f(lAGVLocationMiddle_m.x +
-                        (lAGVPlaneDeviation_m.y * mCalibration.mCameraFlipX),
-                    lAGVLocationMiddle_m.y +
-                        (lAGVPlaneDeviation_m.x * mCalibration.mCameraFlipY),
-                    lAGVLocationMiddle_m.z);
+    cv::Point3f lObjectLocation_m =
+        cv::Point3f(lObjectLocationMiddle_m.x +
+                        (lObjectPlaneDeviation_m.y * mCalibration.mCameraFlipX),
+                    lObjectLocationMiddle_m.y +
+                        (lObjectPlaneDeviation_m.x * mCalibration.mCameraFlipY),
+                    lObjectLocationMiddle_m.z);
 
-    return lAGVLocation_m;
+    return lObjectLocation_m;
   }
 
   float PosCalculation::getAGVSpeed_m_s() const
@@ -119,7 +95,7 @@ namespace location_component
 
   void PosCalculation::setAGVSpeed_m_s(const float aAGVSpeed_m_s)
   {
-    if(aAGVSpeed_m_s < 0.0)
+    if (aAGVSpeed_m_s < 0.0)
     {
       throw std::range_error("AGV speed cannot be lower than zero");
     }

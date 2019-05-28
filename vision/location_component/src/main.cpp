@@ -50,7 +50,8 @@ int main(int argc, char** argv)
   ros::init(argc, argv, location_component_constants::cComponentName);
   ros::NodeHandle nh;
   mDetectAGV = std::make_shared<location_component::DetectAGV>(nh);
-  location_component::AGVSubscriber mSubscriber(location_component_constants::cAGVTopic, mDetectAGV);
+  location_component::AGVSubscriber mSubscriber(
+      location_component_constants::cAGVTopic, mDetectAGV);
 
   ros::Rate loop_rate(10);
 
