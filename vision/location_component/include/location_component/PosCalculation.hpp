@@ -1,60 +1,31 @@
 #ifndef POSTCALCULATION_HPP
 #define POSTCALCULATION_HPP
 
+#include "location_component/Calibration.hpp"
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 
 namespace location_component
 {
-  // Camera position
-  const float cCameraPosX_m = 0.35f;
-  const float cCameraPosY_m = -4.0f;
-  const float cCameraPosZ_m = 0.8f;
-
-  // Camera FOV
-  const float cCameraFOV_rads = 1.047f;
-
-  // The position where the arm will pick up the cup
-  const float cArmY_m = 0.0f;
-
-  // Compensate for flipped camera
-  const float cCameraFlipX = -1.0f;
-  const float cCameraFlipY = -1.0f;
-
-  // Cup and AGV size
-  const float cCupHeight_m = 0.099f;
-  const float cCupDiameter_m = 0.071f;
-  const float cAGVDepth_m = 0.680f;
-  const float cAGVWidth_m = 0.350f;
-  const float cAGVHeight_m = 0.400f;
-
-  // AGV speed
-  const float cAGVSpeed_m_s = 0.220f;
-
   class PosCalculation
   {
       public:
-    PosCalculation();
+    PosCalculation(Calibration aCalibration = Calibration());
     ~PosCalculation();
 
     /**
      * @brief Predicts the time when the cup arrives at the robot arm.
      */
     ros::Time predictCupArrivalTime(float aCupLocationY_m,
-                                    ros::Time aCurrentTime,
-                                    float aAGVSpeed_m_s = cAGVSpeed_m_s) const;
+                                    ros::Time aCurrentTime) const;
     /**
      * @brief Calculates the cup location.
      *
-     * @param aAGVScreenPos The position of the AGV on the screen.
-     * @param aAGVFrameSize The size of the AGV screen frame.
-     * @param aCupScreenPos The size of the cup on the cup screen.
-     * @param aCupFrameSize The size of the cup screen frame.
+     * @param aCupScreenPos The position of the cup on the screen.
+     * @param aAGVFrameSize The size of the screen frame.
      */
-    cv::Point3f calculateCupLocation(cv::Point aAGVScreenPos,
-                                     cv::Size aAGVFrameSize,
-                                     cv::Point aCupScreenPos,
-                                     cv::Size aCupFrameSize) const;
+    cv::Point3f calculateCupLocation(cv::Point aCupScreenPos,
+                                     cv::Size aAGVFrameSize) const;
     /**
      * @brief Calculates the AGV location in the world based on screen
      * coordinates.
@@ -65,15 +36,42 @@ namespace location_component
     cv::Point3f calculateAGVLocation(cv::Point aScreenPos,
                                      cv::Size aAGVFrameSize) const;
 
+    /**
+     * @brief A getter for the variable cAGVSpeed_m_s
+     *
+     * @return float - The currect speed of the AGV
+     */
+    float getAGVSpeed_m_s() const;
+
+    /**
+     * @brief Set the AGVSpeed m s object. The speed can only be zero or bigger
+     * then zero
+     *
+     * @param aAGVSpeed_m_s - The value to be assigned to the mAGVSpeed_m_s
+     * variable
+     */
+    void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
+
       private:
     /**
-     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
+     * @brief Calculates a point location in the world based on screen
+     * coordinates.
      *
-     * @param aScreenPos The size of the cup on the cup screen.
-     * @param aFrameSize The size of the cup screen frame.
+     * @param aScreenPos The position of the point on the screen.
+     * @param aFrameSize The size of the screen frame.
+     * @param fObjectPositionZ_m The Z-position of the object in the world.
      */
-    cv::Point2f calculateRelativeCupLocation(cv::Point aScreenPos,
-                                             cv::Size aFrameSize) const;
+    cv::Point3f calculatePointLocation(cv::Point aScreenPos,
+                                       cv::Size aFrameSize,
+                                       float fObjectPositionZ_m) const;
+
+    /**
+     * @brief The most current speed of the AGV
+     *
+     */
+    float mAGVSpeed_m_s = 0.220f;
+
+    Calibration mCalibration;
   };
 } // namespace location_component
 
