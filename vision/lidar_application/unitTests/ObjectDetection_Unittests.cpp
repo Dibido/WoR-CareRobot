@@ -10,7 +10,7 @@
 
 using namespace lidar_application;
 
-TEST(ObjectDetection, detectObjects_scenario1)
+TEST(ObjectDetection, detectObjects_singleObject)
 {
   double lMaxDistanceDifference_m = 0.2;
 
@@ -37,18 +37,19 @@ TEST(ObjectDetection, detectObjects_scenario1)
 
   lObjectDetection.mMostRecentScan = lNewScanData;
 
-  ASSERT_EQ(static_cast<unsigned int>(0), lObjectDetection.mPublishData.size());
+  ASSERT_EQ(static_cast<unsigned int>(0),
+            lObjectDetection.mDetectedObjects.size());
 
   lObjectDetection.detectObjects();
 
   /* We expect that one object is detected as the differences in distance
    * between angles 1.0, 2.0 and 3.0, are smaller then our defined
    * lMaxDistanceDifference_m of 0.2 */
-  ASSERT_EQ(static_cast<unsigned int>(1), lObjectDetection.mPublishData.size());
+  ASSERT_EQ(static_cast<unsigned int>(1),
+            lObjectDetection.mDetectedObjects.size());
 }
 
-/** TO-DO: Resolve underlying bug! Currently fails.
-TEST(ObjectDetection, detectObjects_scenario2)
+TEST(ObjectDetection, detectObjects_multipleObjects)
 {
   // Different value compared to scenario 1
   double lMaxDistanceDifference_m = 0.1;
@@ -58,10 +59,10 @@ TEST(ObjectDetection, detectObjects_scenario2)
   // Adding initial scan of area
   LidarData lInitialScanData;
   lInitialScanData.addLidarData(0.0, 1.0);
-  lInitialScanData.addLidarData(1.0, 4.0);
-  lInitialScanData.addLidarData(2.0, 4.0);
-  lInitialScanData.addLidarData(3.0, 4.0);
-  lInitialScanData.addLidarData(4.0, 1.0);
+  lInitialScanData.addLidarData(0.1, 4.0);
+  lInitialScanData.addLidarData(0.2, 4.0);
+  lInitialScanData.addLidarData(0.3, 4.0);
+  lInitialScanData.addLidarData(0.4, 1.0);
 
   lObjectDetection.mInitialScan = lInitialScanData;
   lObjectDetection.mInitialized = true;
@@ -69,22 +70,24 @@ TEST(ObjectDetection, detectObjects_scenario2)
   // New scan data, with distance on angle 1.0 2.0 and 3.0 being closer.
   LidarData lNewScanData;
   lNewScanData.addLidarData(0.0, 1.0);
-  lNewScanData.addLidarData(1.0, 2.0);
-  lNewScanData.addLidarData(2.0, 2.15);
-  lNewScanData.addLidarData(3.0, 2.30);
-  lNewScanData.addLidarData(4.0, 1.0);
+  lNewScanData.addLidarData(0.1, 2.0);
+  lNewScanData.addLidarData(0.2, 2.15);
+  lNewScanData.addLidarData(0.3, 2.30);
+  lNewScanData.addLidarData(0.4, 1.0);
 
   lObjectDetection.mMostRecentScan = lNewScanData;
 
-  ASSERT_EQ(static_cast<unsigned int>(0), lObjectDetection.mPublishData.size());
+  ASSERT_EQ(static_cast<unsigned int>(0),
+            lObjectDetection.mDetectedObjects.size());
 
   lObjectDetection.detectObjects();
 
   /** We expect that 3 objects are detected as the differences in distance
-between angles 1.0, 2.0 and 3.0,
-   * are bigger then our defined lMaxDistanceDifference_m of 0.1
-  ASSERT_EQ(static_cast<unsigned int>(3), lObjectDetection.mPublishData.size());
-}*/
+   * between angles 0.1, 0.2 and 0.3,
+   * are bigger then our defined lMaxDistanceDifference_m of 0.1 */
+  EXPECT_EQ(static_cast<unsigned int>(3),
+            lObjectDetection.mDetectedObjects.size());
+}
 
 TEST(ObjectDetection, convertVectorsTo2D)
 {

@@ -26,6 +26,7 @@ namespace lidar_application
           detectObjects();
 
           printPublishData();
+
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
         }
@@ -61,8 +62,10 @@ namespace lidar_application
 
     /* The first object that is detected, this is stored seperately
     so if we detect an object at end of range, we can check if this is the same
-    object as this firstobject */
-    LidarData lFirstObject;
+    object as this firstobject. NOTE: In this context, a object is only to be
+    considered a 'first object' if it is detected from the very first
+    measurement onwards. */
+    LidarData lBeginRangeObject;
 
     double lPreviousDistance_m = 0.0;
 
@@ -86,10 +89,12 @@ namespace lidar_application
           // If lObject contains valid info (it won't at first iteration)
           if ((lObject.mDistances_m.size() > 0))
           {
-            // If first object hasn't been stored yet, store it
-            if (lFirstObject.mAngles.size() == 0)
+            /** If begin range object hasn't been stored yet and lObject
+            is detected from the very first measurement angle */
+            if (lBeginRangeObject.mAngles.size() == 0 &&
+                lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
             {
-              lFirstObject = lObject;
+              lBeginRangeObject = lObject;
             }
             else // Not the first object
             {
@@ -110,8 +115,19 @@ namespace lidar_application
       {
         if (lLastComparisonDifferent == true)
         {
-          // Add centerpoint of this object to the list
-          lObjectList.push_back(getAverageMeasurement(lObject));
+          /** If begin range object hasn't been stored yet and lObject
+          is detected from the very first measurement angle */
+          if (lBeginRangeObject.mAngles.size() == 0 &&
+              lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
+          {
+            lBeginRangeObject = lObject;
+          }
+          else // Not begin range object
+          {
+            // Add centerpoint of this object to list
+            lObjectList.push_back(getAverageMeasurement(lObject));
+          }
+
           lObject.reset();
 
           lLastComparisonDifferent = false;
@@ -121,30 +137,42 @@ namespace lidar_application
       lPreviousDistance_m = lCurrentDistance_m;
     }
 
-    // If there is a valid object detected at end of range, and there has been
-    // detected a first object
-    if (lObject.mAngles.size() > 0 && lFirstObject.mAngles.size() > 0)
+    // There has been detected a object in begin of range
+    if (lBeginRangeObject.mAngles.size() > 0)
     {
-      // If the last measurement of this object, is close to the first
-      // measurement of the first object
-      if (std::abs(lObject.mDistances_m.back() -
-                   lFirstObject.mDistances_m.front()) <=
-          mMaxDistanceDifference_m)
+      // And there has also been detected a object at the end of the range
+      if (lObject.mAngles.size() > 0)
       {
-        // Add the first object data to this object
-        lObject.addLidarData(lFirstObject.mAngles, lFirstObject.mDistances_m);
+        // If the last measurement of this object, is close to the first
+        // measurement of the object detected in the beginning of the range
+        if (std::abs(lObject.mDistances_m.back() -
+                     lBeginRangeObject.mDistances_m.front()) <=
+            mMaxDistanceDifference_m)
+        {
+          // Add the begin range object data to this object, as it must be
+          // measurements of the same object
+          lObject.addLidarData(lBeginRangeObject.mAngles,
+                               lBeginRangeObject.mDistances_m);
+        }
+        else
+        {
+          // Store the object detected in begin of range seperately
+          lObjectList.push_back(getAverageMeasurement(lBeginRangeObject));
+        }
+
+        // Add centerpoint of this object to the list
+        lObjectList.push_back(getAverageMeasurement(lObject));
       }
+      // There was no object detected at the end of the range, the object
+      // detected at begin of range must be isolated and can be added on its
+      // own.
       else
       {
-        // Store the first detected object seperately
-        lObjectList.push_back(getAverageMeasurement(lFirstObject));
+        lObjectList.push_back(getAverageMeasurement(lBeginRangeObject));
       }
-
-      // Add centerpoint of this object to the list
-      lObjectList.push_back(getAverageMeasurement(lObject));
     }
 
-    mPublishData = convertVectorsTo2D(lObjectList);
+    mDetectedObjects = convertVectorsTo2D(lObjectList);
   }
 
   std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
@@ -201,7 +229,7 @@ namespace lidar_application
   {
     ROS_INFO("Detected objects:");
 
-    for (auto lPair : mPublishData)
+    for (const auto& lPair : mDetectedObjects)
     {
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
