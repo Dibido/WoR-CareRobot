@@ -8,7 +8,6 @@
 #include "controller/Move.hpp"
 #include "controller/ReleaseCup.hpp"
 #include "controller/WaitForCup.hpp"
-#include "kinematics/Configuration.hpp"
 #include "kinematics/EndEffector.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
 namespace controller
@@ -20,8 +19,6 @@ namespace controller
 
   void Move::entryAction(Context* aContext)
   {
-    const double lSpeedFactor = 0.5;
-
     kinematics::EndEffector lEndEffector = kinematics::EndEffector(
         aContext->cup().object().position().x_m(),
         aContext->cup().object().position().y_m(),
@@ -30,8 +27,33 @@ namespace controller
     kinematics::Configuration lConfiguration =
         aContext->configurationProvider()->inverseKinematics(
             lEndEffector, aContext->configuration());
-    aContext->robotControl()->publish(0.5, lConfiguration);
 
+    aContext->robotControl()->publish(cSpeedFactor, lConfiguration);
+
+    mArrivalTime = Move::calculateArrivalTime(aContext, lConfiguration);
+    ros::Duration lDuration(mArrivalTime.toSec() - ros::Time::now().toSec() -
+                            cWaitTime_s);
+    if (lDuration > ros::Duration(0))
+    {
+      lDuration.sleep();
+    }
+  }
+
+  void Move::doActivity(Context* aContext)
+  {
+    if (ros::Time::now() >= mArrivalTime)
+    {
+      aContext->setState(std::make_shared<WaitForCup>());
+    }
+  }
+
+  void Move::exitAction(Context*)
+  {
+  }
+
+  ros::Time Move::calculateArrivalTime(Context* aContext,
+                                       kinematics::Configuration lConfiguration)
+  {
     double lMaxDeltaTheta = 0;
     for (size_t i = 0; i < lConfiguration.size; ++i)
     {
@@ -43,22 +65,8 @@ namespace controller
       }
     }
 
-    mArrivalTime =
-        ros::Time::now() +
-        ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / lSpeedFactor);
-  }
-
-  void Move::doActivity(Context* aContext)
-  {
-    if (ros::Time::now() >= mArrivalTime)
-    {
-      // aContext->setState(std::make_shared<ReleaseCup>());
-      aContext->setState(std::make_shared<WaitForCup>());
-    }
-  }
-
-  void Move::exitAction(Context* aContext)
-  {
+    return ros::Time::now() +
+           ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / cSpeedFactor);
   }
 
   planning::Path Move::findPath(Context* aContext,
