@@ -60,4 +60,19 @@ namespace controller
   void Move::exitAction(Context* aContext)
   {
   }
+
+  planning::Path Move::findPath(Context* aContext,
+                                const kinematics::EndEffector& aGoal)
+  {
+    kinematics::EndEffector lEndEffector =
+        aContext->configurationProvider()->forwardKinematics(
+            aContext->configuration());
+
+    planning::Vertex lStart(lEndEffector.cX_m, lEndEffector.cY_m,
+                            lEndEffector.cZ_m);
+
+    planning::Vertex lGoal(aGoal.cX_m, aGoal.cY_m, aGoal.cZ_m);
+
+    return aContext->astar()->search(lStart, lGoal);
+  }
 } // namespace controller

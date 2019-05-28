@@ -55,6 +55,8 @@ namespace controller
     void exitAction(Context* aContext);
 
       private:
+    planning::Path findPath(Context* aContext,
+                            const kinematics::EndEffector& aGoal);
     ros::Time mArrivalTime;
   };
 } // namespace controller
