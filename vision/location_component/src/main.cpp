@@ -1,4 +1,8 @@
+#include "location_component/AGVSubscriber.hpp"
 #include "location_component/DetectAGV.hpp"
+#include "location_component/PosCalculation.hpp"
+#include "location_component/RosServiceCup.hpp"
+#include "std_msgs/String.h"
 #include <ctime>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -6,19 +10,27 @@
 #include <ros/ros.h>
 #include <vector>
 
-location_component::DetectAGV d;
+std::shared_ptr<location_component::DetectAGV> mDetectAGV;
 
-void imageCallback(const sensor_msgs::ImageConstPtr& msg)
+namespace location_component_constants
+{
+
+  const std::string cWebcamTopic = "/sensor/webcam/img_raw";
+  const std::string cAGVTopic = "/sensor/agv";
+  const std::string cComponentName = "location_component";
+} // namespace location_component_constants
+
+void imageCallback(const sensor_msgs::ImageConstPtr& aMsg)
 {
   try
   {
     cv::Mat srcMatrix;
     cv::Mat displayMatrix;
 
-    cv_bridge::toCvShare(msg, "bgr8")->image.copyTo(srcMatrix);
-
-    d.detectFrame(srcMatrix, displayMatrix);
-    cv::imshow("view", displayMatrix);
+    cv_bridge::toCvShare(aMsg, "bgr8")->image.copyTo(srcMatrix);
+    mDetectAGV->detectUpdate(srcMatrix, displayMatrix);
+    // Disable debug windows for now.
+    /* cv::imshow("view", displayMatrix); */
 
     int c = cv::waitKey(10);
     if (c == 27)
@@ -28,20 +40,35 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
   }
   catch (cv_bridge::Exception& e)
   {
-    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
+    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", aMsg->encoding.c_str());
   }
 }
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "image_listener");
+
+  ros::init(argc, argv, location_component_constants::cComponentName);
   ros::NodeHandle nh;
-  cv::namedWindow("view");
+  mDetectAGV = std::make_shared<location_component::DetectAGV>(nh);
+  location_component::AGVSubscriber mSubscriber(
+      location_component_constants::cAGVTopic, mDetectAGV);
+
+  ros::Rate loop_rate(10);
+
+  // Disable debug windows for now.
+  /* cv::namedWindow("view"); */
   image_transport::ImageTransport it(nh);
-  const std::string cTopicName = "/sensor/webcam/img_raw";
+  const std::string cTopicName = location_component_constants::cWebcamTopic;
   image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
-  ros::spin();
-  cv::destroyWindow("view");
+
+  while (ros::ok())
+  {
+    loop_rate.sleep();
+    ros::spinOnce();
+  }
+
+  // Disable debug windows for now.
+  /* cv::destroyWindow("view"); */
 
   return 0;
 }

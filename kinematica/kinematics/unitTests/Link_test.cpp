@@ -5,27 +5,12 @@ namespace kinematics
   TEST(Link, Constructors)
   {
     Link link0(1, M_PI, 3, 0, eJoint::STATIC);
-
-    EXPECT_EQ(1, link0.getA());
-    EXPECT_EQ(M_PI, link0.getAlpha());
-    EXPECT_EQ(3, link0.getD());
-    EXPECT_EQ(0, link0.getTheta());
     EXPECT_EQ(eJoint::STATIC, link0.getType());
 
     Link revoluteLink(2, M_PI_2, 2, eJoint::REVOLUTE, 0, 4);
-
-    EXPECT_EQ(2, revoluteLink.getA());
-    EXPECT_EQ(M_PI_2, revoluteLink.getAlpha());
-    EXPECT_EQ(2, revoluteLink.getD());
-    EXPECT_EQ(0, revoluteLink.getTheta());
     EXPECT_EQ(eJoint::REVOLUTE, revoluteLink.getType());
 
     Link prismaticLink(5, M_PI_4, M_PI, eJoint::PRISMATIC, 0, 20);
-
-    EXPECT_EQ(5, prismaticLink.getA());
-    EXPECT_EQ(M_PI_4, prismaticLink.getAlpha());
-    EXPECT_EQ(0, prismaticLink.getD());
-    EXPECT_EQ(M_PI, prismaticLink.getTheta());
     EXPECT_EQ(eJoint::PRISMATIC, prismaticLink.getType());
 
     EXPECT_ANY_THROW(Link(5, 0, 0, eJoint::STATIC, 0, 20));
@@ -44,22 +29,6 @@ namespace kinematics
     EXPECT_EQ(true, revoluteLink.isWithinConstraints(M_PI_4));
     EXPECT_EQ(false, revoluteLink.isWithinConstraints(M_PI * 3));
     EXPECT_EQ(false, revoluteLink.isWithinConstraints(M_PI_2 * 5));
-  }
-
-  TEST(Link, ConstrainVariable)
-  {
-    Link prismaticLink(5, M_PI_4, M_PI, eJoint::PRISMATIC, 0, 20);
-
-    EXPECT_EQ(20, prismaticLink.constrainVariable(50));
-    EXPECT_EQ(0, prismaticLink.constrainVariable(-20));
-    EXPECT_EQ(10, prismaticLink.constrainVariable(10));
-
-    Link revoluteLink(2, M_PI_2, 2, eJoint::REVOLUTE, -M_PI_2, M_PI_2);
-
-    EXPECT_EQ(-M_PI_2, revoluteLink.constrainVariable(M_PI * 3));
-    EXPECT_EQ(M_PI_2, revoluteLink.constrainVariable(M_PI_2 * 5));
-    EXPECT_EQ(-M_PI_2, revoluteLink.constrainVariable(-M_PI_2 * 5));
-    EXPECT_EQ(M_PI_4, revoluteLink.constrainVariable(M_PI_4));
   }
 
   TEST(Link, TransformationMatrix)

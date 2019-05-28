@@ -22,7 +22,7 @@
 			</geometry>
 		</visual>
 
-		<sensor type="ray" name="sensor">  
+		<sensor type="ray" name="sensor">
 			<pose>0 0 -0.004645 0 0 0</pose>
 			<visualize>true</visualize>
 			<update_rate>10</update_rate>

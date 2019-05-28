@@ -1,6 +1,11 @@
 #ifndef DETECTAGV_HPP
 #define DETECTAGV_HPP
 
+#include "location_component/AGV.hpp"
+#include "location_component/Calibration.hpp"
+#include "location_component/CupScanner.hpp"
+#include "location_component/PosCalculation.hpp"
+#include "location_component/RosServiceCup.hpp"
 #include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
@@ -15,13 +20,30 @@ namespace location_component
   {
     std::vector<cv::Point> mCorners;
     cv::Point mMidpoint;
+    cv::Rect mBoundRect;
+    cv::Mat mAGVFrame;
+  };
+
+  struct DetectedFrame
+  {
+    DetectedAGV mDetectedAGV;
+    std::vector<DetectedCup> mDetectedCups;
+    cv::Size mAGVFrameSize;
+    cv::Size mCupFrameSize;
   };
 
   class DetectAGV
   {
       public:
-    DetectAGV();
+    DetectAGV(Calibration aCalibration = Calibration());
+    DetectAGV(ros::NodeHandle& nh, Calibration aCalibration = Calibration());
     ~DetectAGV();
+
+    /**
+     * @brief Calls the detectFrame function, and if an AGV and cups have been
+     * detected, sends a message.
+     */
+    void detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame);
 
     /**
      * @brief The detectFrame function will analyse the frame and decide what
@@ -36,7 +58,8 @@ namespace location_component
      * @param aDisplayFrame - This reference matrix is used to display the debug
      * information of the detected objects
      */
-    void detectFrame(const cv::Mat& aFrame, cv::Mat& aDisplayFrame);
+    boost::optional<DetectedFrame> detectFrame(const cv::Mat& aFrame,
+                                               cv::Mat& aDisplayFrame);
 
     /**
      * @brief This function will create a correct perspective image. If the
@@ -81,9 +104,20 @@ namespace location_component
      */
     cv::Point getMidPoint(const std::vector<cv::Point>& aContours) const;
 
+    /**
+     * @brief This function will pass through the speed of the AVG to the
+     * PosCalculation class
+     *
+     * @param aSpeed - The current speed of the AGV
+     */
+    void setAGVSpeed(const location_component::AGV& aAGV);
+
       private:
+    location_component::PosCalculation mPosCalculator;
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
+    std::unique_ptr<RosServiceCup> mRosServiceCup;
+    Calibration mCalibration;
   };
 } // namespace location_component
 

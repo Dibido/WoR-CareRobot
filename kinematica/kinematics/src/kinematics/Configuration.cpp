@@ -9,6 +9,17 @@ namespace kinematics
     mConfiguration.fill(0);
   }
 
+  Configuration::Configuration(const Configuration& copy)
+      : mResult(copy.mResult), mConfiguration(copy.mConfiguration)
+  {
+  }
+  Configuration& Configuration::operator=(const Configuration& copy)
+  {
+    mResult = copy.mResult;
+    mConfiguration = copy.mConfiguration;
+    return *this;
+  }
+
   const double& Configuration::operator[](std::size_t aIndex) const
   {
     if (aIndex >= size)
@@ -42,6 +53,7 @@ namespace kinematics
   }
 
   const std::array<double, cKinematicsDoF>&
+      // cppcheck-suppress unusedFunction
       Configuration::getConfiguration() const
   {
     return mConfiguration;

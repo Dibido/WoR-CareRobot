@@ -1,0 +1,27 @@
+#include "controller/PowerOff.hpp"
+// Library
+#include <chrono>
+#include <iostream>
+#include <memory>
+#include <ros/ros.h>
+#include <thread>
+namespace controller
+{
+  PowerOff::PowerOff(){
+
+  };
+
+  PowerOff::~PowerOff(){};
+
+  void PowerOff::entryAction(Context*)
+  {
+  }
+
+  void PowerOff::doActivity(Context*)
+  {
+  }
+
+  void PowerOff::exitAction(Context*)
+  {
+  }
+} // namespace controller

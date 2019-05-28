@@ -13,6 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+include(CTest)
+enable_testing()
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -128,13 +131,41 @@ include_directories(
 
 add_library(lib_robotcontrol
 src/RobotControlPublisher.cpp 
-src/RobotStopPublisher.cpp )
+src/RobotStopPublisher.cpp
+src/RobotGripperPublisher.cpp
+src/GripperData.cpp )
 
 add_dependencies(lib_robotcontrol
 ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
 
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()
 # target_link_libraries(robotcontrol lib_robotcontrol lib_kinematics)
   
 ## Declare a C++ library
@@ -148,7 +179,7 @@ target_link_libraries(lib_robotcontrol ${catkin_LIBRARIES})
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
+## With catkin_make all packages are built within a single CMake aContext
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/robotcontroller_node.cpp)
 

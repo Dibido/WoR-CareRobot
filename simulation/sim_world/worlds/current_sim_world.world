@@ -10,7 +10,7 @@
     </include>
 
     <include>
-      <uri>model://franka_panda_2</uri>
+      <uri>model://franka_panda</uri>
     </include>
 
     <model name="table_model">
@@ -35,18 +35,18 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.38 -5.04 1.07</pose>
+      <pose>0.38 -5.03 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
     </model>
 
-    <model name="cup_model">
-      <pose>0.35 -4.89 1.07</pose>
-      <include>
-        <uri>model://ica_cup</uri>
-      </include>
-    </model>
+    <!-- <model name="cup_model"> -->
+    <!--   <pose>0.35 -4.89 1.07</pose> -->
+    <!--   <include> -->
+    <!--     <uri>model://ica_cup</uri> -->
+    <!--   </include> -->
+    <!-- </model> -->
 
     <model name="agv">
       <pose>0.35 -5 1.05</pose>
@@ -95,16 +95,18 @@
       <static>true</static>
       <link name="link">
         <sensor name="webcam" type="camera">  
-        <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+        <plugin name="webcam_plugin" filename="libgazebo_ros_camera.so" >
            <robotNamespace>camera_plugin</robotNamespace>
            <updateRate>30.0</updateRate>
            <cameraName>webcam</cameraName>
            <imageTopicName>/sensor/webcam/img_raw</imageTopicName>
            <cameraInfoTopicName>sensor/webcam/camera_info</cameraInfoTopicName>
         </plugin>
+        <plugin name="webcam_plugin" filename="libsim_webcam_plugin.so">
+	</plugin>
         <update_rate>30</update_rate>
         <camera>
-           <save enabled="true">
+           <save enabled="false">
               <path>/tmp/camera_save_tutorial</path>
            </save>
            <horizontal_fov>1.047</horizontal_fov>
@@ -145,4 +147,3 @@
     </physics>
   </world>
 </sdf>
-

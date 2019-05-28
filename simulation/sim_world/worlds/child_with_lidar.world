@@ -11,14 +11,19 @@
       <uri>model://sun</uri>
     </include>
 
-    <include>
-      <uri>model://child</uri>
-    </include>
+    <model name="child">
+      <pose>1 1 0 0 0 0</pose>
+      <include>
+        <uri>model://child</uri>
+      </include>
+    </model>
 
-    <include>
-      <uri>model://lidar_model</uri>
-    </include>
-
+    <model name ="lidar">
+      <pose>10 0 0.5 0 0 0</pose>
+      <include>
+        <uri>model://lidar_model</uri>
+      </include>
+    </model>
             
   </world>
 </sdf>

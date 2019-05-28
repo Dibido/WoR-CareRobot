@@ -40,12 +40,51 @@ namespace gazebo
     void onUpdate();
 
     /**
+     * @brief updates current velocity. Function is used by onUpdate.
+     *
+     */
+    void updateVelocity();
+
+    /**
      * @brief Destroy the Child object
      *
      */
     virtual ~Child() = default;
 
       private:
+    /**
+     * @brief calculates X velocity based on the angle and velocity.
+     *
+     * @return double the velocity on the x axis
+     */
+    double calculateXVelocity();
+    /**
+     * @brief calculates X velocity based on the angle and velocity.
+     *
+     * @return double the velocity on the y axis
+     */
+    double calculateYVelocity();
+    /**
+     * @brief loads the config from the sdf.
+     *
+     * @param aSdf the used sdf.
+     */
+    void loadConfig(sdf::ElementPtr aSdf);
+    /**
+     * @brief Loads the velocity from the sdf.
+     *
+     * @param aSdf the sdf to load from.
+     * @return double the loaded value
+     */
+    double loadVelocity(sdf::ElementPtr aSdf);
+    /**
+     * @brief Loads the velocity from the sdf.
+     *
+     * @param aSdf the sdf to load from.
+     * @return double the loaded value
+     */
+    double loadAngle(sdf::ElementPtr aSdf);
+
     physics::ModelPtr mModel;
     event::ConnectionPtr mUpdateConnection;
     double mVelocity = 0;

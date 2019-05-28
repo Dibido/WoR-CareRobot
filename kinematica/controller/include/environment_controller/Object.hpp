@@ -89,10 +89,12 @@ namespace environment_controller
     double mDepth_m;            ///< must be between cMinRange_m and cMaxRange_m
     double mDirecton_rad;       ///< must be between cLow_rad and cHigh_rad
     double mSpeed_ms;           ///< must be between cTooSlow_ms and cTooFast_ms
-    ros::Time mMeasurementTime; ///< no contraint
+    ros::Time mMeasurementTime; ///< no constraint
     uint8_t mSensorId;          ///< sensorId needs to exsist
   };
 
+  typedef Object Obstacle;
+  typedef std::vector<Obstacle> Obstacles;
 } // namespace environment_controller
 
 #endif // OBJECT_HPP

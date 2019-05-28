@@ -76,10 +76,14 @@ namespace kinematics
      */
     Matrix<double, 4, 4> transformationMatrix(double aVariable) const;
 
-    double getA() const;
-    double getAlpha() const;
-    double getTheta() const;
-    double getD() const;
+    /**
+     * @brief Generate a random variable that falls within
+     * mMinValue and mMaxValue of this link
+     *
+     * @return double
+     */
+    double generateRandomVariable() const;
+
     eJoint getType() const;
 
     /**
@@ -94,18 +98,6 @@ namespace kinematics
      */
     bool isWithinConstraints(double aVariable) const;
 
-    /**
-     * @brief Constrains a variable to be between aMinValue and aMaxValue
-     * In case of a REVOLUTE joint, the variable is first translated to fall
-     * between -M_PI and M_PI
-     * @author Emiel Bosman
-     * @param aVariable Variable to constrain, if variable already falls between
-     * aMinValue and aMaxValue the variable is returned unchanged (meters or
-     * radians)
-     * @return double
-     */
-    double constrainVariable(double aVariable) const;
-
       private:
     /**
      * @brief Calculates the transformation Matrix using the
@@ -119,7 +111,6 @@ namespace kinematics
      */
     Matrix<double, 4, 4> calculateTransformationMatrix(double aD_m,
                                                        double aTheta_rad) const;
-
     double mA_m;
     double mAlpha_rad;
     double mD_m;

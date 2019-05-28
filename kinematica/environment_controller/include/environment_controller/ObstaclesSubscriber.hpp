@@ -12,14 +12,13 @@
 #define OBSTACLE_SUBSCRIBER_HPP
 
 #include "IObstacles.hpp"
+#include "SafetyController.hpp"
 #include "kinematica_msgs/Obstacles.h"
 #include "ros/ros.h"
 #include <string>
 
 namespace environment_controller
 {
-  const uint8_t cQueueSize = 100;
-
   /**
    * @brief implements the interface for obstacles, this class receives the ros
    * messages for obstacles
@@ -36,7 +35,9 @@ namespace environment_controller
      *
      * @author Gianni Monteban
      */
-    ObstaclesSubscriber(const std::string& aSubName);
+    ObstaclesSubscriber(
+        const std::shared_ptr<SafetyController>& aSafetyController,
+        const std::string& aSubName);
 
     /**
      * @brief Destroy the Obstacles Subscriber object
@@ -62,6 +63,7 @@ namespace environment_controller
     void parseObstacles(const Obstacles& aObstacles);
 
       private:
+    std::shared_ptr<SafetyController> mSafetyController;
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
     ros::NodeHandle mHandlePub;

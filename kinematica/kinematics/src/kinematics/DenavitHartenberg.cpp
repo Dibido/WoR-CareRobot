@@ -30,9 +30,13 @@ namespace kinematics
       const Configuration& aCurrentBigTheta) const
   {
     Configuration lNewBigTheta(aCurrentBigTheta);
-    auto lVirtuaaEndEffector = forwardKinematicsYPR(lNewBigTheta);
+    auto lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
     double lBeta = cIkBeta;
     std::size_t lIterationCount = 0;
+
+    lNewBigTheta.setResult(
+        transformationMatrixEquals(aGoal, lVirtualEndEffector, cIkEpsilon_m,
+                                   cIkEpsilon_rad, cDhTransformPosRadSplit));
     while (lNewBigTheta.result() == false)
     {
       ++lIterationCount;
@@ -42,22 +46,32 @@ namespace kinematics
                  lIterationCount);
         break;
       }
-      Matrix<double, 6, 1> lDeltaPos = (aGoal - lVirtuaaEndEffector);
+      Matrix<double, 6, 1> lDeltaPos = (aGoal - lVirtualEndEffector);
       const auto deltaEffector(lDeltaPos * lBeta);
 
       const Matrix<double, 6, 7> lJacobian(calculateJacobiMatrix(lNewBigTheta));
       const auto inverseJacobi(lJacobian.pseudoInverse());
 
       const auto lDeltaTheta(inverseJacobi * deltaEffector);
+
       for (std::size_t i = 0; i < lNewBigTheta.size; ++i)
       {
-        lNewBigTheta.setTheta(i, lNewBigTheta[i] + lDeltaTheta[i][0]);
+        double newTheta = lNewBigTheta[i] + lDeltaTheta[i][0];
+        lNewBigTheta.setTheta(i, newTheta);
       }
-      lVirtuaaEndEffector = forwardKinematicsYPR(lNewBigTheta);
+      lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
 
       lNewBigTheta.setResult(
-          transformationMatrixEquals(aGoal, lVirtuaaEndEffector, cIkEpsilon_m,
+          transformationMatrixEquals(aGoal, lVirtualEndEffector, cIkEpsilon_m,
                                      cIkEpsilon_rad, cDhTransformPosRadSplit));
+      if (lNewBigTheta.result() == true)
+      {
+        if (mRobotConfiguration.isValidConfiguration(lNewBigTheta) == false)
+        {
+          mRobotConfiguration.randomiseConfiguration(lNewBigTheta);
+          lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
+        }
+      }
     }
     return lNewBigTheta;
   }
@@ -73,24 +87,24 @@ namespace kinematics
       aEnd = mRobotConfiguration.size;
     }
     Matrix<double, 4, 4> lResult = lResult.identity();
-    std::size_t mThetaIndex = aStart;
-    for (std::size_t mLinkConfigurationIndex = aStart;
-         mLinkConfigurationIndex < aEnd; ++mLinkConfigurationIndex)
+    std::size_t lThetaIndex = aStart;
+    for (std::size_t lRobotConfigurationIndex = aStart;
+         lRobotConfigurationIndex < aEnd; ++lRobotConfigurationIndex)
     {
       double mVariable;
-      if (mRobotConfiguration[mLinkConfigurationIndex].getType() ==
+      if (mRobotConfiguration[lRobotConfigurationIndex].getType() ==
           eJoint::STATIC)
       {
         mVariable = 0;
       }
       else
       {
-        mVariable = aBigTheta[mThetaIndex];
-        ++mThetaIndex;
+        mVariable = aBigTheta[lThetaIndex];
+        ++lThetaIndex;
       }
       lResult =
           lResult *
-          mRobotConfiguration[mLinkConfigurationIndex].transformationMatrix(
+          mRobotConfiguration[lRobotConfigurationIndex].transformationMatrix(
               mVariable);
     }
     return lResult;

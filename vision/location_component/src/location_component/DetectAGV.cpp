@@ -1,11 +1,25 @@
 #include "location_component/DetectAGV.hpp"
+#include "location_component/Calibration.hpp"
 #include "location_component/CupScanner.hpp"
+#include "location_component/RosServiceCup.hpp"
+#include <cmath>
 #include <ros/ros.h>
 
 namespace location_component
 {
+  DetectAGV::DetectAGV(Calibration aCalibration)
+      : mPrevDetectedAGV(),
+        mCapturedFrame(0, 0, CV_8UC3),
+        mRosServiceCup(),
+        mCalibration(aCalibration)
+  {
+  }
 
-  DetectAGV::DetectAGV() : mPrevDetectedAGV(), mCapturedFrame(0, 0, CV_8UC3)
+  DetectAGV::DetectAGV(ros::NodeHandle& nh, Calibration aCalibration)
+      : mPrevDetectedAGV(),
+        mCapturedFrame(0, 0, CV_8UC3),
+        mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
+        mCalibration(aCalibration)
   {
   }
 
@@ -13,8 +27,56 @@ namespace location_component
   {
   }
 
-  void DetectAGV::detectFrame(const cv::Mat& aFrame, cv::Mat& aDisplayName)
+  void DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
   {
+    boost::optional<DetectedFrame> lDetectedFrame =
+        detectFrame(aFrame, aDisplayFrame);
+    if (lDetectedFrame)
+    {
+      PosCalculation lPosCalculator(mCalibration);
+      for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
+      {
+        cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
+            // Cup midpoint is taken from within the bounding rectangle,
+            // so add the top-left corner of the bounding rectangle to the
+            // position.
+            detectedCup.mMidpoint +
+                lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
+            lDetectedFrame->mAGVFrameSize);
+        ros::Time lCupPredictedArrivalTime =
+            mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
+                                                 ros::Time::now());
+
+        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+        ROS_INFO_STREAM("Current time " << ros::Time::now());
+        ROS_INFO_STREAM("Cup is expected to arrive at "
+                        << lCupPredictedArrivalTime);
+
+        if (mRosServiceCup)
+        {
+          environment_controller::Object lObject(
+              environment_controller::Position(
+                  lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
+              mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
+              mCalibration.mCupDiameter_m, M_PI * -0.5f,
+              mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
+
+          environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
+
+          mRosServiceCup->foundCup(lCup);
+        }
+      }
+
+      ROS_INFO_STREAM("AGV found at: " << mPosCalculator.calculateAGVLocation(
+                          lDetectedFrame->mDetectedAGV.mMidpoint,
+                          lDetectedFrame->mAGVFrameSize));
+    }
+  }
+
+  boost::optional<DetectedFrame> DetectAGV::detectFrame(const cv::Mat& aFrame,
+                                                        cv::Mat& aDisplayFrame)
+  {
+    boost::optional<DetectedFrame> lDetectedFrame{};
     boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
     if (mCapturedFrame.cols == 0)
     {
@@ -24,26 +86,26 @@ namespace location_component
     aFrame.copyTo(lLeftDispFrame);
     if (lDetectedAGV)
     {
-      for (const cv::Point& lCorner : (*lDetectedAGV).mCorners)
+      for (const cv::Point& lCorner : lDetectedAGV->mCorners)
       {
         cv::circle(lLeftDispFrame, lCorner, 10, cv::Scalar(0, 0, 255),
                    CV_FILLED);
       }
-      cv::circle(lLeftDispFrame, (*lDetectedAGV).mMidpoint, 10,
+      cv::circle(lLeftDispFrame, lDetectedAGV->mMidpoint, 10,
                  cv::Scalar(0, 255, 0), CV_FILLED, 8, 0);
 
       if (mPrevDetectedAGV)
       {
         bool lCapture = false;
         // Check if the AGV has moved from one side of the aFrame to another.
-        if ((*lDetectedAGV).mMidpoint.x < aFrame.cols / 2 &&
-            (*mPrevDetectedAGV).mMidpoint.x >= aFrame.cols / 2)
+        if (lDetectedAGV->mMidpoint.x < aFrame.cols / 2 &&
+            mPrevDetectedAGV->mMidpoint.x >= aFrame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING LEFT");
           lCapture = true;
         }
-        if ((*mPrevDetectedAGV).mMidpoint.x < aFrame.cols / 2 &&
-            (*lDetectedAGV).mMidpoint.x >= aFrame.cols / 2)
+        if (mPrevDetectedAGV->mMidpoint.x < aFrame.cols / 2 &&
+            lDetectedAGV->mMidpoint.x >= aFrame.cols / 2)
         {
           ROS_DEBUG_STREAM("AGV IS GOING RIGHT");
           lCapture = true;
@@ -52,21 +114,35 @@ namespace location_component
         if (lCapture)
         {
           CupScanner lCupScanner;
-          std::vector<DetectedCup> lDetectedCups =
-              lCupScanner.detectCups(aFrame);
+          lDetectedFrame = DetectedFrame();
+          lDetectedFrame->mDetectedCups =
+              lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
+          lDetectedFrame->mDetectedAGV = (*lDetectedAGV);
 
           aFrame.copyTo(mCapturedFrame);
 
-          for (const auto& detectedCup : lDetectedCups)
+          cv::Mat lDisplayCups;
+          lDetectedAGV->mAGVFrame.copyTo(lDisplayCups);
+
+          lDetectedFrame->mCupFrameSize =
+              cv::Size(lDisplayCups.cols, lDisplayCups.rows);
+          lDetectedFrame->mAGVFrameSize = cv::Size(aFrame.cols, aFrame.rows);
+
+          for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
           {
-            cv::circle(mCapturedFrame, detectedCup.mMidpoint, 10,
-                       cv::Scalar(255, 0, 0), CV_FILLED);
+            cv::circle(lDisplayCups, detectedCup.mMidpoint, 10,
+                       cv::Scalar(255, 0, 0), 0);
           }
+
+          // Disable debug windows for now.
+          /* imshow("display ", lDisplayCups); */
         }
       }
     }
-    cv::hconcat(lLeftDispFrame, mCapturedFrame, aDisplayName);
+    cv::hconcat(lLeftDispFrame, mCapturedFrame, aDisplayFrame);
     mPrevDetectedAGV = lDetectedAGV;
+
+    return lDetectedFrame;
   }
 
   boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& aFrame) const
@@ -114,16 +190,16 @@ namespace location_component
       std::vector<std::vector<cv::Point>> lContours(1);
       getContoursMat(lDisFrame, lContours);
 
-      if (lContours.at(0).size() == cCornersOfObject)
-      {
-        std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
-        lPoints.push_back(getMidPoint(lContours.at(0)));
+      lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
-        cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
-                                 lTransmtx.inv());
+      std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
+      lPoints.push_back(getMidPoint(lContours.at(0)));
 
-        lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
-      }
+      cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
+                               lTransmtx.inv());
+
+      lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
+      lDetectedAGV.mBoundRect = lBoundRect;
 
       return lDetectedAGV;
     }
@@ -190,6 +266,12 @@ namespace location_component
     unsigned int lAverageY = lSumY / ( unsigned int )aContours.size();
 
     return cv::Point(lAverageX, lAverageY);
+  }
+
+  void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)
+  {
+    ROS_DEBUG_STREAM("AGV speed is updated to " + std::to_string(aAGV.speed()));
+    mPosCalculator.setAGVSpeed_m_s(aAGV.speed());
   }
 
 } // namespace location_component

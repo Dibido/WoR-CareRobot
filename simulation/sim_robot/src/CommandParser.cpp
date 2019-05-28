@@ -37,7 +37,7 @@ namespace commands
                                         jointVel_t speedFactor,
                                         std::vector<Command>& thetaOut)
   {
-  
+
     if (commandTheta.empty())
     { // the match on commandTheta is the speed (if it exists) else this field
       // is
@@ -61,11 +61,8 @@ namespace commands
 
     for (uint16_t i = 0; i < commandTheta.size(); ++i)
     {
-      if (i >= 5 && speedFactor > mMaxSpeed) // Joint 5,6,7 are slower
-      {
-        speedFactor = mMaxSpeed;
-      }
-      Command command(eCommandType::MOVE,                        // type
+
+      Command command(eCommandType::MOVE,                       // type
                       static_cast<jointChannel_t>(i),           // channel
                       static_cast<jointRad_t>(commandTheta[i]), // rad
                       speedFactor);                             // speedFactor
@@ -81,7 +78,7 @@ namespace commands
     {
       for (uint16_t i = 0; i < 7; ++i)
       {
-        Command command(eCommandType::STOP,              // type
+        Command command(eCommandType::STOP,             // type
                         static_cast<jointChannel_t>(i), // channel
                         static_cast<jointRad_t>(0),     // rad
                         0);                             // speedFactor
@@ -164,7 +161,7 @@ namespace commands
         tempSpeed = static_cast<jointVel_t>(std::stod(matches[3].str()));
       }
       Command command(
-          eCommandType::MOVE,                                         // type
+          eCommandType::MOVE,                                        // type
           static_cast<jointChannel_t>(std::stoul(matches[1].str())), // channel
           static_cast<jointPw_t>(std::stod(matches[2].str())),       // pwm
           tempSpeed,                                                 // speed
@@ -186,7 +183,7 @@ namespace commands
     {
       for (unsigned int i = 0; i < 7; ++i)
       {
-        Command command(eCommandType::STOP,              // type
+        Command command(eCommandType::STOP,             // type
                         static_cast<jointChannel_t>(i), // channel
                         0,                              // pwm
                         0,                              // speed

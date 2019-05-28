@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
   std_msgs
+  controller
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_environment_controller
-  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs
+  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs controller
 #  DEPENDS system_lib
 )
 
@@ -124,13 +125,16 @@ include_directories(
 
 add_library(lib_environment_controller
 src/environment_controller/ObstaclesSubscriber.cpp
-src/environment_controller/Object.cpp
-src/environment_controller/Position.cpp)
+src/environment_controller/EnvironmentController.cpp
+src/environment_controller/SafetyController.cpp
+src/environment_controller/CupSubscriber.cpp
+)
 
 add_dependencies(lib_environment_controller
 ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(lib_environment_controller 
+lib_controller
 ${catkin_LIBRARIES}
 )
 ## Declare a C++ library
@@ -144,7 +148,7 @@ ${catkin_LIBRARIES}
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
+## With catkin_make all packages are built within a single CMake aContext
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/environment_controller_node.cpp)
 
