@@ -45,7 +45,7 @@ namespace location_component
      *
      * @return float - The currect speed of the AGV
      */
-    float getAGVSpeed_m_s();
+    float getAGVSpeed_m_s() const;
 
     /**
      * @brief Set the AGVSpeed m s object. The speed can only be bigger then zero

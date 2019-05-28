@@ -112,7 +112,7 @@ namespace location_component
     return lAGVLocation_m;
   }
 
-  float PosCalculation::getAGVSpeed_m_s()
+  float PosCalculation::getAGVSpeed_m_s() const
   {
     return mAGVSpeed_m_s;
   }
@@ -125,8 +125,6 @@ namespace location_component
     }
 
     mAGVSpeed_m_s = aAGVSpeed_m_s;
-
-    std::cout << "value " << mAGVSpeed_m_s <<std::endl;
   }
 
 } // namespace location_component
