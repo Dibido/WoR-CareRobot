@@ -50,7 +50,7 @@ namespace location_component
                                              cv::Size aFrameSize,
                                              float aObjectPositionZ_m) const
   {
-    // AGV location if it was in the middle of the screen.
+    // Point location if it was in the middle of the screen.
     cv::Point3f lObjectLocationMiddle_m =
         cv::Point3f(mCalibration.mCameraPosX_m, mCalibration.mCameraPosY_m,
                     aObjectPositionZ_m);
