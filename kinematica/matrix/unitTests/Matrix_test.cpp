@@ -299,3 +299,53 @@ TEST(MatrixFunctions, MatrixRowVectorInEquality)
   Matrix<double, 1, 3> m1{ { 1, 2, 4 } };
   EXPECT_EQ(false, equals(m0, m1 /*,std::numeric_limits<double>::epsilon()*/));
 }
+
+TEST(MatrixFunctions, MatrixDotProductColumnVector)
+{
+  Matrix<double, 3, 1> m0{ { { 2 } }, { { 3 } }, { { 4 } } };
+  Matrix<double, 3, 1> m1{ { { 6 } }, { { 8 } }, { { 4 } } };
+
+  Matrix<double, 3, 1> expected{ { { 12 } }, { { 24 } }, { { 16 } } };
+
+  EXPECT_EQ(expected, m0.dot(m1));
+}
+
+TEST(MatrixFunctions, MatrixDotProductRowVector)
+{
+  Matrix<double, 1, 3> m0{ { 1, 2, 3 } };
+  Matrix<double, 1, 3> m1{ { 1, 2, 4 } };
+
+  Matrix<double, 1, 3> expected{ { 1, 4, 12 } };
+
+  EXPECT_EQ(expected, m0.dot(m1));
+}
+
+TEST(MatrixFunctions, MatrixCosineSimilarityTest1)
+{
+  Matrix<double, 3, 1> m0{ { { 2 } }, { { 3 } }, { { 4 } } };
+  Matrix<double, 3, 1> m1{ { { 2 } }, { { 4 } }, { { 4 } } };
+
+  double result = cosineSimilarity(m0, m1);
+
+  EXPECT_NE(result, 1);
+}
+
+TEST(MatrixFunctions, MatrixCosineSimilarityTest2)
+{
+  Matrix<double, 3, 1> m0{ { { 2 } }, { { 3 } }, { { 4 } } };
+  Matrix<double, 3, 1> m1{ { { 6 } }, { { 8 } }, { { 4 } } };
+
+  double result = cosineSimilarity(m0, m1);
+
+  EXPECT_NEAR(result, 0.89, 0.01);
+}
+
+TEST(MatrixFunctions, MatrixCosineSimilarityTest3)
+{
+  Matrix<double, 3, 1> m0{ { { 2 } }, { { 3 } }, { { 4 } } };
+  Matrix<double, 3, 1> m1{ { { 2 } }, { { 3 } }, { { 4 } } };
+
+  double result = cosineSimilarity(m0, m1);
+
+  EXPECT_NEAR(result, 1, std::numeric_limits<double>::epsilon());
+}
