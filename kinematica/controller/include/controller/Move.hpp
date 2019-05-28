@@ -4,6 +4,7 @@
 // Local
 #include "Context.hpp"
 #include "State.hpp"
+#include "kinematics/Configuration.hpp"
 #include "ros/time.h"
 
 #include <memory>
@@ -56,6 +57,8 @@ namespace controller
 
       private:
     ros::Time mArrivalTime;
+
+    ros::Time calculateArrivalTime(Context* aContext, kinematics::Configuration);
   };
 } // namespace controller
 #endif // MOVE_HPP

@@ -80,6 +80,7 @@ namespace controller
     kinematics::Configuration& configuration();
     environment_controller::Cup& cup();
     robotcontroller::GripperData& gripperData();
+    std::shared_ptr<State>& currentState();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;

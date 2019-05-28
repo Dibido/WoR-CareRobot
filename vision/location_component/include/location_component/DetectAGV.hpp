@@ -1,6 +1,7 @@
 #ifndef DETECTAGV_HPP
 #define DETECTAGV_HPP
 
+#include "location_component/Calibration.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include <boost/optional.hpp>
@@ -31,8 +32,8 @@ namespace location_component
   class DetectAGV
   {
       public:
-    DetectAGV();
-    DetectAGV(ros::NodeHandle& nh);
+    DetectAGV(Calibration aCalibration = Calibration());
+    DetectAGV(ros::NodeHandle& nh, Calibration aCalibration = Calibration());
     ~DetectAGV();
 
     /**
@@ -104,6 +105,7 @@ namespace location_component
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
     std::unique_ptr<RosServiceCup> mRosServiceCup;
+    Calibration mCalibration;
   };
 } // namespace location_component
 
