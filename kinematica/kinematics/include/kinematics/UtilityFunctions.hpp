@@ -107,24 +107,36 @@ namespace kinematics
     return true;
   }
 
+  /**
+   * @brief Checks if two TransformationMatrices are equal to each other. The
+   * positional values are checked with cosineSimilarity. The rotational values
+   * are checked with the radianEquals function.
+   * @author Brandon Geldof
+   * @tparam M
+   * @param lhs
+   * @param rhs
+   * @param aCosineSimEpsilon
+   * @param aEpsilon_rad
+   * @return true
+   * @return false
+   */
   template <std::size_t M>
   inline bool transformationMatrixCosineSim(const Matrix<double, M, 1>& lhs,
                                             const Matrix<double, M, 1>& rhs,
                                             double aCosineSimEpsilon,
-                                            double aEpsilon_rad,
-                                            std::size_t aEpsilonSplit)
+                                            double aEpsilon_rad)
   {
-    assert(M > aEpsilonSplit);
+    static_assert(M % 2 == 0, "Matrix must be able to be split in two");
 
-    Matrix<double, M, 1> lValsPos;
-    Matrix<double, M, 1> lRhsPos;
+    Matrix<double, M / 2, 1> lValsPos;
+    Matrix<double, M / 2, 1> lRhsPos;
 
-    for (std::size_t i = 0; i < aEpsilonSplit; ++i)
+    for (std::size_t i = 0; i < M / 2; ++i)
     {
       lValsPos[i][0] = lhs[i][0];
       lRhsPos[i][0] = rhs[i][0];
     }
-    for (std::size_t i = aEpsilonSplit; i < M; ++i)
+    for (std::size_t i = M / 2; i < M; ++i)
     {
       if (radianEquals(lhs[i][0], rhs[i][0], aEpsilon_rad) == false)
       {
@@ -134,9 +146,7 @@ namespace kinematics
 
     double cCosineSimPos = cosineSimilarity(lValsPos, lRhsPos);
 
-    std::cout << cCosineSimPos << std::endl;
-
-    return (cCosineSimPos > aCosineSimEpsilon) /* && (cCosineSimPos < 1.0)*/;
+    return (cCosineSimPos > aCosineSimEpsilon) && (cCosineSimPos < 1.0);
   }
 
   /**
