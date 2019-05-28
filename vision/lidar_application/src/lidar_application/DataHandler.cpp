@@ -5,7 +5,7 @@ namespace lidar_application
   namespace datahandler_constants
   {
     const std::string cReceiveTopicName = "/sensor/lidar";
-    const std::string cPublishTopicName = "/detectedObjects";
+    const std::string cPublishTopicName = "/detected_objects";
   } // namespace datahandler_constants
 
   DataHandler::DataHandler() : mNewDataAvailable(false)
