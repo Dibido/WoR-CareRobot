@@ -1,13 +1,12 @@
 #ifndef MOVE_HPP
 #define MOVE_HPP
 
-// Local
 #include "Context.hpp"
 #include "State.hpp"
 #include "kinematics/Configuration.hpp"
-#include "ros/time.h"
-
 #include <memory>
+#include <queue>
+#include <ros/time.h>
 namespace controller
 {
   /**
@@ -62,6 +61,8 @@ namespace controller
 
     ros::Time calculateArrivalTime(Context* aContext,
                                    kinematics::Configuration);
+
+    std::queue<kinematics::Configuration> mTrajectory;
   };
 } // namespace controller
 #endif // MOVE_HPP
