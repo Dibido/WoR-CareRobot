@@ -146,7 +146,7 @@ namespace kinematics
 
     double cCosineSimPos = cosineSimilarity(lValsPos, lRhsPos);
 
-    return (cCosineSimPos > aCosineSimEpsilon) && (cCosineSimPos < 1.0);
+    return (cCosineSimPos > aCosineSimEpsilon) && (cCosineSimPos <= 1.0);
   }
 
   /**

@@ -48,7 +48,7 @@ namespace kinematics
 
     EXPECT_EQ(true, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.001));
 
-    EXPECT_EQ(true, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.001));
+    EXPECT_EQ(true, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.01));
 
     EXPECT_EQ(false, transformationMatrixCosineSim(lhs, rhs, 0.999999, 1));
 
