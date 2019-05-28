@@ -5,6 +5,7 @@
 #include "location_component/IAgvProvider.hpp"
 #include "ros/ros.h"
 #include "std_msgs/Float32.h"
+#include "sensor_interfaces/AGVSpeed.h"
 
 namespace location_component
 {
@@ -34,7 +35,7 @@ namespace location_component
      * @param aAGV
      */
     virtual void publishAGVSpeed(const location_component::AGV& aAGV);
-    void AGVCallBack(const std_msgs::Float32& aSpeed);
+    void AGVCallBack(const sensor_interfaces::AGVSpeedPtr& aSpeed);
 
       private:
 

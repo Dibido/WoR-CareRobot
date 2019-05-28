@@ -17,9 +17,9 @@ namespace location_component
       mDetectAGV->setAGVSpeed(aAGV);
   }
 
-  void AGVSubscriber::AGVCallBack(const std_msgs::Float32& aSpeed)
+  void AGVSubscriber::AGVCallBack(const sensor_interfaces::AGVSpeedPtr& aSpeed)
   {
-    location_component::AGV mAGV(aSpeed.data);
+    location_component::AGV mAGV(aSpeed->speed);
     publishAGVSpeed(mAGV);
   }
 
