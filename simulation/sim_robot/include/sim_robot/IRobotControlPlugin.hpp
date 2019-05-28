@@ -34,7 +34,7 @@ namespace i_robot_controller_plugin
     /**
      * @brief virtual interface
      *
-     * @param aCommand The aCommand that we are going to parse
+     * @param aMsg The aMsg message that we are going to parse
      */
 
     virtual void
