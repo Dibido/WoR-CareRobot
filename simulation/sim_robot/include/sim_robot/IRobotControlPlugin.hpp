@@ -1,8 +1,9 @@
 #ifndef I_ROBOT_CONTROLLER_PLUGIN_HPP
 #define I_ROBOT_CONTROLLER_PLUGIN_HPP
 
-#include "sim_robot/Command.hpp"
-#include "sim_robot/CommandData.hpp"
+#include "robotcontroller_msgs/Control.h"
+#include "robotcontroller_msgs/Gripper.h"
+#include "robotcontroller_msgs/Stop.h"
 
 #include <vector>
 
@@ -11,10 +12,9 @@ namespace i_robot_controller_plugin
 
   /**
    * @brief the class of the interface IRobotControlPlugin
-   * @pre a sensor detected an potential obstacle
-   * @post the obstacle will be checked if it is in range of the robotarm, if
-   * this is the case the robotarm will stop
-   * @see Object.hpp for correct values
+   *@pre A gripperData struct is published on the /robot_control topic.
+   * @post A CommandData struct is made.
+   *
    */
   class IRobotControlPlugin
   {
@@ -37,9 +37,8 @@ namespace i_robot_controller_plugin
      * @param aCommand The aCommand that we are going to parse
      */
 
-    virtual void parseCallback(const data::CommandData& aCommand) = 0;
-
-    void test();
+    virtual void
+        parseCallback(const robotcontroller_msgs::ControlPtr& aMsg) = 0;
   };
 } // namespace i_robot_controller_plugin
 

@@ -16,9 +16,12 @@
 #include <std_msgs/String.h>
 
 #include "Command.hpp"
+#include "CommandData.hpp"
 #include "CommandParser.hpp"
 #include "IRobotControlPlugin.hpp"
 #include "JointController.hpp"
+#include "RobotControllerPluginConst.hpp"
+
 namespace gazebo
 {
   /**
@@ -60,9 +63,9 @@ namespace gazebo
      * @param msg: double message to parse and apply
      */
 
-    void parseCallback(const data::CommandData& aCommand) override;
+    void parseCallback(const robotcontroller_msgs::ControlPtr& aMsg) override;
 
-    void commandCallBackFloat(const robotcontroller_msgs::ControlPtr& aMsg);
+    
 
     /**
      * @brief Callback method for receiving an incoming gripper command

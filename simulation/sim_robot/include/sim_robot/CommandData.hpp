@@ -1,13 +1,27 @@
 #include "sim_robot/Command.hpp"
 
+
 #include "sim_robot/types.hpp"
 #include <vector>
 
 namespace data
 {
+  /**
+   * @brief CommandData struct containing a cSpeedFactor_ and cTheta_
+   */
   struct CommandData
   {
-    CommandData(std::vector<jointRad_t> aRad, jointVel_t aSpeedFactor);
+
+    std::vector<jointRad_t> cTheta_;
+    jointVel_t cSpeedFactor_;
+    /**
+     * @brief Construct a new command Data object
+     * @param aTheta
+     * @param aSpeedFactor
+     *
+     */
+    CommandData(std::vector<jointRad_t> aTheta, jointVel_t aSpeedFactor);
+
     ~CommandData() = default;
 
     /**
@@ -16,7 +30,7 @@ namespace data
      * @return jointRad_t
      */
 
-    std::vector<jointRad_t>& mRad();
+    std::vector<jointRad_t>& mTheta();
 
     /**
      * @brief Getter for mSpeedFactor checks whether mSpeedFactor is below 0
@@ -26,8 +40,6 @@ namespace data
 
     jointVel_t& mSpeedFactor();
 
-      private:
-    std::vector<jointRad_t> mRad_;
-    jointVel_t mSpeedFactor_;
+    CommandData& operator=(const CommandData&) = default;
   };
 } // namespace data
