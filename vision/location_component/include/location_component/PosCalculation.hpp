@@ -36,6 +36,22 @@ namespace location_component
     cv::Point3f calculateAGVLocation(cv::Point aScreenPos,
                                      cv::Size aAGVFrameSize) const;
 
+    /**
+     * @brief A getter for the variable cAGVSpeed_m_s
+     *
+     * @return float - The currect speed of the AGV
+     */
+    float getAGVSpeed_m_s() const;
+
+    /**
+     * @brief Set the AGVSpeed m s object. The speed can only be zero or bigger
+     * then zero
+     *
+     * @param aAGVSpeed_m_s - The value to be assigned to the mAGVSpeed_m_s
+     * variable
+     */
+    void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
+
       private:
     /**
      * @brief Calculates a point location in the world based on screen
@@ -48,6 +64,12 @@ namespace location_component
     cv::Point3f calculatePointLocation(cv::Point aScreenPos,
                                        cv::Size aFrameSize,
                                        float fObjectPositionZ_m) const;
+
+    /**
+     * @brief The most current speed of the AGV
+     *
+     */
+    float mAGVSpeed_m_s = 0.220f;
 
     Calibration mCalibration;
   };

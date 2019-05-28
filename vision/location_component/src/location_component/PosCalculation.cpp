@@ -21,7 +21,7 @@ namespace location_component
   {
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
     float lCurrentTime_s = ( float )aCurrentTime.toSec();
-    float lTimeToArm_s = lDistanceToArm_m / mCalibration.mAGVSpeed_m_s;
+    float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
     float lPredictedArrivalTime_s = lCurrentTime_s + lTimeToArm_s;
     return ros::Time(lPredictedArrivalTime_s);
   }
@@ -87,4 +87,20 @@ namespace location_component
 
     return lObjectLocation_m;
   }
+
+  float PosCalculation::getAGVSpeed_m_s() const
+  {
+    return mAGVSpeed_m_s;
+  }
+
+  void PosCalculation::setAGVSpeed_m_s(const float aAGVSpeed_m_s)
+  {
+    if (aAGVSpeed_m_s < 0.0)
+    {
+      throw std::range_error("AGV speed cannot be lower than zero");
+    }
+
+    mAGVSpeed_m_s = aAGVSpeed_m_s;
+  }
+
 } // namespace location_component
