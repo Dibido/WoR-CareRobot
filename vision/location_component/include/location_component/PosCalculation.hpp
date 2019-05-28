@@ -77,7 +77,7 @@ namespace location_component
 
       private:
     /**
-     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
+     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0] for x and y. 0.0 position is the upper left corner.
      *
      * @param aScreenPos The size of the cup on the cup screen.
      * @param aFrameSize The size of the cup screen frame.
