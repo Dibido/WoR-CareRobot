@@ -84,10 +84,11 @@ namespace gazebo
     ros::Subscriber mRosSub;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
-    double mSecs;
+    double mCurrentTime = 0;
     double mPreviousTime = 0;
     double mInterval = 3;
     double mTimebetweenLines = 0;
+    double mNumberofLines = 0;
     bool mWhitelinedetected = true;
 
     /**

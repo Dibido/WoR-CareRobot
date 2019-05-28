@@ -11,6 +11,10 @@ namespace gazebo
 
   const std::string cAgvPublishTopic = "/sensor/agv";
   const std::string cLineDataTopic = "/sensor/sonar";
+  const double cMinRange = 0.30;
+  const double cMaxRange = 0.40;
+  const double cMaxlines = 4;
+  const uint8_t cDistanceBetweenlines = 1;
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
       : mMovingForward(true),
@@ -34,27 +38,34 @@ namespace gazebo
   void AutomatedGuidedVehiclePlugin::callback(
       const sensor_msgs::RangeConstPtr aMsg)
   {
-    mSecs = ros::Time::now().toSec();
-
-    if (aMsg->range > 0.30 && aMsg->range < 0.40)
+    mCurrentTime = ros::Time::now().toSec();
+    if (aMsg->range > cMinRange && aMsg->range < cMaxRange)
     {
       if (mWhitelinedetected)
       {
-        mTimebetweenLines = mSecs;
-        std::cout << (1 / mTimebetweenLines) << std::endl;
-        sensor_interfaces::AGVSpeed speedMsg;
-        speedMsg.speed = ( float ) (1 / mTimebetweenLines);//this->mSpeedY;
-        mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
-            gazebo::cAgvPublishTopic, 1);
-        mAgvPublisher.publish(speedMsg);
+        mPreviousTime = mCurrentTime;
+        if (mNumberofLines > 0)
+        {
+          sensor_interfaces::AGVSpeed speedMsg;
+          speedMsg.speed =
+              ( float )(cDistanceBetweenlines /
+                        std::abs(mTimebetweenLines - mCurrentTime));
+          mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
+              gazebo::cAgvPublishTopic, 1);
+          mAgvPublisher.publish(speedMsg);
+        }
+        mTimebetweenLines = mCurrentTime;
+        ++mNumberofLines;
+        if(mNumberofLines == cMaxlines)
+        {
+          mNumberofLines = 0;
+        }
       }
       mWhitelinedetected = false;
     }
-    if (mSecs - mPreviousTime >= mInterval)
+    if (mCurrentTime - mPreviousTime >= mInterval)
     {
       mWhitelinedetected = true;
-      mTimebetweenLines = 0;
-      mPreviousTime = mSecs;
     }
   }
 
