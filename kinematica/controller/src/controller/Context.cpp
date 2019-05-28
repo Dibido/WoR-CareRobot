@@ -67,12 +67,13 @@ namespace controller
     mCurrentStateMutex.lock();
     mCurrentState->doActivity(this);
     mCurrentStateMutex.unlock();
-    while ((typeid(*mCurrentState) != typeid(EmergencyStop) ||
-            typeid(*mCurrentState) != typeid(Ready)) &&
+    while (!(typeid(*mCurrentState) == typeid(EmergencyStop) ||
+             typeid(*mCurrentState) == typeid(Ready)) &&
            ros::ok())
     {
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
+
       mCurrentStateMutex.unlock();
     }
   }
@@ -148,5 +149,10 @@ namespace controller
   robotcontroller::GripperData& Context::gripperData()
   {
     return mGripperData;
+  }
+
+  std::shared_ptr<State>& Context::currentState()
+  {
+    return mCurrentState;
   }
 } // namespace controller

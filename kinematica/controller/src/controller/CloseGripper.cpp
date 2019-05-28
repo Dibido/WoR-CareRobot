@@ -32,7 +32,7 @@ namespace controller
     }
   }
 
-  void CloseGripper::exitAction(Context* aContext)
+  void CloseGripper::exitAction(Context*)
   {
   }
 } // namespace controller
