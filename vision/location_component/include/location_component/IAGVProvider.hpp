@@ -6,11 +6,11 @@
 
 namespace location_component
 {
-  class IAgvProvider
+  class IAGVProvider
   {
       public:
-    IAgvProvider(){};
-    ~IAgvProvider() = default;
+    IAGVProvider(){};
+    ~IAGVProvider() = default;
 
     virtual void publishAGVSpeed(const location_component::AGV& aAGV) = 0;
     

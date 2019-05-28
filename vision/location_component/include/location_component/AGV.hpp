@@ -17,8 +17,6 @@ namespace location_component
 
     /**
      * @brief Defualt constructor/destructor
-     * 
-     * 
      */
     AGV(const AGV& aAGV) = default;
     virtual ~AGV() = default;

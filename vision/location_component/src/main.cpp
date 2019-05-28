@@ -12,7 +12,7 @@
 
 std::shared_ptr<location_component::DetectAGV> mDetectAGV;
 
-namespace locationComponent_constants
+namespace location_component_constants
 {
 
   const std::string cWebcamTopic = "/sensor/webcam/img_raw";
@@ -47,17 +47,17 @@ void imageCallback(const sensor_msgs::ImageConstPtr& aMsg)
 int main(int argc, char** argv)
 {
 
-  ros::init(argc, argv, locationComponent_constants::cComponentName);
+  ros::init(argc, argv, location_component_constants::cComponentName);
   ros::NodeHandle nh;
   mDetectAGV = std::make_shared<location_component::DetectAGV>(nh);
-  location_component::AGVSubscriber mSubscriber(locationComponent_constants::cAGVTopic, mDetectAGV);
+  location_component::AGVSubscriber mSubscriber(location_component_constants::cAGVTopic, mDetectAGV);
 
   ros::Rate loop_rate(10);
 
   // Disable debug windows for now.
   /* cv::namedWindow("view"); */
   image_transport::ImageTransport it(nh);
-  const std::string cTopicName = locationComponent_constants::cWebcamTopic;
+  const std::string cTopicName = location_component_constants::cWebcamTopic;
   image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
 
   while (ros::ok())

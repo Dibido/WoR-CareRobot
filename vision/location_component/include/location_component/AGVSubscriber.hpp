@@ -2,14 +2,14 @@
 #define AGV_SUBSCRIBER_HPP
 
 #include "location_component/DetectAGV.hpp"
-#include "location_component/IAgvProvider.hpp"
+#include "location_component/IAGVProvider.hpp"
 #include "ros/ros.h"
 #include "std_msgs/Float32.h"
 #include "sensor_interfaces/AGVSpeed.h"
 
 namespace location_component
 {
-  class AGVSubscriber : public IAgvProvider
+  class AGVSubscriber : public IAGVProvider
   {
       public:
     /**
