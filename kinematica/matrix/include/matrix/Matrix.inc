@@ -565,7 +565,7 @@ T Matrix<T, M, N>::dotSum() const
       M == 1 || N == 1,
       "Sum of a DotProduct can only multiply two column- or row-vectors");
 
-  T sum;
+  T sum = 0;
 
   for (std::size_t m = 0; m < M; ++m)
   {
@@ -587,8 +587,8 @@ T cosineSimilarity(const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs)
   Matrix<T, M, N> dotProduct = lhs.dot(rhs);
   double dotSum = dotProduct.dotSum();
 
-  double sumLhs;
-  double sumRhs;
+  double sumLhs = 0;
+  double sumRhs = 0;
 
   for (std::size_t m = 0; m < M; ++m)
   {
@@ -599,7 +599,7 @@ T cosineSimilarity(const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs)
     }
   }
 
-  double test = std::sqrt(sumLhs) * std::sqrt(sumRhs);
+  double dotSqrt = std::sqrt(sumLhs) * std::sqrt(sumRhs);
 
-  return dotSum / test;
+  return dotSum / dotSqrt;
 }
