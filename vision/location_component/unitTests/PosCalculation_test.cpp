@@ -21,9 +21,10 @@ const location_component::Calibration cTestCalibration = {
   .mCupDiameter_m = 0.075f,
   .mAGVDepth_m = 0.680f,
   .mAGVWidth_m = 0.350f,
-  .mAGVHeight_m = 0.400f,
-  .mAGVSpeed_m_s = 0.250f
+  .mAGVHeight_m = 0.400f
 };
+
+const float cTestAGVSpeed_m_s = 0.25f;
 
 TEST(PosCalculationSuite, AGVPositionInMiddleOfScreen)
 {
@@ -80,6 +81,7 @@ TEST(PosCalculationSuite, AGVPositionBottomOfScreen)
 TEST(PosCalculationSuite, CupArrivalTimePrediction)
 {
   location_component::PosCalculation lPosCalculator(cTestCalibration);
+  lPosCalculator.setAGVSpeed_m_s(cTestAGVSpeed_m_s);
   float lCupPositionY_m = -2.0f;
   // The ROS current time is erradic in unit tests, so use a constant current
   // time.
