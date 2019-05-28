@@ -80,11 +80,16 @@ TEST(PosCalculationSuite, AGVPositionBottomOfScreen)
 TEST(PosCalculationSuite, CupArrivalTimePrediction)
 {
   location_component::PosCalculation lPosCalculator(cTestCalibration);
-  float lCupPositionY_m = 2.0f;
+  float lCupPositionY_m = -2.0f;
+  // The ROS current time is erradic in unit tests, so use a constant current
+  // time.
   ros::Time lCurrentTime = ros::Time(10);
 
   ros::Time lCupPredictedArrivalTime =
       lPosCalculator.predictCupArrivalTime(lCupPositionY_m, lCurrentTime);
 
-  EXPECT_EQ(8.0f, lCupPredictedArrivalTime.toSec() - lCurrentTime.toSec());
+  // 2.0 m between the cup and the arm divided by 0.5 m/s = 8.0s until the cup
+  //arrives at the robotarm.
+  EXPECT_DOUBLE_EQ(8.0f,
+                   lCupPredictedArrivalTime.toSec() - lCurrentTime.toSec());
 }
