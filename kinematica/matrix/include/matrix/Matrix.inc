@@ -538,3 +538,68 @@ bool equals(const Matrix<T, M, N>& lhs,
   }
   return true;
 }
+
+template <typename T, std::size_t M, std::size_t N>
+Matrix<T, M, N> Matrix<T, M, N>::dot(const Matrix<T, M, N>& rhs) const
+{
+  static_assert(M == 1 || N == 1,
+                "DotProduct can only multiply two column- or row-vectors");
+
+  Matrix<T, M, N> result(*this);
+
+  for (std::size_t m = 0; m < M; ++m)
+  {
+    for (std::size_t n = 0; n < N; ++n)
+    {
+      result[m][n] = matrix[m][n] * rhs[m][n];
+    }
+  }
+  return result;
+}
+
+template <typename T, std::size_t M, std::size_t N>
+T Matrix<T, M, N>::dotSum() const
+{
+
+  static_assert(
+      M == 1 || N == 1,
+      "Sum of a DotProduct can only multiply two column- or row-vectors");
+
+  T sum = 0;
+
+  for (std::size_t m = 0; m < M; ++m)
+  {
+    for (std::size_t n = 0; n < N; ++n)
+    {
+      sum += matrix[m][n];
+    }
+  }
+  return sum;
+}
+
+template <typename T, std::size_t M, std::size_t N>
+T cosineSimilarity(const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs)
+{
+  static_assert(
+      M == 1 || N == 1,
+      "Cosine Similarity can only be performed on two column- or row-vectors");
+
+  Matrix<T, M, N> dotProduct = lhs.dot(rhs);
+  double dotSum = dotProduct.dotSum();
+
+  double sumLhs = 0;
+  double sumRhs = 0;
+
+  for (std::size_t m = 0; m < M; ++m)
+  {
+    for (std::size_t n = 0; n < N; ++n)
+    {
+      sumLhs += std::pow(lhs[m][n], 2);
+      sumRhs += std::pow(rhs[m][n], 2);
+    }
+  }
+
+  double dotSqrt = std::sqrt(sumLhs) * std::sqrt(sumRhs);
+
+  return dotSum / dotSqrt;
+}

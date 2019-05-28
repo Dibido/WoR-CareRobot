@@ -41,6 +41,20 @@ namespace kinematics
     EXPECT_EQ(false, transformationMatrixEquals(lhs, rhs, 0.1, 0.00001, 3));
   }
 
+  TEST(UtilityFunctions, MatrixCosineSim)
+  {
+    Matrix<double, 6, 1> lhs{ 2, 3, 4, 0.01, 0.03, 0.04 };
+    Matrix<double, 6, 1> rhs{ 2.05, 2.99, 4.0001, 0.010001, 0.03001, 0.03992 };
+
+    EXPECT_EQ(true, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.001));
+
+    EXPECT_EQ(true, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.01));
+
+    EXPECT_EQ(false, transformationMatrixCosineSim(lhs, rhs, 0.999999, 1));
+
+    EXPECT_EQ(false, transformationMatrixCosineSim(lhs, rhs, 0.995, 0.00001));
+  }
+
   TEST(UtilityFunctions, RadianEquals)
   {
     EXPECT_EQ(true, radianEquals(-M_PI, M_PI,

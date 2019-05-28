@@ -14,9 +14,10 @@ catkin_package(
     DEPENDS
     roscpp
     gazebo_ros)
-
+    
 include_directories(
     include
+    SYSTEM
     ${GAZEBO_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS})
 link_directories(${GAZEBO_LIBRARY_DIRS})
