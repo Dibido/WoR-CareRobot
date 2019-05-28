@@ -71,7 +71,7 @@ namespace location_component
     /**
      * @brief Set the AGVSpeed m s object
      *
-     * @param aAGVSpeed_m_s - The value u would like cAGVSpeed_m_s to be
+     * @param aAGVSpeed_m_s - The variable you would like cAGVSpeed_m_s to be
      */
     void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
 

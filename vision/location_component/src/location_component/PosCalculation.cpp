@@ -112,6 +112,11 @@ namespace location_component
 
   void PosCalculation::setAGVSpeed_m_s(const float aAGVSpeed_m_s)
   {
+    if(aAGVSpeed_m_s < 0)
+    {
+      throw std::range_error("AGV speed cannot be lower than zero");
+    }
+    
     mAGVSpeed_m_s = aAGVSpeed_m_s;
   }
 
