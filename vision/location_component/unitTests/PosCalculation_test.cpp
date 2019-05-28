@@ -12,6 +12,7 @@ const location_component::Calibration cTestCalibration = {
   .mCameraPosX_m = 0.50f,
   .mCameraPosY_m = -4.0f,
   .mCameraPosZ_m = 1.0f,
+  // Camera FOV is 90° to make unit testing easier.
   .mCameraFOV_rads = M_PI / 2.0f,
   .mArmY_m = 0.0f,
   .mCameraFlipX = -1.0f,
@@ -49,6 +50,9 @@ TEST(PosCalculationSuite, AGVPositionRightOfScreen)
       lPosCalculator.calculateAGVLocation(lAGVMidpoint_px, lAGVFrameSize_px);
 
   EXPECT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m);
+  // If the AGV is at the edge of the screen,
+  // the deviation should be the same as the height from of the camera from the
+  // AGV (FOV is 90°).
   EXPECT_EQ(lAGVPosition_m.y,
             cTestCalibration.mCameraPosY_m +
                 cTestCalibration.mAGVDepth_m * cTestCalibration.mCameraFlipY);
