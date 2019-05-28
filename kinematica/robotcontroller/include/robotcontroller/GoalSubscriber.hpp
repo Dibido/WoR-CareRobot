@@ -1,14 +1,16 @@
 #ifndef GOALSUBSCRIBER_PROVIDER_HPP
 #define GOALSUBSCRIBER_PROVIDER_HPP
 
-namespace environment_controller
+#include "robotcontroller/IGoalProvider.hpp"
+
+namespace robotcontroller
 {
 
   /**
    * @brief
    *
    */
-  class GoalSubscriber
+  class GoalSubscriber : public IGoalProvider
   {
 
       public:
@@ -16,9 +18,13 @@ namespace environment_controller
 
     virtual ~GoalSubscriber() = default;
 
+    virtual void selectGoalPosition(const Position& aPosition);
+
       private:
+    ros::NodeHandle mHandle;
+    ros::Subscriber mSubscriber;
   };
 
-} // namespace environment_controller
+} // namespace robotcontroller
 
 #endif // GOALSUBSCRIBER_PROVIDER_HPP

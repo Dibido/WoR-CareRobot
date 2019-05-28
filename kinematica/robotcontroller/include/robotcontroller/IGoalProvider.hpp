@@ -3,7 +3,7 @@
 
 #include "environment_controller/Position.hpp"
 
-namespace environment_controller
+namespace robotcontroller
 {
 
   /**
@@ -26,6 +26,6 @@ namespace environment_controller
     virtual void selectGoalPosition(const Position& aPosition) = 0;
   };
 
-} // namespace environment_controller
+} // namespace robotcontroller
 
 #endif // IGOAL_PROVIDER_HPP
