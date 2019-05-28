@@ -8,7 +8,7 @@ namespace environment_controller
 {
   const uint16_t cQueue_size = 1000;
   const uint8_t cRate = 10;
-  const std::string cObstacleTopicName = "/detectedObjects";
+  const std::string cObstacleTopicName = "/detected_objects";
   const std::string cCupTopicName = "/location/cup";
   const uint8_t cMaxRange_m = 100;
   const int8_t cMinRange_m = -100;

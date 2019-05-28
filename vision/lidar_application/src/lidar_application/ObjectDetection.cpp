@@ -26,6 +26,7 @@ namespace lidar_application
           detectObjects();
 
           printPublishData();
+
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
         }
@@ -144,7 +145,7 @@ namespace lidar_application
       lObjectList.push_back(getAverageMeasurement(lObject));
     }
 
-    mPublishData = convertVectorsTo2D(lObjectList);
+    mDetectedObjects = convertVectorsTo2D(lObjectList);
   }
 
   std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
@@ -201,7 +202,7 @@ namespace lidar_application
   {
     ROS_INFO("Detected objects:");
 
-    for (auto lPair : mPublishData)
+    for (auto lPair : mDetectedObjects)
     {
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
