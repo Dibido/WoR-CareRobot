@@ -9,6 +9,8 @@
 #include <math.h>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
+#include "location_component/PosCalculation.hpp"
+#include "location_component/AGV.hpp"
 
 namespace location_component
 {
@@ -101,7 +103,15 @@ namespace location_component
      */
     cv::Point getMidPoint(const std::vector<cv::Point>& aContours) const;
 
+    /**
+     * @brief This function will pass through the speed of the AVG to the PosCalculation class
+     * 
+     * @param aSpeed - The current speed of the AGV
+     */
+    void setAGVSpeed(const location_component::AGV& aAGV);
+
       private:
+    location_component::PosCalculation mPosCalculator;
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
     std::unique_ptr<RosServiceCup> mRosServiceCup;

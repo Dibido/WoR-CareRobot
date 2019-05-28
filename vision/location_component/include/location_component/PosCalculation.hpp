@@ -40,9 +40,23 @@ namespace location_component
     cv::Point3f calculateAGVLocation(cv::Point aScreenPos,
                                      cv::Size aAGVFrameSize) const;
 
+    /**
+     * @brief A getter for the variable cAGVSpeed_m_s
+     *
+     * @return float - The currect speed of the AGV
+     */
+    float getAGVSpeed_m_s() const;
+
+    /**
+     * @brief Set the AGVSpeed m s object. The speed can only be zero or bigger then zero
+     *
+     * @param aAGVSpeed_m_s - The value to be assigned to the mAGVSpeed_m_s variable
+     */
+    void setAGVSpeed_m_s(const float aAGVSpeed_m_s);
+
       private:
     /**
-     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0].
+     * @brief Calculates the relative location of the cup on the AGV [0.0-1.0] for x and y. 0.0 position is the upper left corner.
      *
      * @param aScreenPos The size of the cup on the cup screen.
      * @param aFrameSize The size of the cup screen frame.
@@ -50,6 +64,12 @@ namespace location_component
     cv::Point2f calculateRelativeCupLocation(cv::Point aScreenPos,
                                              cv::Size aFrameSize) const;
 
+    /**
+     * @brief The most current speed of the AGV
+     * 
+     */
+    float mAGVSpeed_m_s = 0.220f;
+    
     Calibration mCalibration;
   };
 } // namespace location_component
