@@ -20,6 +20,13 @@
       </include>
     </model>
 
+    <model name="table_model2">
+      <pose>-0.55 0 0 0 0 1.570796</pose>
+      <include>
+        <uri>model://table</uri>
+      </include>
+    </model>
+
     <model name="kinect_1">
       <pose>0 0 2.98 0 1.570796 0</pose>
       <include>
