@@ -122,27 +122,37 @@ namespace lidar_application
       lPreviousDistance_m = lCurrentDistance_m;
     }
 
-    // If there is a valid object detected at end of range, and there has been
-    // detected a first object
-    if (lObject.mAngles.size() > 0 && lFirstObject.mAngles.size() > 0)
+    // There has been detected a first object
+    if (lFirstObject.mAngles.size() > 0)
     {
-      // If the last measurement of this object, is close to the first
-      // measurement of the first object
-      if (std::abs(lObject.mDistances_m.back() -
-                   lFirstObject.mDistances_m.front()) <=
-          mMaxDistanceDifference_m)
+      // And there has also been detected a object at the end of the range
+      if (lObject.mAngles.size() > 0)
       {
-        // Add the first object data to this object
-        lObject.addLidarData(lFirstObject.mAngles, lFirstObject.mDistances_m);
+        // If the last measurement of this object, is close to the first
+        // measurement of the first object
+        if (std::abs(lObject.mDistances_m.back() -
+                     lFirstObject.mDistances_m.front()) <=
+            mMaxDistanceDifference_m)
+        {
+          // Add the first object data to this object, as it must be
+          // measurements of the same object
+          lObject.addLidarData(lFirstObject.mAngles, lFirstObject.mDistances_m);
+        }
+        else
+        {
+          // Store the first detected object seperately
+          lObjectList.push_back(getAverageMeasurement(lFirstObject));
+        }
+
+        // Add centerpoint of this object to the list
+        lObjectList.push_back(getAverageMeasurement(lObject));
       }
+      // There was no object detected at the end of the range, the first
+      // detected object must be isolated and can be added.
       else
       {
-        // Store the first detected object seperately
         lObjectList.push_back(getAverageMeasurement(lFirstObject));
       }
-
-      // Add centerpoint of this object to the list
-      lObjectList.push_back(getAverageMeasurement(lObject));
     }
 
     mDetectedObjects = convertVectorsTo2D(lObjectList);
