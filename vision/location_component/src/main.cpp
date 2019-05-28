@@ -18,7 +18,7 @@ namespace locationComponent_constants
   const std::string cWebcamTopic = "/sensor/webcam/img_raw";
   const std::string cAGVTopic = "/sensor/agv";
   const std::string cComponentName = "location_component";
-} // namespace locationComponent_constants
+} // namespace locationComponent_coaTopicNamenstants
 
 void imageCallback(const sensor_msgs::ImageConstPtr& aMsg)
 {

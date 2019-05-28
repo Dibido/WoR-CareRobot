@@ -263,6 +263,7 @@ namespace location_component
 
   void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)
   {
+    ROS_DEBUG_STREAM("AGV speed is updated to " + std::to_string(aAGV.speed()));
     mPosCalculator.setAGVSpeed_m_s(aAGV.speed());
   }
 
