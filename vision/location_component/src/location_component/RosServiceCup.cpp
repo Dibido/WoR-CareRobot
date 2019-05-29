@@ -1,4 +1,5 @@
 #include "location_component/RosServiceCup.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 
 namespace location_component
 {
