@@ -22,10 +22,10 @@ namespace environment_controller
     /**
      * @brief Pure virtual function for passing the release time
      *
-     * @param aReleaseTime Time duration that indicates when a grabbed cup will
-     * be released
+     * @param aReleaseTime_s Time duration that indicates when a grabbed cup
+     * will be released
      */
-    virtual void selectReleaseTime(const uint8_t aReleaseTime) = 0;
+    virtual void selectReleaseTime(const uint8_t aReleaseTime_s) = 0;
   };
 
 } // namespace environment_controller

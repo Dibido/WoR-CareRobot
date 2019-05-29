@@ -8,7 +8,8 @@ namespace environment_controller
 {
 
   /**
-   * @brief
+   * @brief Interface class whith which publishers and subscribers can be made
+   * for the /goal topic
    *
    * @pre The desired x,y,z coordinates of where the cup needs to be placed must
    * be known
@@ -19,7 +20,7 @@ namespace environment_controller
 
       public:
     /**
-     * @brief
+     * @brief Pure virtual function for passing the goal position
      *
      * @param aPosition Data object which consists of an x,y and z
      */

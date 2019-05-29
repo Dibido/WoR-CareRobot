@@ -42,9 +42,9 @@ namespace environment_controller
     /**
      * @brief Passes the Release Time (in seconds) to the EnvironmentController
      *
-     * @param aReleaseTime
+     * @param aReleaseTime_s
      */
-    virtual void selectReleaseTime(const uint8_t aReleaseTime);
+    virtual void selectReleaseTime(const uint8_t aReleaseTime_s);
 
       private:
     ros::NodeHandle mHandle;

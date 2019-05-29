@@ -29,8 +29,8 @@ namespace environment_controller
     }
   }
 
-  void ReleaseTimeSubscriber::selectReleaseTime(const uint8_t aReleaseTime)
+  void ReleaseTimeSubscriber::selectReleaseTime(const uint8_t aReleaseTime_s)
   {
-    mEnvironmentController->provideReleaseTime(aReleaseTime);
+    mEnvironmentController->provideReleaseTime(aReleaseTime_s);
   }
 } // namespace environment_controller
