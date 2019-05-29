@@ -11,6 +11,7 @@
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "robotcontroller/RobotGripperPublisher.hpp"
 #include "robotcontroller/RobotStopPublisher.hpp"
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -81,6 +82,9 @@ namespace controller
     environment_controller::Cup& cup();
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
+    environment_controller::Position& position();
+    std::condition_variable& waitForRelease();
+    int16_t& releaseTime_s();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -98,6 +102,9 @@ namespace controller
     std::shared_ptr<State> mCurrentState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
+    environment_controller::Position mDropPosition;
+    int16_t mReleaseTime_s;
+    std::condition_variable mWaitForRelease;
 
     std::mutex mCurrentStateMutex;
   };

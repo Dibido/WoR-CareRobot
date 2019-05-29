@@ -21,7 +21,7 @@ namespace controller
         (aContext->cup().timeOfArrival() - ros::Time::now()) -
         ros::Duration(cWaitTime_s);
     uint32_t lMovementDuration_ns =
-        lDuration.toNSec() + cWaitTime_s * pow(10, 9);
+        lDuration.toNSec() - cWaitTime_s * pow(10, 9);
     if (lMovementDuration_ns > 0)
     {
       std::this_thread::sleep_for(

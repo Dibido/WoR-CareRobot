@@ -45,7 +45,9 @@ namespace controller
                 ros::Time(0),
                 0),
             ros::Time(0))),
-        mGripperData(0.0, 0.0)
+        mDropPosition(0.0, 0.0, 0.0),
+        mGripperData(0.0, 0.0),
+        mReleaseTime_s(-1)
   {
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
@@ -154,5 +156,19 @@ namespace controller
   std::shared_ptr<State>& Context::currentState()
   {
     return mCurrentState;
+  }
+
+  environment_controller::Position& Context::position()
+  {
+    return mDropPosition;
+  }
+
+  std::condition_variable& Context::waitForRelease()
+  {
+    return mWaitForRelease;
+  }
+  int16_t& Context::releaseTime_s()
+  {
+    return mReleaseTime_s;
   }
 } // namespace controller
