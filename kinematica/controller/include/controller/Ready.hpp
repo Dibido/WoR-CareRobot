@@ -16,20 +16,20 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a new Ready object
      *
      */
     Ready();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the Ready object
      *
      */
     ~Ready();
     /**
      * @brief entryAction is being called when the Ready state is being
      * entered.
-     * 
-     * @details 
+     *
+     * @details
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".

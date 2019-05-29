@@ -16,12 +16,12 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a PowerOff object
      *
      */
     PowerOff();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the PowerOff object
      *
      */
     ~PowerOff();

@@ -22,12 +22,12 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a new Move object
      *
      */
     Move();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the Move object
      *
      */
     ~Move();

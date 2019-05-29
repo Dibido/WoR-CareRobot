@@ -16,12 +16,12 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a new ReleaseCup object
      *
      */
     ReleaseCup();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the ReleaseCup object
      *
      */
     ~ReleaseCup();
