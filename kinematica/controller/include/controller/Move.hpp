@@ -3,7 +3,7 @@
 
 #include "Context.hpp"
 #include "State.hpp"
-#include "controller/MovementController.hpp"
+#include "controller/TrajectoryProvider.hpp"
 #include <memory>
 #include <queue>
 #include <ros/time.h>
@@ -56,7 +56,7 @@ namespace controller
     void exitAction(Context* aContext);
 
       private:
-    MovementController mMovementController;
+    TrajectoryProvider mTrajectoryProvider;
     std::queue<kinematics::Configuration> mTrajectory;
     ros::Time mArrivalTime;
   };

@@ -1,38 +1,39 @@
-#include "controller/MovementController.hpp"
 #include "controller/ControllerConsts.hpp"
+#include "controller/TrajectoryProvider.hpp"
 
 namespace controller
 {
-  MovementController::MovementController()
+  TrajectoryProvider::TrajectoryProvider()
   {
   }
 
-  void MovementController::createTrajectory(
+  void TrajectoryProvider::createTrajectory(
       Context* aContext,
       const kinematics::EndEffector& aTargetLocation,
       std::queue<kinematics::Configuration>& aTrajectory)
   {
     ROS_ASSERT_MSG(aTrajectory.empty() == true, "Queue is not empty");
-
-    auto start = ros::Time::now();
-    ROS_DEBUG("Start Move calculation");
-
     kinematics::Configuration lConfiguration =
         aContext->configurationProvider()->inverseKinematics(
             aTargetLocation, aContext->configuration());
 
     ROS_ASSERT_MSG(lConfiguration.result() == true,
                    "Target end effector is unreachable");
-    planning::Path requiredPath = findPath(aContext, aTargetLocation);
+    planning::Path lRequiredPath = findPath(aContext, aTargetLocation);
     lConfiguration = aContext->configuration();
-    ROS_DEBUG("Found path, size: %i", requiredPath.size());
+    ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
 
-    for (std::size_t i = 1; i < requiredPath.size(); ++i)
+    // Start at 1 because first node is start position
+    for (std::size_t i = 1; i < lRequiredPath.size(); ++i)
     {
       kinematics::EndEffector lTrajectoryEndEffector = kinematics::EndEffector(
-          static_cast<double>(requiredPath[i].x) / 100,
-          static_cast<double>(requiredPath[i].y) / 100,
-          static_cast<double>(requiredPath[i].z) / 100, 0, M_PI_2, M_PI_2);
+          static_cast<double>(lRequiredPath[i].x) /
+              planning::cConversionFromMetersToCentimeters,
+          static_cast<double>(lRequiredPath[i].y) /
+              planning::cConversionFromMetersToCentimeters,
+          static_cast<double>(lRequiredPath[i].z) /
+              planning::cConversionFromMetersToCentimeters,
+          0, M_PI_2, M_PI_2);
 
       lConfiguration = aContext->configurationProvider()->inverseKinematics(
           lTrajectoryEndEffector, lConfiguration);
@@ -49,7 +50,7 @@ namespace controller
     aTrajectory.push(lConfiguration);
   }
 
-  ros::Time MovementController::calculateArrivalTime(
+  ros::Time TrajectoryProvider::calculateArrivalTime(
       Context* aContext,
       const kinematics::Configuration& aConfiguration)
   {
@@ -68,7 +69,7 @@ namespace controller
   }
 
   planning::Path
-      MovementController::findPath(Context* aContext,
+      TrajectoryProvider::findPath(Context* aContext,
                                    const kinematics::EndEffector& aGoal)
   {
     kinematics::EndEffector aTargetLocation =

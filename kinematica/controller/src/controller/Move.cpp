@@ -21,7 +21,7 @@ namespace controller
         aContext->cup().object().position().y_m(),
         aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
-    mMovementController.createTrajectory(aContext, lTargetLocation,
+    mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);
     mArrivalTime = ros::Time::now();
   }
@@ -39,7 +39,7 @@ namespace controller
       {
         kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
         aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
-        mArrivalTime = mMovementController.calculateArrivalTime(
+        mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
             aContext, lTargetConfiguration);
         aContext->configuration() = lTargetConfiguration;
         ROS_DEBUG(

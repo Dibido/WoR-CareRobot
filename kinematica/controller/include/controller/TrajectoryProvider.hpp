@@ -7,11 +7,11 @@
 
 namespace controller
 {
-  class MovementController
+  class TrajectoryProvider
   {
       public:
-    MovementController();
-    ~MovementController() = default;
+    TrajectoryProvider();
+    ~TrajectoryProvider() = default;
 
     /**
      * @brief Create a Trajectory to move from current configuration to target
