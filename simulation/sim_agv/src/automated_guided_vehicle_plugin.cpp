@@ -14,7 +14,8 @@ namespace gazebo
   const double cMinRange = 0.30;
   const double cMaxRange = 0.40;
   const double cMaxlines = 4;
-  const uint8_t cDistanceBetweenlines = 1;
+  const double cDistanceBetweenlines = 1;
+  const double cInterval = 3;
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
       : mMovingForward(true),
@@ -38,22 +39,22 @@ namespace gazebo
   void AutomatedGuidedVehiclePlugin::callback(
       const sensor_msgs::RangeConstPtr aMsg)
   {
-    mCurrentTime = ros::Time::now().toSec();
+
     if (aMsg->range > cMinRange && aMsg->range < cMaxRange)
     {
       if (mWhitelinedetected)
       {
-        mPreviousTime = mCurrentTime;
+        mPreviousTime = ros::Time::now().toSec();
         if (mNumberofLines > 0)
         {
           sensor_interfaces::AGVSpeed speedMsg;
           speedMsg.speed =
               ( float )(cDistanceBetweenlines /
-                        std::abs(mTimebetweenLines - mCurrentTime));
+                        std::abs(mTimebetweenLines - ros::Time::now().toSec()));
 
           mAgvPublisher.publish(speedMsg);
         }
-        mTimebetweenLines = mCurrentTime;
+        mTimebetweenLines = ros::Time::now().toSec();
         ++mNumberofLines;
         if (mNumberofLines == cMaxlines)
         {
@@ -62,7 +63,7 @@ namespace gazebo
       }
       mWhitelinedetected = false;
     }
-    if (mCurrentTime - mPreviousTime >= mInterval)
+    if (ros::Time::now().toSec() - mPreviousTime >= cInterval)
     {
       mWhitelinedetected = true;
     }
