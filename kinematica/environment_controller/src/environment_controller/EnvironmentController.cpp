@@ -32,11 +32,11 @@ namespace environment_controller
 
   void EnvironmentController::provideGoal(const Position& aPosition)
   {
-    // mContext->provideDropPosition(aPosition);
+    mContext->provideDropPosition(aPosition);
   }
 
   void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
   {
-    // mContext->provide(aReleaseTime_s);
+    mContext->provideReleaseTime(aReleaseTime_s);
   }
 } // namespace environment_controller
