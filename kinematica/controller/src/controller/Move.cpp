@@ -30,12 +30,12 @@ namespace controller
         aContext->configurationProvider()->inverseKinematics(
             lEndEffector, aContext->configuration());
     aContext->robotControl()->publish(cSpeedFactor, lConfiguration);
-    mArrivalTime = Move::calculateArrivalTime(aContext, lConfiguration);
+    mArrivalTime = calculateArrivalTime(aContext, lConfiguration);
     ros::Duration lDuration(mArrivalTime.toSec() - ros::Time::now().toSec() -
                             cWaitTime_s);
-    uint32_t lMovementDuration_ns = mArrivalTime.toNSec() -
+    uint64_t lMovementDuration_ns = mArrivalTime.toNSec() -
                                     ros::Time::now().toNSec() -
-                                    cWaitTime_s * pow(10, 9);
+                                    (uint64_t)(cWaitTime_s * pow(10, 9));
     if (lDuration > ros::Duration(0))
     {
       std::this_thread::sleep_for(

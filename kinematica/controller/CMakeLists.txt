@@ -134,6 +134,8 @@ src/controller/Ready.cpp
 src/controller/ReleaseCup.cpp
 src/controller/WaitForCup.cpp
 src/controller/PowerOff.cpp
+src/controller/MoveToDropLocation.cpp
+src/controller/WaitForReleaseSignal.cpp
 src/environment_controller/Cup.cpp
 src/environment_controller/Position.cpp
 src/environment_controller/Object.cpp)

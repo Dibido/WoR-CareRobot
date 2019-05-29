@@ -67,11 +67,25 @@ namespace controller
      * @param aObstacles
      */
     void provideObstacles(const environment_controller::Obstacles& aObstacles);
+
+    /**
+     * @brief provide the time that the
+     *
+     * @param aReleaseTime
+     */
+    void provideReleaseTime(int16_t aReleaseTime);
+
+    /**
+     * @brief
+     *
+     * @param aPosition
+     */
+    void provideDropPosition(const environment_controller::Position& aPosition);
+
     /**
      * @brief getters & setters
      *
      */
-
     std::shared_ptr<planning::Graph>& graph();
     std::shared_ptr<planning::AStar>& astar();
     std::shared_ptr<robotcontroller::RobotControlPublisher>& robotControl();
@@ -82,9 +96,10 @@ namespace controller
     environment_controller::Cup& cup();
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
-    environment_controller::Position& position();
+    environment_controller::Position& dropPosition();
     std::condition_variable& waitForRelease();
     int16_t& releaseTime_s();
+    std::mutex& releaseMutex();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -107,6 +122,7 @@ namespace controller
     std::condition_variable mWaitForRelease;
 
     std::mutex mCurrentStateMutex;
+    std::mutex mReleaseMutex;
   };
 } // namespace controller
 #endif // Context_HPP

@@ -58,6 +58,12 @@ namespace controller
      * interface to the "outside world".
      */
     void exitAction(Context* aContext);
+
+    ros::Time calculateArrivalTime(Context* aContext,
+                                   kinematics::Configuration lConfiguration);
+
+      private:
+    ros::Time mArrivalTime;
   };
 } // namespace controller
 

@@ -25,7 +25,7 @@ namespace lidar_application
 
           detectObjects();
 
-          printPublishData();
+          // printPublishData();
 
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);

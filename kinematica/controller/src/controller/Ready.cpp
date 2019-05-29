@@ -13,7 +13,13 @@ namespace controller
 
   void Ready::entryAction(Context* aContext)
   {
-    aContext->cup().object().width_m() = 0.0;
+    aContext->cup() = environment_controller::Cup(
+        environment_controller::Object(
+            environment_controller::Position(0.0, 0.0, 0.0), 0.0, 0.0, 0.0, 0.0,
+            0.0, ros::Time(0), 0),
+        ros::Time(0));
+    aContext->dropPosition() = environment_controller::Position(0.0, 0.0, 0.0);
+    aContext->releaseTime_s() = -1;
   }
 
   void Ready::doActivity(Context* aContext)

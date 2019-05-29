@@ -5,6 +5,7 @@
 // Local
 #include "controller/CloseGripper.hpp"
 #include "controller/ControllerConsts.hpp"
+#include "controller/MoveToDropLocation.hpp"
 #include "controller/Ready.hpp"
 
 namespace controller
@@ -25,9 +26,9 @@ namespace controller
 
     ros::Duration lDuration(mGripperCloseTime.toSec() -
                             ros::Time::now().toSec() - cWaitTime_s);
-    uint32_t lMovementDuration_ns = mGripperCloseTime.toNSec() -
+    uint64_t lMovementDuration_ns = mGripperCloseTime.toNSec() -
                                     ros::Time::now().toNSec() -
-                                    cWaitTime_s * pow(10, 9);
+                                    (uint64_t)(cWaitTime_s * pow(10, 9));
     if (lDuration > ros::Duration(0))
     {
       std::this_thread::sleep_for(
@@ -39,7 +40,7 @@ namespace controller
   {
     if (ros::Time::now() >= mGripperCloseTime)
     {
-      aContext->setState(std::make_shared<Ready>());
+      aContext->setState(std::make_shared<MoveToDropLocation>());
     }
   }
 

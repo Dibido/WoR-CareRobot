@@ -105,6 +105,19 @@ namespace controller
     }
   }
 
+  void Context::provideReleaseTime(int16_t aReleaseTime)
+  {
+    std::unique_lock<std::mutex> lLock(mReleaseMutex);
+    mReleaseTime_s = aReleaseTime;
+    mWaitForRelease.notify_all();
+  }
+
+  void Context::provideDropPosition(
+      const environment_controller::Position& aPosition)
+  {
+    mDropPosition = aPosition;
+  }
+
   kinematics::Configuration& Context::configuration()
   {
     return mConfiguration;
@@ -158,7 +171,7 @@ namespace controller
     return mCurrentState;
   }
 
-  environment_controller::Position& Context::position()
+  environment_controller::Position& Context::dropPosition()
   {
     return mDropPosition;
   }
@@ -167,8 +180,14 @@ namespace controller
   {
     return mWaitForRelease;
   }
+
   int16_t& Context::releaseTime_s()
   {
     return mReleaseTime_s;
+  }
+
+  std::mutex& Context::releaseMutex()
+  {
+    return mReleaseMutex;
   }
 } // namespace controller

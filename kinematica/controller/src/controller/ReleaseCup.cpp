@@ -26,7 +26,7 @@ namespace controller
                             cWaitTime_s);
     uint32_t lMovementDuration_ns = mReleaseTime.toNSec() -
                                     ros::Time::now().toNSec() -
-                                    cWaitTime_s * pow(10, 9);
+                                    (uint64_t)(cWaitTime_s * pow(10, 9));
     if (lDuration > ros::Duration(0))
     {
       std::this_thread::sleep_for(
@@ -36,6 +36,7 @@ namespace controller
 
   void ReleaseCup::doActivity(Context* aContext)
   {
+    ROS_ERROR("RELEASING CUP");
     if (ros::Time::now() >= mReleaseTime)
     {
       aContext->setState(std::make_shared<Ready>());
