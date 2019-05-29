@@ -54,8 +54,18 @@ namespace environment_controller
      */
     void provideCup(const Cup& aCup);
 
+    /**
+     * @brief provide the goal position where a grabbed cup needs to be placed
+     *
+     * @param aPosition
+     */
     void provideGoal(const Position& aPosition);
 
+    /**
+     * @brief provide the time after which the cup will be released
+     *
+     * @param aReleaseTime
+     */
     void provideReleaseTime(const uint8_t aReleaseTime);
 
       private:
