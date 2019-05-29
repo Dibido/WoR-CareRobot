@@ -16,14 +16,15 @@ filesystem
 unit_test_framework
 )
 
-#Enable CTest which is used for the codecoverage
-include(CTest)
-enable_testing()
 
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp
   DEPENDS roscpp std_msgs message_runtime sensor_interfaces)
+
+#Enable CTest which is used for the codecoverage
+include(CTest)
+enable_testing()
 
 include_directories(
   include
@@ -33,7 +34,7 @@ include_directories(
 #Add the application
 add_executable(${PROJECT_NAME}_main src/main.cpp src/${PROJECT_NAME}/AgvParser.cpp src/${PROJECT_NAME}/AgvSpeed.cpp)
 
-add_dependencies(${PROJECT_NAME}_main ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_main ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_main ${catkin_LIBRARIES})
 
