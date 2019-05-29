@@ -5,6 +5,28 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
+TEST(JointController, converseScaleToRad)
+{
+  gazebo::physics::JointPtr joint;
+  const std::string mName = "mName";
+  const jointChannel_t mChannel = 0;
+  const jointPw_t mMinPw = 0;
+  const jointPw_t mMaxPw = 0; 
+  const jointRad_t mMinRad = -10;
+  const jointRad_t mMaxRad = 10;
+  const jointRad_t mMediumRad = mMinRad + (abs(mMinRad-mMaxRad)/2.0);
+  const jointVel_t mMaxVel = 0;
+
+  gazebo::JointController jointController(joint, mName, mChannel, mMinPw, mMaxPw, mMinRad, mMaxRad,
+                                           mMaxVel);
+  
+  EXPECT_EQ(jointController.converseScaleToRad(0, 0, 10), mMinRad);
+  EXPECT_EQ(jointController.converseScaleToRad(10, 0, 10), mMaxRad);
+  EXPECT_EQ(jointController.converseScaleToRad(5, 0, 10), mMediumRad);
+  EXPECT_EQ(jointController.converseScaleToRad(10, 10, 0), mMaxRad);
+  EXPECT_EQ(jointController.converseScaleToRad(0, 10, 0), mMinRad);
+}
+
 TEST(operatorJointController, equalsOperator)
 {
   gazebo::physics::JointPtr joint;

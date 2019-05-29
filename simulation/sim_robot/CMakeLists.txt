@@ -86,7 +86,10 @@ unitTests/JointController.cpp
 src/JointController.cpp
 src/Command.cpp 
 src/CommandParser.cpp)
-target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES})
+
+add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${PROJECT_NAME}_plugin)
   
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
