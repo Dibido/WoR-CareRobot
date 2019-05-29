@@ -9,7 +9,7 @@ namespace environment_controller
 {
 
   /**
-   * @brief
+   * @brief Class for the ReleaseTime subscriber
    *
    */
   class ReleaseTimeSubscriber : public IReleaseTimeProvider

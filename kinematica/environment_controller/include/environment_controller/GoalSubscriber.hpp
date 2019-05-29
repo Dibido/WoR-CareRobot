@@ -9,7 +9,7 @@ namespace environment_controller
 {
 
   /**
-   * @brief
+   * @brief  Class for the Goal position subscriber
    *
    */
   class GoalSubscriber : public IGoalProvider

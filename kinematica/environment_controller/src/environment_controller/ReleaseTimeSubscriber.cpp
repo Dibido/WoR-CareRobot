@@ -1,4 +1,5 @@
 #include "environment_controller/ReleaseTimeSubscriber.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 
 namespace environment_controller
 {

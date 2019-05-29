@@ -8,8 +8,8 @@ namespace environment_controller
 {
 
   /**
-   * @brief Interface class whith which publishers and subscribers can be made
-   * for the /release topic
+   * @brief Interface class which can be used to indicate when a grabbed cup
+   * needs to be released
    *
    * @pre The desired amount of seconds for when a grabbed cup will be released,
    * is given by the user through the UI.

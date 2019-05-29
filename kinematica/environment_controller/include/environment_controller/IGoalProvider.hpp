@@ -8,8 +8,8 @@ namespace environment_controller
 {
 
   /**
-   * @brief Interface class whith which publishers and subscribers can be made
-   * for the /goal topic
+   * @brief Interface class which can be used to indicate where the cup needs to
+   * be placed
    *
    * @pre The desired x,y,z coordinates of where the cup needs to be placed must
    * be known
