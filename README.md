@@ -31,7 +31,7 @@ ${ROS_WORKSPACE}/build/${PACKAGE_NAME}/${PACKAGE_NAME}_coverage
 
 ## Simulation guide
 
-First install the required libraries:
+1. First install the required libraries:
 ```
 sudo apt install libsdl2-dev
 ```
@@ -44,7 +44,7 @@ Unmet dependency error:
 sudo apt-get install aptitude
 sudo aptitude install libsdl2-dev
 ```
-Clone kinect repo:
+2. Clone kinect repo:
 ```
 git clone https://github.com/OpenKinect/libfreenect2.git
 cd libfreenect2
@@ -54,7 +54,7 @@ sudo apt-get install libturbojpeg0-dev
 sudo apt-get install libglfw3-dev
 sudo apt-get install libopenni2-dev
 ```
-Execute in libfreenect2 root directory:
+3. Execute in libfreenect2 root directory:
 ```
 mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
@@ -62,7 +62,7 @@ make
 make install
 ```
 
-Franka Panda requires the following library to work:
+4. Franka Panda requires the following library to work:
 
 ```
 sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
@@ -75,7 +75,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 catkin_make -DFranka_DIR:PATH=~/libfranka/build
 ```
-edit the Cmakelists:
+5. edit the Cmakelists:
 ```
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Eigen3 REQUIRED)
@@ -90,15 +90,15 @@ catkin_package(
   LIBRARIES franka_state_controller franka_control_services
 )
 ```
-If you want to add an executable:
+5.1 If you want to add an executable:
 ```
 target_link_libraries( %executableName% ${catkin_LIBRARIES} ${Franka_LIBRARIES})
 ```
-execute:
+6. execute:
 ```
 sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
 ```
-Navigate to git repo and execute:
+7. Navigate to git repo and execute:
 ```
 git submodule init
 git submodule update
