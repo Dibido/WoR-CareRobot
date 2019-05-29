@@ -16,9 +16,11 @@
 #include <std_msgs/String.h>
 
 #include "Command.hpp"
-#include "CommandData.hpp"
 #include "CommandParser.hpp"
-#include "IRobotControlPlugin.hpp"
+#include "ControlData.hpp"
+#include "StopData.hpp"
+#include "IRobotControl.hpp"
+#include "IRobotStop.hpp"
 #include "JointController.hpp"
 #include "RobotControllerPluginConst.hpp"
 
@@ -29,7 +31,8 @@ namespace gazebo
    */
   class RobotControllerPlugin
       : public ModelPlugin,
-        public i_robot_controller_plugin::IRobotControlPlugin
+        public i_robot_controller_control::IRobotControl,
+        public i_robot_controller_stop::IRobotStop
   {
       public:
     /**
@@ -59,13 +62,17 @@ namespace gazebo
      */
     void onUpdate();
     /**
-     * @brief Callback method for receiving an incoming robot command
-     * @param msg: double message to parse and apply
+     * @brief Callback method for receiving an incoming control command
+     * @param aMsg: message to parse and apply
      */
 
-    void parseCallback(const robotcontroller_msgs::ControlPtr& aMsg) override;
-
-    
+    void parseControlCallback(
+        const robotcontroller_msgs::ControlPtr& aMsg) override;
+    /**
+     * @brief Callback method for receiving an incoming stop command
+     * @param aMsg: message to parse and apply
+     */
+    void parseStopCallback(const robotcontroller_msgs::StopPtr& aMsg) override;
 
     /**
      * @brief Callback method for receiving an incoming gripper command

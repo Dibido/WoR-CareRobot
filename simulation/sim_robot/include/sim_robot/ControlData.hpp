@@ -27,8 +27,8 @@ namespace data
     ~CommandData() = default;
 
     /**
-     * @brief Getter for mRad checks whether cSpeedFactor_ is  between 0.0 and
-     * robotcontrollerplugin::cMaxSpeedfactor
+     * @brief Getter for mTheta_ checks whether mTheta_ is between cMinRad and
+     * cMaxRad
      *
      * @return jointRad_t
      */
@@ -36,7 +36,8 @@ namespace data
     std::vector<jointRad_t>& mTheta();
 
     /**
-     * @brief Getter for mSpeedFactor checks whether mSpeedFactor is below 0
+     * @brief Getter for mSpeedFactor checks whether mSpeedFactor is between 0.0
+     * and cMaxSpeedfactor
      *
      * @return jointVel_t
      */

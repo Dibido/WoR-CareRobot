@@ -73,15 +73,16 @@ namespace gazebo
     mRosNode = std::make_unique<ros::NodeHandle>("robot_simulation_plugin");
 
     // Subscribe to
-    mRosSubCommands = mRosNode->subscribe(
-        gazebo::cCommandTopic, 1, &RobotControllerPlugin::parseCallback, this);
+    mRosSubCommands =
+        mRosNode->subscribe(gazebo::cCommandTopic, 1,
+                            &RobotControllerPlugin::parseControlCallback, this);
 
     mRosSubCommandGripper = mRosNode->subscribe(
         gazebo::cCommandGripperTopic, 1,
         &RobotControllerPlugin::commandGripperCallBack, this);
 
     mRosSubStop = mRosNode->subscribe(
-        gazebo::cStopTopic, 1, &RobotControllerPlugin::stopCallBack, this);
+        gazebo::cStopTopic, 1, &RobotControllerPlugin::parseStopCallback, this);
 
     // Set update function
     mUpdateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -105,7 +106,7 @@ namespace gazebo
     }
   }
 
-  void RobotControllerPlugin::parseCallback(
+  void RobotControllerPlugin::parseControlCallback(
       const robotcontroller_msgs::ControlPtr& aMsg)
   {
     data::CommandData lCommand(aMsg->theta, aMsg->sf);
@@ -126,13 +127,14 @@ namespace gazebo
     }
   }
 
-  void RobotControllerPlugin::stopCallBack(
-      const robotcontroller_msgs::StopPtr& smsg)
+  void RobotControllerPlugin::parseStopCallback(
+      const robotcontroller_msgs::StopPtr& aMsg)
   {
-    mStop = smsg->stop;
-    ROS_DEBUG("Received command: %f", mStop);
+    data::StopData lStopData(aMsg->stop);
+    this->mStop = aMsg->stop;
+    ROS_DEBUG("Received command: %f", lStopData.cStop_);
     std::vector<commands::Command> Container = {};
-    mParser.parseCommandStop(mStop, Container);
+    mParser.parseCommandStop(lStopData.cStop_, Container);
     for (const auto& c : Container)
     {
 
