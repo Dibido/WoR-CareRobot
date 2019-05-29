@@ -42,7 +42,7 @@ namespace environment_controller
     /**
      * @brief Passes the Release Time (in seconds) to the EnvironmentController
      *
-     * @param aReleaseTime_s
+     * @param aReleaseTime_s Release time in seconds
      */
     virtual void selectReleaseTime(const uint8_t aReleaseTime_s);
 
