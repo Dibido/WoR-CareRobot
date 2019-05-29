@@ -41,10 +41,10 @@ namespace environment_controller
       }
     }
     if (lObstacles.size())
-      parseObstacles(lObstacles);
+      passObstacles(lObstacles);
   }
 
-  void ObstaclesSubscriber::parseObstacles(const Obstacles& aObstacles)
+  void ObstaclesSubscriber::passObstacles(const Obstacles& aObstacles)
   {
     mSafetyController->areObstaclesAThreat(aObstacles);
   }

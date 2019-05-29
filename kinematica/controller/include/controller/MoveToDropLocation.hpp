@@ -3,6 +3,10 @@
 
 #include "Context.hpp"
 #include "State.hpp"
+#include "controller/TrajectoryProvider.hpp"
+#include <memory>
+#include <queue>
+#include <ros/time.h>
 namespace controller
 {
   class Context;
@@ -59,10 +63,9 @@ namespace controller
      */
     void exitAction(Context* aContext);
 
-    ros::Time calculateArrivalTime(Context* aContext,
-                                   kinematics::Configuration lConfiguration);
-
       private:
+    TrajectoryProvider mTrajectoryProvider;
+    std::queue<kinematics::Configuration> mTrajectory;
     ros::Time mArrivalTime;
   };
 } // namespace controller

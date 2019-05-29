@@ -10,7 +10,7 @@ namespace location_component
         environment_controller::cCupTopicName, 1000);
   }
 
-  void RosServiceCup::foundCup(const environment_controller::Cup& aCup)
+  void RosServiceCup::passCup(const environment_controller::Cup& aCup)
   {
     kinematica_msgs::Cup object;
 

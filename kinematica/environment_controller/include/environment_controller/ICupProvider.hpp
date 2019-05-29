@@ -9,7 +9,8 @@ namespace environment_controller
    * @brief the interface for the cup
    * @pre the cup is detected in the vision-component, the arrival time is
    * estimated
-   * @post the robot will move to the desired position in the desired time.
+   * @post the ROS::TOPIC is implemented and the robot will move to the desired
+   * position in the desired time.
    */
   class ICupProvider
   {
@@ -17,7 +18,12 @@ namespace environment_controller
     ICupProvider(){};
     virtual ~ICupProvider() = default;
 
-    virtual void foundCup(const Cup& aCup) = 0;
+    /**
+     * @brief pass the cup to the function that will handle it
+     *
+     * @param aCup the cup
+     */
+    virtual void passCup(const Cup& aCup) = 0;
   };
 } // namespace environment_controller
 

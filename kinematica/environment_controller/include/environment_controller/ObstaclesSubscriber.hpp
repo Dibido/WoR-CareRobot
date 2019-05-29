@@ -60,7 +60,7 @@ namespace environment_controller
      *
      * @author Gianni Monteban
      */
-    void parseObstacles(const Obstacles& aObstacles);
+    void passObstacles(const Obstacles& aObstacles);
 
       private:
     std::shared_ptr<SafetyController> mSafetyController;
