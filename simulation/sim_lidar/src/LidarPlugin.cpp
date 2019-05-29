@@ -129,7 +129,7 @@ namespace gazebo
   }
 
   sensor_msgs::LaserScan
-      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg)
+      LidarPlugin::convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const
   {
     sensor_msgs::LaserScan lLaserMessage;
     float lAngleMin = static_cast<float>(aMsg->scan().angle_min());
@@ -157,16 +157,19 @@ namespace gazebo
   }
 
   sensor_msgs::LaserScan LidarPlugin::convertToLaserScan(
-      const lidar_application::LidarData aLidarData)
+      const lidar_application::LidarData aLidarData) const
   {
     sensor_msgs::LaserScan lLaserMessage;
     lLaserMessage.range_min = static_cast<float>(-M_PI);
     lLaserMessage.range_max = static_cast<float>(M_PI);
     lLaserMessage.ranges.resize(
         static_cast<unsigned long>(aLidarData.mDistances_m.size()));
+
+    // Reverse the measured distances so the scan is taken from left to right.
     std::reverse_copy(aLidarData.mDistances_m.begin(),
                       aLidarData.mDistances_m.end(),
                       lLaserMessage.ranges.begin());
+
     lLaserMessage.angle_increment =
         static_cast<float>(2.0 * M_PI) /
         static_cast<float>(lLaserMessage.ranges.size());
@@ -174,7 +177,7 @@ namespace gazebo
   }
 
   lidar_application::LidarData
-      LidarPlugin::convertToLidarData(ConstLaserScanStampedPtr& aMsg)
+      LidarPlugin::convertToLidarData(ConstLaserScanStampedPtr& aMsg) const
   {
     lidar_application::LidarData lLidarData;
     float lAngleMax = static_cast<float>(M_PI);
@@ -197,7 +200,7 @@ namespace gazebo
   }
 
   sensor_interfaces::LidarData
-      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg)
+      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
   {
     sensor_interfaces::LidarData lLidarDataMessage;
     float lAngleMax = static_cast<float>(aMsg.angle_max);

@@ -4,7 +4,7 @@
 #include <sensor_interfaces/LidarData.h>
 #include <sensor_msgs/LaserScan.h>
 
-#include "lidar_application/ILidarData.hpp"
+#include "lidar_application/ILidarDataProvider.hpp"
 #include "lidar_application/LidarData.hpp"
 
 #include <gazebo/gazebo.hh>
@@ -18,7 +18,8 @@
 
 namespace gazebo
 {
-  class LidarPlugin : public RayPlugin, public lidar_application::ILidarData
+  class LidarPlugin : public RayPlugin,
+                      public lidar_application::ILidarDataProvider
   {
       public:
     LidarPlugin() = default;
@@ -55,7 +56,8 @@ namespace gazebo
      * @param aMsg: The gazebo formatted message recieved from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
-    sensor_msgs::LaserScan convertToLaserScan(ConstLaserScanStampedPtr& aMsg);
+    sensor_msgs::LaserScan
+        convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const;
 
     /**
      * @brief Convert the lidar_application::LidarData message to
@@ -64,7 +66,7 @@ namespace gazebo
      * @return: The converted sensor_msgs::LaserScan message
      */
     sensor_msgs::LaserScan
-        convertToLaserScan(const lidar_application::LidarData aLidarData);
+        convertToLaserScan(const lidar_application::LidarData aLidarData) const;
 
     /**
      * @brief Convert the LaserScan message
@@ -73,7 +75,7 @@ namespace gazebo
      * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(const sensor_msgs::LaserScan aMsg);
+        convertToLidarData(const sensor_msgs::LaserScan aMsg) const;
 
     /**
      * @brief Convert the LaserScan message
@@ -82,7 +84,7 @@ namespace gazebo
      * the interface ILidarData
      */
     lidar_application::LidarData
-        convertToLidarData(ConstLaserScanStampedPtr& aMsg);
+        convertToLidarData(ConstLaserScanStampedPtr& aMsg) const;
 
     // Variables
     std::string mFrameName;
