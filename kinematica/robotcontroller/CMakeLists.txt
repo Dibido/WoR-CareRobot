@@ -133,7 +133,7 @@ add_library(lib_robotcontrol
 src/RobotControlPublisher.cpp 
 src/RobotStopPublisher.cpp
 src/RobotGripperPublisher.cpp
-src/GripperData.cpp )
+src/GripperData.cpp)
 
 add_dependencies(lib_robotcontrol
 ${catkin_EXPORTED_TARGETS})
