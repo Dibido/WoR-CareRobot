@@ -1,10 +1,10 @@
 #include "sim_robot/ControlData.hpp"
 #include "sim_robot/RobotControllerPluginConst.hpp"
 
-namespace data
+namespace control_data
 {
 
-  data::CommandData::CommandData(std::vector<jointRad_t> aTheta,
+  control_data::CommandData::CommandData(std::vector<jointRad_t> aTheta,
                                  jointVel_t aSpeedFactor)
       : cTheta_(aTheta), cSpeedFactor_(aSpeedFactor)
   {
@@ -30,7 +30,7 @@ namespace data
     }
   }
 
-  std::vector<jointRad_t>& data::CommandData::mTheta()
+  std::vector<jointRad_t>& control_data::CommandData::mTheta()
   {
     for (const auto& t : cTheta_)
     {
@@ -46,7 +46,7 @@ namespace data
     }
     return cTheta_;
   }
-  jointVel_t& data::CommandData::mSpeedFactor()
+  jointVel_t& control_data::CommandData::mSpeedFactor()
   {
     if (cSpeedFactor_ < 0 ||
         cSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)

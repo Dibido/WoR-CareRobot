@@ -9,26 +9,14 @@ namespace i_robot_controller_stop
 {
 
   /**
-   * @brief the class of the interface IRobotStop
+   * @brief the class of the interface IRobotControlPlugin
    *@pre A stop message is published on the /robot_stop topic.
-   * @post A StopData struct is made.
+   * @post The stop message is parsed and the robot is stopped.
    *
    */
   class IRobotStop
   {
       public:
-    /**
-     * @brief Construct a new IRobotStop object
-     *
-     */
-    IRobotStop(){};
-
-    /**
-     * @brief Destroy the IRobotStop object
-     *
-     */
-    virtual ~IRobotStop() = default;
-
     /**
      * @brief virtual interface
      *

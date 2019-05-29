@@ -3,7 +3,7 @@
 #include "sim_robot/types.hpp"
 #include <vector>
 
-namespace data
+namespace control_data
 {
   /**
    * @brief CommandData struct containing a cSpeedFactor_ and cTheta_
@@ -46,4 +46,4 @@ namespace data
 
     CommandData& operator=(const CommandData&) = default;
   };
-} // namespace data
+} // namespace control_data

@@ -109,7 +109,7 @@ namespace gazebo
   void RobotControllerPlugin::parseControlCallback(
       const robotcontroller_msgs::ControlPtr& aMsg)
   {
-    data::CommandData lCommand(aMsg->theta, aMsg->sf);
+    control_data::CommandData lCommand(aMsg->theta, aMsg->sf);
 
     ROS_DEBUG("Received command: %f", lCommand.cTheta_);
 
@@ -130,7 +130,7 @@ namespace gazebo
   void RobotControllerPlugin::parseStopCallback(
       const robotcontroller_msgs::StopPtr& aMsg)
   {
-    data::StopData lStopData(aMsg->stop);
+    stop_data::StopData lStopData(aMsg->stop);
     this->mStop = aMsg->stop;
     ROS_DEBUG("Received command: %f", lStopData.cStop_);
     std::vector<commands::Command> Container = {};
@@ -150,11 +150,7 @@ namespace gazebo
                                             0.0); // Width needs to be inverted.
     double lSpeedfactor = aMsg->speedfactor;
 
-    //? These message variables are currently not used.
-    // double force = msg->force;
-    // double epsilon_inner = msg->epsilon_inner;
-    // double epsilon_outer = msg->epsilon_outer;
-
+    
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
         .moveTheta(lWidth, lSpeedfactor, /*time*/ 0, mUpdateRate);
   }

@@ -1,14 +1,14 @@
 #include "sim_robot/StopData.hpp"
 #include "sim_robot/RobotControllerPluginConst.hpp"
 #include <iostream>
-namespace data
+namespace stop_data
 {
 
-  data::StopData::StopData(jointStop_t aStop) : cStop_(aStop)
+  stop_data::StopData::StopData(jointStop_t aStop) : cStop_(aStop)
   {
   }
 
-  jointStop_t& data::StopData::mBool()
+  jointStop_t& stop_data::StopData::mBool()
   {
     if (cStop_ != true || cStop_ != false)
     {
@@ -18,4 +18,4 @@ namespace data
     return cStop_;
   }
 
-} // namespace data
+} // namespace stop_data

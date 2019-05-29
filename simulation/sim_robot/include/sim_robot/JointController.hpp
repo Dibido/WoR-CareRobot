@@ -135,7 +135,7 @@ namespace gazebo
     // Current values
     jointRad_t mCurrentPos;
     jointVel_t mCurrentVel;
-    double mCurrentForce = 0;
+    double mCurrentForce;
 
     // For movement simulation
     jointRad_t mTargetPos;

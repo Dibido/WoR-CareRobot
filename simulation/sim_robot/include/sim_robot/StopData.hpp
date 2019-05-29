@@ -3,7 +3,7 @@
 #include "sim_robot/types.hpp"
 #include <vector>
 
-namespace data
+namespace stop_data
 {
   /**
    * @brief StopData struct containing a cStop
