@@ -3,10 +3,11 @@
 
 #include "Context.hpp"
 #include "State.hpp"
-#include "kinematics/Configuration.hpp"
+#include "controller/MovementController.hpp"
 #include <memory>
 #include <queue>
 #include <ros/time.h>
+
 namespace controller
 {
   /**
@@ -55,14 +56,9 @@ namespace controller
     void exitAction(Context* aContext);
 
       private:
-    planning::Path findPath(Context* aContext,
-                            const kinematics::EndEffector& aGoal);
-    ros::Time mArrivalTime;
-
-    ros::Time calculateArrivalTime(Context* aContext,
-                                   kinematics::Configuration);
-
+    MovementController mMovementController;
     std::queue<kinematics::Configuration> mTrajectory;
+    ros::Time mArrivalTime;
   };
 } // namespace controller
 #endif // MOVE_HPP
