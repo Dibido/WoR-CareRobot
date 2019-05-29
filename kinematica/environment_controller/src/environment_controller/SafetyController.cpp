@@ -11,7 +11,8 @@ namespace environment_controller
   {
   }
 
-  void SafetyController::areObstaclesAThreat(const Obstacles& aObstacles)
+  void SafetyController::executeHardstopOnObstacleThret(
+      const Obstacles& aObstacles)
   {
     bool lAllObstaclesSafe = true;
     for (const Obstacle& lObstacle : aObstacles)

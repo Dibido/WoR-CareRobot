@@ -46,6 +46,6 @@ namespace environment_controller
 
   void ObstaclesSubscriber::passObstacles(const Obstacles& aObstacles)
   {
-    mSafetyController->areObstaclesAThreat(aObstacles);
+    mSafetyController->executeHardstopOnObstacleThret(aObstacles);
   }
 } // namespace environment_controller

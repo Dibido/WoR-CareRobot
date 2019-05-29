@@ -45,12 +45,12 @@ namespace environment_controller
     ~SafetyController() = default;
 
     /**
-     * @brief areObstaclesAThreat checks whether the received obstacles are a
-     * threat or not.
+     * @brief executeHardstopOnObstacleThret checks whether the received
+     * obstacles are a threat or not.
      *
      * @param obstacles Obstacles which will be checked w
      */
-    void areObstaclesAThreat(const Obstacles& aObstacles);
+    void executeHardstopOnObstacleThret(const Obstacles& aObstacles);
 
       private:
     std::shared_ptr<EnvironmentController> mEnvironmentController;
