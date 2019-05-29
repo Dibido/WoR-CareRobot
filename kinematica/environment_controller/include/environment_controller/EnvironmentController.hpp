@@ -54,6 +54,10 @@ namespace environment_controller
      */
     void provideCup(const Cup& aCup);
 
+    void provideGoal(const Position& aPosition);
+
+    void provideReleaseTime(const uint8_t aReleaseTime);
+
       private:
     std::shared_ptr<controller::Context> mContext;
   };

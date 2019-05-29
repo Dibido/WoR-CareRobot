@@ -2,8 +2,9 @@
 #define IGOAL_PROVIDER_HPP
 
 #include "environment_controller/Position.hpp"
+#include "ros/ros.h"
 
-namespace robotcontroller
+namespace environment_controller
 {
 
   /**
@@ -18,14 +19,13 @@ namespace robotcontroller
 
       public:
     /**
-     * @brief subscribes to the /goal topic to move the arm to the desired
-     * location
+     * @brief
      *
      * @param aPosition Data object which consists of an x,y and z
      */
     virtual void selectGoalPosition(const Position& aPosition) = 0;
   };
 
-} // namespace robotcontroller
+} // namespace environment_controller
 
 #endif // IGOAL_PROVIDER_HPP

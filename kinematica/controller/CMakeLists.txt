@@ -135,8 +135,8 @@ src/controller/ReleaseCup.cpp
 src/controller/WaitForCup.cpp
 src/controller/PowerOff.cpp
 src/environment_controller/Cup.cpp
-src/environment_controller/Position.cpp
-src/environment_controller/Object.cpp)
+src/environment_controller/Object.cpp
+src/environment_controller/Position.cpp)
 
 add_dependencies(lib_controller
 ${catkin_EXPORTED_TARGETS})

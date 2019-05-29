@@ -1,7 +1,7 @@
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include "Position.hpp"
+#include "environment_controller/Position.hpp"
 #include "ros/time.h"
 
 namespace environment_controller

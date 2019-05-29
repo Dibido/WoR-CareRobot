@@ -30,4 +30,13 @@ namespace environment_controller
     std::thread(&controller::Context::run, mContext).detach();
   }
 
+  void EnvironmentController::provideGoal(const Position& aPosition)
+  {
+    // mContext->provideDropPosition(aPosition);
+  }
+
+  void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime)
+  {
+    // mContext->provide(aReleaseTime);
+  }
 } // namespace environment_controller
