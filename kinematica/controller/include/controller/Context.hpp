@@ -69,14 +69,14 @@ namespace controller
     void provideObstacles(const environment_controller::Obstacles& aObstacles);
 
     /**
-     * @brief provide the time that the
+     * @brief provide the time in seconds that the cup will be released
      *
      * @param aReleaseTime
      */
     void provideReleaseTime(int16_t aReleaseTime);
 
     /**
-     * @brief
+     * @brief provide the drop position of the cup
      *
      * @param aPosition
      */

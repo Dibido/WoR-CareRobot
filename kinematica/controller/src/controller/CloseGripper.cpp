@@ -1,12 +1,11 @@
-// Library
-#include <iostream>
-#include <ros/ros.h>
-#include <thread>
-// Local
+
 #include "controller/CloseGripper.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/MoveToDropLocation.hpp"
 #include "controller/Ready.hpp"
+#include <iostream>
+#include <ros/ros.h>
+#include <thread>
 
 namespace controller
 {
@@ -28,7 +27,7 @@ namespace controller
                             ros::Time::now().toSec() - cWaitTime_s);
     uint64_t lMovementDuration_ns = mGripperCloseTime.toNSec() -
                                     ros::Time::now().toNSec() -
-                                    (uint64_t)(cWaitTime_s * pow(10, 9));
+                                    (uint64_t)(cWaitTime_s * nano_s_to_s);
     if (lDuration > ros::Duration(0))
     {
       std::this_thread::sleep_for(

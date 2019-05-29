@@ -1,7 +1,7 @@
 #include "controller/WaitForReleaseSignal.hpp"
 #include "controller/ReleaseCup.hpp"
-
 #include <thread>
+
 namespace controller
 {
   WaitForReleaseSignal::WaitForReleaseSignal()

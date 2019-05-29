@@ -17,6 +17,7 @@ namespace controller
   const double cJointSpeed_rads = M_PI / 180 * 150;
   const double cGripperWidth_m = 0.08;
   const double cWaitTime_s = 0.5;
+  const uint64_t nano_s_to_s = pow(10, 9);
 } // namespace controller
 
 #endif // CONTROLLER_CONSTS_HPP

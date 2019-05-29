@@ -1,10 +1,8 @@
-// Library
+#include "controller/Ready.hpp"
+#include "controller/Move.hpp"
 #include <iostream>
 #include <ros/ros.h>
 
-// Local
-#include "controller/Move.hpp"
-#include "controller/Ready.hpp"
 namespace controller
 {
   Ready::Ready(){};

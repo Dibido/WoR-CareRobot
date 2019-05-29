@@ -9,7 +9,7 @@ namespace environment_controller
   /**
    * @brief the class of the interface obstacle
    * @pre a sensor detected an potential obstacle
-   * @post the obstacles will be send over an ROS::TOPIC after this the obstacle
+   * @post the obstacles will be sent over an ROS::TOPIC after this the obstacle
    * will be checked if it is in range of the robotarm, if this is the case the
    * robotarm will stop
    * @see Object.hpp for correct values
