@@ -2,7 +2,9 @@
 #include "environment_controller/CupSubscriber.hpp"
 #include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
+#include "environment_controller/GoalSubscriber.hpp"
 #include "environment_controller/ObstaclesSubscriber.hpp"
+#include "environment_controller/ReleaseTimeSubscriber.hpp"
 #include "environment_controller/SafetyController.hpp"
 #include "ros/ros.h"
 #include <memory>
@@ -33,6 +35,16 @@ int main(int argc, char** argv)
   environment_controller::CupSubscriber lCupSubscriber =
       environment_controller::CupSubscriber(
           environment_controller::cCupTopicName, lEnvironmentController);
+
+  environment_controller::GoalSubscriber lGoalSubscriber =
+      environment_controller::GoalSubscriber(
+          environment_controller::cGoalPositionTopicName,
+          lEnvironmentController);
+
+  environment_controller::ReleaseTimeSubscriber lReleaseTimeSubscriber =
+      environment_controller::ReleaseTimeSubscriber(
+          environment_controller::cReleaseTimeTopicName,
+          lEnvironmentController);
   ros::spin();
 
   return 0;

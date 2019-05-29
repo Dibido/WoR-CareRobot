@@ -115,6 +115,7 @@ namespace controller
   void Context::provideDropPosition(
       const environment_controller::Position& aPosition)
   {
+    ROS_ERROR("DROP POSITION");
     mDropPosition = aPosition;
   }
 
