@@ -34,10 +34,10 @@ TEST(PosCalculationSuite, AGVPositionInMiddleOfScreen)
   cv::Point3f lAGVPosition_m =
       lPosCalculator.calculateAGVLocation(lAGVMidpoint_px, lAGVFrameSize_px);
 
-  EXPECT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m);
-  EXPECT_EQ(lAGVPosition_m.y, cTestCalibration.mCameraPosY_m);
-  EXPECT_EQ(lAGVPosition_m.z,
-            cTestCalibration.mCameraPosZ_m - cTestCalibration.mAGVDepth_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.y, cTestCalibration.mCameraPosY_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.z, cTestCalibration.mCameraPosZ_m -
+                                        cTestCalibration.mAGVDepth_m);
 }
 
 TEST(PosCalculationSuite, AGVPositionRightOfScreen)
@@ -49,15 +49,15 @@ TEST(PosCalculationSuite, AGVPositionRightOfScreen)
   cv::Point3f lAGVPosition_m =
       lPosCalculator.calculateAGVLocation(lAGVMidpoint_px, lAGVFrameSize_px);
 
-  EXPECT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m);
   // If the AGV is at the edge of the screen,
   // the deviation should be the same as the height from of the camera from the
   // AGV (FOV is 90°).
-  EXPECT_EQ(lAGVPosition_m.y,
-            cTestCalibration.mCameraPosY_m +
-                cTestCalibration.mAGVDepth_m * cTestCalibration.mCameraFlipY);
-  EXPECT_EQ(lAGVPosition_m.z,
-            cTestCalibration.mCameraPosZ_m - cTestCalibration.mAGVDepth_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.y, cTestCalibration.mCameraPosY_m +
+                                        cTestCalibration.mAGVDepth_m *
+                                            cTestCalibration.mCameraFlipY);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.z, cTestCalibration.mCameraPosZ_m -
+                                        cTestCalibration.mAGVDepth_m);
 }
 
 TEST(PosCalculationSuite, AGVPositionBottomOfScreen)
@@ -69,12 +69,60 @@ TEST(PosCalculationSuite, AGVPositionBottomOfScreen)
   cv::Point3f lAGVPosition_m =
       lPosCalculator.calculateAGVLocation(lAGVMidpoint_px, lAGVFrameSize_px);
 
-  EXPECT_EQ(lAGVPosition_m.x,
-            cTestCalibration.mCameraPosX_m +
-                cTestCalibration.mAGVDepth_m * cTestCalibration.mCameraFlipX);
-  EXPECT_EQ(lAGVPosition_m.y, cTestCalibration.mCameraPosY_m);
-  EXPECT_EQ(lAGVPosition_m.z,
-            cTestCalibration.mCameraPosZ_m - cTestCalibration.mAGVDepth_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.x, cTestCalibration.mCameraPosX_m +
+                                        cTestCalibration.mAGVDepth_m *
+                                            cTestCalibration.mCameraFlipX);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.y, cTestCalibration.mCameraPosY_m);
+  EXPECT_FLOAT_EQ(lAGVPosition_m.z, cTestCalibration.mCameraPosZ_m -
+                                        cTestCalibration.mAGVDepth_m);
+}
+
+TEST(PosCalculationSuite, CupPositionRightOfScreen)
+{
+  location_component::PosCalculation lPosCalculator(cTestCalibration);
+  cv::Point lCupMidpoint_px(200, 100);
+  cv::Size lCupFrameSize_px(200, 200);
+
+  cv::Point3f lCupPosition_m =
+      lPosCalculator.calculateCupLocation(lCupMidpoint_px, lCupFrameSize_px);
+
+  EXPECT_FLOAT_EQ(lCupPosition_m.x, cTestCalibration.mCameraPosX_m);
+  // If the cup is at the edge of the screen,
+  // the deviation should be the same as the height of the camera from the
+  // cup (FOV is 90°).
+  EXPECT_FLOAT_EQ(lCupPosition_m.y, cTestCalibration.mCameraPosY_m +
+                                        (cTestCalibration.mAGVDepth_m -
+                                         cTestCalibration.mCupHeight_m) *
+                                            cTestCalibration.mCameraFlipY);
+  EXPECT_FLOAT_EQ(lCupPosition_m.z, cTestCalibration.mCameraPosZ_m -
+                                        (cTestCalibration.mAGVDepth_m -
+                                         cTestCalibration.mCupHeight_m));
+}
+
+TEST(PosCalculationSuite, CupPositionBottomOfScreen)
+{
+  location_component::PosCalculation lPosCalculator(cTestCalibration);
+  cv::Point lCupMidpoint_px(100, 200);
+  cv::Size lCupFrameSize_px(200, 200);
+
+  cv::Point3f lCupPosition_m =
+      lPosCalculator.calculateCupLocation(lCupMidpoint_px, lCupFrameSize_px);
+
+  // If the cup is at the edge of the screen,
+  // the deviation should be the same as the height of the camera from the
+  // cup (FOV is 90°).
+  // This test uses EXPECT_NEAR because the loss of precision is too much for
+  // EXPECT_FLOAT_EQ.
+  EXPECT_NEAR(
+      lCupPosition_m.x,
+      cTestCalibration.mCameraPosX_m +
+          (cTestCalibration.mAGVDepth_m - cTestCalibration.mCupHeight_m) *
+              cTestCalibration.mCameraFlipX,
+      0.00001);
+  EXPECT_FLOAT_EQ(lCupPosition_m.y, cTestCalibration.mCameraPosY_m);
+  EXPECT_FLOAT_EQ(lCupPosition_m.z, cTestCalibration.mCameraPosZ_m -
+                                        (cTestCalibration.mAGVDepth_m -
+                                         cTestCalibration.mCupHeight_m));
 }
 
 TEST(PosCalculationSuite, CupArrivalTimePrediction)
@@ -90,6 +138,6 @@ TEST(PosCalculationSuite, CupArrivalTimePrediction)
 
   // 2.0 m between the cup and the arm divided by 0.25 m/s = 8.0s until the cup
   // arrives at the robotarm.
-  EXPECT_DOUBLE_EQ(8.0f,
-                   lCupPredictedArrivalTime.toSec() - lCurrentTime.toSec());
+  EXPECT_FLOAT_EQ(8.0f,
+                  lCupPredictedArrivalTime.toSec() - lCurrentTime.toSec());
 }

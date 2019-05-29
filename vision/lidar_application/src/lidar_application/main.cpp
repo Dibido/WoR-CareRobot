@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 
   if (argc == 2)
   {
-    std::cout << "Setting lMaxDifference_m to " << argv[1] << std::endl;
+    ROS_INFO("Setting lMaxDifference_m to %s", argv[1]);
     lMaxDifference_m = strtod(argv[1], NULL);
   }
 

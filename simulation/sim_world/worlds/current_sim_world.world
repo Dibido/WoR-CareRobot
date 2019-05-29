@@ -35,7 +35,7 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.35 -5.0 1.07</pose>
+      <pose>0.38 -5.03 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
@@ -147,4 +147,3 @@
     </physics>
   </world>
 </sdf>
-

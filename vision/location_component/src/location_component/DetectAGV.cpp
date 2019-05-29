@@ -1,7 +1,6 @@
 #include "location_component/DetectAGV.hpp"
 #include "location_component/Calibration.hpp"
 #include "location_component/CupScanner.hpp"
-#include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include <cmath>
 #include <ros/ros.h>
@@ -38,11 +37,14 @@ namespace location_component
       for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
       {
         cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
-            lDetectedFrame->mDetectedAGV.mMidpoint,
-            lDetectedFrame->mAGVFrameSize, detectedCup.mMidpoint,
-            lDetectedFrame->mCupFrameSize);
+            // Cup midpoint is taken from within the bounding rectangle,
+            // so add the top-left corner of the bounding rectangle to the
+            // position.
+            detectedCup.mMidpoint +
+                lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
+            lDetectedFrame->mAGVFrameSize);
         ros::Time lCupPredictedArrivalTime =
-            lPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
+            mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
                                                  ros::Time::now());
 
         ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
@@ -57,7 +59,7 @@ namespace location_component
                   lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
               mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
               mCalibration.mCupDiameter_m, M_PI * -0.5f,
-              mCalibration.mAGVSpeed_m_s, ros::Time::now(), 0);
+              mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
 
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
@@ -65,7 +67,7 @@ namespace location_component
         }
       }
 
-      ROS_INFO_STREAM("AGV found at: " << lPosCalculator.calculateAGVLocation(
+      ROS_INFO_STREAM("AGV found at: " << mPosCalculator.calculateAGVLocation(
                           lDetectedFrame->mDetectedAGV.mMidpoint,
                           lDetectedFrame->mAGVFrameSize));
     }
@@ -114,13 +116,13 @@ namespace location_component
           CupScanner lCupScanner;
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
-              lCupScanner.detectCups(lDetectedAGV->agvFrame);
+              lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
           lDetectedFrame->mDetectedAGV = (*lDetectedAGV);
 
           aFrame.copyTo(mCapturedFrame);
 
           cv::Mat lDisplayCups;
-          lDetectedAGV->agvFrame.copyTo(lDisplayCups);
+          lDetectedAGV->mAGVFrame.copyTo(lDisplayCups);
 
           lDetectedFrame->mCupFrameSize =
               cv::Size(lDisplayCups.cols, lDisplayCups.rows);
@@ -188,18 +190,16 @@ namespace location_component
       std::vector<std::vector<cv::Point>> lContours(1);
       getContoursMat(lDisFrame, lContours);
 
-      if (lContours.at(0).size() == cCornersOfObject)
-      {
-        lDetectedAGV.agvFrame = lDisFrame(lBoundRect);
+      lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
-        std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
-        lPoints.push_back(getMidPoint(lContours.at(0)));
+      std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
+      lPoints.push_back(getMidPoint(lContours.at(0)));
 
-        cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
-                                 lTransmtx.inv());
+      cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
+                               lTransmtx.inv());
 
-        lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
-      }
+      lDetectedAGV.mMidpoint = lPointInOriginalPerspective.at(0);
+      lDetectedAGV.mBoundRect = lBoundRect;
 
       return lDetectedAGV;
     }
@@ -266,6 +266,12 @@ namespace location_component
     unsigned int lAverageY = lSumY / ( unsigned int )aContours.size();
 
     return cv::Point(lAverageX, lAverageY);
+  }
+
+  void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)
+  {
+    ROS_DEBUG_STREAM("AGV speed is updated to " + std::to_string(aAGV.speed()));
+    mPosCalculator.setAGVSpeed_m_s(aAGV.speed());
   }
 
 } // namespace location_component
