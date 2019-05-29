@@ -11,20 +11,20 @@ namespace agv_parser
    * @post The AGV speed has been parsed and sent to the vision component
    * @see AgvSpeed.hpp for correct values
    */
-  class IAgvSpeed
+  class IAgvSpeedProvider
   {
       public:
     /**
      * @brief Construct a new IObstacle object
      *
      */
-    IAgvSpeed(){};
+    IAgvSpeedProvider(){};
 
     /**
      * @brief Destroy the IObstacle object
      *
      */
-    virtual ~IAgvSpeed() = default;
+    virtual ~IAgvSpeedProvider() = default;
 
     /**
      * @brief virtual interface

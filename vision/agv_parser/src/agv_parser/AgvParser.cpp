@@ -10,6 +10,7 @@ void agv_parser::AgvParser::Run()
     std::cout << "error : port.open() failed" << std::endl;
     return;
   }
+  std::cout << "AvgParser started." << std::endl;
   while (true)
   {
     // Get message

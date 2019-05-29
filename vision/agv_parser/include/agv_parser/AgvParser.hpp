@@ -10,7 +10,7 @@
 #include <boost/thread.hpp>
 
 #include "AgvSpeed.hpp"
-#include "IAgvSpeed.hpp"
+#include "IAgvSpeedProvider.hpp"
 #include "sensor_interfaces/AGVSpeed.h"
 #include <ros/ros.h>
 
@@ -22,7 +22,7 @@ namespace agv_parser
   /**
    * @brief Class that handles the AGV data and sends it to a ROS topic.
    */
-  class AgvParser
+  class AgvParser : public IAgvSpeedProvider
   {
       public:
     AgvParser(std::string aPort);
