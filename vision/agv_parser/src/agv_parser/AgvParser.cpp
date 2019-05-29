@@ -10,11 +10,20 @@ void agv_parser::AgvParser::Run()
   {
     // Get message
     std::string lRecievedMessage = readLine();
-    // Parse message
-    AgvSpeed lAgvSpeed;
-    lAgvSpeed.mAgvSpeed = parseRecievedMessage(lRecievedMessage);
-    parseAgvSpeed(lAgvSpeed);
-    std::cout << "Handled message : " << lRecievedMessage << std::endl;
+    std::cout << "Recieved message : \"" << lRecievedMessage << "\""
+              << std::endl;
+    if (lRecievedMessage.length() > 5)
+    {
+      // Parse message
+      AgvSpeed lAgvSpeed;
+      lAgvSpeed.mAgvSpeed = parseRecievedMessage(lRecievedMessage);
+      parseAgvSpeed(lAgvSpeed);
+      std::cout << "Handled message : " << lRecievedMessage << std::endl;
+    }
+    else
+    {
+      std::cout << "Message is too short" << std::endl;
+    }
   }
 }
 
