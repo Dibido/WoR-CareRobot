@@ -70,7 +70,7 @@ namespace lidar_application
      * @param aObstacles - The obstacles
      */
     virtual void
-        parseObstacles(const environment_controller::Obstacles& aObstacles);
+        passObstacles(const environment_controller::Obstacles& aObstacles);
 
       private:
     ros::NodeHandle mNodeHandler;

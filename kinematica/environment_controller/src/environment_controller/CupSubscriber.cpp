@@ -25,7 +25,7 @@ namespace environment_controller
                   aMsg->aDirection, aMsg->aSpeed, aMsg->aMeasurementTime,
                   aMsg->aSensorId);
       Cup lCup(lObj, aMsg->timeOfArrival);
-      foundCup(lCup);
+      passCup(lCup);
     }
     catch (const std::exception& e)
     {
@@ -33,7 +33,7 @@ namespace environment_controller
     }
   }
 
-  void CupSubscriber::foundCup(const Cup& aCup)
+  void CupSubscriber::passCup(const Cup& aCup)
   {
     mEnvironmentController->provideCup(aCup);
   }

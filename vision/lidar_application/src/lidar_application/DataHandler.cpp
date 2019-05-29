@@ -75,10 +75,10 @@ namespace lidar_application
       lObstacleList.push_back(lObject);
     }
 
-    parseObstacles(lObstacleList);
+    passObstacles(lObstacleList);
   }
 
-  void DataHandler::parseObstacles(
+  void DataHandler::passObstacles(
       const environment_controller::Obstacles& aObstacles)
   {
     kinematica_msgs::Object lObject;
