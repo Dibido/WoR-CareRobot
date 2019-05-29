@@ -33,7 +33,8 @@ namespace environment_controller
     virtual ~ReleaseTimeSubscriber() = default;
 
     /**
-     * @brief Callback function for setting the ReleaseTime
+     * @brief Callback function for setting the ReleaseTime. This function will
+     * be called when the release time is published on the /release topic.
      *
      * @param aMsg Release Time message
      */

@@ -11,7 +11,6 @@
 #ifndef POSITION_HPP
 #define POSITION_HPP
 
-#include "environment_controller/EnvironmentConsts.hpp"
 #include <stdexcept>
 
 namespace environment_controller

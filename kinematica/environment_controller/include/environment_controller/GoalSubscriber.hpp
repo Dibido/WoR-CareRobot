@@ -32,7 +32,9 @@ namespace environment_controller
     virtual ~GoalSubscriber() = default;
 
     /**
-     * @brief Callback function for setting the x, y and z coordinates
+     * @brief Callback function for setting the x, y and z coordinates. This
+     * function will be called when the position is published on the /goal
+     * topic.
      *
      * @param aMsg A goal msg
      */
