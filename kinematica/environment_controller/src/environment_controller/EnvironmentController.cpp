@@ -35,8 +35,8 @@ namespace environment_controller
     // mContext->provideDropPosition(aPosition);
   }
 
-  void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime)
+  void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
   {
-    // mContext->provide(aReleaseTime);
+    // mContext->provide(aReleaseTime_s);
   }
 } // namespace environment_controller

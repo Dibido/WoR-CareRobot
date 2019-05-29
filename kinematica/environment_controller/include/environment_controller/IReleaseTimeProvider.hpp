@@ -8,7 +8,8 @@ namespace environment_controller
 {
 
   /**
-   * @brief
+   * @brief Interface class whith which publishers and subscribers can be made
+   * for the /release topic
    *
    * @pre The desired amount of seconds for when a grabbed cup will be released,
    * is given by the user through the UI.
@@ -19,7 +20,7 @@ namespace environment_controller
 
       public:
     /**
-     * @brief
+     * @brief Pure virtual function for passing the release time
      *
      * @param aReleaseTime Time duration that indicates when a grabbed cup will
      * be released

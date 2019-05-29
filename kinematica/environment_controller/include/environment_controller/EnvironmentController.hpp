@@ -64,9 +64,9 @@ namespace environment_controller
     /**
      * @brief provide the time after which the cup will be released
      *
-     * @param aReleaseTime
+     * @param aReleaseTime_s in seconds
      */
-    void provideReleaseTime(const uint8_t aReleaseTime);
+    void provideReleaseTime(const uint8_t aReleaseTime_s);
 
       private:
     std::shared_ptr<controller::Context> mContext;
