@@ -5,11 +5,6 @@ void agv_parser::AgvParser::Run()
   // Open serial
   boost::system::error_code lBoostError;
   mSerial.open(mSerialPort, lBoostError);
-  if (lBoostError)
-  {
-    std::cout << "error : port.open() failed" << std::endl;
-    return;
-  }
   std::cout << "AvgParser started." << std::endl;
   while (true)
   {
