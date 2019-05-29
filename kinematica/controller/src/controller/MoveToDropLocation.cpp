@@ -11,7 +11,7 @@ namespace controller
   {
     kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
         aContext->dropPosition().x_m(), aContext->dropPosition().y_m(),
-        aContext->dropPosition().z_m(), 0, M_PI_2, M_PI_2);
+        aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);

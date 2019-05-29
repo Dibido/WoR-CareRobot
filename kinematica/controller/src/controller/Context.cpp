@@ -45,10 +45,13 @@ namespace controller
                 ros::Time(0),
                 0),
             ros::Time(0))),
-        mDropPosition(0.0, 0.0, 0.0),
         mGripperData(0.0, 0.0),
+        mDropPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
+
+    mGraph->addObstacle(
+        planning::Obstacle{ -0.5f, 0.0f, 0.0f, 1.0f, 0.5f, 1.0f });
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
   }
@@ -111,7 +114,6 @@ namespace controller
     mReleaseTime_s = aReleaseTime;
     mWaitForRelease.notify_all();
   }
-
   void Context::provideDropPosition(
       const environment_controller::Position& aPosition)
   {

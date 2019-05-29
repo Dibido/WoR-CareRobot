@@ -62,9 +62,9 @@
       <notificatie_Interval> 1 </notificatie_Interval> <!-- interval used for sending info messages. 0 means every simulation tick, if update_Interval is set higher update_Interval will be used as Notification_interval-->
       <update_Interval> 0 </update_Interval>
       <warning_Interval> 2 </warning_Interval> <!--Pleas dont spam the error message constantly ?-->
-      <cupHeight> 9.9 </cupHeight> <!--CM-->
-      <cupWidthBottom> 5 </cupWidthBottom> <!--CM-->
-      <cupWidthTop> 7.1 </cupWidthTop> <!--CM-->
+      <cupHeight> 8 </cupHeight> <!--CM-->
+      <cupWidthBottom> 4.9 </cupWidthBottom> <!--CM-->
+      <cupWidthTop> 4.9 </cupWidthTop> <!--CM-->
       <cupWeight> 8 </cupWeight> <!--Gram-->
       <cupVolumeOfLiquid> 50 </cupVolumeOfLiquid> <!--ml-->
       <!-- 2.5*2.5*pi(3.14) * 8 = 157 ml-->
