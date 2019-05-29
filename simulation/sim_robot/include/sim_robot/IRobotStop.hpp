@@ -10,7 +10,7 @@ namespace i_robot_controller_stop
 
   /**
    * @brief the class of the interface IRobotControlPlugin
-   *@pre A stop message is published on the /robot_stop topic.
+   * @pre A stop message is published on the /robot_stop topic.
    * @post The stop message is parsed and the robot is stopped.
    *
    */

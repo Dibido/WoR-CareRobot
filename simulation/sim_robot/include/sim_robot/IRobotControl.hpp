@@ -10,7 +10,7 @@ namespace i_robot_controller_control
 
   /**
    * @brief the class of the interface IRobotControlPlugin
-   *@pre A control message is published on the /robot_control topic.
+   * @pre A control message is published on the /robot_control topic.
    * @post The control message is parsed and the joints are in correct position.
    *
    */
