@@ -1,70 +1,63 @@
-// Library
-#include <iostream>
-#include <ros/ros.h>
-#include <ros/time.h>
-
-// Local
-#include "controller/ControllerConsts.hpp"
 #include "controller/Move.hpp"
+#include "controller/ControllerConsts.hpp"
+#include "controller/Init.hpp"
 #include "controller/ReleaseCup.hpp"
 #include "controller/WaitForCup.hpp"
 #include "kinematics/EndEffector.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
+#include <iostream>
+#include <ros/ros.h>
+#include <ros/time.h>
 namespace controller
 {
-  Move::Move(){
+  Move::Move(){};
 
-  };
   Move::~Move(){};
 
   void Move::entryAction(Context* aContext)
   {
-    kinematics::EndEffector lEndEffector = kinematics::EndEffector(
+    kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
         aContext->cup().object().position().x_m(),
         aContext->cup().object().position().y_m(),
         aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
-    kinematics::Configuration lConfiguration =
-        aContext->configurationProvider()->inverseKinematics(
-            lEndEffector, aContext->configuration());
-    aContext->robotControl()->publish(cSpeedFactor, lConfiguration);
-    mArrivalTime = Move::calculateArrivalTime(aContext, lConfiguration);
-    ros::Duration lDuration(mArrivalTime.toSec() - ros::Time::now().toSec() -
-                            cWaitTime_s);
-    if (lDuration > ros::Duration(0))
-    {
-      lDuration.sleep();
-    }
+    mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
+                                         mTrajectory);
+    mArrivalTime = ros::Time::now();
   }
 
   void Move::doActivity(Context* aContext)
   {
-    if (ros::Time::now() >= mArrivalTime)
+    if (mArrivalTime.sleepUntil(mArrivalTime))
     {
-      aContext->setState(std::make_shared<WaitForCup>());
+      if (mTrajectory.size() == 0)
+      {
+        aContext->setState(std::make_shared<WaitForCup>());
+        return;
+      }
+      else
+      {
+        kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
+        aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
+        mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
+            aContext, lTargetConfiguration);
+        aContext->configuration() = lTargetConfiguration;
+        ROS_DEBUG(
+            "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",
+            lTargetConfiguration[0], lTargetConfiguration[1],
+            lTargetConfiguration[2], lTargetConfiguration[3],
+            lTargetConfiguration[4], lTargetConfiguration[5],
+            lTargetConfiguration[6]);
+        mTrajectory.pop();
+      }
     }
   }
 
   void Move::exitAction(Context*)
   {
-  }
-
-  ros::Time Move::calculateArrivalTime(Context* aContext,
-                                       kinematics::Configuration lConfiguration)
-  {
-    double lMaxDeltaTheta = 0;
-    for (size_t i = 0; i < lConfiguration.size; ++i)
+    while (mTrajectory.empty() == false)
     {
-      if (lMaxDeltaTheta <
-          std::abs(lConfiguration[i] - aContext->configuration()[i]))
-      {
-        lMaxDeltaTheta =
-            std::abs(lConfiguration[i] - aContext->configuration()[i]);
-      }
+      mTrajectory.pop();
     }
-
-    return ros::Time::now() +
-           ros::Duration(lMaxDeltaTheta / cJointSpeed_rads / cSpeedFactor);
   }
-
 } // namespace controller
