@@ -31,7 +31,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS})
 
 #Add the application
-add_executable(${PROJECT_NAME}_main src/main.cpp src/${PROJECT_NAME}/AgvParser.cpp)
+add_executable(${PROJECT_NAME}_main src/main.cpp src/${PROJECT_NAME}/AgvParser.cpp src/${PROJECT_NAME}/AgvSpeed.cpp)
 
 add_dependencies(${PROJECT_NAME}_main ${catkin_EXPORTED_TARGETS})
 

@@ -4,21 +4,20 @@ void agv_parser::AgvParser::Run()
 {
   // Open serial
   boost::system::error_code lBoostError;
-  // mSerial.open(mSerialPort, lBoostError);
-  // if (lBoostError)
-  // {
-  //   std::cout << "error : port.open() failed" << std::endl;
-  //   return;
-  // }
+  mSerial.open(mSerialPort, lBoostError);
+  if (lBoostError)
+  {
+    std::cout << "error : port.open() failed" << std::endl;
+    return;
+  }
   while (true)
   {
     // Get message
     std::string lRecievedMessage = readLine();
     // Parse message
-    sensor_interfaces::AGVSpeed lAgvMessage =
-        parseRecievedMessage(lRecievedMessage);
-    // Publish to ROS topic
-    mAgvPublisher.publish(lAgvMessage);
+    AgvSpeed lAgvSpeed;
+    lAgvSpeed.mAgvSpeed = parseRecievedMessage(lRecievedMessage);
+    parseAgvSpeed(lAgvSpeed);
     std::cout << "Handled message : " << lRecievedMessage << std::endl;
   }
 }
@@ -62,10 +61,8 @@ std::string agv_parser::AgvParser::readLine()
   }
 }
 
-sensor_interfaces::AGVSpeed
-    agv_parser::AgvParser::parseRecievedMessage(std::string aRecievedMessage)
+float agv_parser::AgvParser::parseRecievedMessage(std::string aRecievedMessage)
 {
-  sensor_interfaces::AGVSpeed lAgvMessage;
   // Parse the command
   // Example command = "#S#0.23131\n"
   // Strip the #S part from the message
@@ -75,7 +72,13 @@ sensor_interfaces::AGVSpeed
   std::string lSpeedString = lStrippedHashString.substr(
       aRecievedMessage.find('#') + 2, aRecievedMessage.size());
   float lAgvSpeed = static_cast<float>(atof(lSpeedString.c_str()));
-  // Fill message
-  lAgvMessage.speed = lAgvSpeed;
-  return lAgvMessage;
+  return lAgvSpeed;
+}
+
+void agv_parser::AgvParser::parseAgvSpeed(const AgvSpeed& aAgvSpeed)
+{
+  sensor_interfaces::AGVSpeed lAgvMessage;
+  lAgvMessage.speed = aAgvSpeed.mAgvSpeed;
+  // Publish to ROS topic
+  mAgvPublisher.publish(lAgvMessage);
 }

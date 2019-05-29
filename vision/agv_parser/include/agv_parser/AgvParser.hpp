@@ -9,6 +9,8 @@
 #include <boost/system/system_error.hpp>
 #include <boost/thread.hpp>
 
+#include "AgvSpeed.hpp"
+#include "IAgvSpeed.hpp"
 #include "sensor_interfaces/AGVSpeed.h"
 #include <ros/ros.h>
 
@@ -41,10 +43,15 @@ namespace agv_parser
     std::string readLine();
 
     /**
-     * @brief - Parses the recieved message to a ROS message
+     * @brief - Parses the recieved message to a float
      */
-    sensor_interfaces::AGVSpeed
-        parseRecievedMessage(std::string aRecievedMessage);
+    float parseRecievedMessage(std::string aRecievedMessage);
+
+    /**
+     * @brief Implement the AGVSpeed function from the IAgvSpeed interface.
+     * @param aAgvSpeed - The speed recieved from the AGV gateway.
+     */
+    virtual void parseAgvSpeed(const AgvSpeed& aAgvSpeed);
 
     // Serial variables
     std::string mSerialPort;
