@@ -28,6 +28,8 @@ namespace controller
     /**
      * @brief entryAction is being called when the Ready state is being
      * entered.
+     * 
+     * @details 
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".

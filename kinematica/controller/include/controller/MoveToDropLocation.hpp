@@ -15,7 +15,7 @@ namespace controller
    *
    * @class MoveToDropLocation
    *
-   * @brief Move the arm to the location where the cup has to be to dropped.
+   * @brief Moves the arm to the location where the cup has to be to dropped.
    *
    * @author Gianni Monteban
    *
@@ -58,7 +58,8 @@ namespace controller
      * MoveToDropLocation.
      *
      * @details All different configuration of the trajectory are being executed
-     * by the robotarm one after another.
+     * by the robotarm one after another. Once all configurations are executed
+     * the state will transit to the waitForReleaseSignal state.
      *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
@@ -70,7 +71,7 @@ namespace controller
      * MoveToDropLocation is being exited.
      *
      * @details Not used at this moment.
-     * 
+     *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
      */
