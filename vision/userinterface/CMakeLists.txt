@@ -7,44 +7,44 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -fPIC)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp)
+find_package(catkin REQUIRED COMPONENTS roscpp kinematica_msgs geometry_msgs message_generation environment_controller controller)
 
-#Enable CTest which is used for the codecoverage
-include(CTest)
-enable_testing()
+	#Enable CTest which is used for the codecoverage
+	include(CTest)
+	enable_testing()
 
-## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system)
-find_package(Qt5Widgets CONFIG)
+	## System dependencies are found with CMake's conventions
+	find_package(Boost REQUIRED COMPONENTS system)
+	find_package(Qt5Widgets CONFIG)
 
 
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+	## Uncomment this if the package has a setup.py. This macro ensures
+	## modules and global scripts declared therein get installed
+	## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+	# catkin_python_setup()
 
-################################################
-## Declare ROS messages, services and actions ##
-################################################
+	################################################
+	## Declare ROS messages, services and actions ##
+	################################################
 
-## To declare and build messages, services or actions from within this
-## package, follow these steps:
-## * Let MSG_DEP_SET be the set of packages whose message types you use in
-##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
-## * In the file package.xml:
-##   * add a build_depend tag for "message_generation"
-##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
-##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
-##     but can be declared for certainty nonetheless:
-##     * add a exec_depend tag for "message_runtime"
-## * In this file (CMakeLists.txt):
-##   * add "message_generation" and every package in MSG_DEP_SET to
-##     find_package(catkin REQUIRED COMPONENTS ...)
-##   * add "message_runtime" and every package in MSG_DEP_SET to
-##     catkin_package(CATKIN_DEPENDS ...)
-##   * uncomment the add_*_files sections below as needed
-##     and list every .msg/.srv/.action file to be processed
-##   * uncomment the generate_messages entry below
+	## To declare and build messages, services or actions from within this
+	## package, follow these steps:
+	## * Let MSG_DEP_SET be the set of packages whose message types you use in
+	##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
+	## * In the file package.xml:
+	##   * add a build_depend tag for "message_generation"
+	##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
+	##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
+	##     but can be declared for certainty nonetheless:
+	##     * add a exec_depend tag for "message_runtime"
+	## * In this file (CMakeLists.txt):
+	##   * add "message_generation" and every package in MSG_DEP_SET to
+	##     find_package(catkin REQUIRED COMPONENTS ...)
+	##   * add "message_runtime" and every package in MSG_DEP_SET to
+	##     catkin_package(CATKIN_DEPENDS ...)
+	##   * uncomment the add_*_files sections below as needed
+	##     and list every .msg/.srv/.action file to be processed
+	##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
@@ -69,10 +69,6 @@ find_package(Qt5Widgets CONFIG)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-   # std_msgs  # Or other packages containing msgs
-   # )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,7 +102,7 @@ find_package(Qt5Widgets CONFIG)
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES userinterface
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS environment_controller kinematica_msgs geometry_msgs controller
 #  DEPENDS system_lib
 )
 
@@ -123,9 +119,9 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-qt5_wrap_cpp (moc_sources src/main.cpp src/mainwindow.cpp include/mainwindow.hpp)
-qt5_wrap_ui (uic_sources src/mainwindow.ui)
-set(Srcs src/main.cpp src/mainwindow.cpp src/mainwindow.ui drawable/resources.qrc)
+qt5_wrap_cpp (moc_sources src/userinterface/main.cpp src/userinterface/mainwindow.cpp include/userinterface/mainwindow.hpp)
+qt5_wrap_ui (uic_sources src/userinterface/mainwindow.ui)
+set(Srcs src/userinterface/main.cpp src/userinterface/mainwindow.cpp src/userinterface/mainwindow.ui drawable/resources.qrc src/userinterface/GoalPublisher.cpp src/userinterface/ReleaseTimePublisher.cpp)
 list(APPEND Srcs ${moc_sources} ${uic_sources})
 
 set(CMAKE_AUTOMOC ON)
@@ -159,12 +155,12 @@ add_executable(${PROJECT_NAME} ${Srcs})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+
+
+
 
 #############
 ## Install ##

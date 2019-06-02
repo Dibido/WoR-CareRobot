@@ -1,12 +1,25 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "environment_controller/Position.hpp"
+#include "userinterface/GoalPublisher.hpp"
+#include "userinterface/ReleaseTimePublisher.hpp"
+#include <QApplication>
+#include <QElapsedTimer>
 #include <QMainWindow>
 
 namespace Ui
 {
   class MainWindow;
 }
+
+/**
+ * @brief MainWindow class which features the functionality for the MainWindow
+ * screen.
+ *
+ * This class features the handling of all elements on the MainWindow screen,
+ * including button and label parameters.
+ */
 
 class MainWindow : public QMainWindow
 {
@@ -36,6 +49,16 @@ class MainWindow : public QMainWindow
 
     private:
   Ui::MainWindow* ui;
+
+  /**
+   * @brief GoalPublisher used in this class.
+   */
+  userinterface::GoalPublisher mGoalPublisher;
+
+  /**
+   * @brief ReleaseTimePublisher used in this class.
+   */
+  userinterface::ReleaseTimePublisher mReleaseTimePublisher;
 };
 
 #endif // MAINWINDOW_HPP
