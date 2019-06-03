@@ -72,13 +72,6 @@ namespace kinematics
 
   Matrix<double, 4, 4> Link::transformationMatrix(double aVariable) const
   {
-    if (isWithinConstraints(aVariable) == false)
-    {
-      ROS_DEBUG(
-          "Link variable (%.4f) is out of allowed constraints (%.4f < v < "
-          "%.4f)",
-          aVariable, mMinValue, mMaxValue);
-    }
     double aD_m = mD_m;
     double aTheta_rad = mTheta_rad;
     switch (mType)
@@ -93,9 +86,6 @@ namespace kinematics
       // Do not change any of the values
       break;
     }
-    ROS_DEBUG("T: %s A: %.2f\talpha: %.2f\tD: %.2f\tTheta: %.2f",
-              JointHelper::toString(mType).c_str(), mA_m, mAlpha_rad, aD_m,
-              aTheta_rad);
     return calculateTransformationMatrix(aD_m, aTheta_rad);
   }
 
