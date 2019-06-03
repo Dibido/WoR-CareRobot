@@ -41,7 +41,7 @@ namespace controller
         kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
         aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
         mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
-            aContext, lTargetConfiguration);
+            lTargetConfiguration, aContext->configuration());
         aContext->configuration() = lTargetConfiguration;
         ROS_DEBUG(
             "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",

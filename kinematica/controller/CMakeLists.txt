@@ -144,6 +144,39 @@ src/environment_controller/Position.cpp)
 add_dependencies(lib_controller
 ${catkin_EXPORTED_TARGETS})
 
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp 
+unitTests/arrivalTime.cpp
+)
+target_link_libraries(${PROJECT_NAME}_unit_tests lib_controller lib_kinematics ${catkin_LIBRARIES})
+  
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+    '*/matrix/include/*'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()
+
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}

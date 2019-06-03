@@ -35,9 +35,9 @@ namespace controller
      * @param aConfiguration
      * @return ros::Time
      */
-    ros::Time
-        calculateArrivalTime(Context* aContext,
-                             const kinematics::Configuration& aConfiguration);
+    ros::Time calculateArrivalTime(
+        const kinematics::Configuration& aConfiguration,
+        const kinematics::Configuration& aCurrentConfiguration);
 
       private:
     /**

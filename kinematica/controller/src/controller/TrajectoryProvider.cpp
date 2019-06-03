@@ -46,17 +46,16 @@ namespace controller
   }
 
   ros::Time TrajectoryProvider::calculateArrivalTime(
-      Context* aContext,
-      const kinematics::Configuration& aConfiguration)
+      const kinematics::Configuration& aConfiguration,
+      const kinematics::Configuration& aCurrentConfiguration)
   {
     double lMaxDeltaTheta = 0;
     for (size_t i = 0; i < aConfiguration.size; ++i)
     {
       if (lMaxDeltaTheta <
-          std::abs(aConfiguration[i] - aContext->configuration()[i]))
+          std::abs(aConfiguration[i] - aCurrentConfiguration[i]))
       {
-        lMaxDeltaTheta =
-            std::abs(aConfiguration[i] - aContext->configuration()[i]);
+        lMaxDeltaTheta = std::abs(aConfiguration[i] - aCurrentConfiguration[i]);
       }
     }
     return ros::Time::now() +
