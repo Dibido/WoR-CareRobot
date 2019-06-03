@@ -45,8 +45,13 @@ namespace controller
                 ros::Time(0),
                 0),
             ros::Time(0))),
-        mGripperData(0.0, 0.0)
+        mGripperData(0.0, 0.0),
+        mDropPosition(0.0, 0.0, 0.0),
+        mReleaseTime_s(-1)
   {
+    const planning::Obstacle cRobotAsObstacle{ -0.5f, 0.0f, 0.0f,
+                                               1.0f,  0.5f, 1.0f };
+    mGraph->addObstacle(cRobotAsObstacle);
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
   }
@@ -103,6 +108,18 @@ namespace controller
     }
   }
 
+  void Context::provideReleaseTime(int16_t aReleaseTime)
+  {
+    std::unique_lock<std::mutex> lLock(mReleaseMutex);
+    mReleaseTime_s = aReleaseTime;
+    mWaitForRelease.notify_all();
+  }
+  void Context::provideDropPosition(
+      const environment_controller::Position& aPosition)
+  {
+    mDropPosition = aPosition;
+  }
+
   kinematics::Configuration& Context::configuration()
   {
     return mConfiguration;
@@ -154,5 +171,25 @@ namespace controller
   std::shared_ptr<State>& Context::currentState()
   {
     return mCurrentState;
+  }
+
+  environment_controller::Position& Context::dropPosition()
+  {
+    return mDropPosition;
+  }
+
+  std::condition_variable& Context::waitForRelease()
+  {
+    return mWaitForRelease;
+  }
+
+  int16_t& Context::releaseTime_s()
+  {
+    return mReleaseTime_s;
+  }
+
+  std::mutex& Context::releaseMutex()
+  {
+    return mReleaseMutex;
   }
 } // namespace controller

@@ -63,7 +63,7 @@ namespace location_component
 
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
-          mRosServiceCup->foundCup(lCup);
+          mRosServiceCup->passCup(lCup);
         }
       }
 

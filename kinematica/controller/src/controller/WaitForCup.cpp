@@ -1,7 +1,10 @@
 // Library
 #include "controller/ControllerConsts.hpp"
+#include <chrono>
 #include <iostream>
 #include <ros/ros.h>
+#include <thread>
+
 // Local
 #include "controller/CloseGripper.hpp"
 #include "controller/WaitForCup.hpp"
@@ -17,9 +20,12 @@ namespace controller
     ros::Duration lDuration =
         (aContext->cup().timeOfArrival() - ros::Time::now()) -
         ros::Duration(cWaitTime_s);
+    uint64_t lMovementDuration_ns =
+        lDuration.toNSec() - (uint64_t)(cWaitTime_s * pow(10, 9));
     if (lDuration > ros::Duration(0))
     {
-      lDuration.sleep();
+      std::this_thread::sleep_for(
+          std::chrono::nanoseconds(lMovementDuration_ns));
     }
   }
 

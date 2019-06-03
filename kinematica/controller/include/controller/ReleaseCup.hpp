@@ -50,6 +50,9 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* aContext);
+
+      private:
+    ros::Time mReleaseTime;
   };
 } // namespace controller
 #endif // RELEASE_CUP_HPP

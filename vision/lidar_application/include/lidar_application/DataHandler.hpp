@@ -46,10 +46,11 @@ namespace lidar_application
 
     /**
      * @brief Handles incoming messages on defined topic (see constants in cpp)
-     * @pre: ros::init() must've ben called
+     * @pre: ros::init() must've been called
      * @post: Received data is stored in mLidarData, mNewDataAvailable will be
      * true
-     * @param aLidarDataMessage
+     * @param aLidarDataMessage - Size of its distances and measurement_angles
+     * must be equal.
      */
     void dataReceiveCallback(
         const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage);
@@ -70,7 +71,7 @@ namespace lidar_application
      * @param aObstacles - The obstacles
      */
     virtual void
-        parseObstacles(const environment_controller::Obstacles& aObstacles);
+        passObstacles(const environment_controller::Obstacles& aObstacles);
 
       private:
     ros::NodeHandle mNodeHandler;
