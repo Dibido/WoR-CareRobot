@@ -17,17 +17,18 @@ namespace commands
                       std::vector<commands::Command>& out);
 
     /**
-     * @brief Parser class to parse commands with the custom made protocol
+     * @brief Parser method to parse control commands with the custom made
+     * protocol
      */
-    void parseCommandTheta(const std::vector<double>& commandTheta,
-                           jointVel_t speedFactor,
-                           std::vector<commands::Command>& thetaOut);
+    void parseControl(const std::vector<double>& commandTheta,
+                      jointVel_t speedFactor,
+                      std::vector<commands::Command>& thetaOut);
 
     /**
-     * @brief Parser class to parse stop commands with the custom made protocol
+     * @brief Parser method to parse stop commands with the custom made protocol
      */
 
-    void parseCommandStop(const bool& stop, std::vector<Command>& Out);
+    void parseStop(const bool& stop, std::vector<Command>& Out);
     /**
      * @brief this function is used to check if a string complies with the
      * protocol of a move command
@@ -68,17 +69,17 @@ namespace commands
      * speed
      * @param thetaOut container that gets filled with the data
      */
-    void createCommandTheta(const std::vector<double>& commandTheta,
-                            jointVel_t speedFactor,
-                            std::vector<commands::Command>& thetaOut);
+    void createControlCommand(const std::vector<double>& commandTheta,
+                              jointVel_t speedFactor,
+                              std::vector<commands::Command>& thetaOut);
     /**
      * @brief fill the command container with stop command from the /robot_stop
      * topic
      * @param stop boolean
      * @param container container that gets filled with the data
      */
-    void createStopCommandTheta(const bool& stop,
-                                std::vector<commands::Command>& container);
+    void createStopCommand(const bool& stop,
+                           std::vector<commands::Command>& container);
 
     /**
      * @brief fill the command container with the data from the command line

@@ -5,7 +5,7 @@ namespace control_data
 {
 
   control_data::CommandData::CommandData(std::vector<jointRad_t> aTheta,
-                                 jointVel_t aSpeedFactor)
+                                         jointVel_t aSpeedFactor)
       : mTheta_(aTheta), mSpeedFactor_(aSpeedFactor)
   {
     if (mSpeedFactor_ < 0 ||
@@ -59,4 +59,4 @@ namespace control_data
     return mSpeedFactor_;
   }
 
-} // namespace data
+} // namespace control_data

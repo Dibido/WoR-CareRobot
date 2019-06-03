@@ -33,9 +33,9 @@ namespace commands
       }
     }
   }
-  void CommandParser::parseCommandTheta(const std::vector<double>& commandTheta,
-                                        jointVel_t speedFactor,
-                                        std::vector<Command>& thetaOut)
+  void CommandParser::parseControl(const std::vector<double>& commandTheta,
+                                   jointVel_t speedFactor,
+                                   std::vector<Command>& thetaOut)
   {
 
     if (commandTheta.empty())
@@ -44,16 +44,15 @@ namespace commands
       // empty
       speedFactor = 0;
     }
-    createCommandTheta(commandTheta, speedFactor, thetaOut);
+    createControlCommand(commandTheta, speedFactor, thetaOut);
   }
-  void CommandParser::parseCommandStop(const bool& stop,
-                                       std::vector<Command>& out)
+  void CommandParser::parseStop(const bool& stop, std::vector<Command>& out)
   {
 
-    createStopCommandTheta(stop, out);
+    createStopCommand(stop, out);
   }
 
-  void CommandParser::createCommandTheta(
+  void CommandParser::createControlCommand(
       const std::vector<double>& commandTheta,
       jointVel_t speedFactor,
       std::vector<commands::Command>& container)
@@ -70,7 +69,7 @@ namespace commands
     }
   }
 
-  void CommandParser::createStopCommandTheta(
+  void CommandParser::createStopCommand(
       const bool& stop,
       std::vector<commands::Command>& container)
   {

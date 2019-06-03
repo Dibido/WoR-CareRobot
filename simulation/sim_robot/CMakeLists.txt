@@ -63,7 +63,8 @@ add_library(${PROJECT_NAME}_plugin
 	src/CommandParser.cpp
   src/JointController.cpp
   src/ControlData.cpp
-  src/StopData.cpp)
+  src/StopData.cpp
+  src/GripperData.cpp)
 add_dependencies(${PROJECT_NAME}_plugin sim_robot_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_plugin

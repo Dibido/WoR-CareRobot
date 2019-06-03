@@ -18,21 +18,22 @@
 #include "Command.hpp"
 #include "CommandParser.hpp"
 #include "ControlData.hpp"
-#include "StopData.hpp"
 #include "IRobotControl.hpp"
+#include "IRobotGripper.hpp"
 #include "IRobotStop.hpp"
 #include "JointController.hpp"
 #include "RobotControllerPluginConst.hpp"
+#include "StopData.hpp"
 
 namespace gazebo
 {
   /**
    * Robot plugin, used in robot model which are loaded in Gazebo
    */
-  class RobotControllerPlugin
-      : public ModelPlugin,
-        public robot_controller_control::IRobotControl,
-        public robot_controller_stop::IRobotStop
+  class RobotControllerPlugin : public ModelPlugin,
+                                public robot_controller_control::IRobotControl,
+                                public robot_controller_stop::IRobotStop,
+                                public robot_controller_gripper::IRobotGripper
   {
       public:
     /**
@@ -79,19 +80,13 @@ namespace gazebo
      * @param msg: custom message for controlling the gripper. see
      * http://wor.wiki.icaprojecten.nl/confluence/pages/editpage.action?pageId=144212036#DDD-Aansturinginterface-IGripperControlinterface
      */
-    void commandGripperCallBack(const robotcontroller_msgs::GripperPtr& aMsg);
+    void ParseGripperCallback(const robotcontroller_msgs::GripperPtr& aMsg);
 
     /**
      * @brief Callback method for receiving an incoming robot command
      * @param msg: string message to parse and apply
      */
-    void commandCallBack(const std_msgs::StringConstPtr& aMsg);
-
-    /**
-     * @brief Callback method for receiving an incoming stop command
-     * @param smsg: bool message to parse and apply
-     */
-    void stopCallBack(const robotcontroller_msgs::StopPtr& aMsg);
+    void parseStringCallback(const std_msgs::StringConstPtr& aMsg);
 
     /**
      * @brief Loads all joints, based on the joint_info elements in the sdf
@@ -102,10 +97,10 @@ namespace gazebo
     /**
      * @brief Move a joint to given position with given speed
      * @param channel: channel / index of the joint
-     * @param pw: pulse width
+     * @param pwm: pulse width
      * @param speed: velocity
      */
-    void moveJoint(const commands::Command& aCom);
+    void moveJointPwm(const commands::Command& aCom);
     /**
      * @brief Move a joint to given position with given speed
      * @param channel: channel / index of the joint

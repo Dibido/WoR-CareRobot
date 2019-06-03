@@ -1,13 +1,9 @@
 #include <memory>
 #include <regex>
 
-#include "sim_robot/stopCommand.h"
-#include <regex>
-
 #include "sim_robot/RobotControllerPluginConst.hpp"
 #include <sim_robot/RobotControllerPlugin.hpp>
 
-#include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/String.h>
 
 namespace gazebo
@@ -77,9 +73,9 @@ namespace gazebo
         mRosNode->subscribe(gazebo::cCommandTopic, 1,
                             &RobotControllerPlugin::parseControlCallback, this);
 
-    mRosSubCommandGripper = mRosNode->subscribe(
-        gazebo::cCommandGripperTopic, 1,
-        &RobotControllerPlugin::commandGripperCallBack, this);
+    mRosSubCommandGripper =
+        mRosNode->subscribe(gazebo::cCommandGripperTopic, 1,
+                            &RobotControllerPlugin::ParseGripperCallback, this);
 
     mRosSubStop = mRosNode->subscribe(
         gazebo::cStopTopic, 1, &RobotControllerPlugin::parseStopCallback, this);
@@ -115,8 +111,8 @@ namespace gazebo
 
     std::vector<commands::Command> thetaContainer = {};
 
-    mParser.parseCommandTheta(lCommand.mTheta_, lCommand.mSpeedFactor_,
-                              thetaContainer);
+    mParser.parseControl(lCommand.mTheta_, lCommand.mSpeedFactor_,
+                         thetaContainer);
     if (!this->mStop)
     {
       for (const auto& c : thetaContainer)
@@ -134,7 +130,7 @@ namespace gazebo
     this->mStop = aMsg->stop;
     ROS_DEBUG("Received command: %f", lStopData.mStop_);
     std::vector<commands::Command> Container = {};
-    mParser.parseCommandStop(lStopData.mStop_, Container);
+    mParser.parseStop(lStopData.mStop_, Container);
     for (const auto& c : Container)
     {
 
@@ -142,7 +138,7 @@ namespace gazebo
     }
   } // namespace gazebo
 
-  void RobotControllerPlugin::commandGripperCallBack(
+  void RobotControllerPlugin::ParseGripperCallback(
       const robotcontroller_msgs::GripperPtr& aMsg)
   {
     double lWidth = mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
@@ -150,13 +146,12 @@ namespace gazebo
                                             0.0); // Width needs to be inverted.
     double lSpeedfactor = aMsg->speedfactor;
 
-    
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
         .moveTheta(lWidth, lSpeedfactor, /*time*/ 0, mUpdateRate);
   }
 
   // PRIVATE
-  void gazebo::RobotControllerPlugin::commandCallBack(
+  void gazebo::RobotControllerPlugin::parseStringCallback(
       const std_msgs::StringConstPtr& aMsg)
   {
     std::string lIncomingCommand = aMsg->data;
@@ -170,7 +165,7 @@ namespace gazebo
       switch (c.getType())
       {
       case commands::eCommandType::MOVE:
-        moveJoint(c);
+        moveJointPwm(c);
         break;
       case commands::eCommandType::STOP:
         stopJoint(c);
@@ -258,7 +253,8 @@ namespace gazebo
     }
   }
 
-  void gazebo::RobotControllerPlugin::moveJoint(const commands::Command& aCom)
+  void
+      gazebo::RobotControllerPlugin::moveJointPwm(const commands::Command& aCom)
   {
     if (jointExists(aCom.getChannel()))
     {
