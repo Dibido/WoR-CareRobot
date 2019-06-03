@@ -23,7 +23,7 @@
         </link>
 
         <plugin name="model_child" filename="libmodel_child.so">
-            <velocity>0</velocity>
+            <velocity>0.8</velocity>
             <angle>90</angle>
         </plugin>
     </model>
