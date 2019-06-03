@@ -21,7 +21,7 @@ void MainWindow::on_water_btn_clicked()
   if (mGoalPublisher.mMsgSent == false)
   {
     // Create and send the message
-    environment_controller::Position mPos(-0.55, 0.00, 0.00);
+    environment_controller::Position mPos(-0.30, 0.30, 0.00);
     mGoalPublisher.selectGoalPosition(mPos);
 
     // Mark msg as sent and change button to next step (see below)

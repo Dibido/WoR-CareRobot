@@ -1,9 +1,11 @@
 #ifndef GOAL_PUBLISHER_HPP
 #define GOAL_PUBLISHER_HPP
 
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/IGoalProvider.hpp"
 #include "environment_controller/Position.hpp"
 #include "geometry_msgs/Point.h"
+#include "kinematica_msgs/Goal.h"
 #include "ros/ros.h"
 
 namespace userinterface
@@ -49,8 +51,7 @@ namespace userinterface
 
       private:
     ros::NodeHandle goalPublisherNodeHandle;
-    ros::Publisher chatter_pub =
-        goalPublisherNodeHandle.advertise<geometry_msgs::Point>("goal", 1000);
+    ros::Publisher chatter_pub;
   };
 
 } // namespace userinterface

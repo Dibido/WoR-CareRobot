@@ -1,6 +1,7 @@
 #ifndef RELEASE_TIME_PUBLISHER_HPP
 #define RELEASE_TIME_PUBLISHER_HPP
 
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/IReleaseTimeProvider.hpp"
 #include "environment_controller/Position.hpp"
 #include "kinematica_msgs/ReleaseTime.h"
@@ -52,8 +53,8 @@ namespace userinterface
     ros::NodeHandle releaseTimePublisherNodeHandle;
     ros::Publisher chatter_pub =
         releaseTimePublisherNodeHandle.advertise<kinematica_msgs::ReleaseTime>(
-            "cReleaseTimeTopicName",
-            1000);
+            environment_controller::cReleaseTimeTopicName,
+            environment_controller::cQueue_size);
   };
 
 } // namespace userinterface
