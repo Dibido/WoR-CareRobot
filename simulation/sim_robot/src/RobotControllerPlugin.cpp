@@ -111,11 +111,11 @@ namespace gazebo
   {
     control_data::CommandData lCommand(aMsg->theta, aMsg->sf);
 
-    ROS_DEBUG("Received command: %f", lCommand.cTheta_);
+    ROS_DEBUG("Received command: %f", lCommand.mTheta_);
 
     std::vector<commands::Command> thetaContainer = {};
 
-    mParser.parseCommandTheta(lCommand.cTheta_, lCommand.cSpeedFactor_,
+    mParser.parseCommandTheta(lCommand.mTheta_, lCommand.mSpeedFactor_,
                               thetaContainer);
     if (!this->mStop)
     {
@@ -132,9 +132,9 @@ namespace gazebo
   {
     stop_data::StopData lStopData(aMsg->stop);
     this->mStop = aMsg->stop;
-    ROS_DEBUG("Received command: %f", lStopData.cStop_);
+    ROS_DEBUG("Received command: %f", lStopData.mStop_);
     std::vector<commands::Command> Container = {};
-    mParser.parseCommandStop(lStopData.cStop_, Container);
+    mParser.parseCommandStop(lStopData.mStop_, Container);
     for (const auto& c : Container)
     {
 

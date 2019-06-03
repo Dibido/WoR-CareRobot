@@ -31,8 +31,8 @@ namespace gazebo
    */
   class RobotControllerPlugin
       : public ModelPlugin,
-        public i_robot_controller_control::IRobotControl,
-        public i_robot_controller_stop::IRobotStop
+        public robot_controller_control::IRobotControl,
+        public robot_controller_stop::IRobotStop
   {
       public:
     /**

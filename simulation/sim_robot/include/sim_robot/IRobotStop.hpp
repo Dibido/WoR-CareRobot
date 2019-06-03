@@ -1,11 +1,11 @@
-#ifndef I_ROBOT_CONTROLLER_STOP_HPP
-#define I_ROBOT_CONTROLLER_STOP_HPP
+#ifndef ROBOT_CONTROLLER_STOP_HPP
+#define ROBOT_CONTROLLER_STOP_HPP
 
 #include "robotcontroller_msgs/Stop.h"
 
 #include <vector>
 
-namespace i_robot_controller_stop
+namespace robot_controller_stop
 {
 
   /**
@@ -25,6 +25,6 @@ namespace i_robot_controller_stop
     virtual void
         parseStopCallback(const robotcontroller_msgs::StopPtr& aMsg) = 0;
   };
-} // namespace i_robot_controller_stop
+} // namespace robot_controller_stop
 
-#endif // I_ROBOTCONTROLLER_STOP_HPP
+#endif // ROBOTCONTROLLER_STOP_HPP

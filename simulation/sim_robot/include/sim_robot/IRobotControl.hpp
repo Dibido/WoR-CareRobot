@@ -1,11 +1,11 @@
-#ifndef I_ROBOT_CONTROLLER_CONTROL_HPP
-#define I_ROBOT_CONTROLLER_CONTROL_HPP
+#ifndef ROBOT_CONTROLLER_CONTROL_HPP
+#define ROBOT_CONTROLLER_CONTROL_HPP
 
 #include "robotcontroller_msgs/Control.h"
 
 #include <vector>
 
-namespace i_robot_controller_control
+namespace robot_controller_control
 {
 
   /**
@@ -18,14 +18,15 @@ namespace i_robot_controller_control
   {
       public:
     /**
-     * @brief virtual interface
-     *
+     * @brief parse incoming messages
+     * @pre incoming: custom message with angles and speedfactor
+     * @post outgoing: command with an angle, speed, movement type
      * @param aMsg The control message that we are going to parse
      */
 
     virtual void
         parseControlCallback(const robotcontroller_msgs::ControlPtr& aMsg) = 0;
   };
-} // namespace i_robot_controller_control
+} // namespace robot_controller_control
 
-#endif // I_ROBOT_CONTROLLER_CONTROL_HPP
+#endif // ROBOT_CONTROLLER_CONTROL_HPP

@@ -6,13 +6,13 @@
 namespace control_data
 {
   /**
-   * @brief CommandData struct containing a cSpeedFactor_ and cTheta_
+   * @brief CommandData struct containing a mSpeedFactor_ and mTheta_
    */
   struct CommandData
   {
 
-    std::vector<jointRad_t> cTheta_;
-    jointVel_t cSpeedFactor_;
+    std::vector<jointRad_t> mTheta_;
+    jointVel_t mSpeedFactor_;
     /**
      * @brief Construct a new command Data struct
      * @param aTheta
@@ -29,20 +29,24 @@ namespace control_data
     /**
      * @brief Getter for mTheta_ checks whether mTheta_ is between cMinRad and
      * cMaxRad
+     * throw std::invalid_argument if not between cMinRad and
+     * cMaxRad
      *
      * @return jointRad_t
      */
 
-    std::vector<jointRad_t>& mTheta();
+    std::vector<jointRad_t>& getTheta();
 
     /**
      * @brief Getter for mSpeedFactor checks whether mSpeedFactor is between 0.0
+     * and cMaxSpeedfactor
+     * throw std::invalid_argument if not between 0.0
      * and cMaxSpeedfactor
      *
      * @return jointVel_t
      */
 
-    jointVel_t& mSpeedFactor();
+    jointVel_t& getSpeedFactor();
 
     CommandData& operator=(const CommandData&) = default;
   };

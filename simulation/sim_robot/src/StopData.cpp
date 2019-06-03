@@ -4,18 +4,18 @@
 namespace stop_data
 {
 
-  stop_data::StopData::StopData(jointStop_t aStop) : cStop_(aStop)
+  stop_data::StopData::StopData(jointStop_t aStop) : mStop_(aStop)
   {
   }
 
-  jointStop_t& stop_data::StopData::mBool()
+  jointStop_t& stop_data::StopData::isStopped()
   {
-    if (cStop_ != true || cStop_ != false)
+    if (mStop_ != true || mStop_ != false)
     {
       throw std::invalid_argument("cStop_ must be either true or false " +
-                                  std::to_string(cStop_));
+                                  std::to_string(mStop_));
     }
-    return cStop_;
+    return mStop_;
   }
 
 } // namespace stop_data

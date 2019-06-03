@@ -6,17 +6,17 @@ namespace control_data
 
   control_data::CommandData::CommandData(std::vector<jointRad_t> aTheta,
                                  jointVel_t aSpeedFactor)
-      : cTheta_(aTheta), cSpeedFactor_(aSpeedFactor)
+      : mTheta_(aTheta), mSpeedFactor_(aSpeedFactor)
   {
-    if (cSpeedFactor_ < 0 ||
-        cSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
+    if (mSpeedFactor_ < 0 ||
+        mSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
     {
       throw std::invalid_argument(
-          "cSpeedFactor_ must be between 0.0 and " +
+          "mSpeedFactor_ must be between 0.0 and " +
           std::to_string(robotcontrollerplugin::cMaxSpeedfactor) + ": " +
-          std::to_string(cSpeedFactor_));
+          std::to_string(mSpeedFactor_));
     }
-    for (const auto& t : cTheta_)
+    for (const auto& t : mTheta_)
     {
 
       if (t > robotcontrollerplugin::cMaxRad ||
@@ -30,9 +30,9 @@ namespace control_data
     }
   }
 
-  std::vector<jointRad_t>& control_data::CommandData::mTheta()
+  std::vector<jointRad_t>& control_data::CommandData::getTheta()
   {
-    for (const auto& t : cTheta_)
+    for (const auto& t : mTheta_)
     {
 
       if (t > robotcontrollerplugin::cMaxRad ||
@@ -44,19 +44,19 @@ namespace control_data
             std::to_string(robotcontrollerplugin::cMaxRad) + std::to_string(t));
       }
     }
-    return cTheta_;
+    return mTheta_;
   }
-  jointVel_t& control_data::CommandData::mSpeedFactor()
+  jointVel_t& control_data::CommandData::getSpeedFactor()
   {
-    if (cSpeedFactor_ < 0 ||
-        cSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
+    if (mSpeedFactor_ < 0 ||
+        mSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
     {
       throw std::invalid_argument(
-          "cSpeedFactor_ must be between 0.0 and " +
+          "mSpeedFactor_ must be between 0.0 and " +
           std::to_string(robotcontrollerplugin::cMaxSpeedfactor) + ": " +
-          std::to_string(cSpeedFactor_));
+          std::to_string(mSpeedFactor_));
     }
-    return cSpeedFactor_;
+    return mSpeedFactor_;
   }
 
 } // namespace data

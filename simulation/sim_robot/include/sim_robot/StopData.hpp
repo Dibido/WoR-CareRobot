@@ -11,7 +11,7 @@ namespace stop_data
   struct StopData
   {
 
-    jointStop_t cStop_ = 0;
+    jointStop_t mStop_ = 0;
     /**
      * @brief Construct a new  StopData struct
      * @param aStop
@@ -25,14 +25,14 @@ namespace stop_data
     ~StopData() = default;
 
     /**
-     * @brief Getter for mBool checks whether cStop_ is  either true or
+     * @brief Getter for CStop_, checks whether cStop_ is  either true or
      * false
      *
      * @return jointStop_t
      */
 
-    jointStop_t& mBool();
+    jointStop_t& isStopped();
 
     StopData& operator=(const StopData&) = default;
   };
-} // namespace data
+} // namespace stop_data
