@@ -148,17 +148,17 @@ namespace location_component
   boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& aFrame) const
   {
     cv::Mat lDisFrame;
-    std::vector<std::vector<cv::Point>> lContours(1);
+    std::vector<cv::Point> lContours(1);
 
     getContoursMat(aFrame, lContours);
 
     cv::Rect lBoundRect;
 
     // Getting the middle point of the rect and draw this point
-    if (lContours.at(0).size() == cCornersOfObject)
+    if (lContours.size() == cCornersOfObject)
     {
       DetectedAGV lDetectedAGV;
-      lBoundRect = boundingRect(lContours.at(0));
+      lBoundRect = boundingRect(lContours);
       // The corners of the AGV.
       std::vector<cv::Point2f> lAGVCorners;
       // The corners of the bounding rectangle around the AGV.
@@ -166,10 +166,10 @@ namespace location_component
 
       for (size_t idx = 0; idx < cCornersOfObject; ++idx)
       {
-        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(0).at(idx).x,
-                                          ( float )lContours.at(0).at(idx).y));
+        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(idx).x,
+                                          ( float )lContours.at(idx).y));
 
-        lDetectedAGV.mCorners.push_back(lContours.at(0).at(idx));
+        lDetectedAGV.mCorners.push_back(lContours.at(idx));
       }
 
       lEstimatedSquare.push_back(
@@ -187,13 +187,13 @@ namespace location_component
 
       makePerspectiveCorrection(lTransmtx, aFrame, lDisFrame);
 
-      std::vector<std::vector<cv::Point>> lContours(1);
-      getContoursMat(lDisFrame, lContours);
+      std::vector<cv::Point> lContoursWithPerspectiveCorrection(1);
+      getContoursMat(lDisFrame, lContoursWithPerspectiveCorrection);
 
       lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
       std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
-      lPoints.push_back(getMidPoint(lContours.at(0)));
+      lPoints.push_back(getMidPoint(lContoursWithPerspectiveCorrection));
 
       cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
                                lTransmtx.inv());
@@ -219,7 +219,7 @@ namespace location_component
 
   void DetectAGV::getContoursMat(
       const cv::Mat& aSourceMat,
-      std::vector<std::vector<cv::Point>>& aContoursPoly) const
+      std::vector<cv::Point>& aContoursPoly) const
   {
     std::vector<std::vector<cv::Point>> lContours;
     cv::Mat lMatDes;
@@ -245,9 +245,8 @@ namespace location_component
     }
 
     // Copy the right rectengle tot contour_poly
-
     approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)),
-                 aContoursPoly.at(0), 5, true);
+                 aContoursPoly, 5, true);
   }
 
   cv::Point

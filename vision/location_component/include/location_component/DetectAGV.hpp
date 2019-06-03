@@ -93,7 +93,7 @@ namespace location_component
      * @param aContours - A reference of a vector with all the found contours
      */
     void getContoursMat(const cv::Mat& aSourceMat,
-                        std::vector<std::vector<cv::Point>>& aContours) const;
+                        std::vector<cv::Point>& aContours) const;
 
     /**
      * @brief This function will return the midpoint of a contour aka a vector
