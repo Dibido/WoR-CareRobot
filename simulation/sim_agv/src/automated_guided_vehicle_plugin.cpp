@@ -36,6 +36,15 @@ namespace gazebo
   {
   }
 
+  void AutomatedGuidedVehiclePlugin::parseAgvSpeed(
+      const agv_parser::AgvSpeed& aAgvSpeed)
+  {
+    sensor_interfaces::AGVSpeed lAgvMessage;
+    lAgvMessage.speed = aAgvSpeed.mAgvSpeed;
+    // Publish to ROS topic
+    mAgvPublisher.publish(lAgvMessage);
+  }
+
   void AutomatedGuidedVehiclePlugin::callback(
       const sensor_msgs::RangeConstPtr aMsg)
   {
@@ -47,12 +56,13 @@ namespace gazebo
         mPreviousTime = ros::Time::now().toSec();
         if (mNumberofLines > 0)
         {
-          sensor_interfaces::AGVSpeed speedMsg;
-          speedMsg.speed =
+          float lSpeed =
               ( float )(cDistanceBetweenlines /
                         std::abs(mTimebetweenLines - ros::Time::now().toSec()));
 
-          mAgvPublisher.publish(speedMsg);
+          agv_parser::AgvSpeed lAgvSpeed;
+          lAgvSpeed.mAgvSpeed = lSpeed;
+          parseAgvSpeed(lAgvSpeed);
         }
         mTimebetweenLines = ros::Time::now().toSec();
         ++mNumberofLines;

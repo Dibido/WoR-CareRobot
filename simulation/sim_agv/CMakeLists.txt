@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   message_generation
   sensor_interfaces
+  agv_parser
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -53,12 +54,13 @@ generate_messages(
     DEPENDS
     roscpp
     gazebo_ros
-    sensor_interfaces)
+    sensor_interfaces
+    )
+
 
 add_library(${PROJECT_NAME}_plugin SHARED src/automated_guided_vehicle_plugin.cpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-
 add_dependencies(${PROJECT_NAME}_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!

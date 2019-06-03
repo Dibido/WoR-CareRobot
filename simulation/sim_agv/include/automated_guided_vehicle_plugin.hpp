@@ -2,7 +2,6 @@
 #define AUTOMATEDGUIDEDVEHICLEPLUGIN_HPP
 
 #include "ros/callback_queue.h"
-#include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
@@ -15,6 +14,9 @@
 #include <string>
 #include <thread>
 
+#include "agv_parser/AgvParser.hpp"
+#include "agv_parser/AgvSpeed.hpp"
+#include "agv_parser/IAgvSpeedProvider.hpp"
 #include <sim_agv/agv_path.h>
 #include <sim_agv/agv_speed.h>
 
@@ -39,7 +41,8 @@ struct Position
 
 namespace gazebo
 {
-  class AutomatedGuidedVehiclePlugin : public ModelPlugin
+  class AutomatedGuidedVehiclePlugin : public ModelPlugin,
+                                       public agv_parser::IAgvSpeedProvider
   {
       public:
     AutomatedGuidedVehiclePlugin();
@@ -66,6 +69,12 @@ namespace gazebo
      *
      */
     void callback(const sensor_msgs::RangeConstPtr aMsg);
+
+    /**
+     * @brief virtual interface
+     * @param aAgvSpeed: The speed that has been calculated
+     */
+    void parseAgvSpeed(const agv_parser::AgvSpeed& aAgvSpeed);
 
       private:
     // Movement
