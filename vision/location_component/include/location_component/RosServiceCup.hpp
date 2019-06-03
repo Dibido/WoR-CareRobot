@@ -15,7 +15,7 @@ namespace location_component
     RosServiceCup(ros::NodeHandle& aNodeHandle);
     virtual ~RosServiceCup() = default;
 
-    virtual void foundCup(const environment_controller::Cup& aCup);
+    virtual void passCup(const environment_controller::Cup& aCup);
 
       private:
     ros::NodeHandle& mNodeHandle;

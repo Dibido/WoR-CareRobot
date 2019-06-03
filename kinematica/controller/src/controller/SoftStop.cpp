@@ -1,10 +1,8 @@
-// Library
+#include "controller/SoftStop.hpp"
+#include "controller/Init.hpp"
 #include <iostream>
 #include <ros/ros.h>
 
-// Local
-#include "controller/Init.hpp"
-#include "controller/SoftStop.hpp"
 namespace controller
 {
   SoftStop::SoftStop(){

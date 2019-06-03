@@ -128,6 +128,8 @@ src/environment_controller/ObstaclesSubscriber.cpp
 src/environment_controller/EnvironmentController.cpp
 src/environment_controller/SafetyController.cpp
 src/environment_controller/CupSubscriber.cpp
+src/environment_controller/GoalSubscriber.cpp
+src/environment_controller/ReleaseTimeSubscriber.cpp 
 )
 
 add_dependencies(lib_environment_controller

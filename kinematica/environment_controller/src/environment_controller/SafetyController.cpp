@@ -1,5 +1,7 @@
 #include "environment_controller/SafetyController.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
+
 #include <cmath>
 namespace environment_controller
 {
