@@ -29,7 +29,7 @@ Code coverage results can be found in the following folder:
 ${ROS_WORKSPACE}/build/${PACKAGE_NAME}/${PACKAGE_NAME}_coverage
 ```
 
-## Simulation guide
+## Simulation install guide
 
 1. First install the required libraries:
 ```
@@ -103,3 +103,22 @@ sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
 git submodule init
 git submodule update
 ```
+
+## Running simulation guide
+
+
+1. Navigate to catkin workspace and execute:
+```
+catkin_make
+source devel/setup.bash
+```
+2. Running simulation example
+```
+
+roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.world
+``
+3. Running simulation
+```
+roslaunch sim_world world.world
+```
+
