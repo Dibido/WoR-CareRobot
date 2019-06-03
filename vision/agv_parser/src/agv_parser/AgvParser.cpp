@@ -1,6 +1,6 @@
 #include "agv_parser/AgvParser.hpp"
 
-void agv_parser::AgvParser::Run()
+void agv_parser::AgvParser::run()
 {
   // Open serial
   boost::system::error_code lBoostError;

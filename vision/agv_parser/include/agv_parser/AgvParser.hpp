@@ -31,7 +31,7 @@ namespace agv_parser
     /**
      * @brief - Handles the serial communication and sends a ROS message.
      */
-    void Run();
+    void run();
 
       private:
     /**
