@@ -1,6 +1,7 @@
 #ifndef KINEMATICS_DENAVITHARTENBERG_HPP
 #define KINEMATICS_DENAVITHARTENBERG_HPP
 
+#include "kinematics/BetaGenerator.hpp"
 #include "kinematics/Configuration.hpp"
 #include "kinematics/KinematicsDefines.hpp"
 #include "kinematics/Link.hpp"
@@ -89,6 +90,7 @@ namespace kinematics
                                            std::size_t aEnd = 0) const;
 
     const RobotConfiguration mRobotConfiguration;
+    BetaGenerator mBetaGenerator;
   };
 
 } // namespace kinematics

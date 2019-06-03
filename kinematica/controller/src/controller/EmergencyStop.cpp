@@ -1,10 +1,9 @@
-// Library
+
+#include "controller/EmergencyStop.hpp"
+#include "controller/Init.hpp"
 #include <iostream>
 #include <ros/ros.h>
 
-// Local
-#include "controller/EmergencyStop.hpp"
-#include "controller/Init.hpp"
 namespace controller
 {
   EmergencyStop::EmergencyStop(){

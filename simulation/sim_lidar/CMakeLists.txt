@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     gazebo_ros
     sensor_interfaces
+    lidar_application
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -36,10 +37,11 @@ catkin_package(
     DEPENDS
     roscpp
     gazebo_ros
-    sensor_interfaces)
+    sensor_interfaces
+    lidar_application)
 
 add_library(${PROJECT_NAME}_plugin SHARED
-        src/LidarPlugin.cpp)
+        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp)
 
 add_dependencies(${PROJECT_NAME}_plugin ${catkin_EXPORTED_TARGETS})
 

@@ -29,6 +29,20 @@ namespace kinematics
     return lConfiguration;
   }
 
+  EndEffector ConfigurationProvider::forwardKinematics(
+      const Configuration& aCurrentConfiguration)
+  {
+    Configuration lConfiguration = aCurrentConfiguration;
+    prepareConfiguration(lConfiguration);
+
+    Matrix<double, 6, 1> aEndEffector =
+        denavitHartenberg.forwardKinematicsYPR(lConfiguration);
+
+    return EndEffector(aEndEffector[0][0], aEndEffector[1][0],
+                       aEndEffector[2][0], aEndEffector[3][0],
+                       aEndEffector[4][0], aEndEffector[5][0]);
+  }
+
   void
       ConfigurationProvider::prepareConfiguration(Configuration& aConfiguration)
   {

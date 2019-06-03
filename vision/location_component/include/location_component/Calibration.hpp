@@ -26,9 +26,6 @@ namespace location_component
     float mAGVDepth_m = 0.680f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
-
-    // AGV speed
-    float mAGVSpeed_m_s = 0.220f;
   };
 } // namespace location_component
 
