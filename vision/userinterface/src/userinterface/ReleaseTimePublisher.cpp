@@ -4,8 +4,6 @@ namespace userinterface
 {
   ReleaseTimePublisher::ReleaseTimePublisher()
   {
-    ros::NodeHandle ReleaseTimePublisherNodeHandle;
-    ros::Rate loop_rate(10);
   }
 
   ReleaseTimePublisher::~ReleaseTimePublisher()
@@ -20,7 +18,7 @@ namespace userinterface
     lMsg.releaseTime = aReleaseTime_s;
 
     // Send message to given topic.
-    chatter_pub.publish(lMsg);
+    mChatter_pub.publish(lMsg);
   }
 
 } // namespace userinterface
