@@ -7,19 +7,24 @@
 
 namespace location_component
 {
-  DetectAGV::DetectAGV(Calibration aCalibration)
+  DetectAGV::DetectAGV(CupDetectionCalibration& aCalibration,
+                       AGVFrameCalibration& aAGVFrameCalibration)
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(),
-        mCalibration(aCalibration)
+        mCalibration(aCalibration),
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
-  DetectAGV::DetectAGV(ros::NodeHandle& nh, Calibration aCalibration)
+  DetectAGV::DetectAGV(ros::NodeHandle& nh,
+                       CupDetectionCalibration& aCalibration,
+                       AGVFrameCalibration& aAGVFrameCalibration)
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
-        mCalibration(aCalibration)
+        mCalibration(aCalibration),
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
@@ -217,14 +222,16 @@ namespace location_component
     warpPerspective(aSourceMat, aDist, aTransmtx, aSourceMat.size());
   }
 
-  void DetectAGV::getContoursMat(
-      const cv::Mat& aSourceMat,
-      std::vector<cv::Point>& aContoursPoly) const
+  void DetectAGV::getContoursMat(const cv::Mat& aSourceMat,
+                                 std::vector<cv::Point>& aContoursPoly) const
   {
     std::vector<std::vector<cv::Point>> lContours;
     cv::Mat lMatDes;
-    cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
-                lMatDes);
+
+    mFrameCalibration.removeEverythingButAGV(aSourceMat, lMatDes);
+    
+    // cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
+    //             lMatDes);
     cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 
@@ -245,8 +252,8 @@ namespace location_component
     }
 
     // Copy the right rectengle tot contour_poly
-    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)),
-                 aContoursPoly, 5, true);
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly, 5,
+                 true);
   }
 
   cv::Point

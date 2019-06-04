@@ -9,12 +9,12 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/ros.h>
 #include <vector>
+#include "location_component/Calibration.hpp"
 
 std::shared_ptr<location_component::DetectAGV> mDetectAGV;
 
 namespace location_component_constants
 {
-
   const std::string cWebcamTopic = "/sensor/webcam/img_raw";
   const std::string cAGVTopic = "/sensor/agv";
   const std::string cComponentName = "location_component";
@@ -49,7 +49,12 @@ int main(int argc, char** argv)
 
   ros::init(argc, argv, location_component_constants::cComponentName);
   ros::NodeHandle nh;
-  mDetectAGV = std::make_shared<location_component::DetectAGV>(nh);
+
+  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration;
+
+
+  mDetectAGV = std::make_shared<location_component::DetectAGV>(nh, lCupDetectionCalibration, lAGVFrameCalibration);
   location_component::AGVSubscriber mSubscriber(
       location_component_constants::cAGVTopic, mDetectAGV);
 

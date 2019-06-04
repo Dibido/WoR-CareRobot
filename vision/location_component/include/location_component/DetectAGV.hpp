@@ -6,6 +6,8 @@
 #include "location_component/CupScanner.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
+#include "location_component/FrameCalibration.hpp"
+
 #include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
@@ -35,8 +37,8 @@ namespace location_component
   class DetectAGV
   {
       public:
-    DetectAGV(Calibration aCalibration = Calibration());
-    DetectAGV(ros::NodeHandle& nh, Calibration aCalibration = Calibration());
+    DetectAGV(CupDetectionCalibration& aCalibration, AGVFrameCalibration& aAGVFrameCalibration);
+    DetectAGV(ros::NodeHandle& nh, CupDetectionCalibration& aCalibration, AGVFrameCalibration& aAGVFrameCalibration);
     ~DetectAGV();
 
     /**
@@ -117,7 +119,8 @@ namespace location_component
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
     std::unique_ptr<RosServiceCup> mRosServiceCup;
-    Calibration mCalibration;
+    CupDetectionCalibration mCalibration;
+    FrameCalibration mFrameCalibration;
   };
 } // namespace location_component
 

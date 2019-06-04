@@ -3,7 +3,7 @@
 
 namespace location_component
 {
-  struct Calibration
+  struct CupDetectionCalibration
   {
     // Camera position
     float mCameraPosX_m = 0.35f;
@@ -26,6 +26,20 @@ namespace location_component
     float mAGVDepth_m = 0.680f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
+  };
+
+  struct AGVFrameCalibration
+  {
+    //Color spectrum AGV low
+    const float cHLow = 0.0;
+    const float cSLow = 0.0;
+    const float cVLow = 0.0;
+
+    //Color spectrum AGV high
+    const float cHHigh = 255.0;
+    const float cSHigh = 255.0;
+    const float cVHigh = 30.0;
+
   };
 } // namespace location_component
 

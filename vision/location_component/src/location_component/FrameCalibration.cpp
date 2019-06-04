@@ -2,8 +2,25 @@
 
 namespace location_component
 {
-  FrameCalibration::FrameCalibration()
+  FrameCalibration::FrameCalibration(AGVFrameCalibration aAGVFrameCalibration)
+      : mAGVFrameCalibration(aAGVFrameCalibration)
   {
+  }
+
+  FrameCalibration::~FrameCalibration()
+  {
+  }
+
+  void FrameCalibration::removeEverythingButAGV(const cv::Mat& aSource,
+                                                cv::Mat& aDestination) const
+  {
+    cv::inRange(
+        aSource,
+        cv::Scalar(mAGVFrameCalibration.cHLow, mAGVFrameCalibration.cSLow,
+                   mAGVFrameCalibration.cVLow),
+        cv::Scalar(mAGVFrameCalibration.cHHigh, mAGVFrameCalibration.cSHigh,
+                   mAGVFrameCalibration.cVHigh),
+        aDestination);
   }
 
 } // namespace location_component
