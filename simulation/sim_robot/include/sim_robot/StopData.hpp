@@ -25,7 +25,7 @@ namespace stop_data
     ~StopData() = default;
 
     /**
-     * @brief Getter for CStop_, checks whether cStop_ is  either true or
+     * @brief Getter for mStop_, checks whether mStop_ is  either true or
      * false
      *
      * @return jointStop_t
