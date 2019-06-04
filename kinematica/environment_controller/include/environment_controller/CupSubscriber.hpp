@@ -40,7 +40,7 @@ namespace environment_controller
     /**
      * @see ICupProvider.hpp
      */
-    virtual void foundCup(const Cup& aCup);
+    virtual void passCup(const Cup& aCup);
 
       private:
     ros::NodeHandle mHandle;

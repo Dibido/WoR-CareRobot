@@ -9,7 +9,8 @@
 namespace kinematics
 {
 
-  DenavitHartenberg::DenavitHartenberg() : mRobotConfiguration()
+  DenavitHartenberg::DenavitHartenberg()
+      : mRobotConfiguration(), mBetaGenerator(cBetaSelectors)
   {
   }
 
@@ -31,7 +32,6 @@ namespace kinematics
   {
     Configuration lNewBigTheta(aCurrentBigTheta);
     auto lVirtualEndEffector = forwardKinematicsYPR(lNewBigTheta);
-    double lBeta = cIkBeta;
     std::size_t lIterationCount = 0;
 
     lNewBigTheta.setResult(
@@ -39,6 +39,8 @@ namespace kinematics
                                    cIkEpsilon_rad, cDhTransformPosRadSplit));
     while (lNewBigTheta.result() == false)
     {
+      double lBeta = mBetaGenerator.generateBeta(aGoal, lVirtualEndEffector);
+
       ++lIterationCount;
       if (lIterationCount > cIkMaxIterations)
       {

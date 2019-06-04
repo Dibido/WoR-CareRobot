@@ -34,6 +34,20 @@ namespace kinematics
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalPosition,
                           const Configuration& aCurrentConfiguration) = 0;
+
+    /**
+     * @brief Uses the forward kinematics function to calculate endeffector
+     * position for a given configuration
+     *
+     * @pre Configuration is valid
+     * @post EndEffector position is calculated
+     *
+     * @param aCurrentConfiguration Configuration is a valid configuration
+     * @return EndEffector Position and rotation of the EndEffector that is the
+     * result of the curent configuration
+     */
+    virtual EndEffector
+        forwardKinematics(const Configuration& aCurrentConfiguration) = 0;
   };
 } // namespace kinematics
 

@@ -1,4 +1,5 @@
 #include "environment_controller/Object.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 
 namespace environment_controller
 {
