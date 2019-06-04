@@ -91,15 +91,12 @@ namespace controller
 
   void Context::hardStop(bool aStop)
   {
-    mHardStopMutex.lock();
-    mCurrentStateMutex.lock();
+    std::lock_guard<std::mutex> lHardLock(mHardStopMutex);
+    std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
     else
       setState(std::make_shared<Init>());
-
-    mCurrentStateMutex.unlock();
-    mHardStopMutex.unlock();
   }
 
   void Context::provideObstacles(
