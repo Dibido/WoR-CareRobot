@@ -76,10 +76,11 @@ namespace controller
              typeid(*mCurrentState) == typeid(Ready)) &&
            ros::ok())
     {
+      mHardStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
-
       mCurrentStateMutex.unlock();
+      mHardStopMutex.lock();
     }
   }
 
@@ -90,6 +91,7 @@ namespace controller
 
   void Context::hardStop(bool aStop)
   {
+    mHardStopMutex.lock();
     mCurrentStateMutex.lock();
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
@@ -97,6 +99,7 @@ namespace controller
       setState(std::make_shared<Init>());
 
     mCurrentStateMutex.unlock();
+    mHardStopMutex.unlock();
   }
 
   void Context::provideObstacles(
