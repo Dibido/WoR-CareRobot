@@ -21,37 +21,37 @@ namespace environment_controller
     quaternion();
   }
 
-  double& Rotation::roll_rad()
+  double Rotation::roll_rad()
   {
-    return mRoll_rad % M_PI;
+    return fmod(mRoll_rad, M_PI);
   }
 
   const double& Rotation::roll_rad() const
   {
-    return mRoll_rad % M_PI;
+    return mRoll_rad;
   }
 
-  double& Rotation::pitch_rad()
+  double Rotation::pitch_rad()
   {
-    return mPitch_rad % M_PI;
+    return fmod(mPitch_rad, M_PI);
   }
 
   const double& Rotation::pitch_rad() const
   {
-    return mPitch_rad % M_PI;
+    return mPitch_rad;
   }
 
-  double& Rotation::yaw_rad()
+  double Rotation::yaw_rad()
   {
-    return mYaw_rad % M_PI;
+    return fmod(mYaw_rad, M_PI);
   }
 
   const double& Rotation::yaw_rad() const
   {
-    return mYaw_rad % M_PI;
+    return mYaw_rad;
   }
 
-  double& Rotation::quaternion()
+  double Rotation::quaternion()
   {
     return mQuaternion;
   }

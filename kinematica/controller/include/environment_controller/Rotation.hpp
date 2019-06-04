@@ -1,7 +1,7 @@
 /**
  * @file Rotation.hpp
  * @author Brandon Geldof
- * @brief the header file for the position data struct
+ * @brief the header file for the rotation data struct
  * @version 0.1
  * @date 2019-06-03
  *
@@ -18,12 +18,19 @@ namespace environment_controller
   /**
    * @brief The data struct for a position, the structs throws an exception when
    * the value is out of range
-   * @see parameters for correct values
-   * @author Gianni Monteban
+   * @author Brandon Geldof
    */
   struct Rotation
   {
       public:
+    /**
+     * @brief Construct a new Rotation object
+     *
+     * @param aRoll_rad
+     * @param aPitch_rad
+     * @param aYaw_rad
+     * @param aQuaternion
+     */
     Rotation(double aRoll_rad,
              double aPitch_rad,
              double aYaw_rad,
@@ -33,7 +40,7 @@ namespace environment_controller
      *
      * @return double&
      */
-    double& roll_rad();
+    double roll_rad();
     const double& roll_rad() const;
 
     /**
@@ -41,7 +48,7 @@ namespace environment_controller
      *
      * @return double&
      */
-    double& pitch_rad();
+    double pitch_rad();
     const double& pitch_rad() const;
 
     /**
@@ -49,7 +56,7 @@ namespace environment_controller
      *
      * @return double&
      */
-    double& yaw_rad();
+    double yaw_rad();
     const double& yaw_rad() const;
 
     /**
@@ -57,13 +64,13 @@ namespace environment_controller
      *
      * @return double&
      */
-    double& quaternion();
+    double quaternion();
     const double& quaternion() const;
 
       private:
-    double mRoll_rad;  ///< must be between cMinRange_m and cMaxRange_m
-    double mPitch_rad; ///< must be between cMinRange_m and cMaxRange_m
-    double mYaw_rad;   ///< must be between cMinRange_m and cMaxRange_m
+    double mRoll_rad;
+    double mPitch_rad;
+    double mYaw_rad;
     double mQuaternion;
   };
 } // namespace environment_controller

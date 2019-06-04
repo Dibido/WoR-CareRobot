@@ -8,13 +8,12 @@ namespace environment_controller
                  const uint8_t aSensorID)
       : mPosition(aPosition), mRotation(aRotation), mSensorID(aSensorID)
   {
-    roll_rad();
-    pitch_rad();
-    yaw_rad();
-    quaternion();
+    position();
+    rotation();
+    sensorID();
   }
 
-  Position& position()
+  Position& Sensor::position()
   {
     mPosition.x_m();
     mPosition.y_m();
@@ -22,7 +21,7 @@ namespace environment_controller
     return mPosition;
   }
 
-  const Position& position() const
+  const Position& Sensor::position() const
   {
     mPosition.x_m();
     mPosition.y_m();
@@ -30,30 +29,30 @@ namespace environment_controller
     return mPosition;
   }
 
-  Rotation& rotation()
+  Rotation& Sensor::rotation()
   {
     mRotation.roll_rad();
     mRotation.pitch_rad();
     mRotation.yaw_rad();
-    mRotation / quaternion();
+    mRotation.quaternion();
     return mRotation;
   }
 
-  const Rotation& rotation() const
+  const Rotation& Sensor::rotation() const
   {
     mRotation.roll_rad();
     mRotation.pitch_rad();
     mRotation.yaw_rad();
-    mRotation / quaternion();
+    mRotation.quaternion();
     return mRotation;
   }
 
-  uint8_t& sensorID()
+  uint8_t Sensor::sensorID()
   {
     return mSensorID;
   }
 
-  const uint8_t& sensorID() const
+  const uint8_t& Sensor::sensorID() const
   {
     return mSensorID;
   }

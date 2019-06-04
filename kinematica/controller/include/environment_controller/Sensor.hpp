@@ -1,7 +1,7 @@
 /**
  * @file Sensor.hpp
  * @author Brandon Geldof
- * @brief the header file for the position data struct
+ * @brief the header file for the sensor data struct
  * @version 0.1
  * @date 2019-06-03
  *
@@ -20,14 +20,19 @@
 namespace environment_controller
 {
   /**
-   * @brief The data struct for a position, the structs throws an exception when
-   * the value is out of range
-   * @see parameters for correct values
-   * @author Gianni Monteban
+   * @brief The data struct for the rotation of an object
+   * @author Brandon Geldof
    */
   struct Sensor
   {
       public:
+    /**
+     * @brief Construct a new Sensor object
+     *
+     * @param aPosition Position data struct
+     * @param aRotation Rotation data struct
+     * @param aSensorID
+     */
     Sensor(const Position& aPosition,
            const Rotation& aRotation,
            const uint8_t aSensorID);
@@ -50,13 +55,13 @@ namespace environment_controller
      *
      * @return uint8_t&
      */
-    uint8_t& sensorID();
+    uint8_t sensorID();
     const uint8_t& sensorID() const;
 
       private:
     Position mPosition;
     Rotation mRotation;
-    uint8_t sensorID;
+    uint8_t mSensorID;
   };
 } // namespace environment_controller
 
