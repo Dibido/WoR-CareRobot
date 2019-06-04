@@ -11,7 +11,7 @@ namespace environment_controller
   {
   }
 
-  void SafetyController::executeHardstopOnObstacleThret(
+  void SafetyController::executeHardstopOnObstacleThreat(
       const Obstacles& aObstacles)
   {
     bool lAllObstaclesSafe = true;
