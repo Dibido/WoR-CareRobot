@@ -33,8 +33,17 @@ namespace controller
       lConfiguration = aContext->configurationProvider()->inverseKinematics(
           lTrajectoryEndEffector, lConfiguration);
 
-      ROS_ASSERT_MSG(lConfiguration.result() == true,
-                     "Could not find configuration for trajectory point %i", i);
+      ROS_INFO("Configuration: {%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f} [%i]",
+               lConfiguration[0], lConfiguration[1], lConfiguration[2],
+               lConfiguration[3], lConfiguration[4], lConfiguration[5],
+               lConfiguration[6], lConfiguration.result());
+      ROS_ASSERT_MSG(
+          lConfiguration.result() == true,
+          "Could not find configuration for trajectory point %i: "
+          "[%.4f,%.4f,%.4f,%.4f,%.4f,%.4f]",
+          i, lTrajectoryEndEffector.cX_m, lTrajectoryEndEffector.cY_m,
+          lTrajectoryEndEffector.cZ_m, lTrajectoryEndEffector.cYaw_rad,
+          lTrajectoryEndEffector.cPitch_rad, lTrajectoryEndEffector.cRoll_rad);
 
       aTrajectory.push(lConfiguration);
     }
@@ -86,8 +95,11 @@ namespace controller
                           planning::cConversionFromMetersToCentimeters),
         static_cast<long>(aGoal.cZ_m *
                           planning::cConversionFromMetersToCentimeters));
-
-    return aContext->astar()->search(lStart, lGoal);
+    planning::Path path = aContext->astar()->search(lStart, lGoal);
+    ROS_ASSERT_MSG(path.empty() == false,
+                   "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
+                   lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
+    return path;
   }
 
 } // namespace controller

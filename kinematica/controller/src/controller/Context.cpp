@@ -49,8 +49,8 @@ namespace controller
         mDropPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
-    const planning::Obstacle cRobotAsObstacle{ -0.5f, 0.0f, 0.0f,
-                                               1.0f,  0.5f, 1.0f };
+    const planning::Obstacle cRobotAsObstacle{ 0.0f, 0.0f, 0.0f,
+                                               0.3f, 0.3f, 1.0f };
     mGraph->addObstacle(cRobotAsObstacle);
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
