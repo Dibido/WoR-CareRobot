@@ -9,5 +9,6 @@ namespace robotcontrollerplugin
   const jointRad_t cMaxRad = 3.7525;
   const jointRad_t cMinRad = -3.0718;
   const double maxWidthgripper = 0.08;
+  const double minWidthgripper = 0.0;
 } // namespace robotcontrollerplugin
 #endif
