@@ -11,6 +11,17 @@
 namespace userinterface
 {
 
+  namespace goal_constants
+  {
+    // Demo values for goal position
+    const double cDemoGoalX = -0.30;
+    const double cDemoGoalY = 0.30;
+    const double cDemoGoalZ = -0.30;
+    const environment_controller::Position
+        mDemoPos(cDemoGoalX, cDemoGoalY, cDemoGoalZ);
+    const uint8_t cReleaseTime = 10;
+  } // namespace goal_constants
+
   /**
    * @brief GoalPublisher class inherited from IReleaseTimeProvider.
    *
@@ -26,14 +37,7 @@ namespace userinterface
   class GoalPublisher : public environment_controller::IGoalProvider
   {
       public:
-    /**
-     * @brief Constructor
-     */
     GoalPublisher();
-
-    /**
-     * @brief Destructor
-     */
     virtual ~GoalPublisher();
 
     /**
@@ -47,11 +51,11 @@ namespace userinterface
     /**
      * @brief State boolean to store if the msg has been sent.
      */
-    bool mMsgSent = false;
+    bool mMsgSent;
 
       private:
-    ros::NodeHandle goalPublisherNodeHandle;
-    ros::Publisher chatter_pub;
+    ros::NodeHandle mGoalPublisherNodeHandle;
+    ros::Publisher mChatter_pub;
   };
 
 } // namespace userinterface

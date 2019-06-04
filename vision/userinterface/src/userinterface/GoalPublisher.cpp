@@ -2,10 +2,10 @@
 
 namespace userinterface
 {
-  GoalPublisher::GoalPublisher()
+  GoalPublisher::GoalPublisher() : mMsgSent(false)
   {
     ros::NodeHandle goalPublisherNodeHandle;
-    ros::Publisher chatter_pub =
+    mChatter_pub =
         goalPublisherNodeHandle.advertise<kinematica_msgs::Goal>("goal", 1000);
     ros::Rate loop_rate(10);
   }
@@ -25,7 +25,7 @@ namespace userinterface
     lMsg.position.z = aPosition.z_m();
 
     // Send the message to the given topic.
-    chatter_pub.publish(lMsg);
+    mChatter_pub.publish(lMsg);
   }
 
 } // namespace userinterface

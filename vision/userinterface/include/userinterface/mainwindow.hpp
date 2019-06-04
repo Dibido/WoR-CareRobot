@@ -33,10 +33,6 @@ class MainWindow : public QMainWindow
    * Ctor calls setupUi() which creates the GUI screen(s).
    */
   explicit MainWindow(QWidget* parent = nullptr);
-
-  /**
-   * @brief Destructor
-   */
   ~MainWindow();
 
     private slots:
@@ -48,6 +44,9 @@ class MainWindow : public QMainWindow
   void on_water_btn_clicked();
 
     private:
+  /**
+   * @brief The UI object for QT. See: https://doc.qt.io/qt-5/qmainwindow.html.
+   */
   Ui::MainWindow* ui;
 
   /**

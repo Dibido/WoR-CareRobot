@@ -26,15 +26,7 @@ namespace userinterface
       : public environment_controller::IReleaseTimeProvider
   {
       public:
-    /**
-     * @brief Constructor
-     */
-
     ReleaseTimePublisher();
-    /**
-     * @brief Destructor
-     */
-
     virtual ~ReleaseTimePublisher();
 
     /**

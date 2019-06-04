@@ -16,13 +16,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_water_btn_clicked()
 {
-  uint8_t timeout = 10;
   // If the goal msg hasn't been sent, do so to initiate the pickup sequence.
   if (mGoalPublisher.mMsgSent == false)
   {
     // Create and send the message
-    environment_controller::Position mPos(-0.30, 0.30, 0.00);
-    mGoalPublisher.selectGoalPosition(mPos);
+    mGoalPublisher.selectGoalPosition(userinterface::goal_constants::mDemoPos);
 
     // Mark msg as sent and change button to next step (see below)
     mGoalPublisher.mMsgSent = true;
@@ -37,27 +35,32 @@ void MainWindow::on_water_btn_clicked()
 
   // If the goal msg has been sent but the release time msg hasn't, follow this
   // step.
-  if (mGoalPublisher.mMsgSent == true &&
-      mReleaseTimePublisher.mMsgSent == false)
+  if (mGoalPublisher.mMsgSent == true)
   {
+
+    // Make QFont to store font settings used in this scope.
+    QFont lStandardFontSetting("Ubuntu", 24);
+
     // Start an QElapsedTimer, to check the elapsed time.
     QElapsedTimer lTimer;
     lTimer.start();
 
     // Send the release time msg.
-    mReleaseTimePublisher.selectReleaseTime(timeout);
+    mReleaseTimePublisher.selectReleaseTime(
+        userinterface::goal_constants::cReleaseTime);
 
     // Countdown from timeout to zero in the GUI, so the user has visual
     // feedback.
-    while (lTimer.elapsed() / 1000 <= timeout - 1)
+    while (lTimer.elapsed() / 1000 <=
+           userinterface::goal_constants::cReleaseTime - 1)
     {
-      // Update time each second using the standard application font, font
-      // management has to be refactored.
-      QFont standardFontSetting("Ubuntu", 24);
-      ui->label->setFont(standardFontSetting);
+      // Update time each second using the standardFontSetting defined above.
+      ui->label->setFont(lStandardFontSetting);
       std::string lLabelString =
           "De gripper laat los in: " +
-          std::to_string(timeout - lTimer.elapsed() / 1000) + " seconden";
+          std::to_string(userinterface::goal_constants::cReleaseTime -
+                         lTimer.elapsed() / 1000) +
+          " seconden";
       ui->label->setText(lLabelString.c_str());
 
       // Required in blocking functions or while loops. This allows for the
@@ -69,10 +72,7 @@ void MainWindow::on_water_btn_clicked()
     // executions.
     mGoalPublisher.mMsgSent = false;
 
-    // Reset label to standard text, this is a temporary solution and needs to
-    // be refactored.
-    QFont standardFontSetting("Ubuntu", 24);
-    ui->label->setFont(standardFontSetting);
+    ui->label->setFont(lStandardFontSetting);
     ui->label->setText(
         "Maak een keuze doormiddel van de knoppen hieronder. Dit object zal "
         "voor u worden opgepakt.");
