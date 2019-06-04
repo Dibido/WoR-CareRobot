@@ -16,6 +16,10 @@
 
 namespace location_component
 {
+  /**
+   * @brief The topic names for receiving webcam frames and AGV positions. Also used to set the component name
+   *
+   */
   namespace location_component_constants
   {
     const std::string cWebcamTopic = "/sensor/webcam/img_raw";
@@ -26,15 +30,44 @@ namespace location_component
   class LocationComponent
   {
       public:
+    /**
+     * @brief Construct a new Location Component object
+     *
+     * @param aNodeHandle - The nodehandler used for the ros topic
+     */
     LocationComponent(ros::NodeHandle& aNodeHandle);
     ~LocationComponent();
-    void runComponent(location_component::CupDetectionCalibration& aCupDetectionCalibration, location_component::AGVFrameCalibration& aAGVFrameCalibration);
 
+    /**
+     * @brief The main run function of the application.
+     *
+     * @param aCupDetectionCalibration - Creating config values for determining
+     * what an CUP
+     * @param aAGVFrameCalibration - Creating config values for determining what
+     * an AGV
+     */
+    void runComponent(
+        location_component::CupDetectionCalibration& aCupDetectionCalibration,
+        location_component::AGVFrameCalibration& aAGVFrameCalibration);
+
+    /**
+     * @brief This function will be called if the topic receives a nieuw frame.
+     *
+     * @param aMsg - The messages that will be converted to a frame
+     */
     void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg);
 
-
       private:
+    /**
+     * @brief A shared pointer of the AGV object for the different components that make use of it
+     *
+     */
     std::shared_ptr<location_component::DetectAGV> mDetectAGV;
+
+    /**
+     * @brief The node handler used for the different ros topics
+     * 
+     */
     ros::NodeHandle& mNodeHandle;
   };
 
