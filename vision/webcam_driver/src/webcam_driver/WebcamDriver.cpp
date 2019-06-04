@@ -18,11 +18,11 @@ namespace webcam_driver
       return false;
     }
     // Set the webcam resolution to a huge size.
-    // OpenCV will automatically set it to the highest resolution supported by
-    // the camera.
+    // OpenCV will automatically set it to the
+    // highest resolution supported by the camera.
     const unsigned int cHugeSize = 10000;
-    mWebcamDevice.set(CV_CAP_PROP_FRAME_WIDTH, 10000);
-    mWebcamDevice.set(CV_CAP_PROP_FRAME_HEIGHT, 10000);
+    mWebcamDevice.set(CV_CAP_PROP_FRAME_WIDTH, cHugeSize);
+    mWebcamDevice.set(CV_CAP_PROP_FRAME_HEIGHT, cHugeSize);
     ROS_DEBUG_STREAM("Got webcam device with resolution "
                      << mWebcamDevice.get(CV_CAP_PROP_FRAME_WIDTH) << "x"
                      << mWebcamDevice.get(CV_CAP_PROP_FRAME_HEIGHT));

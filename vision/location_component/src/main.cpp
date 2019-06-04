@@ -14,8 +14,7 @@ std::shared_ptr<location_component::DetectAGV> mDetectAGV;
 
 namespace location_component_constants
 {
-
-  const std::string cWebcamTopic = "/sensor/webcam/img_raw";
+  const std::string cWebcamTopic = "/sensor/webcam";
   const std::string cAGVTopic = "/sensor/agv";
   const std::string cComponentName = "location_component";
 } // namespace location_component_constants
