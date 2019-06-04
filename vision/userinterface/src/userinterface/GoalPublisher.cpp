@@ -7,7 +7,6 @@ namespace userinterface
     ros::NodeHandle goalPublisherNodeHandle;
     mChatter_pub =
         goalPublisherNodeHandle.advertise<kinematica_msgs::Goal>("goal", 1000);
-    ros::Rate loop_rate(10);
   }
 
   GoalPublisher::~GoalPublisher()
