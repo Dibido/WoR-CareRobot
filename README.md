@@ -121,6 +121,29 @@ roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.launch
 ```
 roslaunch sim_world world.launch
 ```
+4. Possible launch options
+
+```
+ al5d.world
+ franka.world
+ franka_agv.world
+ franka_empty.world
+ child_with_lidar.world
+current_sim_world.world
+```
+
+5. Possible launch arguments
+
+```
+all_nodes
+paused
+verbose    
+world 
+```
+6. Running simulation with argument example
+```
+roslaunch sim_world world.launch paused:=true
+```
 
 ## Available Packages
 
