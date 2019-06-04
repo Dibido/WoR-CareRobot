@@ -65,7 +65,7 @@ bool GazeboGraspGripper::Init(
        fingerIt != fingerLinkNames.end(); ++fingerIt)
   {
     physics::LinkPtr link = this->model->GetLink(*fingerIt);
-    // std::cout <<"Got link "<<fingerLinkElem->Get<std::string>()<<std::endl;
+
     if (!link.get())
     {
       gzerr << "GazeboGraspGripper ERROR: Link " << *fingerIt
@@ -78,11 +78,11 @@ bool GazeboGraspGripper::Init(
     {
       physics::CollisionPtr collision = link->GetCollision(j);
       std::string collName = collision->GetScopedName();
-      // collision->SetContactsEnabled(true);
+
       std::map<std::string, physics::CollisionPtr>::iterator collIter =
           collisionElems.find(collName);
       if (collIter != this->collisionElems.end())
-      { // this collision was already added before
+      { 
         gzwarn
             << "GazeboGraspGripper: Adding Gazebo collision link element "
             << collName
@@ -128,9 +128,6 @@ const std::string& GazeboGraspGripper::attachedObject() const
   return attachedObjName;
 }
 
-// #define USE_MODEL_ATTACH // this only works if the object is a model in
-// itself, which is usually not the case. Leaving this in here anyway for
-// documentation of what has been tried, and for and later re-evaluation.
 bool GazeboGraspGripper::HandleAttach(const std::string& objName)
 {
   if (!this->palmLink)
@@ -175,12 +172,9 @@ bool GazeboGraspGripper::HandleAttach(const std::string& objName)
   this->fixedJoint->SetLowerLimit(0, 0);
   if (this->disableCollisionsOnAttach)
   {
-    // we can disable collisions of the grasped object, because when the fingers
-    // keep colliding with it, the fingers keep wobbling, which can create
-    // difficulties when moving the arm.
     obj->GetLink()->SetCollideMode("none");
   }
-#endif // USE_MODEL_ATTACH
+#endif
   this->attached = true;
   this->attachedObjName = objName;
   return true;
@@ -217,7 +211,7 @@ void GazeboGraspGripper::HandleDetach(const std::string& objName)
     obj->GetLink()->SetCollideMode("all");
   }
   this->fixedJoint->Detach();
-#endif // USE_MODEL_ATTACH
+#endif 
   this->attached = false;
   this->attachedObjName = "";
 }
