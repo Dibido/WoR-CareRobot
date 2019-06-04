@@ -1,79 +1,31 @@
-#include "location_component/AGVSubscriber.hpp"
-#include "location_component/DetectAGV.hpp"
-#include "location_component/PosCalculation.hpp"
-#include "location_component/RosServiceCup.hpp"
-#include "std_msgs/String.h"
-#include <ctime>
-#include <cv_bridge/cv_bridge.h>
-#include <image_transport/image_transport.h>
-#include <opencv2/highgui/highgui.hpp>
-#include <ros/ros.h>
-#include <vector>
-#include "location_component/Calibration.hpp"
-
-std::shared_ptr<location_component::DetectAGV> mDetectAGV;
-
-namespace location_component_constants
-{
-  const std::string cWebcamTopic = "/sensor/webcam/img_raw";
-  const std::string cAGVTopic = "/sensor/agv";
-  const std::string cComponentName = "location_component";
-} // namespace location_component_constants
-
-void imageCallback(const sensor_msgs::ImageConstPtr& aMsg)
-{
-  try
-  {
-    cv::Mat srcMatrix;
-    cv::Mat displayMatrix;
-
-    cv_bridge::toCvShare(aMsg, "bgr8")->image.copyTo(srcMatrix);
-    mDetectAGV->detectUpdate(srcMatrix, displayMatrix);
-    // Disable debug windows for now.
-    /* cv::imshow("view", displayMatrix); */
-
-    int c = cv::waitKey(10);
-    if (c == 27)
-    {
-      std::exit(0);
-    }
-  }
-  catch (cv_bridge::Exception& e)
-  {
-    ROS_ERROR("Could not convert from '%s' to 'bgr8'.", aMsg->encoding.c_str());
-  }
-}
+#include "location_component/LocationComponent.hpp"
 
 int main(int argc, char** argv)
 {
+  std::string commandLineArgument = argv[1];
+  
+  if (argc == 2)
+  {
+    if (commandLineArgument == "-d")
+    {
+      std::cout << "agument = " << argv[1] << std::endl;
+    }
+  }
 
-  ros::init(argc, argv, location_component_constants::cComponentName);
-  ros::NodeHandle nh;
-
+  // Creating config values for determining what an AGV is and what a CUP is.
   location_component::CupDetectionCalibration lCupDetectionCalibration;
   location_component::AGVFrameCalibration lAGVFrameCalibration;
 
+  ros::init(argc, argv,
+            location_component::location_component_constants::cComponentName);
+  ros::NodeHandle lNodeHandle;
 
-  mDetectAGV = std::make_shared<location_component::DetectAGV>(nh, lCupDetectionCalibration, lAGVFrameCalibration);
-  location_component::AGVSubscriber mSubscriber(
-      location_component_constants::cAGVTopic, mDetectAGV);
+  // Creating the Location component
+  location_component::LocationComponent lLocationComponent(lNodeHandle);
 
-  ros::Rate loop_rate(10);
-
-  // Disable debug windows for now.
-  /* cv::namedWindow("view"); */
-  image_transport::ImageTransport it(nh);
-  const std::string cTopicName = location_component_constants::cWebcamTopic;
-  image_transport::Subscriber sub = it.subscribe(cTopicName, 1, imageCallback);
-
-  while (ros::ok())
-  {
-    loop_rate.sleep();
-    ros::spinOnce();
-  }
-
-  // Disable debug windows for now.
-  /* cv::destroyWindow("view"); */
+  // Run the component with the config values
+  lLocationComponent.runComponent(lCupDetectionCalibration,
+                                  lAGVFrameCalibration);
 
   return 0;
 }
