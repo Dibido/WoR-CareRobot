@@ -18,21 +18,20 @@
 #include "Command.hpp"
 #include "CommandParser.hpp"
 #include "ControlData.hpp"
-#include "StopData.hpp"
 #include "IRobotControl.hpp"
 #include "IRobotStop.hpp"
 #include "JointController.hpp"
 #include "RobotControllerPluginConst.hpp"
+#include "StopData.hpp"
 
 namespace gazebo
 {
   /**
    * Robot plugin, used in robot model which are loaded in Gazebo
    */
-  class RobotControllerPlugin
-      : public ModelPlugin,
-        public robot_controller_control::IRobotControl,
-        public robot_controller_stop::IRobotStop
+  class RobotControllerPlugin : public ModelPlugin,
+                                public robot_controller_control::IRobotControl,
+                                public robot_controller_stop::IRobotStop
   {
       public:
     /**
@@ -144,8 +143,8 @@ namespace gazebo
     physics::ModelPtr mModel;
     physics::WorldPtr mWorld;
     event::ConnectionPtr mUpdateConnection;
-    double mUpdateRate = 0;
-    bool mStop = false;
+    double mUpdateRate;
+    bool mStop;
 
     // Variables
     commands::CommandParser mParser;

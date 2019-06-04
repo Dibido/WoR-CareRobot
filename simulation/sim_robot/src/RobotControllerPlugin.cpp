@@ -14,22 +14,23 @@ namespace gazebo
 {
   // Topic for serial robot commands
 
-  const char* cCommandTopic = "/robot_command";
-  const char* cStopTopic = "/robot_stop";
-  const char* cCommandGripperTopic = "/robot_gripper";
+  std::string cCommandTopic = "/robot_command";
+  std::string cStopTopic = "/robot_stop";
+  std::string cCommandGripperTopic = "/robot_gripper";
 
   // Defines to read attributes / elements from the sdf file
-  const char* cSdfJointInfoElement = "joint_info";
-  const char* cSdfJointNameAttr = "name";
-  const char* cSdfJointChannelAttr = "channel";
-  const char* cSdfJointMinPw = "min_pw";
-  const char* cSdfJointMaxPw = "max_pw";
-  const char* cSdfJointMinRad = "min_rad";
-  const char* cSdfJointMaxRad = "max_rad";
-  const char* cSdfJointMaxVel = "max_vel";
+  std::string cSdfJointInfoElement = "joint_info";
+  std::string cSdfJointNameAttr = "name";
+  std::string cSdfJointChannelAttr = "channel";
+  std::string cSdfJointMinPw = "min_pw";
+  std::string cSdfJointMaxPw = "max_pw";
+  std::string cSdfJointMinRad = "min_rad";
+  std::string cSdfJointMaxRad = "max_rad";
+  std::string cSdfJointMaxVel = "max_vel";
 
-  RobotControllerPlugin::RobotControllerPlugin()
+  RobotControllerPlugin::RobotControllerPlugin() : mUpdateRate(0), mStop(false)
   {
+
     ROS_DEBUG("The Servo plugin is attached to model");
   }
 
@@ -146,11 +147,11 @@ namespace gazebo
       const robotcontroller_msgs::GripperPtr& aMsg)
   {
     double lWidth = mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
-                        .converseScaleToRad(aMsg->width, 0.08,
-                                            0.0); // Width needs to be inverted.
+                        .converseScaleToRad(
+                            aMsg->width, robotcontrollerplugin::maxWidthgripper,
+                            0.0); // Width needs to be inverted.
     double lSpeedfactor = aMsg->speedfactor;
 
-    
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
         .moveTheta(lWidth, lSpeedfactor, /*time*/ 0, mUpdateRate);
   }
