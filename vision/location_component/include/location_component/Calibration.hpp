@@ -30,6 +30,15 @@ namespace location_component
 
   struct AGVFrameCalibration
   {
+    /**
+     * @brief Construct a new AGVFrameCalibration object
+     * 
+     * @param aDebugStatus - This value is used to show the debug status of the AGV frame calibration
+     */
+    AGVFrameCalibration(bool aDebugStatus) : mDebugStatus(aDebugStatus)
+    {
+
+    }
     //Color spectrum AGV low
     const float cHLow = 0.0;
     const float cSLow = 0.0;
@@ -40,6 +49,8 @@ namespace location_component
     const float cSHigh = 255.0;
     const float cVHigh = 30.0;
 
+
+    bool mDebugStatus;
   };
 } // namespace location_component
 

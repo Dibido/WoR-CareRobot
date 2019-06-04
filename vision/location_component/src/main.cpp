@@ -3,18 +3,19 @@
 int main(int argc, char** argv)
 {
   std::string commandLineArgument = argv[1];
-  
+
+  bool debugStatus = false;
   if (argc == 2)
   {
     if (commandLineArgument == "-d")
     {
-      std::cout << "agument = " << argv[1] << std::endl;
+      debugStatus = true;
     }
   }
 
   // Creating config values for determining what an AGV is and what a CUP is.
   location_component::CupDetectionCalibration lCupDetectionCalibration;
-  location_component::AGVFrameCalibration lAGVFrameCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration(debugStatus);
 
   ros::init(argc, argv,
             location_component::location_component_constants::cComponentName);
