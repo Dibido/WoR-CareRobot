@@ -11,13 +11,13 @@ int main(int argc, char** argv)
   {
     // Create with default port
     agv_parser::AgvParser lAgvParser("/dev/ttyUSB0");
-    lAgvParser.Run();
+    lAgvParser.run();
   }
   else if (argc == 2)
   {
     // Create with port from arguments
     agv_parser::AgvParser lAgvParser(argv[1]);
-    lAgvParser.Run();
+    lAgvParser.run();
   }
   return 0;
 }

@@ -1,27 +1,13 @@
-// Bring in my package's API, which is what I'm testing
 // Bring in gtest
-#include "../include/Demo.h"
 #include <gtest/gtest.h>
 
-// Declare a test
-TEST(TestSuite, testCase1)
-{
-  Demo demo;
-  EXPECT_EQ(-1, demo.c(0));
-  EXPECT_EQ(0, demo.c(1));
-}
-
-// Declare another test
-TEST(TestSuite, testCase2)
-{
-  EXPECT_EQ(1000, 1000);
-}
+#include <ros/ros.h>
 
 // Run all the tests that were declared with TEST()
 int main(int argc, char** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  // ros::init(argc, argv, "tester");
-  // ros::NodeHandle nh;
+  ros::init(argc, argv, "AgvParser_Tester");
+  ros::NodeHandle nh;
   return RUN_ALL_TESTS();
 }

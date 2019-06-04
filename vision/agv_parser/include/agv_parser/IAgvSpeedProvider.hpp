@@ -13,19 +13,6 @@ namespace agv_parser
    */
   class IAgvSpeedProvider
   {
-      public:
-    /**
-     * @brief Construct a new IObstacle object
-     *
-     */
-    IAgvSpeedProvider(){};
-
-    /**
-     * @brief Destroy the IObstacle object
-     *
-     */
-    virtual ~IAgvSpeedProvider() = default;
-
     /**
      * @brief virtual interface
      * @param aAgvSpeed: The speed that has been calculated

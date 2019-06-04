@@ -1,6 +1,6 @@
 #include "agv_parser/AgvParser.hpp"
 
-void agv_parser::AgvParser::Run()
+void agv_parser::AgvParser::run()
 {
   // Open serial
   boost::system::error_code lBoostError;
@@ -60,7 +60,21 @@ std::string agv_parser::AgvParser::readLine()
 float agv_parser::AgvParser::parseRecievedMessage(std::string aRecievedMessage)
 {
   // Parse the command
-  // Example command = "#S#0.23131\n"
+  // Example command = "#S#0.23231\n"
+  // Check the length of the message.
+  unsigned int lSmallestLegalCommandLength = 4;
+  if (aRecievedMessage.length() <=
+      lSmallestLegalCommandLength) // Should at least contain "#S#0"
+  {
+    throw std::invalid_argument("The message length is invalid");
+  }
+  // Check the format
+  // Check the #S
+  std::string lCommandPrefix = aRecievedMessage.substr(0, 2);
+  if (lCommandPrefix != "#S")
+  {
+    throw std::invalid_argument("The message format is invalid");
+  }
   // Strip the #S part from the message
   std::string lStrippedHashString = aRecievedMessage.substr(
       aRecievedMessage.find('#') + 1, aRecievedMessage.size());
@@ -68,6 +82,11 @@ float agv_parser::AgvParser::parseRecievedMessage(std::string aRecievedMessage)
   std::string lSpeedString = lStrippedHashString.substr(
       aRecievedMessage.find('#') + 2, aRecievedMessage.size());
   float lAgvSpeed = static_cast<float>(atof(lSpeedString.c_str()));
+  // Check the value
+  if (lAgvSpeed < 0 || lAgvSpeed == 0)
+  {
+    throw std::invalid_argument("The speed is invalid");
+  }
   return lAgvSpeed;
 }
 

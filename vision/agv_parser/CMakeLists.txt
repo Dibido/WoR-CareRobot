@@ -39,9 +39,12 @@ add_dependencies(${PROJECT_NAME}_main ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAM
 target_link_libraries(${PROJECT_NAME}_main ${catkin_LIBRARIES})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp src/${PROJECT_NAME}/AgvParser.cpp src/${PROJECT_NAME}/AgvSpeed.cpp unitTests/AgvParser_UnitTest.cpp)
 
-add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_main)
+
+target_link_libraries(${PROJECT_NAME}_unit_tests
+ ${catkin_LIBRARIES})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build

@@ -1,2 +1,2 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(agv_gateway)
+project(agv_speed_calculator)
