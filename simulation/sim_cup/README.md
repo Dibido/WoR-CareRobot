@@ -1,29 +1,34 @@
 # Simulation Cup
 
-Met deze package wordt de cup gesimuleerd. De package bestaat uit een library plugin die 
-gebruikt wordt in de cup model.
+This package contains a cup model and a library plugin.
 
 ## Build
 
-Build de plugin met catkin
+Build the plugin with catkin
 * `catkin_make sim_cup_plugin`
 
 ## Run
 
-Om de beker te testen in een wereld:
+execute:
 * `roslaunch sim_cup just_a_cup.launch` 
 
 Launch file arguments
-* Geen
+* None
+
+### Data
+
+Data being published on the following topics:
+* /sensor/kinect/raw_img
+    * video data van de vga camera
+* /sensor/kinect/points
+    * pointcloud data van de depth camera
 
 ## Test
 
-Het testen van deze package kan doormiddel van de volgende commando's
-
-1. Build de test met `catkin_make sim_cup_test`.
-2. Run de package met `rosrun sim_cup sim_cup_test`.
-
+There are currently no unit tests available.
 
 ## Current problems
 
-* Geen
+* None
+
+

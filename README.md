@@ -115,10 +115,23 @@ source devel/setup.bash
 2. Running simulation example
 ```
 
-roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.world
+roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.launch
 ``
 3. Running simulation
 ```
-roslaunch sim_world world.world
+roslaunch sim_world world.launch
 ```
 
+## Available Packages
+
+| Package               | Description                           |
+|-----------------------|---------------------------------------|
+| sim_agv               | AGV model plugin                      |
+| sim_cup               | cup model plugin                      |
+| sim_kinect            | kinect model plugin                   |
+| sim_lidar             | lidar model plugin                    |
+| sim_robot             | cup model plugin                      |
+| sim_sonar             | sonar model plugin                    |
+| [gazebo_grasp_plugin] | Plugin which helps grasping in Gazebo |
+
+Every package has its own README for further instructions
