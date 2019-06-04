@@ -42,9 +42,9 @@ namespace userinterface
     bool mMsgSent = false;
 
       private:
-    ros::NodeHandle releaseTimePublisherNodeHandle;
-    ros::Publisher chatter_pub =
-        releaseTimePublisherNodeHandle.advertise<kinematica_msgs::ReleaseTime>(
+    ros::NodeHandle mReleaseTimePublisherNodeHandle;
+    ros::Publisher mChatter_pub =
+        mReleaseTimePublisherNodeHandle.advertise<kinematica_msgs::ReleaseTime>(
             environment_controller::cReleaseTimeTopicName,
             environment_controller::cQueue_size);
   };
