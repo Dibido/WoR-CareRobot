@@ -58,7 +58,7 @@ generate_messages(
     )
 
 
-add_library(${PROJECT_NAME}_plugin SHARED src/automated_guided_vehicle_plugin.cpp)
+add_library(${PROJECT_NAME}_plugin SHARED src/automated_guided_vehicle_plugin.cpp ../../vision/agv_parser/src/agv_parser/AgvSpeed.cpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 add_dependencies(${PROJECT_NAME}_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

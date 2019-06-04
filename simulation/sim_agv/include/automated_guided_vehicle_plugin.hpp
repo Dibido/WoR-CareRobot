@@ -17,6 +17,7 @@
 #include "agv_parser/AgvParser.hpp"
 #include "agv_parser/AgvSpeed.hpp"
 #include "agv_parser/IAgvSpeedProvider.hpp"
+
 #include <sim_agv/agv_path.h>
 #include <sim_agv/agv_speed.h>
 
@@ -74,7 +75,7 @@ namespace gazebo
      * @brief virtual interface
      * @param aAgvSpeed: The speed that has been calculated
      */
-    void parseAgvSpeed(const agv_parser::AgvSpeed& aAgvSpeed);
+    void parseAgvSpeed(const agv_parser::AgvSpeed& aAgvSpeed) override;
 
       private:
     // Movement
