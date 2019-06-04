@@ -28,7 +28,9 @@ Data being published on the following topics:
     * scan data LidarData message
 
 ## Test
-
+Unittests:
+LidarDataConversion:
+* Covers the LaserScan message to LidarData message conversion. 
 ### build unittests
 
 1. Build  `catkin_make sim_lidar_unit_tests`.
