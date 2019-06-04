@@ -16,7 +16,7 @@ namespace userinterface
     // Demo values for goal position
     const double cDemoGoalX = -0.30;
     const double cDemoGoalY = 0.30;
-    const double cDemoGoalZ = -0.30;
+    const double cDemoGoalZ = 0;
     const environment_controller::Position
         mDemoPos(cDemoGoalX, cDemoGoalY, cDemoGoalZ);
     const uint8_t cReleaseTime = 10;
