@@ -45,7 +45,7 @@ namespace controller
      * @brief doActivity is continiously being called while the system is in the
      * WaitForReleaseSignal.
      *
-     * @details WIthin the doActivity function will be blocking untill a
+     * @details Within the doActivity function will be blocking untill a
      * ReleaseMessage has been received. Once a release message has been
      * received we will wait the time specified in the message.
      *
