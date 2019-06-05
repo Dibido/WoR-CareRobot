@@ -15,7 +15,7 @@ namespace controller
    *
    * @class MoveToDropLocation
    *
-   * @brief Moves the arm to the location where the cup has to be to dropped.
+   * @brief Moves the arm to the location where the cup has to be dropped.
    *
    * @author Gianni Monteban
    *
