@@ -43,14 +43,14 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(webcam_driver src/main.cpp src/webcam_driver/WebcamDriver.cpp)
+add_executable(webcam_driver src/main.cpp src/webcam_driver/WebcamDriver.cpp src/webcam_driver/WebcamPublisher.cpp)
 add_dependencies(webcam_driver ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(webcam_driver PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(webcam_driver ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/WebcamDriver_test.cpp src/webcam_driver/WebcamDriver.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/WebcamDriver_test.cpp src/webcam_driver/WebcamDriver.cpp src/webcam_driver/WebcamPublisher.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 if(CODE_COVERAGE)

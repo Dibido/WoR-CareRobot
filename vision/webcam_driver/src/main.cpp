@@ -1,4 +1,5 @@
 #include "webcam_driver/WebcamDriver.hpp"
+#include "webcam_driver/WebcamPublisher.hpp"
 #include <ctime>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -35,40 +36,18 @@ int main(int argc, char** argv)
     lDebug = true;
   }
 
-  webcam_driver::WebcamDriver lWebcamDriver(lWebcamId);
-  if (!lWebcamDriver.initialise())
-  {
-    ROS_WARN_STREAM("Failed to initialise webcam with id " << lWebcamId);
-    return 2;
-  }
+  webcam_driver::WebcamPublisher lWebcamPublisher(
+      lWebcamId, lDebug, webcam_driver_constants::cWebcamTopic, lNodeHandle);
 
-  image_transport::ImageTransport lImageTransport(lNodeHandle);
-  image_transport::Publisher lPublisher =
-      lImageTransport.advertise(webcam_driver_constants::cWebcamTopic, 1);
-
-  if (lDebug)
-  {
-    cv::namedWindow("WebcamDriver debug", cv::WINDOW_AUTOSIZE);
-  }
-  cv::Mat lFrame;
   while (ros::ok())
   {
-    cv::Mat lCapturedFrame = lWebcamDriver.captureFrame();
-    sensor_msgs::ImagePtr lMsg =
-        cv_bridge::CvImage(std_msgs::Header(), "bgr8", lCapturedFrame)
-            .toImageMsg();
-    lPublisher.publish(lMsg);
+    lWebcamPublisher.update();
     ros::spinOnce();
 
-    if (lDebug)
-    {
-      cv::imshow("WebcamDriver debug", lWebcamDriver.captureFrame());
-    }
-
-    // Wait for 1000 / refresh rate milliseconds.
+    // Wait for (1000 / refresh rate) milliseconds.
     int lChar = cv::waitKey(1000 / webcam_driver_constants::cRefreshRate);
-    const int lKeycodeEscape = 27;
-    if (lChar == lKeycodeEscape)
+    const int cKeycodeEscape = 27;
+    if (lChar == cKeycodeEscape)
     {
       break;
     }
