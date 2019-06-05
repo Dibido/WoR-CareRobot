@@ -25,8 +25,8 @@ TEST(JointController, converseScaleToRad)
   EXPECT_EQ(jointController.converseScaleToRad(0, 0, 10), mMinRad);
   EXPECT_EQ(jointController.converseScaleToRad(10, 0, 10), mMaxRad);
   EXPECT_EQ(jointController.converseScaleToRad(5, 0, 10), mMediumRad);
-  EXPECT_EQ(jointController.converseScaleToRad(10, 10, 0), mMaxRad);
-  EXPECT_EQ(jointController.converseScaleToRad(0, 10, 0), mMinRad);
+  EXPECT_EQ(jointController.converseScaleToRad(10, 10, 0), mMinRad);
+  EXPECT_EQ(jointController.converseScaleToRad(0, 10, 0), mMaxRad);
 }
 
 TEST(operatorJointController, equalsOperator)
