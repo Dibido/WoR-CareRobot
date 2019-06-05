@@ -3,8 +3,7 @@
 
 namespace kinematics
 {
-
-  TEST(JacobiMatrix, StraightUp)
+  TEST(JacobiMatrix, AllZeroJacobian)
   {
     Configuration bigTheta;
 
@@ -21,7 +20,7 @@ namespace kinematics
                            0.0001));
   }
 
-  TEST(JacobiMatrix, ConfigurationOne)
+  TEST(JacobiMatrix, JacobiOne)
   {
     Configuration bigTheta;
     bigTheta.setTheta(0, M_PI / 5);
