@@ -38,3 +38,6 @@ CSN -> D8
 MOSI -> D11  
 MISO -> D12 
 SCK -> D13
+
+## Known problems
+* The lines are sometimes detected two times or not at all.
