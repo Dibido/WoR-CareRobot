@@ -40,14 +40,14 @@ namespace location_component
 
     }
     //Color spectrum AGV low
-    const float cHLow = 0.0;
-    const float cSLow = 0.0;
-    const float cVLow = 0.0;
+    const double cHLow = 0.0;
+    const double cSLow = 0.0;
+    const double cVLow = 0.0;
 
     //Color spectrum AGV high
-    const float cHHigh = 255.0;
-    const float cSHigh = 255.0;
-    const float cVHigh = 30.0;
+    const double cHHigh = 255.0;
+    const double cSHigh = 255.0;
+    const double cVHigh = 30.0;
 
 
     bool mDebugStatus;

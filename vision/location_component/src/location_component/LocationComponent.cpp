@@ -3,7 +3,8 @@
 namespace location_component
 {
 
-  LocationComponent::LocationComponent(ros::NodeHandle& aNodeHandle) : mNodeHandle(aNodeHandle)
+  LocationComponent::LocationComponent(ros::NodeHandle& aNodeHandle)
+      : mNodeHandle(aNodeHandle)
   {
   }
 
@@ -11,7 +12,9 @@ namespace location_component
   {
   }
 
-  void LocationComponent::runComponent(location_component::CupDetectionCalibration& aCupDetectionCalibration, location_component::AGVFrameCalibration& aAGVFrameCalibration)
+  void LocationComponent::runComponent(
+      location_component::CupDetectionCalibration& aCupDetectionCalibration,
+      location_component::AGVFrameCalibration& aAGVFrameCalibration)
   {
 
     mDetectAGV = std::make_shared<location_component::DetectAGV>(
@@ -21,12 +24,12 @@ namespace location_component
     location_component::AGVSubscriber mSubscriber(
         location_component_constants::cAGVTopic, mDetectAGV);
 
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(location_component_constants::cLoopRate);
 
     image_transport::ImageTransport it(mNodeHandle);
     const std::string cTopicName = location_component_constants::cWebcamTopic;
     image_transport::Subscriber sub =
-        it.subscribe(cTopicName, 1, &LocationComponent::imageCallBack,this);
+        it.subscribe(cTopicName, 1, &LocationComponent::imageCallBack, this);
 
     while (ros::ok())
     {
