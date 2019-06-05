@@ -2,11 +2,15 @@
 #define DETECTAGV_HPP
 
 #include "location_component/AGV.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/AGVFrameCalibration.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include "location_component/FrameCalibration.hpp"
+
+#include "location_component/DetectedFrame.hpp"
+#include "location_component/DetectedAGV.hpp"
+
 
 #include <boost/optional.hpp>
 #include <iostream>
@@ -17,22 +21,7 @@
 namespace location_component
 {
   const unsigned int cCornersOfObject = 4;
-
-  struct DetectedAGV
-  {
-    std::vector<cv::Point> mCorners;
-    cv::Point mMidpoint;
-    cv::Rect mBoundRect;
-    cv::Mat mAGVFrame;
-  };
-
-  struct DetectedFrame
-  {
-    DetectedAGV mDetectedAGV;
-    std::vector<DetectedCup> mDetectedCups;
-    cv::Size mAGVFrameSize;
-    cv::Size mCupFrameSize;
-  };
+  const unsigned int cEpsilon = 5;
 
   class DetectAGV
   {
@@ -91,10 +80,10 @@ namespace location_component
     /**
      * @brief Get the Contours Mat object
      *
-     * @param aSourceMat - The matrix to get the contours of
-     * @param aContours - A reference of a vector with all the found contours
+     * @param aSourceMat - The matrix to get the contour of
+     * @param aContours - A reference of a vector with all the found points of the contour
      */
-    void getContoursMat(const cv::Mat& aSourceMat,
+    void getContourMat(const cv::Mat& aSourceMat,
                         std::vector<cv::Point>& aContours) const;
 
     /**

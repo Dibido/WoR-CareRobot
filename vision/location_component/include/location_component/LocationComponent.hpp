@@ -35,19 +35,18 @@ namespace location_component
     ~LocationComponent();
 
     /**
-     * @brief The main run function of the application.
+     * @brief The main run function of the application. This is a blocking function!
      *
-     * @param aCupDetectionCalibration - Creating config values for determining
-     * what an CUP
-     * @param aAGVFrameCalibration - Creating config values for determining what
-     * an AGV
+     * @param aCupDetectionCalibration - Config values for to determining what a cup is
+     * @param aAGVFrameCalibration - config values for determining what an AGV
+     * 
      */
     void runComponent(
         location_component::CupDetectionCalibration& aCupDetectionCalibration,
         location_component::AGVFrameCalibration& aAGVFrameCalibration);
 
     /**
-     * @brief This function will be called if the topic receives a nieuw frame.
+     * @brief This function will be called if the topic receives a new frame.
      *
      * @param aMsg - The messages that will be converted to a frame
      */

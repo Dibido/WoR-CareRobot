@@ -51,7 +51,7 @@ target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/PosCalculation_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/LocationComponent.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/PosCalculation_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/LocationComponent.cpp src/location_component/FrameCalibration.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 if(CODE_COVERAGE)

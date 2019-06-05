@@ -1,5 +1,5 @@
 #include "location_component/DetectAGV.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include <cmath>
@@ -155,7 +155,7 @@ namespace location_component
     cv::Mat lDisFrame;
     std::vector<cv::Point> lContours(1);
 
-    getContoursMat(aFrame, lContours);
+    getContourMat(aFrame, lContours);
 
     cv::Rect lBoundRect;
 
@@ -193,7 +193,7 @@ namespace location_component
       makePerspectiveCorrection(lTransmtx, aFrame, lDisFrame);
 
       std::vector<cv::Point> lContoursWithPerspectiveCorrection(1);
-      getContoursMat(lDisFrame, lContoursWithPerspectiveCorrection);
+      getContourMat(lDisFrame, lContoursWithPerspectiveCorrection);
 
       lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
@@ -222,7 +222,7 @@ namespace location_component
     warpPerspective(aSourceMat, aDist, aTransmtx, aSourceMat.size());
   }
 
-  void DetectAGV::getContoursMat(const cv::Mat& aSourceMat,
+  void DetectAGV::getContourMat(const cv::Mat& aSourceMat,
                                  std::vector<cv::Point>& aContoursPoly) const
   {
     std::vector<std::vector<cv::Point>> lContours;
@@ -252,7 +252,7 @@ namespace location_component
     }
 
     // Copy the right rectengle tot contour_poly
-    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly, 5,
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly, cEpsilon,
                  true);
   }
 

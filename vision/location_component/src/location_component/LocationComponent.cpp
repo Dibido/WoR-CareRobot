@@ -26,10 +26,10 @@ namespace location_component
 
     ros::Rate loop_rate(location_component_constants::cLoopRate);
 
-    image_transport::ImageTransport it(mNodeHandle);
+    image_transport::ImageTransport lIt(mNodeHandle);
     const std::string cTopicName = location_component_constants::cWebcamTopic;
     image_transport::Subscriber sub =
-        it.subscribe(cTopicName, 1, &LocationComponent::imageCallBack, this);
+        lIt.subscribe(cTopicName, 1, &LocationComponent::imageCallBack, this);
 
     while (ros::ok())
     {

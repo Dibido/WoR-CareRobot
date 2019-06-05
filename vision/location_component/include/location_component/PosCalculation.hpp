@@ -1,7 +1,7 @@
 #ifndef POSTCALCULATION_HPP
 #define POSTCALCULATION_HPP
 
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 

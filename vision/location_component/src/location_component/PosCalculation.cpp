@@ -1,5 +1,5 @@
 #include "location_component/PosCalculation.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include <cmath>
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
