@@ -30,7 +30,7 @@ namespace controller
      * entered.
      *
      * @details The entryAction will calculate the amount of time it will take
-     * for the cup to arrive. After calculating the time it the thread will be
+     * for the cup to arrive. After calculating the time the thread will be
      * put to sleep for the time it takes for the cup to arrive minus a
      * waittime.
      *
