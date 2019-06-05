@@ -7,8 +7,8 @@ int main(int argc, char** argv)
 
   if (argc == 2)
   {
-    std::string commandLineArgument = argv[1];
-    if (commandLineArgument == "-d")
+    std::string lCommandLineArgument = argv[1];
+    if (lCommandLineArgument == "-d")
     {
       debugStatus = true;
     }
