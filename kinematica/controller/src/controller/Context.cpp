@@ -1,4 +1,3 @@
-// Local
 #include "controller/Context.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
@@ -6,11 +5,11 @@
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
-// Libary
 #include <chrono>
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
+
 namespace controller
 {
   Context::Context()
@@ -49,9 +48,9 @@ namespace controller
         mDropPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
-    const planning::Obstacle cRobotAsObstacle{ -0.5f, 0.0f, 0.0f,
-                                               1.0f,  0.5f, 1.0f };
-    mGraph->addObstacle(cRobotAsObstacle);
+    mGraph->addObstacle(cRobotObstacle);
+    mGraph->addObstacle(cFloorObstacle);
+
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
   }

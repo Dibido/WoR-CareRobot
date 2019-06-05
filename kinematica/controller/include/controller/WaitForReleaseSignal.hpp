@@ -58,7 +58,7 @@ namespace controller
      * being exited.
      *
      * @details At this moment nothing is done in the exitAction.
-     * 
+     *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */

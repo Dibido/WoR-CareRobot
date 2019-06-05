@@ -60,9 +60,5 @@ namespace controller
 
   void Move::exitAction(Context*)
   {
-    while (mTrajectory.empty() == false)
-    {
-      mTrajectory.pop();
-    }
   }
 } // namespace controller
