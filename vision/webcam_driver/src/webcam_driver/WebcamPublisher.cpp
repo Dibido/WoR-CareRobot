@@ -42,4 +42,21 @@ namespace webcam_driver
     }
   }
 
+  void WebcamPublisher::mainLoop(unsigned int aRefreshRate)
+  {
+    while (ros::ok())
+    {
+      update();
+      ros::spinOnce();
+
+      // Wait for (1000 / refresh rate) milliseconds.
+      int lChar = cv::waitKey(1000 / aRefreshRate);
+      const int cKeycodeEscape = 27;
+      if (lChar == cKeycodeEscape)
+      {
+        break;
+      }
+    }
+  }
+
 } // namespace webcam_driver

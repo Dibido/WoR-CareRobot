@@ -39,19 +39,7 @@ int main(int argc, char** argv)
   webcam_driver::WebcamPublisher lWebcamPublisher(
       lWebcamId, lDebug, webcam_driver_constants::cWebcamTopic, lNodeHandle);
 
-  while (ros::ok())
-  {
-    lWebcamPublisher.update();
-    ros::spinOnce();
-
-    // Wait for (1000 / refresh rate) milliseconds.
-    int lChar = cv::waitKey(1000 / webcam_driver_constants::cRefreshRate);
-    const int cKeycodeEscape = 27;
-    if (lChar == cKeycodeEscape)
-    {
-      break;
-    }
-  }
+  lWebcamPublisher.mainLoop(webcam_driver_constants::cRefreshRate);
 
   return 0;
 }

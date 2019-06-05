@@ -30,6 +30,13 @@ namespace webcam_driver
      *        topic.
      */
     void update();
+    /**
+     * @brief Runs a loop where it captures a frame and publishes it on the
+     *        topic.
+     *
+     * @param aRefreshRate The amount of times to capture a frame per second.
+     */
+    void mainLoop(unsigned int aRefreshRate);
 
       private:
     webcam_driver::WebcamDriver mWebcamDriver;

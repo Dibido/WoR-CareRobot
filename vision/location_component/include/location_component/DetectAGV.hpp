@@ -25,8 +25,22 @@ namespace location_component
   class DetectAGV
   {
       public:
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
     DetectAGV(CupDetectionCalibration& aCalibration,
               AGVFrameCalibration& aAGVFrameCalibration);
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param nh The node handle to be used for creating the cup location
+     * publisher.
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
     DetectAGV(ros::NodeHandle& nh,
               CupDetectionCalibration& aCalibration,
               AGVFrameCalibration& aAGVFrameCalibration);
@@ -40,7 +54,7 @@ namespace location_component
 
     /**
      * @brief The detectFrame function will analyse the frame and decide what
-     * the current position is of the agv.
+     * the current position is of the AGV.
      *
      * @pre -
      * @post The captured view of the AGV/cups has been written to displayFrame.
@@ -58,7 +72,7 @@ namespace location_component
      * @brief This function will create a correct perspective image. If the
      * webcam is tilted it will correct the perspective.
      *
-     * @param aFrame - This matrix is the input image of the agv
+     * @param aFrame - This matrix is the input image of the AGV
      * @return boost::optional<DetectedAGV> - This param will only return if
      * there is an AGV detected. There can only be made a perspective image if
      * there is an AGV detected.
