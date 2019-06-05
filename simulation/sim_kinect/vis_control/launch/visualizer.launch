@@ -1,0 +1,39 @@
+<launch>
+    <arg name="view" default="all" />
+
+    <!-- Rviz visualization application -->
+    <node if="$(eval view == 'all')" type="rviz" name="rviz" pkg="rviz" args="-d $(find vis_control)/rviz/config_all.rviz" output="screen"/>
+    <node if="$(eval view == 'kinect')" type="rviz" name="rviz" pkg="rviz" args="-d $(find vis_control)/rviz/config_kinect.rviz" output="screen"/>
+    <node if="$(eval view == 'viewObjects')" type="rviz" name="rviz" pkg="rviz" args="-d $(find vis_control)/rviz/config_view_objects.rviz" output="screen"/>
+    <node if="$(eval view == 'lidar')" type="rviz" name="rviz" pkg="rviz" args="-d $(find vis_control)/rviz/config_lidar.rviz" output="screen"/>
+    <node if="$(eval view == 'path')" type="rviz" name="rviz" pkg="rviz" args="-d $(find vis_control)/rviz/config_path.rviz" output="screen"/>
+
+    <!-- Visualizer node -->
+    <node name="visualizer" pkg="vis_control" type="vis_control_node" output="screen">
+
+        <!--Kinect-->
+        <param name="kinect_frame" value="/kinect1" type="string"/>
+        <param name="kinect_depth_in" value="/sensor/kinect/points" type="string"/>
+        <param name="kinect_image_in" value="/sensor/kinect/img_raw" type="string"/>
+
+        <!--Vision-->
+        <param name="vision_object_frame" value="/robotarm" type="string"/>
+        <param name="vision_object_in" value="/detected_objects" type="string"/>
+
+        <!--Lidar-->
+        <param name="lidar_frame" value="/lidar1" type="string"/>
+        <param name="lidar_scan_in" value="/sensor/lidar/scan" type="string"/>
+        
+        <!--Path-->
+        <param name="path_frame" value="/path" type="string"/>
+        <param name="path_in" value="/move_arm_to_coordinate" type="string"/>
+
+    </node>
+
+
+    <!-- Static transforms -->
+    <node name="path_link" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /world /path 100" />
+    <node name="kinect_link" pkg="tf" type="static_transform_publisher" args="0 0 2.98 1.57 3.14 0 /world /kinect1 100" />
+    <node name="lidar_link" pkg="tf" type="static_transform_publisher" args="0.55 0 0.95 0 0 0 /world /lidar1 100" />
+    <node name="vision_object_link" pkg="tf" type="static_transform_publisher" args="0 0 1 -1.57 0 0 /world /robotarm 100" />
+</launch>
