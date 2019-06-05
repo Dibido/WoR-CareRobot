@@ -57,9 +57,9 @@ namespace controller
      * @brief doActivity is continiously being called while the system is in the
      * MoveToDropLocation.
      *
-     * @details All different configurations of the trajectory are being executed
-     * by the robotarm one after another. Once all configurations are executed
-     * the state will transit to the waitForReleaseSignal state.
+     * @details All different configurations of the trajectory are being
+     * executed by the robotarm one after another. Once all configurations are
+     * executed the state will transit to the waitForReleaseSignal state.
      *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".

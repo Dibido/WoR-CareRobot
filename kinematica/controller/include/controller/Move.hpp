@@ -47,9 +47,9 @@ namespace controller
      * @brief doActivity is continiously being called while the system is in the
      * Move.
      *
-     * @details All different configurations of the trajectory are being executed
-     * by the robotarm one after another. Once the last configuration has been
-     * executed the state will transit to the WaitForCup state.
+     * @details All different configurations of the trajectory are being
+     * executed by the robotarm one after another. Once the last configuration
+     * has been executed the state will transit to the WaitForCup state.
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
