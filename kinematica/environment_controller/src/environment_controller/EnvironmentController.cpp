@@ -19,9 +19,16 @@ namespace environment_controller
   void EnvironmentController::executeHardstop(bool hardstop)
   {
     if (typeid(*mContext->currentState()) ==
-            typeid(controller::EmergencyStop) ||
-        hardstop == true)
+            typeid(controller::EmergencyStop) &&
+        hardstop == false)
+    {
       mContext->hardStop(hardstop);
+    }
+    else if (hardstop == true && typeid(*mContext->currentState()) !=
+                                     typeid(controller::EmergencyStop))
+    {
+      mContext->hardStop(hardstop);
+    }
   }
 
   void EnvironmentController::provideCup(const Cup& aCup)
