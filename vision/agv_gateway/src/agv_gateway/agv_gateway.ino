@@ -11,7 +11,6 @@ void setup()
 {
   while (!Serial);
   Serial.begin(115200);
-
   radio.begin();
   radio.openReadingPipe(0, rxAddr);
 

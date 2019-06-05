@@ -10,7 +10,7 @@
 // Set up NRF values
 RF24 radio(7, 8);
 const byte rxAddr[6] = "00001";
-   
+
 // Data pin used for the tracker sensor
 #define TRACKER_SIGNAL_PIN 2
 
