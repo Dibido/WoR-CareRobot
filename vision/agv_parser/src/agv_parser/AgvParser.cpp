@@ -60,7 +60,7 @@ std::string agv_parser::AgvParser::readLine()
 float agv_parser::AgvParser::parseRecievedMessage(std::string aRecievedMessage)
 {
   // Parse the command
-  // Example command = "#S#0.23231\n"
+  // Example command = "#S#0.23231423\n"
   // Check the length of the message.
   unsigned int lSmallestLegalCommandLength = 4;
   if (aRecievedMessage.length() <=
