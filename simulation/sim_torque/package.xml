@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sim_torque</name>
+  <version>0.0.0</version>
+  <description>The sim_torque package</description>
+
+  <license>BSD</license>
+
+  <maintainer email="MPW.Muijsert@student.han.nl">Maurits Muijsert</maintainer>
+  <author email="MPW.Muijsert@student.han.nl">Maurits MUijsert</author>
+
+  <test_depend>rosunit</test_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+
+  <export>
+
+  </export>
+</package>

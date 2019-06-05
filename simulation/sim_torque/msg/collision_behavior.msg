@@ -1,0 +1,8 @@
+float64[] lower_torque_thresholds_acceleration
+float64[] upper_torque_thresholds_acceleration
+float64[] lower_torque_thresholds_nominal
+float64[] upper_torque_thresholds_nominal
+float64[] lower_force_thresholds_acceleration
+float64[] upper_force_thresholds_acceleration
+float64[] lower_force_thresholds_nominal
+float64[] upper_force_thresholds_nominal
