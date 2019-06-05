@@ -15,17 +15,16 @@ namespace controller
   const double cGripperSpeed_ms = 0.1;
   const double cJoint1To4Speed_rads = 2.61799;
   const double cJoint5To7Speed_rads = M_PI;
-  const double cSpeedFactor = 1;
+  const double cSpeedFactor = 0.5;
   const double cJointSpeed_rads = M_PI / 180 * 150;
   const double cGripperWidth_m = 0.08;
   const double cWaitTime_s = 0.5;
-  const uint64_t nano_s_to_s = pow(10, 9);
+  const uint64_t cS_to_nano_s = pow(10, 9);
 
-  const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.4f, 0.3f, 0.3f, 0.8f };
+  const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.4f, 0.6f, 0.6f, 0.8f };
   const planning::Obstacle cFloorObstacle{
     0.0f, 0.0f, -0.05f, 2.0f, 2.0f, 0.1f
   };
-
 } // namespace controller
 
 #endif // CONTROLLER_CONSTS_HPP

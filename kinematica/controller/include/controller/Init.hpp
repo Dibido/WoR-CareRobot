@@ -16,17 +16,20 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a new Init object
      *
      */
     Init();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the Init object
      *
      */
     ~Init();
     /**
      * @brief entryAction is being called when the Init state is being entered.
+     *
+     * @details When the Init state is entered the robotarm will be set to the
+     * begin position.
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
