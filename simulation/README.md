@@ -1,20 +1,19 @@
 # Simulation
 
-Dit component is bedoeld om de werkelijkheid te simuleren. Dit wordt gedaan met het programma Gazebo.
+Simulation component used to simulate reality using Gazebo.
 
-## Packages
+## Available Packages
 
 | Package               | Description                           |
 |-----------------------|---------------------------------------|
-| sim_agv               | Plugin voor het AGV model             |
-| sim_cup               | Plugin voor het beker model           |
-| sim_kinect            | Plugin voor het kinect model          |
-| sim_lidar             | Plugin voor het lidar model           |
-| sim_robot             | Plugin voor het cup model             |
-| sim_sonar             | Plugin voor het sonar model           |
+| sim_agv               | AGV model plugin                      |
+| sim_cup               | cup model plugin                      |
+| sim_kinect            | kinect model plugin                   |
+| sim_lidar             | lidar model plugin                    |
+| sim_robot             | cup model plugin                      |
+| sim_sonar             | sonar model plugin                    |
 | [gazebo_grasp_plugin] | Plugin which helps grasping in Gazebo |
+|sim_world              | Combines all of the above. The launch file can be used to launch different  world configurations |
 
-Tot slot is er de `sim_world` package. In deze package staan alle modellen en werelden. Het `world.launch` bestand in deze package kan worden gebruikt om een wereld met verschillende modellen in Gazebo op te starten.
-te 
 
 [gazebo_grasp_plugin]: https://github.com/JenniferBuehler/gazebo-pkgs

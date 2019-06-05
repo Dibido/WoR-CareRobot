@@ -1,7 +1,6 @@
 # Simulation Lidar
+This package contains a lidar model and a library plugin.
 
-Met deze package wordt de lidar gesimuleerd. De package bestaat uit een library plugin die 
-gebruikt wordt in de lidar model.
 
 # Design
 
@@ -9,29 +8,33 @@ http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/DDD+-+Design+LIDAR
 
 ## Build
 
-Build de plugin met catkin
+Build the plugin with catkin:
 * `catkin_make sim_lidar_plugin`
 
 ## Run
 
-Om de lidar te testen in een wereld:
+Execute:
 * `roslaunch sim_lidar lidar_plugin.launch` 
 
 Launch file arguments
-* Geen
+* None
 
 ### Data
 
-Data op topics:
+Data being published on the following topics:
 * /sensor/lidar/scan
-    * laser scan data van de lidar
+    * laser scan data lidar
 * /sensor/lidar
-    * scan data opgesteld in een LidarData message
+    * scan data LidarData message
 
 ## Test
 Unittests:
 LidarDataConversion:
-* Test de conversie van een LaserScan message naar een LidarData message
+* Covers the LaserScan message to LidarData message conversion. 
+### build unittests
+
+1. Build  `catkin_make sim_lidar_unit_tests`.
+2. Run  `rosrun sim_robot sim_lidar_unit_tests`.
 
 ## Current problems
-* Geen
+* None

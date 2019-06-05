@@ -1,39 +1,30 @@
 # Simulation robot
 
-Met deze package worden de robotarmen gesimuleerd. De package bestaat uit een library plugin die 
-gebruikt wordt in de zowel de al5d model als de franka model.
+This package is used to simulate the franka panda model plugin.
+
 
 ## Build
 
-Build de plugin met catkin
+Build plugin 
 * `catkin_make sim_robot_plugin`
 
 ## Run
+execute the following to simulate the Franka Panda:
 
-Om de robots te testen in een wereld:
-* `roslaunch sim_robot al5d.launch`
-    * Een wereld met alleen een al5d robotarm
 * `roslaunch sim_robot franka.launch`
-    * Een wereld met alleen een franka panda robotarm
+    * World with only the Franka Panda.
 
 Launch file arguments
-* Geen
+* none
 
 
 ## Test
 
-Het testen van deze package kan doormiddel van de volgende commando's
+### build unittests
 
-### Parser test
-
-1. Build de test met `catkin_make sim_robot_parser_test`.
-2. Run de tests met `rosrun sim_robot sim_robot_parser_test`.
-
-### Joint controller test
-
-1. Build de test met `catkin_make sim_robot_joint_test`.
-2. Run de tests met `rosrun sim_robot sim_robot_joint_test`.
+1. Build  `catkin_make sim_robot_unit_tests`.
+2. Run  `rosrun sim_robot sim_robot_unit_tests`.
 
 ## Current problems
 
-* Geen
+* none
