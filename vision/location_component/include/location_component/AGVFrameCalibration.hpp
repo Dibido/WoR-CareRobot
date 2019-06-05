@@ -11,10 +11,7 @@ namespace location_component
      * 
      * @param aDebugStatus - This value is used to show the debug status of the AGV frame calibration
      */
-    AGVFrameCalibration(bool aDebugStatus) : mDebugStatus(aDebugStatus)
-    {
-
-    }
+    AGVFrameCalibration(bool aDebugStatus);
     //Color spectrum AGV low
     const double cHLow = 0.0;
     const double cSLow = 0.0;
