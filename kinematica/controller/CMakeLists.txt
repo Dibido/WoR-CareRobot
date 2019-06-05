@@ -146,6 +146,7 @@ ${catkin_EXPORTED_TARGETS})
 
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp 
 unitTests/arrivalTime.cpp
+unitTests/stateTransitions.cpp
 )
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_controller lib_kinematics ${catkin_LIBRARIES})
   
