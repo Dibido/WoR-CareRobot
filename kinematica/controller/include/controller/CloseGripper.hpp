@@ -48,7 +48,7 @@ namespace controller
      *
      * @details The doActivity function will check whether the time it takes to
      * close the gripper has passed. Once the time it took to close the gripper
-     * it will transit to the MoveToDropLocation state.
+     * has passed it will transit to the MoveToDropLocation state.
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
