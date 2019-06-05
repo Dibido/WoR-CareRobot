@@ -15,10 +15,10 @@ namespace Ui
   namespace ui_constants
   {
     // Water button icon size
-    const uint8_t water_btn_size = 130;
+    const uint8_t c_WaterBtnSize_m = 130;
 
     // Cross button icon size
-    const uint8_t cross_btn_size = 130;
+    const uint8_t c_CrossBtnSize_m = 130;
 
   } // namespace ui_constants
 

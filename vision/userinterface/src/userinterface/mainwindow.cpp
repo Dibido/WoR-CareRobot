@@ -25,8 +25,8 @@ void MainWindow::on_water_btn_clicked()
     QPixmap lPix(":/new/icons/Cross.png");
     QIcon lIcon(lPix);
     ui->water_btn->setIcon(lIcon);
-    ui->water_btn->setIconSize(QSize(Ui::ui_constants::cross_btn_size,
-                                     Ui::ui_constants::cross_btn_size));
+    ui->water_btn->setIconSize(QSize(Ui::ui_constants::c_CrossBtnSize_m,
+                                     Ui::ui_constants::c_CrossBtnSize_m));
     ui->water_btn->setText(QString("Laat beker los"));
     qApp->processEvents();
     return;
@@ -80,8 +80,8 @@ void MainWindow::on_water_btn_clicked()
     QPixmap lPix(":/new/icons/Glas_water.png");
     QIcon lIcon(lPix);
     ui->water_btn->setIcon(lIcon);
-    ui->water_btn->setIconSize(QSize(Ui::ui_constants::water_btn_size,
-                                     Ui::ui_constants::water_btn_size));
+    ui->water_btn->setIconSize(QSize(Ui::ui_constants::c_WaterBtnSize_m,
+                                     Ui::ui_constants::c_WaterBtnSize_m));
     ui->water_btn->setText(QString("Beker water"));
   }
 }
