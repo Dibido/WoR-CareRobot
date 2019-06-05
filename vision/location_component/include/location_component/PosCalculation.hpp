@@ -1,7 +1,7 @@
 #ifndef POSTCALCULATION_HPP
 #define POSTCALCULATION_HPP
 
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 
@@ -10,7 +10,7 @@ namespace location_component
   class PosCalculation
   {
       public:
-    PosCalculation(Calibration aCalibration = Calibration());
+    PosCalculation(CupDetectionCalibration aCalibration = CupDetectionCalibration());
     ~PosCalculation();
 
     /**
@@ -71,7 +71,7 @@ namespace location_component
      */
     float mAGVSpeed_m_s = 0.220f;
 
-    Calibration mCalibration;
+    CupDetectionCalibration mCalibration;
   };
 } // namespace location_component
 

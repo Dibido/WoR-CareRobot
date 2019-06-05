@@ -1,6 +1,6 @@
 // Bring in gtest
 #include "ImagePath.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/PosCalculation.hpp"
 #include <cmath>
 #include <gtest/gtest.h>
@@ -8,7 +8,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 
-const location_component::Calibration cTestCalibration = {
+const location_component::CupDetectionCalibration cTestCalibration = {
   .mCameraPosX_m = 0.50f,
   .mCameraPosY_m = -4.0f,
   .mCameraPosZ_m = 1.0f,

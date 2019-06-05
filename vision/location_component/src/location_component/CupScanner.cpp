@@ -76,10 +76,6 @@ namespace location_component
                           lRect.height > ( int )cMinCupDiameter_px;
                  });
 
-    cv::Scalar colors[3];
-    colors[0] = cv::Scalar(255, 0, 0);
-    colors[1] = cv::Scalar(0, 255, 0);
-    colors[2] = cv::Scalar(0, 0, 255);
     for (size_t lIdx = 0; lIdx < lContours.size(); lIdx++)
     {
       DetectedCup lDetectedCup;
