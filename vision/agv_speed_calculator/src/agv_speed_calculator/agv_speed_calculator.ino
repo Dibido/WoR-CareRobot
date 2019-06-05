@@ -50,6 +50,8 @@ unsigned long gMeasurementMillis[gMaxNumberOfMeasurements + 1] = {0};
 const unsigned int gLengthBetweenMeasurements = 50;
 // Amount of ms the tracker sensor needs to return true for the signal to be considered valid.
 const unsigned long gMinIntervalTimeMs = 50;
+// Amount of ms to wait until the next attempt to detect a line
+const unsigned int gDetectDelayTimeMs = 150;
 
 void sendEstimatedSpeed(double aEstimatedSpeed);
 
@@ -150,7 +152,7 @@ void loop()
         else
         {
           // Wait with getting a new measurement until the end of the signal
-          delay(100);
+          delay(gDetectDelayTimeMs);
         }
       }
     }

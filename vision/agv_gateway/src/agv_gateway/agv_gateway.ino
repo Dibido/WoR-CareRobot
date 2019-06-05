@@ -10,7 +10,7 @@ char lAgvCommand[64] = {0};
 void setup()
 {
   while (!Serial);
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   radio.begin();
   radio.openReadingPipe(0, rxAddr);
