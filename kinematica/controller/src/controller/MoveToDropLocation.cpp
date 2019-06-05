@@ -45,7 +45,7 @@ namespace controller
     }
   }
 
-  void MoveToDropLocation::exitAction(Context* aContext)
+  void MoveToDropLocation::exitAction(Context*)
   {
     while (mTrajectory.empty() == false)
     {
