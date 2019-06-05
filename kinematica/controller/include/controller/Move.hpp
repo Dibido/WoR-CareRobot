@@ -15,7 +15,7 @@ namespace controller
    *
    * @brief Moves the arm to the location where the cup has grabbed
    *
-   * @autoher Martijn Vogelaar
+   * @author Martijn Vogelaar
    *
    */
   class Move : public State
