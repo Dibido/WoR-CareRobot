@@ -4,12 +4,18 @@
 #include <gtest/gtest.h>
 
 const float cValidSpeed_m_s = 1.0;
+const float cValidZeroSpeed_m_s = 0.0;
 const float cInvalidSpeed_m_s = -1.0;
 
 TEST(AGVSuite, AGVConstructorSpeedBelowZero)
 {
   EXPECT_NO_THROW(location_component::AGV{ cValidSpeed_m_s });
   EXPECT_THROW(location_component::AGV{ cInvalidSpeed_m_s }, std::range_error);
+}
+
+TEST(AGVSuite, AGVConstructorSpeedZero)
+{
+  EXPECT_NO_THROW(location_component::AGV{ cValidZeroSpeed_m_s });
 }
 
 TEST(AGVSuite, AGVReferenceSpeedBelowZero)
