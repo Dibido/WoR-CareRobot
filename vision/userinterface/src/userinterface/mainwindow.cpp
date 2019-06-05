@@ -47,18 +47,18 @@ void MainWindow::on_water_btn_clicked()
 
     // Send the release time msg.
     mReleaseTimePublisher.selectReleaseTime(
-        userinterface::goal_constants::cReleaseTime);
+        userinterface::goal_constants::cReleaseTime_s);
 
     // Countdown from timeout to zero in the GUI, so the user has visual
     // feedback.
     while (lTimer.elapsed() / 1000 <=
-           userinterface::goal_constants::cReleaseTime - 1)
+           userinterface::goal_constants::cReleaseTime_s - 1)
     {
       // Update time each second using the standardFontSetting defined above.
       ui->label->setFont(lStandardFontSetting);
       std::string lLabelString =
           "De gripper laat los in: " +
-          std::to_string(userinterface::goal_constants::cReleaseTime -
+          std::to_string(userinterface::goal_constants::cReleaseTime_s -
                          lTimer.elapsed() / 1000) +
           " seconden";
       ui->label->setText(lLabelString.c_str());

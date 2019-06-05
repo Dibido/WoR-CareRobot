@@ -14,12 +14,12 @@ namespace userinterface
   namespace goal_constants
   {
     // Demo values for goal position
-    const double cDemoGoalX = -0.30;
-    const double cDemoGoalY = 0.30;
-    const double cDemoGoalZ = 0;
+    const double cDemoGoalX_m = -0.30;
+    const double cDemoGoalY_m = 0.30;
+    const double cDemoGoalZ_m = 0;
     const environment_controller::Position
-        mDemoPos(cDemoGoalX, cDemoGoalY, cDemoGoalZ);
-    const uint8_t cReleaseTime = 10;
+        mDemoPos(cDemoGoalX_m, cDemoGoalY_m, cDemoGoalZ_m);
+    const uint8_t cReleaseTime_s = 10;
   } // namespace goal_constants
 
   /**
