@@ -11,8 +11,6 @@ namespace control_data
   struct CommandData
   {
 
-    std::vector<jointRad_t> mTheta_;
-    jointVel_t mSpeedFactor_;
     /**
      * @brief Construct a new command Data struct
      * @param aTheta
@@ -49,5 +47,9 @@ namespace control_data
     jointVel_t& getSpeedFactor();
 
     CommandData& operator=(const CommandData&) = default;
+
+      private:
+    std::vector<jointRad_t> mTheta_;
+    jointVel_t mSpeedFactor_;
   };
 } // namespace control_data

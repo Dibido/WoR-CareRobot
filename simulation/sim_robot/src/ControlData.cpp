@@ -5,14 +5,15 @@ namespace control_data
 {
 
   control_data::CommandData::CommandData(std::vector<jointRad_t> aTheta,
-                                 jointVel_t aSpeedFactor)
+                                         jointVel_t aSpeedFactor)
       : mTheta_(aTheta), mSpeedFactor_(aSpeedFactor)
   {
-    if (mSpeedFactor_ < 0 ||
+    if (mSpeedFactor_ < robotcontrollerplugin::cMinSpeedfactor ||
         mSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
     {
       throw std::invalid_argument(
-          "mSpeedFactor_ must be between 0.0 and " +
+          "mSpeedFactor_ must be between: " +
+          std::to_string(robotcontrollerplugin::cMinSpeedfactor) + " and " +
           std::to_string(robotcontrollerplugin::cMaxSpeedfactor) + ": " +
           std::to_string(mSpeedFactor_));
     }
@@ -48,15 +49,16 @@ namespace control_data
   }
   jointVel_t& control_data::CommandData::getSpeedFactor()
   {
-    if (mSpeedFactor_ < 0 ||
+    if (mSpeedFactor_ < robotcontrollerplugin::cMinSpeedfactor ||
         mSpeedFactor_ > robotcontrollerplugin::cMaxSpeedfactor)
     {
       throw std::invalid_argument(
-          "mSpeedFactor_ must be between 0.0 and " +
+          "mSpeedFactor_ must be between: " +
+          std::to_string(robotcontrollerplugin::cMinSpeedfactor) + " and " +
           std::to_string(robotcontrollerplugin::cMaxSpeedfactor) + ": " +
           std::to_string(mSpeedFactor_));
     }
     return mSpeedFactor_;
   }
 
-} // namespace data
+} // namespace control_data

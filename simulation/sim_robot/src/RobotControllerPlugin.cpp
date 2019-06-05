@@ -112,11 +112,11 @@ namespace gazebo
   {
     control_data::CommandData lCommand(aMsg->theta, aMsg->sf);
 
-    ROS_DEBUG("Received command: %f", lCommand.mTheta_);
+    ROS_DEBUG("Received command: %f", lCommand.getTheta());
 
     std::vector<commands::Command> thetaContainer = {};
 
-    mParser.parseCommandTheta(lCommand.mTheta_, lCommand.mSpeedFactor_,
+    mParser.parseCommandTheta(lCommand.getTheta(), lCommand.getSpeedFactor(),
                               thetaContainer);
     if (!this->mStop)
     {
