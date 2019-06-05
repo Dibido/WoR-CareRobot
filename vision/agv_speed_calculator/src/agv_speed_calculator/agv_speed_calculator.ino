@@ -49,7 +49,7 @@ unsigned long gMeasurementMillis[gMaxNumberOfMeasurements + 1] = {0};
 // The length beween the lines to be detected
 const unsigned int gLengthBetweenMeasurements = 50;
 // Amount of ms the tracker sensor needs to return true for the signal to be considered valid.
-const unsigned long gMinIntervalTimeMs = 75;
+const unsigned long gMinIntervalTimeMs = 50;
 
 void sendEstimatedSpeed(double aEstimatedSpeed);
 
