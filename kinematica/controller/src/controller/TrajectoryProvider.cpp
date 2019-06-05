@@ -97,11 +97,11 @@ namespace controller
                           planning::cConversionFromMetersToCentimeters),
         static_cast<long>(aGoal.cZ_m *
                           planning::cConversionFromMetersToCentimeters));
-    planning::Path path = aContext->astar()->search(lStart, lGoal);
-    ROS_ASSERT_MSG(path.empty() == false,
+    planning::Path lPath = aContext->astar()->search(lStart, lGoal);
+    ROS_ASSERT_MSG(lPath.empty() == false,
                    "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
                    lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
-    return path;
+    return lPath;
   }
 
 } // namespace controller
