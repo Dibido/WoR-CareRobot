@@ -1,6 +1,5 @@
-#include "userinterface/mainwindow.hpp"
 #include "ros/ros.h"
-#include "std_msgs/String.h"
+#include "userinterface/mainwindow.hpp"
 #include <QApplication>
 
 int main(int argc, char* argv[])

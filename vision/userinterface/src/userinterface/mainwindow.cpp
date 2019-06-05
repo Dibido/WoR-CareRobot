@@ -1,7 +1,5 @@
 #include "userinterface/mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include <QDebug>
-#include <QProcess>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -27,7 +25,8 @@ void MainWindow::on_water_btn_clicked()
     QPixmap lPix(":/new/icons/Cross.png");
     QIcon lIcon(lPix);
     ui->water_btn->setIcon(lIcon);
-    ui->water_btn->setIconSize(QSize(130, 130));
+    ui->water_btn->setIconSize(QSize(Ui::ui_constants::cross_btn_size,
+                                     Ui::ui_constants::cross_btn_size));
     ui->water_btn->setText(QString("Laat beker los"));
     qApp->processEvents();
     return;
@@ -81,7 +80,8 @@ void MainWindow::on_water_btn_clicked()
     QPixmap lPix(":/new/icons/Glas_water.png");
     QIcon lIcon(lPix);
     ui->water_btn->setIcon(lIcon);
-    ui->water_btn->setIconSize(QSize(130, 130));
+    ui->water_btn->setIconSize(QSize(Ui::ui_constants::water_btn_size,
+                                     Ui::ui_constants::water_btn_size));
     ui->water_btn->setText(QString("Beker water"));
   }
 }

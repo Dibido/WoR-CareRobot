@@ -11,7 +11,18 @@
 namespace Ui
 {
   class MainWindow;
-}
+
+  namespace ui_constants
+  {
+    // Water button icon size
+    const uint8_t water_btn_size = 130;
+
+    // Cross button icon size
+    const uint8_t cross_btn_size = 130;
+
+  } // namespace ui_constants
+
+} // namespace Ui
 
 /**
  * @brief MainWindow class which features the functionality for the MainWindow
