@@ -19,7 +19,7 @@ J4 : subst([theta=t_4, alpha=%pi/2, a=0.0825, d=0],  Denavit);
 J5 : subst([theta=t_5, alpha=-%pi/2, a=-0.0825, d=0.384], Denavit);
 J6 : subst([theta=t_6, alpha=%pi/2, a=0, d=0], Denavit);
 J7 : subst([theta=t_7, alpha=%pi/2, a=0.088, d=0],  Denavit);
-FL : subst([theta=0,   alpha=0, a=0, d=0.107], Denavit);
+FL : subst([theta=0,   alpha=0, a=0, d=0.257], Denavit);
 
 T : J1 . J2 . J3 . J4 . J5 . J6 . J7 . FL;
 

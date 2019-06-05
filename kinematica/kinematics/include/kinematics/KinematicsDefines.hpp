@@ -19,8 +19,8 @@ namespace kinematics
   const std::size_t cIkMaxIterations = 5000;
   const std::size_t cDhTransformPosRadSplit = 3;
 
-  const std::array<std::size_t, 1> cInvertedJoints = {
-    6
+  const std::array<std::size_t, 0> cInvertedJoints = {
+    // 6
   }; /// All joints in this array must be inverted before and after
      /// running inverseKinematics and before running forwardKinematics in the
      /// interface IConfigurationProvider

@@ -84,8 +84,8 @@ namespace kinematics
     DenavitHartenberg denavitHartenberg;
 
     const auto endEffector = denavitHartenberg.forwardKinematicsYPR(bigTheta);
-    const Matrix<double, 6, 1> expectedEndEffector{ 0.088, 0.0, 0.9259999999,
-                                                    0.0,   0.0, 3.141592653 };
+    const Matrix<double, 6, 1> expectedEndEffector{ 0.088, 0.0, 0.7759999999,
+                                                    0.0,   0.0, -3.141592653 };
 
     EXPECT_EQ(true, equals(expectedEndEffector,
                            denavitHartenberg.forwardKinematicsYPR(bigTheta),
