@@ -25,6 +25,7 @@
 
 /*
  * @author Wouter van Uum
+ * @author Thomas de Winkel
  * @brief Used to store a position
  */
 struct Position
@@ -73,7 +74,8 @@ namespace gazebo
 
     /**
      * @brief virtual interface
-     * @param aAgvSpeed: The speed that has been calculated
+     * @param aAgvSpeed: The speed that has been calculated and sent to the
+     * topic
      */
     void parseAgvSpeed(const agv_parser::AgvSpeed& aAgvSpeed) override;
 
