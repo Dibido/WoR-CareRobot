@@ -27,7 +27,7 @@ namespace controller
                             ros::Time::now().toSec() - cWaitTime_s);
     uint64_t lMovementDuration_ns = mGripperCloseTime.toNSec() -
                                     ros::Time::now().toNSec() -
-                                    (uint64_t)(cWaitTime_s * nano_s_to_s);
+                                    (uint64_t)(cWaitTime_s * cS_to_nano_s);
     if (lDuration > ros::Duration(0))
     {
       std::this_thread::sleep_for(

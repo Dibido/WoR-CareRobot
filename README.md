@@ -28,3 +28,133 @@ Code coverage results can be found in the following folder:
 ```
 ${ROS_WORKSPACE}/build/${PACKAGE_NAME}/${PACKAGE_NAME}_coverage
 ```
+
+## Simulation install guide
+
+1. First install the required libraries:
+```
+sudo apt install libsdl2-dev
+```
+Not found error :
+```
+sudo apt install libSDL2-dev
+```
+Unmet dependency error:
+```
+sudo apt-get install aptitude
+sudo aptitude install libsdl2-dev
+```
+2. Clone kinect repo:
+```
+git clone https://github.com/OpenKinect/libfreenect2.git
+cd libfreenect2
+sudo apt-get install build-essential cmake pkg-config
+sudo apt-get install libusb-1.0-0-dev
+sudo apt-get install libturbojpeg0-dev
+sudo apt-get install libglfw3-dev
+sudo apt-get install libopenni2-dev
+```
+3. Execute in libfreenect2 root directory:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
+make
+make install
+```
+
+4. Franka Panda requires the following library to work:
+
+```
+sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
+cd ~
+git clone --recursive https://github.com/frankaemika/libfranka
+cd libfranka
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+catkin_make -DFranka_DIR:PATH=~/libfranka/build
+```
+5. edit the Cmakelists:
+```
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(Eigen3 REQUIRED)
+find_package(Franka 0.3.0 REQUIRED)
+ 
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  SYSTEM ${EIGEN3_INCLUDE_DIRS}
+)
+ 
+catkin_package(
+  LIBRARIES franka_state_controller franka_control_services
+)
+```
+5.1 If you want to add an executable:
+```
+target_link_libraries( %executableName% ${catkin_LIBRARIES} ${Franka_LIBRARIES})
+```
+6. execute:
+```
+sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
+```
+7. Navigate to git repo and execute:
+```
+git submodule init
+git submodule update
+```
+
+## Running simulation guide
+
+
+1. Navigate to catkin workspace and execute:
+```
+catkin_make
+source devel/setup.bash
+```
+2. Running simulation example
+```
+
+roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.launch
+``
+3. Running simulation
+```
+roslaunch sim_world world.launch
+```
+4. Possible launch options
+
+```
+ al5d.world
+ franka.world
+ franka_agv.world
+ franka_empty.world
+ child_with_lidar.world
+current_sim_world.world
+```
+
+5. Possible launch arguments
+
+```
+all_nodes
+paused
+verbose    
+world 
+```
+6. Running simulation with argument example
+```
+roslaunch sim_world world.launch paused:=true
+```
+
+## Available Packages
+
+| Package               | Description                           |
+|-----------------------|---------------------------------------|
+| sim_agv               | AGV model plugin                      |
+| sim_cup               | cup model plugin                      |
+| sim_kinect            | kinect model plugin                   |
+| sim_lidar             | lidar model plugin                    |
+| sim_robot             | cup model plugin                      |
+| sim_sonar             | sonar model plugin                    |
+| [gazebo_grasp_plugin] | Plugin which helps grasping in Gazebo |
+
+Every package has its own README for further instructions

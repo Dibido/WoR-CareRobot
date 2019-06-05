@@ -43,6 +43,14 @@ namespace lidar_application
   void DataHandler::dataReceiveCallback(
       const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage)
   {
+    if (aLidarDataMessage->distances.size() !=
+        aLidarDataMessage->measurement_angles.size())
+    {
+      throw std::logic_error(
+          "dataReceiveCallback: distances.size and measurement_angles.size of "
+          "aLidarDataMessage must be equal");
+    }
+
     mNewDataAvailable = true;
 
     mLidarData.reset();

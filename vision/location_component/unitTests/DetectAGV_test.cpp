@@ -41,7 +41,7 @@ TEST(DetectAGVSuite, ContoursMatSize)
                                              lAGVFrameCalibration);
 
   std::vector<cv::Point> lContours(1);
-  lAGVDetector.getContoursMat(lImage, lContours);
+  lAGVDetector.getContourMat(lImage, lContours);
 
   // The square has 4 corners
   EXPECT_EQ(4, lContours.size());
