@@ -147,6 +147,11 @@ void loop()
           Serial.println(gCurrentSpeed, 8);
           sendEstimatedSpeed(gCurrentSpeed);
         }
+        else
+        {
+          // Wait with getting a new measurement until the end of the signal
+          delay(100);
+        }
       }
     }
     else
