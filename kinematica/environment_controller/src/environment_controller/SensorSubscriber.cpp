@@ -39,5 +39,6 @@ namespace environment_controller
 
   void SensorSubscriber::provideSensor(const Sensor& aSensor)
   {
+    mEnvironmentController->registerSensor(aSensor);
   }
 } // namespace environment_controller

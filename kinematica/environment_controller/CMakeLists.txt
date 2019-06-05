@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
   std_msgs
+  tf2
+  tf2_ros
   controller
 )
 
@@ -131,6 +133,7 @@ src/environment_controller/CupSubscriber.cpp
 src/environment_controller/GoalSubscriber.cpp
 src/environment_controller/ReleaseTimeSubscriber.cpp 
 src/environment_controller/SensorSubscriber.cpp
+src/environment_controller/TFHandler.cpp
 )
 
 add_dependencies(lib_environment_controller

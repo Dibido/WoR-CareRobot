@@ -1,45 +1,57 @@
 #include "environment_controller/TFHandler.hpp"
 
-TFHandler::TFHandler() : listener(ros::Duration(10))
+namespace environment_controller
 {
-}
 
-TFHandler::~TFHandler()
-{
-}
+  TFHandler::TFHandler()
+  {
+    tf2_ros::TransformListener lListener(mBuffer);
+  }
 
-void TFHandler::transform(const Position& aPosition, const std::string& aFrame)
-{
-  tf::Transform lTransform;
-  lTransform.setOrigin(
-      tf::Vector3(aPosition.x_m(), aPosition.y_m(), aPosition.z_m()));
-  tf::Quaternion lQ = tf::Quaternion(aPosition.roll, aPosition.pitch,
-                                     aPosition.yaw, position.w);
-  q.normalize();
-  transform.setRotation(q);
-  br.sendTransform(
-      tf::StampedTransform(transform, ros::Time::now(), GLOBAL_FRAME, aFrame));
-}
+  void TFHandler::transform(const Pose& aPose, const std::string& aFrame)
+  {
+    geometry_msgs::TransformStamped lTransformStamped;
 
-Position TFHandler::calculatePosition(const std::string& aFromFrame,
-                                      const std::string& aToFrame)
-{
-  Position lNewPos;
-  Rotation lNewRot;
+    lTransformStamped.header.stamp = ros::Time::now();
+    lTransformStamped.header.frame_id = cGlobalFrame;
+    lTransformStamped.child_frame_id = aFrame;
+    lTransformStamped.transform.translation.x = aPose.position().x_m();
+    lTransformStamped.transform.translation.y = aPose.position().y_m();
+    lTransformStamped.transform.translation.z = aPose.position().z_m();
+    tf2::Quaternion q = tf2::Quaternion(
+        aPose.rotation().roll_rad(), aPose.rotation().pitch_rad(),
+        aPose.rotation().yaw_rad(), aPose.rotation().quaternion());
 
-  tf::StampedTransform lTransform;
-  // Will throw exception if can't parse within time
-  ros::Time lNow = ros::Time::now();
-  listener.lookupTransform(aToFrame, aFromFrame, ros::Time(0), transform);
+    q.normalize();
 
-  lNewPos.posX = lTransform.getOrigin().getX();
-  lNewPos.posY = lTransform.getOrigin().getY();
-  lNewPos.posZ = lTransform.getOrigin().getZ();
+    lTransformStamped.transform.rotation.x = q.x();
+    lTransformStamped.transform.rotation.y = q.y();
+    lTransformStamped.transform.rotation.z = q.z();
+    lTransformStamped.transform.rotation.w = q.w();
 
-  // tf::Quaternion lQ = lTransform.getRotation();
-  lNewRot.roll_rad() = lTransform.getOrigin().x();
-  lNewRot.pitch_rad() = lTransform.getOrigin().y();
-  lNewRot.yaw_rad() = lTransform.getOrigin().z();
-  lNewRot.quaternion() = lTransform.getOrigin().w();
-  return newPos;
-}
+    mBroadcaster.sendTransform(lTransformStamped);
+  }
+
+  Pose TFHandler::calculatePosition(const std::string& aFromFrame,
+                                    const std::string& aToFrame)
+  {
+
+    geometry_msgs::TransformStamped lTransformStamped;
+
+    ros::Time lNow = ros::Time::now();
+    lTransformStamped =
+        mBuffer.lookupTransform(aToFrame, aFromFrame, ros::Time(0));
+
+    Position lPosition(lTransformStamped.transform.translation.x,
+                       lTransformStamped.transform.translation.y,
+                       lTransformStamped.transform.translation.z);
+    Rotation lRotation(lTransformStamped.transform.rotation.x,
+                       lTransformStamped.transform.rotation.y,
+                       lTransformStamped.transform.rotation.z,
+                       lTransformStamped.transform.rotation.w);
+    Pose lPose(lPosition, lRotation);
+
+    return lPose;
+  }
+
+} // namespace environment_controller

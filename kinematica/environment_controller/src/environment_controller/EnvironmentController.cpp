@@ -1,13 +1,14 @@
 #include "environment_controller/EnvironmentController.hpp"
 #include "controller/EmergencyStop.hpp"
 #include "environment_controller/SafetyController.hpp"
+#include "environment_controller/TFHandler.hpp"
 
 #include <thread>
 namespace environment_controller
 {
   EnvironmentController::EnvironmentController(
       const std::shared_ptr<controller::Context>& aContext)
-      : mContext(aContext)
+      : mContext(aContext), tfHandler(std::make_shared<TFHandler>())
   {
   }
 
@@ -43,6 +44,8 @@ namespace environment_controller
   void EnvironmentController::registerSensor(const Sensor& aSensor)
   {
     mSensors.at(aSensor.sensorID()) = aSensor.pose();
+    tfHandler->transform(aSensor.pose(),
+                         cSensorFrame + std::to_string(aSensor.sensorID()));
   }
 
   const Sensor& EnvironmentController::getSensor(const uint8_t aSensorID) const

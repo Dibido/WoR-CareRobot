@@ -17,6 +17,7 @@
 #include "controller/Context.hpp"
 #include "environment_controller/Cup.hpp"
 #include "environment_controller/Sensor.hpp"
+#include "environment_controller/TFHandler.hpp"
 #include "ros/ros.h"
 
 namespace environment_controller
@@ -77,6 +78,7 @@ namespace environment_controller
 
       private:
     std::shared_ptr<controller::Context> mContext;
+    std::shared_ptr<TFHandler> tfHandler;
     std::map<uint8_t, Pose> mSensors;
   };
 } // namespace environment_controller
