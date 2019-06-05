@@ -11,6 +11,12 @@ namespace webcam_driver
   class WebcamDriver
   {
       public:
+    /**
+     * @brief Creates a webcam driver instance.
+     *
+     * @param aWebcamId The webcam ID of the webcam to connect to.
+     *                  On Linux, this corresponds to the device /dev/video<id>
+     */
     WebcamDriver(unsigned int aWebcamId);
     ~WebcamDriver();
     /*
@@ -27,6 +33,9 @@ namespace webcam_driver
     cv::Mat captureFrame();
 
       private:
+    /**
+     * @brief The OpenCV webcam device.
+     */
     cv::VideoCapture mWebcamDevice;
   };
 } // namespace webcam_driver

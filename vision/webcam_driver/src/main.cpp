@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
   if (lDebug)
   {
-    cv::namedWindow("a", cv::WINDOW_AUTOSIZE);
+    cv::namedWindow("WebcamDriver debug", cv::WINDOW_AUTOSIZE);
   }
   cv::Mat lFrame;
   while (ros::ok())
@@ -62,11 +62,13 @@ int main(int argc, char** argv)
 
     if (lDebug)
     {
-      cv::imshow("a", lWebcamDriver.captureFrame());
+      cv::imshow("WebcamDriver debug", lWebcamDriver.captureFrame());
     }
 
+    // Wait for 1000 / refresh rate milliseconds.
     int lChar = cv::waitKey(1000 / webcam_driver_constants::cRefreshRate);
-    if (lChar == 27)
+    const int lKeycodeEscape = 27;
+    if (lChar == lKeycodeEscape)
     {
       break;
     }
