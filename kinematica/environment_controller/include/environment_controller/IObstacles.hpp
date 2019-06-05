@@ -9,8 +9,9 @@ namespace environment_controller
   /**
    * @brief the class of the interface obstacle
    * @pre a sensor detected an potential obstacle
-   * @post the obstacle will be checked if it is in range of the robotarm, if
-   * this is the case the robotarm will stop
+   * @post the obstacles will be sent over an ROS::TOPIC after this the obstacle
+   * will be checked if it is in range of the robotarm, if this is the case the
+   * robotarm will stop
    * @see Object.hpp for correct values
    */
   class IObstacles
@@ -29,11 +30,11 @@ namespace environment_controller
     virtual ~IObstacles() = default;
 
     /**
-     * @brief virtual interface
+     * @brief the function to implement for the interface
      *
      * @param aObstacles The obstacles that are found
      */
-    virtual void parseObstacles(const Obstacles& aObstacles) = 0;
+    virtual void passObstacles(const Obstacles& aObstacles) = 0;
   };
 } // namespace environment_controller
 

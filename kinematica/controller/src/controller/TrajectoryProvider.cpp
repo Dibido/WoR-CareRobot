@@ -1,5 +1,5 @@
-#include "controller/ControllerConsts.hpp"
 #include "controller/TrajectoryProvider.hpp"
+#include "controller/ControllerConsts.hpp"
 
 namespace controller
 {
@@ -13,14 +13,9 @@ namespace controller
       std::queue<kinematics::Configuration>& aTrajectory)
   {
     ROS_ASSERT_MSG(aTrajectory.empty() == true, "Queue is not empty");
-    kinematics::Configuration lConfiguration =
-        aContext->configurationProvider()->inverseKinematics(
-            aTargetLocation, aContext->configuration());
 
-    ROS_ASSERT_MSG(lConfiguration.result() == true,
-                   "Target end effector is unreachable");
     planning::Path lRequiredPath = findPath(aContext, aTargetLocation);
-    lConfiguration = aContext->configuration();
+    kinematics::Configuration lConfiguration = aContext->configuration();
     ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
 
     // Start at 1 because first node is start position

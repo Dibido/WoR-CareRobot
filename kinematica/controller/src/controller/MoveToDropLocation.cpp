@@ -1,25 +1,16 @@
-#include "controller/Move.hpp"
+#include "controller/MoveToDropLocation.hpp"
 #include "controller/ControllerConsts.hpp"
-#include "controller/Init.hpp"
-#include "controller/ReleaseCup.hpp"
-#include "controller/WaitForCup.hpp"
-#include "kinematics/EndEffector.hpp"
-#include "robotcontroller/RobotControlPublisher.hpp"
-#include <iostream>
-#include <ros/ros.h>
-#include <ros/time.h>
+#include "controller/WaitForReleaseSignal.hpp"
 
+#include <thread>
 namespace controller
 {
-  Move::Move(){};
+  MoveToDropLocation::MoveToDropLocation(){};
 
-  Move::~Move(){};
-
-  void Move::entryAction(Context* aContext)
+  void MoveToDropLocation::entryAction(Context* aContext)
   {
     kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
-        aContext->cup().object().position().x_m(),
-        aContext->cup().object().position().y_m(),
+        aContext->dropPosition().x_m(), aContext->dropPosition().y_m(),
         aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
@@ -27,13 +18,13 @@ namespace controller
     mArrivalTime = ros::Time::now();
   }
 
-  void Move::doActivity(Context* aContext)
+  void MoveToDropLocation::doActivity(Context* aContext)
   {
     if (mArrivalTime.sleepUntil(mArrivalTime))
     {
       if (mTrajectory.size() == 0)
       {
-        aContext->setState(std::make_shared<WaitForCup>());
+        aContext->setState(std::make_shared<WaitForReleaseSignal>());
         return;
       }
       else
@@ -54,11 +45,12 @@ namespace controller
     }
   }
 
-  void Move::exitAction(Context*)
+  void MoveToDropLocation::exitAction(Context* aContext)
   {
     while (mTrajectory.empty() == false)
     {
       mTrajectory.pop();
     }
   }
+
 } // namespace controller
