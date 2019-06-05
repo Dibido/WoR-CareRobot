@@ -13,8 +13,7 @@
 
 #include <stdexcept>
 
-#include "environment_controller/Position.hpp"
-#include "environment_controller/Rotation.hpp"
+#include "environment_controller/Pose.hpp"
 #include "ros/ros.h"
 
 namespace environment_controller
@@ -29,27 +28,17 @@ namespace environment_controller
     /**
      * @brief Construct a new Sensor object
      *
-     * @param aPosition Position data struct
-     * @param aRotation Rotation data struct
+     * @param aPose See Pose.hpp
      * @param aSensorID
      */
-    Sensor(const Position& aPosition,
-           const Rotation& aRotation,
-           const uint8_t aSensorID);
+    Sensor(const uint8_t aSensorID, const Pose& aPose);
     /**
      * @brief Getter & setter
      *
-     * @return Position&
+     * @return Pose&
      */
-    Position& position();
-    const Position& position() const;
-    /**
-     * @brief Getter & setter
-     *
-     * @return Rotation&
-     */
-    Rotation& rotation();
-    const Rotation& rotation() const;
+    Pose& pose();
+    const Pose& pose() const;
     /**
      * @brief Getter & setter
      *
@@ -59,8 +48,7 @@ namespace environment_controller
     const uint8_t& sensorID() const;
 
       private:
-    Position mPosition;
-    Rotation mRotation;
+    Pose mPose;
     uint8_t mSensorID;
   };
 } // namespace environment_controller

@@ -11,9 +11,12 @@
 #ifndef ENVIRONMENT_CONTROLLER_HPP
 #define ENVIRONMENT_CONTROLLER_HPP
 
+#include <map>
+
 #include "IObstacles.hpp"
 #include "controller/Context.hpp"
 #include "environment_controller/Cup.hpp"
+#include "environment_controller/Sensor.hpp"
 #include "ros/ros.h"
 
 namespace environment_controller
@@ -68,8 +71,13 @@ namespace environment_controller
      */
     void provideReleaseTime(const uint8_t aReleaseTime_s);
 
+    void registerSensor(const Sensor& aSensor);
+
+    const Sensor& getSensor(const uint8_t aSensorID) const;
+
       private:
     std::shared_ptr<controller::Context> mContext;
+    std::map<uint8_t, Pose> mSensors;
   };
 } // namespace environment_controller
 

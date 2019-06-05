@@ -25,7 +25,9 @@ namespace environment_controller
       Rotation lRot(aMsg->pose.orientation.x, aMsg->pose.orientation.y,
                     aMsg->pose.orientation.z, aMsg->pose.orientation.z);
 
-      Sensor lSensor(lPos, lRot, 0);
+      Pose lPose(lPos, lRot);
+
+      Sensor lSensor(0, lPose);
 
       provideSensor(lSensor);
     }

@@ -39,4 +39,17 @@ namespace environment_controller
   {
     mContext->provideReleaseTime(aReleaseTime_s);
   }
+
+  void EnvironmentController::registerSensor(const Sensor& aSensor)
+  {
+    mSensors.at(aSensor.sensorID()) = aSensor.pose();
+  }
+
+  const Sensor& EnvironmentController::getSensor(const uint8_t aSensorID) const
+  {
+    Sensor lSensor(mSensors.find(aSensorID)->first,
+                   mSensors.find(aSensorID)->second);
+
+    return lSensor;
+  }
 } // namespace environment_controller
