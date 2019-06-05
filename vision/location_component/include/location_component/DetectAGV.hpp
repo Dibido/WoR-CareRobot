@@ -4,13 +4,12 @@
 #include "location_component/AGV.hpp"
 #include "location_component/AGVFrameCalibration.hpp"
 #include "location_component/CupScanner.hpp"
+#include "location_component/FrameCalibration.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
-#include "location_component/FrameCalibration.hpp"
 
-#include "location_component/DetectedFrame.hpp"
 #include "location_component/DetectedAGV.hpp"
-
+#include "location_component/DetectedFrame.hpp"
 
 #include <boost/optional.hpp>
 #include <iostream>
@@ -26,8 +25,25 @@ namespace location_component
   class DetectAGV
   {
       public:
-    DetectAGV(CupDetectionCalibration& aCalibration, AGVFrameCalibration& aAGVFrameCalibration);
-    DetectAGV(ros::NodeHandle& nh, CupDetectionCalibration& aCalibration, AGVFrameCalibration& aAGVFrameCalibration);
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
+    DetectAGV(CupDetectionCalibration& aCalibration,
+              AGVFrameCalibration& aAGVFrameCalibration);
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param nh The node handle to be used for creating the cup location
+     * publisher.
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
+    DetectAGV(ros::NodeHandle& nh,
+              CupDetectionCalibration& aCalibration,
+              AGVFrameCalibration& aAGVFrameCalibration);
     ~DetectAGV();
 
     /**
@@ -38,7 +54,7 @@ namespace location_component
 
     /**
      * @brief The detectFrame function will analyse the frame and decide what
-     * the current position is of the agv.
+     * the current position is of the AGV.
      *
      * @pre -
      * @post The captured view of the AGV/cups has been written to displayFrame.
@@ -56,7 +72,7 @@ namespace location_component
      * @brief This function will create a correct perspective image. If the
      * webcam is tilted it will correct the perspective.
      *
-     * @param aFrame - This matrix is the input image of the agv
+     * @param aFrame - This matrix is the input image of the AGV
      * @return boost::optional<DetectedAGV> - This param will only return if
      * there is an AGV detected. There can only be made a perspective image if
      * there is an AGV detected.
@@ -81,10 +97,11 @@ namespace location_component
      * @brief Get the Contours Mat object
      *
      * @param aSourceMat - The matrix to get the contour of
-     * @param aContours - A reference of a vector with all the found points of the contour
+     * @param aContours - A reference of a vector with all the found points of
+     * the contour
      */
     void getContourMat(const cv::Mat& aSourceMat,
-                        std::vector<cv::Point>& aContours) const;
+                       std::vector<cv::Point>& aContours) const;
 
     /**
      * @brief This function will return the midpoint of a contour aka a vector

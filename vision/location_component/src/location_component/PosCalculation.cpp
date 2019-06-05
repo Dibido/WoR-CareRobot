@@ -7,7 +7,8 @@
 namespace location_component
 {
 
-  PosCalculation::PosCalculation(CupDetectionCalibration aCalibration /* = Calibration()*/)
+  PosCalculation::PosCalculation(
+      CupDetectionCalibration aCalibration /* = Calibration()*/)
       : mCalibration(aCalibration)
   {
   }

@@ -223,13 +223,13 @@ namespace location_component
   }
 
   void DetectAGV::getContourMat(const cv::Mat& aSourceMat,
-                                 std::vector<cv::Point>& aContoursPoly) const
+                                std::vector<cv::Point>& aContoursPoly) const
   {
     std::vector<std::vector<cv::Point>> lContours;
     cv::Mat lMatDes;
 
     mFrameCalibration.removeEverythingButAGV(aSourceMat, lMatDes);
-    
+
     // cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
     //             lMatDes);
     cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
@@ -252,8 +252,8 @@ namespace location_component
     }
 
     // Copy the right rectengle tot contour_poly
-    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly, cEpsilon,
-                 true);
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly,
+                 cEpsilon, true);
   }
 
   cv::Point
