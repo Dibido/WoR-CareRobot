@@ -33,8 +33,10 @@ include_directories(
         ${GAZEBO_INCLUDE_DIRS}
         ${catkin_INCLUDE_DIRS})
 
-add_library(${PROJECT_NAME}_plugin SHARED
-        src/KinectPlugin.cpp)
+add_library(${PROJECT_NAME}_plugin SHARED src/KinectPlugin.cpp 
+                                          ../../kinematica/environment_controller/include/environment_controller/IObstacles.hpp 
+                                          ../../kinematica/controller/include/environment_controller/Position.hpp
+                                          ../../kinematica/controller/include/environment_controller/object.hpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin
         ${GAZEBO_LIBRARIES}
