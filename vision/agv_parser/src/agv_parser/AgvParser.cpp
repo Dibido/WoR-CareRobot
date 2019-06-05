@@ -23,7 +23,7 @@ agv_parser::AgvParser::AgvParser(std::string aPort)
 {
   // Set up serial
   mSerialPort = aPort;
-  mSerial.set_option(boost::asio::serial_port_base::baud_rate(9600));
+  mSerial.set_option(boost::asio::serial_port_base::baud_rate(115200));
   // Set up ROS
   // Create a ros NodeHandle
   mRosNode = std::make_unique<ros::NodeHandle>();

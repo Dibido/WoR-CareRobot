@@ -111,7 +111,7 @@ void loop()
         gAmountOfOns++;
         // If we detected 2 lines, we've measured 1 interval, 3 - 2 etc...
         gAmountOfMeasurementsTaken = gAmountOfOns - 1;
-
+  
         Serial.print("Lines measured : ");
         Serial.println(gAmountOfOns);
 
