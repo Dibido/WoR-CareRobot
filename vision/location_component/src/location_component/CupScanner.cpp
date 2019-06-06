@@ -33,11 +33,14 @@ namespace location_component
 
     cv::Mat lGrayscale, lHSV;
     aImage.copyTo(lGrayscale);
-    aImage.copyTo(lHSV);
+    // aImage.copyTo(lHSV);
+
+    cvtColor(aImage, lHSV, CV_BGR2HSV);
 
     cv::Mat lEdgesRaw, lEdges;
     cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
 
+    imshow("joeyjoey2", lEdgesRaw);
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
         [](uchar& s, __attribute__((unused)) const int position[]) {

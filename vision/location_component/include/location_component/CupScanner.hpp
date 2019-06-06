@@ -14,11 +14,11 @@ namespace location_component
   /**
    * @brief The minimum HSV color value of the AGV.
    */
-  const cv::Scalar cMinAGVHSVColor = cv::Scalar(0, 0, 0);
+  const cv::Scalar cMinAGVHSVColor = cv::Scalar(70, 130, 0);
   /**
    * @brief The maximum HSV color value of the AGV.
    */
-  const cv::Scalar cMaxAGVHSVColor = cv::Scalar(255, 255, 30);
+  const cv::Scalar cMaxAGVHSVColor = cv::Scalar(170, 255, 255);
   /**
    * @brief Information of the detected cups in a object.
    *
