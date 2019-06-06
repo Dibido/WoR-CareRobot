@@ -13,6 +13,8 @@ namespace environment_controller
                                       this)),
         mEnvironmentController(aController)
   {
+    mTimer =
+        mHandle.createTimer(ros::Duration(0.1), &SensorSubscriber::test, this);
   }
 
   void SensorSubscriber::sensorCallback(
@@ -40,5 +42,36 @@ namespace environment_controller
   void SensorSubscriber::provideSensor(const Sensor& aSensor)
   {
     mEnvironmentController->registerSensor(aSensor);
+
+    /*
+    Pose lPose = mEnvironmentController->transformFrames(0);
+
+    std::cout << lPose.position().x_m() << " " << lPose.position().y_m() << " "
+              << lPose.position().z_m() << std::endl;
+    std::cout << lPose.rotation().roll_rad() << " "
+              << lPose.rotation().pitch_rad() << " "
+              << lPose.rotation().yaw_rad() << " "
+              << lPose.rotation().quaternion() << std::endl;
+              */
   }
+
+  void SensorSubscriber::test(const ros::TimerEvent&)
+  {
+    // try
+    // {
+    Pose lPose = mEnvironmentController->transformFrames(0);
+
+    // std::cout << lPose.position().x_m() << " " << lPose.position().y_m()
+    //           << " " << lPose.position().z_m() << std::endl;
+    // std::cout << lPose.rotation().roll_rad() << " "
+    //           << lPose.rotation().pitch_rad() << " "
+    //           << lPose.rotation().yaw_rad() << " "
+    //           << lPose.rotation().quaternion() << std::endl;
+    // }
+    // catch (...)
+    // {
+    //   // std::cout << "shet";
+    // }
+  }
+
 } // namespace environment_controller

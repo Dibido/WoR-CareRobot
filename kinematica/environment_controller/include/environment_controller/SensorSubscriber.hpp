@@ -36,6 +36,8 @@ namespace environment_controller
      */
     virtual void provideSensor(const Sensor& aSensor);
 
+    void test(const ros::TimerEvent&);
+
       private:
     /**
      * @brief
@@ -45,7 +47,6 @@ namespace environment_controller
     void sensorCallback(const kinematica_msgs::SensorConstPtr& aMsg);
 
     ros::NodeHandle mHandle;
-    // ros::NodeHandle mCallbackNode;
     ros::Timer mTimer;
     ros::Subscriber mSubscriber;
     std::shared_ptr<EnvironmentController> mEnvironmentController;
