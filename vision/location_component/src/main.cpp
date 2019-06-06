@@ -2,13 +2,13 @@
 
 int main(int argc, char** argv)
 {
-  std::string commandLineArgument = argv[1];
-
-  //This code is used to determine if the user wants to use debug mode
+  // This code is used to determine if the user wants to use debug mode
   bool debugStatus = false;
+
   if (argc == 2)
   {
-    if (commandLineArgument == "-d")
+    std::string lCommandLineArgument = argv[1];
+    if (lCommandLineArgument == "-d")
     {
       debugStatus = true;
     }

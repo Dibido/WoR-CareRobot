@@ -1,8 +1,8 @@
 #ifndef DETECTED_FRAME_HPP
 #define DETECTED_FRAME_HPP
 
-#include "location_component/DetectedAGV.hpp"
 #include "location_component/DetectAGV.hpp"
+#include "location_component/DetectedAGV.hpp"
 
 namespace location_component
 {

@@ -12,12 +12,13 @@
 namespace location_component
 {
   /**
-   * @brief The topic names for receiving webcam frames and AGV positions. Also used to set the component name
+   * @brief The topic names for receiving webcam frames and AGV positions. Also
+   * used to set the component name
    *
    */
   namespace location_component_constants
   {
-    const std::string cWebcamTopic = "/sensor/webcam/img_raw";
+    const std::string cWebcamTopic = "/sensor/webcam";
     const std::string cAGVTopic = "/sensor/agv";
     const std::string cComponentName = "location_component";
     const unsigned int cLoopRate = 10;
@@ -35,11 +36,13 @@ namespace location_component
     ~LocationComponent();
 
     /**
-     * @brief The main run function of the application. This is a blocking function!
+     * @brief The main run function of the application. This is a blocking
+     * function!
      *
-     * @param aCupDetectionCalibration - Config values for to determining what a cup is
+     * @param aCupDetectionCalibration - Config values for to determining what a
+     * cup is
      * @param aAGVFrameCalibration - config values for determining what an AGV
-     * 
+     *
      */
     void runComponent(
         location_component::CupDetectionCalibration& aCupDetectionCalibration,
@@ -54,14 +57,15 @@ namespace location_component
 
       private:
     /**
-     * @brief A shared pointer of the AGV object for the different components that make use of it
+     * @brief A shared pointer of the AGV object for the different components
+     * that make use of it
      *
      */
     std::shared_ptr<location_component::DetectAGV> mDetectAGV;
 
     /**
      * @brief The node handler used for the different ros topics
-     * 
+     *
      */
     ros::NodeHandle& mNodeHandle;
   };

@@ -1,8 +1,8 @@
 // Bring in gtest
 #include "ImagePath.hpp"
-#include "location_component/DetectAGV.hpp"
 #include "location_component/AGVFrameCalibration.hpp"
 #include "location_component/CupDetectionCalibration.hpp"
+#include "location_component/DetectAGV.hpp"
 
 #include <gtest/gtest.h>
 #include <opencv2/core/core.hpp>
