@@ -85,6 +85,8 @@ namespace location_component
   {
     boost::optional<DetectedFrame> lDetectedFrame{};
     boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
+
+    // imshow("jouyjou", lDetectedAGV->mAGVFrame);
     if (mCapturedFrame.cols == 0)
     {
       mCapturedFrame = cv::Mat(aFrame.rows, aFrame.cols, CV_8UC3);
@@ -160,11 +162,13 @@ namespace location_component
 
     if (mCalibration.mDebugStatus)
     {
+      cv::Mat debugFrame;
+      aFrame.copyTo(debugFrame);
       for (int i = 0; i < lContours.size(); i++)
-        circle(aFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
+        circle(debugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
                CV_RGB(100, 0, 0), -1, 8, 0);
 
-      imshow("DetectAGV debug window", aFrame);
+      imshow("DetectAGV debug window", debugFrame);
     }
 
     // Getting the middle point of the rect and draw this point
@@ -206,6 +210,8 @@ namespace location_component
 
       lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
+      imshow("joyjoey", lDetectedAGV.mAGVFrame);
+
       std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
       lPoints.push_back(getMidPoint(lContoursWithPerspectiveCorrection));
 
@@ -239,8 +245,6 @@ namespace location_component
 
     mFrameCalibration.removeEverythingButAGV(aSourceMat, lMatDes);
 
-    // cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
-    //             lMatDes);
     cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 

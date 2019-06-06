@@ -78,7 +78,7 @@ namespace location_component
     cv::Mat lCompensatedSource;
     cv::Mat lSourceHSV;
     cv::cvtColor(aSource, lSourceHSV, CV_BGR2HSV);
-    
+
     /* gammaCorrection(aSource, lCompensatedSource, 1.0); */
 
     aSource.copyTo(lCompensatedSource);
