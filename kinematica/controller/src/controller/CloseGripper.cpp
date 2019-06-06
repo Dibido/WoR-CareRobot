@@ -41,7 +41,6 @@ namespace controller
     {
       aContext->setState(std::make_shared<MoveToDropLocation>());
     }
-    // std::cout << ros::Time::now()  - mGripperCloseTime << std::endl;
   }
 
   void CloseGripper::exitAction(Context*)
