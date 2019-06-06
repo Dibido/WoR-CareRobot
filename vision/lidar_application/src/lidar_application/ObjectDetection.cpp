@@ -41,13 +41,13 @@ namespace lidar_application
   void ObjectDetection::detectObjects()
   {
     // Checking preconditions
-    if ((mInitialScan.mDistances_m.size() == 0) ||
-        (mMostRecentScan.mDistances_m.size() == 0))
+    if ((mInitialScan.mMeasurements.size() == 0) ||
+        (mMostRecentScan.mMeasurements.size() == 0))
     {
       throw std::logic_error("Preconditions of detectObjects weren't met");
     }
 
-    // Will contain a list of centerpoints of objects [Angle(key) ->
+    // Will contain a list of (front-)centerpoints of objects [Angle(key) ->
     // Distance(value)]
     std::vector<std::pair<double, double>> lObjectList;
 
@@ -67,7 +67,9 @@ namespace lidar_application
 
     double lPreviousDistance_m = 0.0;
 
-    for (size_t i = 0; i < mMostRecentScan.mDistances_m.size(); ++i)
+    for (std::map<double, double>::iterator lIt =
+             mMostRecentScan.mMeasurements.begin();
+         lIt != mMostRecentScan.mMeasurements.end(); ++lIt)
     {
       double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
 
@@ -206,12 +208,13 @@ namespace lidar_application
     double lSumAngles = 0.0;
     double lSumDistance_m = 0.0;
 
-    int lSampleSize = static_cast<int>(aData.mAngles.size());
+    int lSampleSize = static_cast<int>(aData.mMeasurements.size());
 
-    for (size_t i = 0; i < aData.mDistances_m.size(); ++i)
+    for (std::map<double, double>::iterator lIt = aData.mMeasurements.begin();
+         lIt != aData.mMeasurements.end(); ++lIt)
     {
-      lSumAngles += aData.mAngles.at(i);
-      lSumDistance_m += aData.mDistances_m.at(i);
+      lSumAngles += lIt->first;
+      lSumDistance_m += lIt->second;
     }
 
     if (lSampleSize > 0)
@@ -221,6 +224,32 @@ namespace lidar_application
     }
 
     return std::make_pair(lAverageAngle, lAverageDistance_m);
+  }
+
+  bool ObjectDetection::isAngleDifferent(
+      std::pair<double, double> aMeasurement) const
+  {
+  }
+
+  std::pair<double, double>
+      ObjectDetection::getSurroundingDistances(const double aAngle) const
+  {
+    if (mInitialScan.mMeasurements.size() == 0)
+    {
+      throw std::logic_error(
+          "Preconditions of getSurroundingDistances not met");
+    }
+
+    const double lLowerNeighbourDistance_m = 0.0;
+    const double lUpperNeighbourDistnace_m = 0.0;
+
+    auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
+
+    // If there doesn't exist a key with a lower value then aAngle:
+    if ((*lIterator).first == mInitialScan.mMeasurements.size() &&
+        (*lIterator).second == 0.0)
+    {
+    }
   }
 
   void ObjectDetection::printPublishData() const

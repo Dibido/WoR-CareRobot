@@ -4,6 +4,7 @@
 #include "lidar_application/DataHandler.hpp"
 #include "lidar_application/LidarData.hpp"
 #include <cmath>
+#include <map>
 #include <math.h>
 #include <vector>
 
@@ -44,8 +45,8 @@ namespace lidar_application
       private:
     /**
      * @brief Detects objects. Uses mInitialScan for comparison.
-     * @pre: mInitialScan is made, mMostRecentScan data is accurate. Size
-     * of all of their vectors must be greather then 0.
+     * @pre: mInitialScan contains valid information (measurents between 0 and
+     * 2*PI radians), mMostRecentScan contains valid data.
      * @post: mDetectedObjects data contains a list of
      * objects, with angle and distance to each centerpoint of an object.
      */
@@ -74,6 +75,31 @@ namespace lidar_application
     std::pair<double, double> getAverageMeasurement(LidarData& aData) const;
 
     /**
+     * @brief Checks whether a measurement is different based on comparison with
+     * mInitialScan. method uses getSurroundingDistances() and compares the
+     * distance of aMeasurement with those. If difference between aMeasurement's
+     * distance and both surrounding distances is greater then
+     * mMaxDistanceDifference_m, the measurement is considered 'different'.
+     * Otherwise, the measurement could very well be in line with the measurents
+     * of mInitialScan and the measurement won't be considered different.
+     * @param aMeasurement - Given measurement (angle in radians, distance in
+     * meters)
+     * @return true if angle is different, false otherwise.
+     */
+    bool isAngleDifferent(std::pair<double, double> aMeasurement) const;
+
+    /**
+     * @brief Function returns the distance of the two angles from mInitialScan
+     * that are the closest (surrounding) the given aAngle value. If
+     * mInitialScan has measurements on angles 0.0 and 1.1, and aAngle is 0.5,
+     * the distances that were measured at 0.0 and 1.1 are returned.
+     * @param aAngle - The given angle in radians
+     * @return std::pair<double, double>
+     */
+    std::pair<double, double>
+        getSurroundingDistances(const double aAngle) const;
+
+    /**
      * @brief Prints out mDetectedObjects
      */
     void printPublishData() const;
@@ -93,9 +119,8 @@ namespace lidar_application
 
     DataHandler mDataHandler;
 
-    // Maximum difference allowed between different measurements for them to be
-    // considered as measurements of the same object. If (0.0 => 1.50 and 1.0
-    // =>)
+    // Maximum difference allowed between adjacent/previous measurements for
+    // them to be considered as measurements of the same object.
     const double mMaxDistanceDifference_m;
   };
 } // namespace lidar_application
