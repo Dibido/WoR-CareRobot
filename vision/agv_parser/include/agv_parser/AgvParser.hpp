@@ -17,6 +17,18 @@
 #include <iostream>
 #include <string>
 
+// Constants for the agv_parser
+namespace agv_parser
+{
+  const std::string cCommandHeader = "#S";
+  const char cCommandDelimiter = '#';
+  const unsigned int cSmallestLegalCommandLength = 4;
+  const char cReturnChar = '\r';
+  const char cNewlineChar = '\n';
+  const std::string cAgvSpeedTopic = "/sensor/agv";
+  const unsigned int cBaudrate = 115200;
+} // namespace agv_parser
+
 namespace agv_parser
 {
   /**
@@ -25,6 +37,11 @@ namespace agv_parser
   class AgvParser : public IAgvSpeedProvider
   {
       public:
+    /**
+     * @brief Construct a new Agv Parser object
+     * @param aPort - The port to use for the serial communcation, default is
+     * /dev/ttyUSB0
+     */
     AgvParser(std::string aPort);
     virtual ~AgvParser();
 
@@ -43,19 +60,22 @@ namespace agv_parser
     std::string readLine();
 
     /**
-     * @brief - Parses the recieved message to a float
+     * @brief - Parses the received message to a float
      */
     float parseRecievedMessage(std::string aRecievedMessage);
 
     /**
      * @brief Implement the AGVSpeed function from the IAgvSpeed interface.
-     * @param aAgvSpeed - The speed recieved from the AGV gateway.
+     * @param aAgvSpeed - The speed received from the AGV gateway.
      */
     virtual void parseAgvSpeed(const AgvSpeed& aAgvSpeed);
 
     // Serial variables
+    // The serial port name (/dev/ttyUSB0)
     std::string mSerialPort;
+    // The io service
     boost::asio::io_service mIoService;
+    // The serial port
     boost::asio::serial_port mSerial;
 
     // Ros variables
