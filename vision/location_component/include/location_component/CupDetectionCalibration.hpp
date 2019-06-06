@@ -6,8 +6,10 @@ namespace location_component
   struct CupDetectionCalibration
   {
     /**
-     * @brief 
-     * 
+     * @brief Construct a new CupDetectionCalibration object
+     *
+     * @param aDebugStatus - This value is used to show the debug status of the
+     * AGV frame calibration
      */
     CupDetectionCalibration(bool aDebugStatus);
 

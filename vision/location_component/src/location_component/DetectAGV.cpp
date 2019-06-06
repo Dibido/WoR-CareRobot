@@ -140,9 +140,6 @@ namespace location_component
             cv::circle(lDisplayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), 0);
           }
-
-          // Disable debug windows for now.
-          // imshow("display ", lDisplayCups);
         }
       }
     }
