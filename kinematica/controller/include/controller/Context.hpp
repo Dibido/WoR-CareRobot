@@ -123,6 +123,7 @@ namespace controller
 
     std::mutex mCurrentStateMutex;
     std::mutex mReleaseMutex;
+    std::mutex mHardStopMutex;
   };
 } // namespace controller
 #endif // Context_HPP

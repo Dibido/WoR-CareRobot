@@ -1,9 +1,10 @@
-#ifndef CALIBRATION_HPP
-#define CALIBRATION_HPP
+#ifndef CUP_DETECTION_CALIBRATION_HPP
+#define CUP_DETECTION_CALIBRATION_HPP
+
 
 namespace location_component
 {
-  struct Calibration
+  struct CupDetectionCalibration
   {
     // Camera position
     float mCameraPosX_m = 0.35f;
@@ -27,6 +28,7 @@ namespace location_component
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
   };
-} // namespace location_component
 
-#endif /* CALIBRATION_HPP */
+}
+
+#endif
