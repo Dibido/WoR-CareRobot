@@ -43,12 +43,28 @@ namespace environment_controller
 
   void EnvironmentController::registerSensor(const Sensor& aSensor)
   {
-    mSensors.at(aSensor.sensorID()) = aSensor.pose();
+    mSensors.insert(std::make_pair(aSensor.sensorID(), aSensor.pose()));
     tfHandler->transform(aSensor.pose(),
                          cSensorFrame + std::to_string(aSensor.sensorID()));
+
+    try
+    {
+
+      Pose lPose = tfHandler->calculatePosition(cGlobalFrame, cSensorFrame);
+
+      std::cout << lPose.position().x_m() << " " << lPose.position().y_m()
+                << " " << lPose.position().z_m() << std::endl;
+      std::cout << lPose.rotation().roll_rad() << " "
+                << lPose.rotation().pitch_rad() << " "
+                << lPose.rotation().yaw_rad() << std::endl;
+    }
+    catch (...)
+    {
+      std::cout << "shet" << std::endl;
+    }
   }
 
-  const Sensor& EnvironmentController::getSensor(const uint8_t aSensorID) const
+  const Sensor EnvironmentController::getSensor(const uint8_t aSensorID) const
   {
     Sensor lSensor(mSensors.find(aSensorID)->first,
                    mSensors.find(aSensorID)->second);

@@ -74,7 +74,7 @@ namespace environment_controller
 
     void registerSensor(const Sensor& aSensor);
 
-    const Sensor& getSensor(const uint8_t aSensorID) const;
+    const Sensor getSensor(const uint8_t aSensorID) const;
 
       private:
     std::shared_ptr<controller::Context> mContext;

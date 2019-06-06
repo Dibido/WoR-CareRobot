@@ -12,6 +12,7 @@ namespace environment_controller
   const std::string cCupTopicName = "/location/cup";
   const std::string cGoalPositionTopicName = "goal";
   const std::string cReleaseTimeTopicName = "release_time";
+  const std::string cSensorTopicName = "sensor";
   const std::string cGlobalFrame = "world";
   const std::string cSensorFrame = "sensor";
   const uint8_t cMaxRange_m = 100;

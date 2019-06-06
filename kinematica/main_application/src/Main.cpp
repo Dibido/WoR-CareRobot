@@ -6,6 +6,7 @@
 #include "environment_controller/ObstaclesSubscriber.hpp"
 #include "environment_controller/ReleaseTimeSubscriber.hpp"
 #include "environment_controller/SafetyController.hpp"
+#include "environment_controller/SensorSubscriber.hpp"
 #include "ros/ros.h"
 #include <memory>
 #include <stdlib.h>
@@ -45,6 +46,11 @@ int main(int argc, char** argv)
       environment_controller::ReleaseTimeSubscriber(
           environment_controller::cReleaseTimeTopicName,
           lEnvironmentController);
+
+  environment_controller::SensorSubscriber lSensorSubscriber =
+      environment_controller::SensorSubscriber(
+          environment_controller::cSensorTopicName, lEnvironmentController);
+
   ros::spin();
 
   return 0;
