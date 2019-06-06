@@ -74,9 +74,16 @@ namespace environment_controller
 
     void registerSensor(const Sensor& aSensor);
 
+    Pose transformFrames(const uint8_t aSensorID);
+
+    void publishTFSensors(const ros::TimerEvent&);
+
     const Sensor getSensor(const uint8_t aSensorID) const;
 
       private:
+    ros::NodeHandle mCallbackNode;
+    ros::Timer mTimer;
+
     std::shared_ptr<controller::Context> mContext;
     std::shared_ptr<TFHandler> tfHandler;
     std::map<uint8_t, Pose> mSensors;

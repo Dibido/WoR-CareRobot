@@ -10,6 +10,9 @@ namespace environment_controller
       const std::shared_ptr<controller::Context>& aContext)
       : mContext(aContext), tfHandler(std::make_shared<TFHandler>())
   {
+    // ros::Rate(cCallbackRate);
+    mTimer = mCallbackNode.createTimer(
+        ros::Duration(0.01), &EnvironmentController::publishTFSensors, this);
   }
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)
@@ -44,23 +47,29 @@ namespace environment_controller
   void EnvironmentController::registerSensor(const Sensor& aSensor)
   {
     mSensors.insert(std::make_pair(aSensor.sensorID(), aSensor.pose()));
-    tfHandler->transform(aSensor.pose(),
-                         cSensorFrame + std::to_string(aSensor.sensorID()));
+  }
 
+  Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
+  {
     try
     {
-
-      Pose lPose = tfHandler->calculatePosition(cGlobalFrame, cSensorFrame);
-
-      std::cout << lPose.position().x_m() << " " << lPose.position().y_m()
-                << " " << lPose.position().z_m() << std::endl;
-      std::cout << lPose.rotation().roll_rad() << " "
-                << lPose.rotation().pitch_rad() << " "
-                << lPose.rotation().yaw_rad() << std::endl;
+      Pose lPose = tfHandler->calculatePosition(
+          cGlobalFrame, cSensorFrame + std::to_string(aSensorID));
+      // Pose lPose = tfHandler->calculatePosition(cSensorFrame, cGlobalFrame);
     }
     catch (...)
     {
-      std::cout << "shet" << std::endl;
+      // std::cout << "shet" << std::endl;
+    }
+    return lPose;
+  }
+
+  void EnvironmentController::publishTFSensors(const ros::TimerEvent&)
+  {
+    for (auto lSensor = mSensors.begin(); lSensor != mSensors.end(); ++lSensor)
+    {
+      tfHandler->transform(lSensor->second,
+                           cSensorFrame + std::to_string(lSensor->first));
     }
   }
 

@@ -8,6 +8,7 @@ namespace environment_controller
 {
   const uint16_t cQueue_size = 1000;
   const uint8_t cRate = 10;
+  const uint8_t cCallbackRate = 100;
   const std::string cObstacleTopicName = "/detected_objects";
   const std::string cCupTopicName = "/location/cup";
   const std::string cGoalPositionTopicName = "goal";
