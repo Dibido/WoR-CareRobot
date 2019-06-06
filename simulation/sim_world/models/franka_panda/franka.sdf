@@ -439,9 +439,9 @@ x
     <joint name="_joint7" type="revolute">
       <parent>link6</parent>
       <child>link7</child>
-      <pose>0.0 0 0.06 0 0 0</pose>
+      <pose>0.0 0 0.06 0 0 -0.785398</pose>
       <axis>
-        <xyz>0 0 -1</xyz>
+        <xyz>0 0 1</xyz>
       <limit> 
         <effort>12</effort>
         <lower>-2.9671</lower>
@@ -484,7 +484,7 @@ x
       <child>link8</child>
       <pose>0 0 0 0 0 0</pose>
       <axis>
-        <xyz>0 0 1</xyz>
+        <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
         <lower>-2.9671</lower>
