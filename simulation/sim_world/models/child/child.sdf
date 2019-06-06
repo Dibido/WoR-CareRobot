@@ -20,11 +20,16 @@
             </box>
             </geometry>
         </visual>
+
+            <inertial>
+                <mass value="50"/>
+            </inertial>
+        
         </link>
 
         <plugin name="model_child" filename="libmodel_child.so">
             <velocity>0</velocity>
-            <angle>90</angle>
+            <angle>0</angle>
         </plugin>
     </model>
 </sdf>
