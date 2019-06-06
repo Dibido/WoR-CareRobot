@@ -24,7 +24,7 @@ TEST(ArrivalTime, singleJointChanged)
       ros::Time::now());
   EXPECT_LT(
       lTrajectoryProvider.calculateArrivalTime(lContext, lGoalConfiguration),
-      ros::Time::now() + ros::Duration(1));
+      ros::Time::now() + ros::Duration(2));
 }
 
 TEST(ArrivalTime, multipleJointsChanged)
@@ -48,6 +48,6 @@ TEST(ArrivalTime, multipleJointsChanged)
       ros::Time::now());
   EXPECT_LT(
       lTrajectoryProvider.calculateArrivalTime(lContext, lGoalConfiguration),
-      ros::Time::now() + ros::Duration(1));
+      ros::Time::now() + ros::Duration(2));
 }
 
