@@ -25,6 +25,7 @@ namespace controller
     aContext->configuration() = kinematics::Configuration();
     aContext->configuration().setTheta(3, -M_PI_2);
     aContext->configuration().setTheta(5, M_PI_2);
+    aContext->configuration().setTheta(6, M_PI_4);
     aContext->robotControl()->publish(cSpeedFactor, aContext->configuration());
     aContext->setState(std::make_shared<Ready>());
   }

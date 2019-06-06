@@ -19,12 +19,12 @@ namespace kinematics
 
     Configuration lConfiguration = aCurrentConfiguration;
     lConfiguration.setResult(false);
-    prepareConfiguration(lConfiguration);
+    prepareConfiguration(lConfiguration, true);
 
     lConfiguration =
         denavitHartenberg.inverseKinematics(lEndEffector, lConfiguration);
 
-    prepareConfiguration(lConfiguration);
+    prepareConfiguration(lConfiguration, false);
 
     return lConfiguration;
   }
@@ -33,7 +33,7 @@ namespace kinematics
       const Configuration& aCurrentConfiguration)
   {
     Configuration lConfiguration = aCurrentConfiguration;
-    prepareConfiguration(lConfiguration);
+    prepareConfiguration(lConfiguration, true);
 
     Matrix<double, 6, 1> aEndEffector =
         denavitHartenberg.forwardKinematicsYPR(lConfiguration);
@@ -44,12 +44,19 @@ namespace kinematics
   }
 
   void
-      ConfigurationProvider::prepareConfiguration(Configuration& aConfiguration)
+      ConfigurationProvider::prepareConfiguration(Configuration& aConfiguration,
+                                                  bool positive)
   {
-    for (std::size_t i = 0; i < cInvertedJoints.size(); ++i)
+    for (std::size_t i = 0; i < cOffsetJoints.size(); ++i)
     {
-      aConfiguration.setTheta(cInvertedJoints[i],
-                              aConfiguration[cInvertedJoints[i]] * -1);
+      if (positive == true)
+      {
+        aConfiguration.setTheta(i, aConfiguration[i] + cOffsetJoints[i]);
+      }
+      else
+      {
+        aConfiguration.setTheta(i, aConfiguration[i] - cOffsetJoints[i]);
+      }
     }
   }
 
