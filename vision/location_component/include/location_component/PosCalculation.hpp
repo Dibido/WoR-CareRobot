@@ -10,8 +10,7 @@ namespace location_component
   class PosCalculation
   {
       public:
-    PosCalculation(
-        CupDetectionCalibration aCalibration = CupDetectionCalibration());
+    PosCalculation(CupDetectionCalibration aCalibration);
     ~PosCalculation();
 
     /**

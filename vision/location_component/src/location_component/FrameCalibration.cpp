@@ -88,6 +88,7 @@ namespace location_component
                    mAGVFrameCalibration.cVHigh),
         aDestination);
 
+    
     if (mAGVFrameCalibration.mDebugStatus)
     {
       cv::Mat aLeftImg;
@@ -103,6 +104,7 @@ namespace location_component
 
       cv::imshow("debug", aDebugImg);
     }
+
   }
 
 } // namespace location_component

@@ -14,12 +14,12 @@ namespace location_component
      */
     AGVFrameCalibration(bool aDebugStatus);
     // Color spectrum AGV low
-    const double cHLow = 100.0;
-    const double cSLow = 150.0;
+    const double cHLow = 70.0;
+    const double cSLow = 130.0;
     const double cVLow = 0.0;
 
     // Color spectrum AGV high
-    const double cHHigh = 140.0;
+    const double cHHigh = 170.0;
     const double cSHigh = 255.0;
     const double cVHigh = 255.0;
 

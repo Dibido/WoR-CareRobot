@@ -20,7 +20,7 @@
 namespace location_component
 {
   const unsigned int cCornersOfObject = 4;
-  const unsigned int cEpsilon = 5;
+  const unsigned int cEpsilon = 15;
 
   class DetectAGV
   {

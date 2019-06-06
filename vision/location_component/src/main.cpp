@@ -15,7 +15,7 @@ int main(int argc, char** argv)
   }
 
   // Creating config values for determining what an AGV is and what a CUP is.
-  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::CupDetectionCalibration lCupDetectionCalibration(debugStatus);
   location_component::AGVFrameCalibration lAGVFrameCalibration(debugStatus);
 
   ros::init(argc, argv,
