@@ -2,7 +2,8 @@
 
 namespace gazebo
 {
-  const std::string cAgvPublishTopic = "/sensor/kinect/obstacles";
+  const std::string cKinectPublishTopic = "/sensor/kinect/obstacles";
+  const std::string cImgSubscribeTopic = "/sensor/kinect/img_raw";
 
   void KinectPlugin::Load(sensors::SensorPtr sensor, sdf::ElementPtr sdf)
   {

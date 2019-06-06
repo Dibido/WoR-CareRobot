@@ -27,7 +27,7 @@
             <sensor name="depth" type="depth">
                 <plugin name="kinect_plugin" filename="libsim_kinect_plugin.so">
                     <robotNamespace>kinect_plugin</robotNamespace>
-                    <updateRate>10.0</updateRate>
+                    <updateRate>30.0</updateRate>
                     <cameraName>kinect_camera</cameraName>
                     <imageTopicName>/sensor/kinect/img_raw</imageTopicName>
                     <depthImageTopicName>depth/image_raw</depthImageTopicName>
@@ -46,12 +46,15 @@
                     <Cy>0.0</Cy>
                     <focalLength>0.0</focalLength>
                 </plugin>
-                <update_rate>20</update_rate>
+                <update_rate>30</update_rate>
                 <camera name="depth_camera">
+           <save enabled="false">
+              <path>/tmp/camera_save_kinect</path>
+           </save>
                     <horizontal_fov>1.047198</horizontal_fov>
                     <image>
-                        <width>512</width>
-                        <height>424</height>
+                        <width>720</width>
+                        <height>480</height>
                         <format>R8G8B8</format>
                     </image>
                     <clip>
