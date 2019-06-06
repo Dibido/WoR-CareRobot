@@ -6,7 +6,6 @@
 
 TEST(ArrivalTime, singleJointChanged)
 {
-  ros::Time::init();
   controller::Context* lContext = new controller::Context();
   lContext->configuration().setTheta(0, 0);
   lContext->configuration().setTheta(1, 10);
@@ -30,7 +29,6 @@ TEST(ArrivalTime, singleJointChanged)
 
 TEST(ArrivalTime, multipleJointsChanged)
 {
-  ros::Time::init();
   controller::Context* lContext = new controller::Context();
   lContext->configuration().setTheta(0, 0);
   lContext->configuration().setTheta(1, 10);

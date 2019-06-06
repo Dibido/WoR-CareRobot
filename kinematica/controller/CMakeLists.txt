@@ -147,6 +147,7 @@ ${catkin_EXPORTED_TARGETS})
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp 
 unitTests/arrivalTime.cpp
 unitTests/stateTransitions.cpp
+unitTests/environment.cpp
 )
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_controller lib_kinematics ${catkin_LIBRARIES})
   
@@ -159,6 +160,11 @@ if(CODE_COVERAGE)
     
   #Files which will be excluded for the codecoverage
   set(COVERAGE_LCOV_EXCLUDES
+    '*/planning/*'
+    '*/kinematics/*'
+    '*/robotcontroller/*'
+    '*/boost/*'
+    '*/melodic/*'
     '*/gtest/*'
     '/*/c++/*'
     '*/*.py'
