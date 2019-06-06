@@ -4,8 +4,8 @@
 #include <franka/gripper.h>
 #include <franka/robot.h>
 
+#include <memory>
 #include <string>
-
 namespace franka_controller
 {
 
@@ -28,8 +28,25 @@ namespace franka_controller
      */
     void executeMovement(std::array<double, 7>& aConfig, double aSpeedFactor);
 
+    /**
+     * @brief
+     *
+     * @param aWidth
+     * @param aSpeedFactor
+     */
+    void moveGripper(double aWidth, double aSpeedFactor);
+
+    /**
+     * @brief
+     *
+     * @param aStop
+     */
+    void stopRobot(bool aStop);
+
       private:
     franka::Robot mRobot;
+    franka::Gripper mGripper;
+    bool mStop;
   };
 } // namespace franka_controller
 #endif // FRANKA_CONTROL_HPP
