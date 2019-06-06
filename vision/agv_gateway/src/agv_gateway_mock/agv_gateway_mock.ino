@@ -1,6 +1,13 @@
+/*
+   AGV gateway mock
+   A mocker to mock the data sent from the AGV, used to test the agv_parser
+   @Author: Dibran Dokter
+*/
+
 void setup()
 {
-  while (!Serial);
+  while (!Serial)
+    ;
   Serial.begin(115200);
 }
 

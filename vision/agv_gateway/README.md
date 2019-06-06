@@ -15,3 +15,6 @@ CSN -> 8
 MOSI -> 11  
 MISO -> 12 
 SCK -> 13
+
+# Agv Gateway mock
+The mocker version of the gateway is a simple serial publisher that is used to test the agv_parser.

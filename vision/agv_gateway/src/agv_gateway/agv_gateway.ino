@@ -1,3 +1,8 @@
+/*
+   AGV gateway
+   converts the NRF message to the serial port
+   @Author: Dibran Dokter
+*/
 #include <RF24.h>
 #include <SPI.h>
 #include <nRF24L01.h>
@@ -10,7 +15,9 @@ char lAgvCommand[64] = { 0 };
 void setup()
 {
   while (!Serial)
-    ;
+  {
+    // Wait for serial
+  }
   Serial.begin(115200);
 
   radio.begin();
