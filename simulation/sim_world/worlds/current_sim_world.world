@@ -42,7 +42,7 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.38 -5.03 1.07</pose>
+      <pose>0.38 -3.73 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
@@ -56,11 +56,11 @@
     <!-- </model> -->
 
     <model name="agv">
-      <pose>0.35 -5 1.05</pose>
+      <pose>0.35 -3.7 1.05</pose>
       <include>
 	      <uri>model://agv</uri>
       </include>
-    </model>
+    </model> 
 
     <model name="ultrasonic1">
       <pose>0.10 -3.5 1.05 0 0 0</pose>
@@ -70,21 +70,21 @@
     </model>
 
     <model name="ultrasonic2">
-      <pose>0.10 -2.5 1.05 0 0 0</pose>
+      <pose>0.10 -3 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic3">
-      <pose>0.10 -1.5 1.05 0 0 0</pose>
+      <pose>0.10 -2.5 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic4">
-      <pose>0.10 -0.5 1.05 0 0 0</pose>
+      <pose>0.10 -2.0 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
