@@ -167,7 +167,7 @@ namespace location_component
         circle(aFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
                CV_RGB(100, 0, 0), -1, 8, 0);
 
-      imshow("test", aFrame);
+      imshow("DetectAGV debug window", aFrame);
     }
 
     // Getting the middle point of the rect and draw this point
