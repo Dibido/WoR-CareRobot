@@ -17,13 +17,14 @@ namespace controller
 
   void Init::entryAction(Context* aContext)
   {
-    aContext->configuration() = kinematics::Configuration();
-    aContext->robotControl()->publish(cSpeedFactor, aContext->configuration());
   }
 
   void Init::doActivity(Context* aContext)
   {
+    ROS_ERROR("DOING BEGIN1");
     aContext->configuration() = kinematics::Configuration();
+    aContext->configuration().setTheta(3, -M_PI_2);
+    aContext->configuration().setTheta(5, M_PI_2);
     aContext->robotControl()->publish(cSpeedFactor, aContext->configuration());
     aContext->setState(std::make_shared<Ready>());
   }

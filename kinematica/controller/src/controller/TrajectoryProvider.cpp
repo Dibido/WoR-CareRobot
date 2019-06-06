@@ -98,9 +98,10 @@ namespace controller
         static_cast<long>(aGoal.cZ_m *
                           planning::cConversionFromMetersToCentimeters));
     planning::Path lPath = aContext->astar()->search(lStart, lGoal);
-    ROS_ASSERT_MSG(lPath.empty() == false,
+    ROS_ASSERT_MSG(lPath.size() > 1,
                    "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
                    lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
+    ROS_INFO("Path size %i", lPath.size());
     return lPath;
   }
 
