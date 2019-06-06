@@ -1,6 +1,8 @@
 #include <ros/ros.h>
-#include <sim_robot/JointController.hpp>
 
+#define private public
+#include <sim_robot/JointController.hpp>
+#undef private
 // Include messages
 // Bring in gtest
 #include <gtest/gtest.h>
@@ -41,16 +43,44 @@ TEST(operatorJointController, assigmentOperator)
   EXPECT_EQ(jointController1, jointController2);
 }
 
-TEST(moveJointController, moveTheta)
+TEST(moveJointController, convertDegrees2Radians)
 {
   gazebo::physics::JointPtr joint;
-  gazebo::JointController jointController1(joint, "mName1", 0, -1, 1, -1, 1, 2);
+  gazebo::JointController jointController1(joint, "mName1", 0, 500, 2500, -M_PI,
+                                           M_PI, 180);
+  EXPECT_EQ((180 * M_PI) / 180, jointController1.convertDegrees2Radians(180));
+}
+TEST(moveJointController, convertPw2Radians)
+{
+  gazebo::physics::JointPtr joint;
+  gazebo::JointController jointController1(joint, "mName1", 0, 500, 2500, -M_PI,
+                                           M_PI, 180);
+  EXPECT_EQ(M_PI, jointController1.convertPw2Radians(2500));
+  EXPECT_EQ(-M_PI, jointController1.convertPw2Radians(500));
+}
+TEST(moveJointController, moveTheta180)
+{
+  gazebo::physics::JointPtr joint;
+  gazebo::JointController jointController1(joint, "mName1", 0, 500, 2500, -M_PI,
+                                           M_PI, 180);
 
   EXPECT_EQ(true, jointController1.moveTheta(1, 1, 0, 30));
-  // 1.57079632679489661923 = M_PI_2 * 1;
-  EXPECT_EQ(1.57079632679489661923, jointController1.getCurrentVel());
-  jointController1.moveTheta(1, 10, 0, 30);
-  EXPECT_EQ(2, jointController1.getCurrentVel());
+  EXPECT_EQ(180, jointController1.getMaxVel());
+  EXPECT_EQ(M_PI, jointController1.getCurrentVel());
+  jointController1.moveTheta(1, 0.1, 0, 30);
+  EXPECT_EQ((M_PI / 10), jointController1.getCurrentVel());
+}
+
+TEST(moveJointController, moveTheta150)
+{
+  gazebo::physics::JointPtr joint;
+  gazebo::JointController jointController1(joint, "mName1", 0, 500, 2500, -M_PI,
+                                           M_PI, 150);
+  EXPECT_EQ(150, jointController1.getMaxVel());
+  EXPECT_EQ(true, jointController1.moveTheta(1, 1, 0, 30));
+  EXPECT_EQ((150 * M_PI) / 180, jointController1.getCurrentVel());
+  jointController1.moveTheta(1, 0.1, 0, 30);
+  EXPECT_EQ(((150 * M_PI / 180) / 10), jointController1.getCurrentVel());
 }
 TEST(moveJointController, move)
 {

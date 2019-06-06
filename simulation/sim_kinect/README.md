@@ -1,24 +1,23 @@
 # Simulation Kinect
+This package contains a kinect model and a library plugin.
 
-Met deze package wordt de kinect gesimuleerd. De package bestaat uit een library plugin die 
-gebruikt wordt in de kinect model.
 
 ## Build
 
-Build de plugin met catkin
+Build the plugin with catkin
 * `catkin_make sim_kinect_plugin`
 
 ## Run
 
-Om de kinect te testen in een wereld:
+execute:
 * `roslaunch sim_kinect launch.launch` 
 
 Launch file arguments
-* Geen
+* none
 
 ### Data
 
-Data op topics:
+Data being published on the following topics:
 * /sensor/kinect/raw_img
     * video data van de vga camera
 * /sensor/kinect/points
@@ -26,8 +25,8 @@ Data op topics:
 
 ## Test
 
-Er zijn geen unit tests voor deze plugin.
+There are currently no unit tests available.
 
 ## Current problems
 
-* Geen
+* Noise is yet to be implemented.

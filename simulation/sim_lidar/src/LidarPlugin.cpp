@@ -124,6 +124,9 @@ namespace gazebo
     // Convert to lidarMessage
     sensor_interfaces::LidarData lLidarDataMessage =
         convertToLidarData(lLaserMessage);
+    // Check sizes
+    assert(lLidarDataMessage.distances.size() ==
+           lLidarDataMessage.measurement_angles.size());
     // Publish message
     mLidarDataPub.publish(lLidarDataMessage);
   }
@@ -203,8 +206,6 @@ namespace gazebo
       LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
   {
     sensor_interfaces::LidarData lLidarDataMessage;
-    float lAngleMax = static_cast<float>(aMsg.angle_max);
-
     lLidarDataMessage.header.stamp = ros::Time::now();
     lLidarDataMessage.header.frame_id = mFrameName;
     // Add distances
@@ -219,7 +220,7 @@ namespace gazebo
     const float lAngleOffset =
         static_cast<float>(2.0 * M_PI) / static_cast<float>(aMsg.ranges.size());
     for (float lCurrentAngle = lAngleOffset;
-         lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));
+         lCurrentAngle < (static_cast<float>(M_PI * 2));
          lCurrentAngle += lAngleOffset)
     {
       lLidarDataMessage.measurement_angles.push_back(lCurrentAngle);
