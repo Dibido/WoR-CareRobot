@@ -29,8 +29,8 @@ namespace kinematics
     mRobotConfiguration[6] = (kinematics::Link(
         0.088, M_PI_2, 0, kinematics::eJoint::REVOLUTE, -2.8973, 2.8973));
     // flange
-    mRobotConfiguration[7] = (kinematics::Link(0.0, 0.0, 0.107 + 0.15, 0.0,
-                                               kinematics::eJoint::STATIC));
+    mRobotConfiguration[7] =
+        (kinematics::Link(0.0, 0.0, 0.257, 0.0, kinematics::eJoint::STATIC));
   }
 
   const Link& RobotConfiguration::operator[](std::size_t aIndex) const
