@@ -49,6 +49,17 @@ target_link_libraries(${PROJECT_NAME}_plugin
         ${catkin_LIBRARIES}
         ${GAZEBO_LIBRARIES}
         RayPlugin)
+        
+
+
+add_executable(${PROJECT_NAME}_calculate
+src/CalculateData.cpp)
+add_dependencies(${PROJECT_NAME}_calculate ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(${PROJECT_NAME}_calculate
+        ${catkin_LIBRARIES}
+        ${GAZEBO_LIBRARIES}
+        RayPlugin)
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/LidarPlugin_UnitTests.cpp)
