@@ -78,17 +78,20 @@ namespace location_component
     cv::Mat lCompensatedSource;
     cv::Mat lSourceHSV;
     cv::cvtColor(aSource, lSourceHSV, CV_BGR2HSV);
-    /* gammaCorrection(aSource, lCompensatedSource, 1.0); */
-    aSource.copyTo(lCompensatedSource);
-    cv::inRange(
-        lSourceHSV,
-        cv::Scalar(mAGVFrameCalibration.cHLow, mAGVFrameCalibration.cSLow,
-                   mAGVFrameCalibration.cVLow),
-        cv::Scalar(mAGVFrameCalibration.cHHigh, mAGVFrameCalibration.cSHigh,
-                   mAGVFrameCalibration.cVHigh),
-        aDestination);
-
     
+    /* gammaCorrection(aSource, lCompensatedSource, 1.0); */
+
+    aSource.copyTo(lCompensatedSource);
+    cv::Scalar lScalarLow(mAGVFrameCalibration.cHLow,
+                          mAGVFrameCalibration.cSLow,
+                          mAGVFrameCalibration.cVLow);
+
+    cv::Scalar lScalarHigh(mAGVFrameCalibration.cHHigh,
+                           mAGVFrameCalibration.cSHigh,
+                           mAGVFrameCalibration.cVHigh);
+
+    cv::inRange(lSourceHSV, lScalarLow, lScalarHigh, aDestination);
+
     if (mAGVFrameCalibration.mDebugStatus)
     {
       cv::Mat aLeftImg;
@@ -104,7 +107,6 @@ namespace location_component
 
       cv::imshow("debug", aDebugImg);
     }
-
   }
 
 } // namespace location_component
