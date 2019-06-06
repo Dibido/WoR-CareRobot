@@ -196,6 +196,9 @@ x
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link2">
@@ -238,6 +241,9 @@ x
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
 
@@ -281,6 +287,9 @@ x
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link4">
@@ -323,6 +332,9 @@ x
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link5">
@@ -365,6 +377,9 @@ x
         <velocity>2.8710</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link6">
@@ -407,6 +422,9 @@ x
         <velocity>2.8710</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link7">
@@ -449,6 +467,9 @@ x
         <velocity>2.8710</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
 
@@ -492,6 +513,9 @@ x
         <velocity>2.8710</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
     <link name="link9">
@@ -552,6 +576,9 @@ x
           <velocity>2.8710</velocity>
         </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
 
 
@@ -614,6 +641,9 @@ x
           <velocity>2.8710</velocity>
         </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <update_rate>1000</update_rate>
+      </sensor>
     </joint>
     
 	<plugin name="mimic_joint_plugin_gripper" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
