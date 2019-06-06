@@ -31,7 +31,7 @@ namespace location_component
     // Cup and AGV size
     float mCupHeight_m = 0.099f;
     float mCupDiameter_m = 0.071f;
-    float mAGVDepth_m = 0.680f;
+    float mAGVDepth_m = 0.478f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
 
