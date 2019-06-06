@@ -1,11 +1,15 @@
 #ifndef LIDAR_PLUGIN_HPP
 #define LIDAR_PLUGIN_HPP
-#include <gazebo/gazebo.hh>
-#include <gazebo/physics/physics.hh>
-#include <gazebo/plugins/RayPlugin.hh>
 
 #include <sensor_interfaces/LidarData.h>
 #include <sensor_msgs/LaserScan.h>
+
+#include "lidar_application/ILidarDataProvider.hpp"
+#include "lidar_application/LidarData.hpp"
+
+#include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/plugins/RayPlugin.hh>
 
 #include <ros/ros.h>
 
@@ -14,7 +18,8 @@
 
 namespace gazebo
 {
-  class LidarPlugin : public RayPlugin
+  class LidarPlugin : public RayPlugin,
+                      public lidar_application::ILidarDataProvider
   {
       public:
     LidarPlugin() = default;
@@ -40,21 +45,46 @@ namespace gazebo
     void OnScan(ConstLaserScanStampedPtr& aMsg);
 
     /**
+     * @brief Implements the ILidarData interface.
+     * @param aMsg - The message to parse.
+     */
+    virtual void parseLidarData(const lidar_application::LidarData& aMsg);
+
+    /**
      * @brief Convert the gazebo::LaserScan const message to
      * sensor_msgs::LaserScan for processing
      * @param aMsg: The gazebo formatted message received from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
-    sensor_msgs::LaserScan convertToLaserScan(ConstLaserScanStampedPtr& aMsg);
+    sensor_msgs::LaserScan
+        convertToLaserScan(ConstLaserScanStampedPtr& aMsg) const;
 
     /**
-     * @brief Convert the LaserScan message to
+     * @brief Convert the lidar_application::LidarData message to
+     * sensor_msgs::LaserScan for sending
+     * @param aMsg: The LidarData struct to be sent
+     * @return: The converted sensor_msgs::LaserScan message
+     */
+    sensor_msgs::LaserScan
+        convertToLaserScan(const lidar_application::LidarData aLidarData) const;
+
+    /**
+     * @brief Convert the LaserScan message
      * @param aMsg: The converted laserscan message
      * @return sensor_interfaces::LidarData: The LidarData message according to
      * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(const sensor_msgs::LaserScan aMsg);
+        convertToLidarData(const sensor_msgs::LaserScan aMsg) const;
+
+    /**
+     * @brief Convert the LaserScan message
+     * @param aMsg: The converted laserscan message
+     * @return lidar_application::LidarData: The LidarData message according to
+     * the interface ILidarData
+     */
+    lidar_application::LidarData
+        convertToLidarData(ConstLaserScanStampedPtr& aMsg) const;
 
     // Variables
     std::string mFrameName;

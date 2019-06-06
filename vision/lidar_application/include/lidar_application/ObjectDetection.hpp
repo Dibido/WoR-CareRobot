@@ -74,7 +74,7 @@ namespace lidar_application
     std::pair<double, double> getAverageMeasurement(LidarData& aData) const;
 
     /**
-     * @brief Prints out mPublishData
+     * @brief Prints out mDetectedObjects
      */
     void printPublishData() const;
 
@@ -87,10 +87,9 @@ namespace lidar_application
     // Contains the data of the most recent 360 degrees scan performed.
     LidarData mMostRecentScan;
 
+    // Contains data of the detect objects. detectObjects() stores the data
+    // (format: angle(rad), distance(meter));
     std::vector<std::pair<double, double>> mDetectedObjects;
-
-    // Contains the data that will be published
-    std::vector<std::pair<double, double>> mPublishData;
 
     DataHandler mDataHandler;
 

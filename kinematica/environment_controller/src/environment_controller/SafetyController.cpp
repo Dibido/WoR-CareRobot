@@ -1,5 +1,7 @@
 #include "environment_controller/SafetyController.hpp"
+#include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
+
 #include <cmath>
 namespace environment_controller
 {
@@ -9,7 +11,8 @@ namespace environment_controller
   {
   }
 
-  void SafetyController::areObstaclesAThreat(const Obstacles& aObstacles)
+  void SafetyController::executeHardstopOnObstacleThreat(
+      const Obstacles& aObstacles)
   {
     bool lAllObstaclesSafe = true;
     for (const Obstacle& lObstacle : aObstacles)

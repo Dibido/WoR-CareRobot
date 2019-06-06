@@ -1,4 +1,3 @@
-// Local
 #include "controller/Context.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
@@ -6,11 +5,11 @@
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
-// Libary
 #include <chrono>
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
+
 namespace controller
 {
   Context::Context()
@@ -45,8 +44,13 @@ namespace controller
                 ros::Time(0),
                 0),
             ros::Time(0))),
-        mGripperData(0.0, 0.0)
+        mGripperData(0.0, 0.0),
+        mDropPosition(0.0, 0.0, 0.0),
+        mReleaseTime_s(-1)
   {
+    mGraph->addObstacle(cRobotObstacle);
+    mGraph->addObstacle(cFloorObstacle);
+
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
   }
@@ -71,10 +75,11 @@ namespace controller
              typeid(*mCurrentState) == typeid(Ready)) &&
            ros::ok())
     {
+      mHardStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
-
       mCurrentStateMutex.unlock();
+      mHardStopMutex.lock();
     }
   }
 
@@ -85,13 +90,12 @@ namespace controller
 
   void Context::hardStop(bool aStop)
   {
-    mCurrentStateMutex.lock();
+    std::lock_guard<std::mutex> lHardLock(mHardStopMutex);
+    std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
     else
       setState(std::make_shared<Init>());
-
-    mCurrentStateMutex.unlock();
   }
 
   void Context::provideObstacles(
@@ -101,6 +105,18 @@ namespace controller
     {
       // TODO environment_controller Obstacle to planning obstalce
     }
+  }
+
+  void Context::provideReleaseTime(int16_t aReleaseTime)
+  {
+    std::unique_lock<std::mutex> lLock(mReleaseMutex);
+    mReleaseTime_s = aReleaseTime;
+    mWaitForRelease.notify_all();
+  }
+  void Context::provideDropPosition(
+      const environment_controller::Position& aPosition)
+  {
+    mDropPosition = aPosition;
   }
 
   kinematics::Configuration& Context::configuration()
@@ -154,5 +170,25 @@ namespace controller
   std::shared_ptr<State>& Context::currentState()
   {
     return mCurrentState;
+  }
+
+  environment_controller::Position& Context::dropPosition()
+  {
+    return mDropPosition;
+  }
+
+  std::condition_variable& Context::waitForRelease()
+  {
+    return mWaitForRelease;
+  }
+
+  int16_t& Context::releaseTime_s()
+  {
+    return mReleaseTime_s;
+  }
+
+  std::mutex& Context::releaseMutex()
+  {
+    return mReleaseMutex;
   }
 } // namespace controller

@@ -37,19 +37,11 @@ namespace environment_controller
 
   ros::Time& Cup::timeOfArrival()
   {
-    // if (mTimeOfArrival < ros::Time::now())
-    // {
-    //   throw std::range_error("time of arrival is in the past");
-    // }
     return mTimeOfArrival;
   }
 
   const ros::Time& Cup::timeOfArrival() const
   {
-    // if (mTimeOfArrival < ros::Time::now())
-    // {
-    //   throw std::range_error("time of arrival is in the past");
-    // }
     return mTimeOfArrival;
   }
 

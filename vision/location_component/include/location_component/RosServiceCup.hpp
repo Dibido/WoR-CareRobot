@@ -3,8 +3,8 @@
 
 #include "environment_controller/ICupProvider.hpp"
 #include "kinematica_msgs/Cup.h"
-#include <ros/ros.h>
 #include "std_msgs/String.h"
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -15,8 +15,7 @@ namespace location_component
     RosServiceCup(ros::NodeHandle& aNodeHandle);
     virtual ~RosServiceCup() = default;
 
-    virtual void
-        foundCup(const environment_controller::Cup& aCup);
+    virtual void passCup(const environment_controller::Cup& aCup);
 
       private:
     ros::NodeHandle& mNodeHandle;

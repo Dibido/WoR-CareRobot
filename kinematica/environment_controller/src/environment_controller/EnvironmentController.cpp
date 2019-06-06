@@ -19,9 +19,16 @@ namespace environment_controller
   void EnvironmentController::executeHardstop(bool hardstop)
   {
     if (typeid(*mContext->currentState()) ==
-            typeid(controller::EmergencyStop) ||
-        hardstop == true)
+            typeid(controller::EmergencyStop) &&
+        hardstop == false)
+    {
       mContext->hardStop(hardstop);
+    }
+    else if (hardstop == true && typeid(*mContext->currentState()) !=
+                                     typeid(controller::EmergencyStop))
+    {
+      mContext->hardStop(hardstop);
+    }
   }
 
   void EnvironmentController::provideCup(const Cup& aCup)
@@ -30,4 +37,13 @@ namespace environment_controller
     std::thread(&controller::Context::run, mContext).detach();
   }
 
+  void EnvironmentController::provideGoal(const Position& aPosition)
+  {
+    mContext->provideDropPosition(aPosition);
+  }
+
+  void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
+  {
+    mContext->provideReleaseTime(aReleaseTime_s);
+  }
 } // namespace environment_controller

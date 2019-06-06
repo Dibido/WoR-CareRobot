@@ -20,14 +20,12 @@ namespace environment_controller
   {
     try
     {
-      Position lPos(aMsg->mX_m, aMsg->mY_m,
-                    aMsg->mZ_m);
-      Object lObj(lPos, aMsg->aHeight, aMsg->aWidth,
-                  aMsg->aDepth, aMsg->aDirection,
-                  aMsg->aSpeed, aMsg->aMeasurementTime,
+      Position lPos(aMsg->mX_m, aMsg->mY_m, aMsg->mZ_m);
+      Object lObj(lPos, aMsg->aHeight, aMsg->aWidth, aMsg->aDepth,
+                  aMsg->aDirection, aMsg->aSpeed, aMsg->aMeasurementTime,
                   aMsg->aSensorId);
       Cup lCup(lObj, aMsg->timeOfArrival);
-      foundCup(lCup);
+      passCup(lCup);
     }
     catch (const std::exception& e)
     {
@@ -35,7 +33,7 @@ namespace environment_controller
     }
   }
 
-  void CupSubscriber::foundCup(const Cup& aCup)
+  void CupSubscriber::passCup(const Cup& aCup)
   {
     mEnvironmentController->provideCup(aCup);
   }

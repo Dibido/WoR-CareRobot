@@ -1,6 +1,9 @@
 // Bring in gtest
 #include "ImagePath.hpp"
+#include "location_component/AGVFrameCalibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/DetectAGV.hpp"
+
 #include <gtest/gtest.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -15,7 +18,11 @@ TEST(DetectAGVSuite, CalculateMidpoint)
   lContours.push_back(cv::Point(100, 100));
   lContours.push_back(cv::Point(0, 100));
 
-  location_component::DetectAGV lAGVDetector;
+  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
   cv::Point lPoint = lAGVDetector.getMidPoint(lContours);
   EXPECT_EQ(lPoint.x, 50);
   EXPECT_EQ(lPoint.y, 50);
@@ -28,12 +35,16 @@ TEST(DetectAGVSuite, ContoursMatSize)
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::DetectAGV lAGVDetector;
-  std::vector<std::vector<cv::Point>> lContours(1);
-  lAGVDetector.getContoursMat(lImage, lContours);
+  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
+  std::vector<cv::Point> lContours(1);
+  lAGVDetector.getContourMat(lImage, lContours);
 
   // The square has 4 corners
-  EXPECT_EQ(4, lContours.at(0).size());
+  EXPECT_EQ(4, lContours.size());
 }
 
 TEST(DetectAGVSuite, DetectAGVPosition)
@@ -42,7 +53,11 @@ TEST(DetectAGVSuite, DetectAGVPosition)
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::DetectAGV lAGVDetector;
+  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
   boost::optional<location_component::DetectedAGV> lAGV =
       lAGVDetector.detect(lImage);
 
@@ -56,7 +71,11 @@ TEST(DetectAGVSuite, DetectAGVPositionPerspective)
       getImagePath("Test_picture_agv_perspective_view.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::DetectAGV lAGVDetector;
+  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
   boost::optional<location_component::DetectedAGV> lAGV =
       lAGVDetector.detect(lImage);
 

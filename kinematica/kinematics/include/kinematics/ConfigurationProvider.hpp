@@ -18,7 +18,7 @@ namespace kinematics
 
     /**
      * @brief Finds a corresponding Configuration for a given EndEffector
-     * @see \link iConfigurationProvider \endlink
+     * @see \link IConfigurationProvider \endlink
      * @param aGoalEndEffector
      * @param aCurrentConfiguration
      * @return Configuration
@@ -26,6 +26,15 @@ namespace kinematics
     virtual Configuration
         inverseKinematics(const EndEffector& aGoalEndEffector,
                           const Configuration& aCurrentConfiguration) override;
+
+    /**
+     * @brief Find a corresponding EndEffector for a given Configuration
+     * @see \link IConfiguratinoProvider \endlink
+     * @param aCurrentConfiguration
+     * @return EndEffector
+     */
+    virtual EndEffector
+        forwardKinematics(const Configuration& aCurrentConfiguration) override;
 
       private:
     void prepareConfiguration(Configuration& configuration);

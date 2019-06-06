@@ -5,7 +5,7 @@ namespace lidar_application
   namespace datahandler_constants
   {
     const std::string cReceiveTopicName = "/sensor/lidar";
-    const std::string cPublishTopicName = "/detectedObjects";
+    const std::string cPublishTopicName = "/detected_objects";
   } // namespace datahandler_constants
 
   DataHandler::DataHandler() : mNewDataAvailable(false)
@@ -43,6 +43,14 @@ namespace lidar_application
   void DataHandler::dataReceiveCallback(
       const sensor_interfaces::LidarDataConstPtr& aLidarDataMessage)
   {
+    if (aLidarDataMessage->distances.size() !=
+        aLidarDataMessage->measurement_angles.size())
+    {
+      throw std::logic_error(
+          "dataReceiveCallback: distances.size and measurement_angles.size of "
+          "aLidarDataMessage must be equal");
+    }
+
     mNewDataAvailable = true;
 
     mLidarData.reset();
@@ -75,10 +83,10 @@ namespace lidar_application
       lObstacleList.push_back(lObject);
     }
 
-    parseObstacles(lObstacleList);
+    passObstacles(lObstacleList);
   }
 
-  void DataHandler::parseObstacles(
+  void DataHandler::passObstacles(
       const environment_controller::Obstacles& aObstacles)
   {
     kinematica_msgs::Object lObject;

@@ -11,6 +11,7 @@
 #include "robotcontroller/RobotControlPublisher.hpp"
 #include "robotcontroller/RobotGripperPublisher.hpp"
 #include "robotcontroller/RobotStopPublisher.hpp"
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -66,11 +67,25 @@ namespace controller
      * @param aObstacles
      */
     void provideObstacles(const environment_controller::Obstacles& aObstacles);
+
+    /**
+     * @brief provide the time in seconds that the cup will be released
+     *
+     * @param aReleaseTime
+     */
+    void provideReleaseTime(int16_t aReleaseTime);
+
+    /**
+     * @brief provide the drop position of the cup
+     *
+     * @param aPosition
+     */
+    void provideDropPosition(const environment_controller::Position& aPosition);
+
     /**
      * @brief getters & setters
      *
      */
-
     std::shared_ptr<planning::Graph>& graph();
     std::shared_ptr<planning::AStar>& astar();
     std::shared_ptr<robotcontroller::RobotControlPublisher>& robotControl();
@@ -81,6 +96,10 @@ namespace controller
     environment_controller::Cup& cup();
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
+    environment_controller::Position& dropPosition();
+    std::condition_variable& waitForRelease();
+    int16_t& releaseTime_s();
+    std::mutex& releaseMutex();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -98,8 +117,13 @@ namespace controller
     std::shared_ptr<State> mCurrentState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
+    environment_controller::Position mDropPosition;
+    int16_t mReleaseTime_s;
+    std::condition_variable mWaitForRelease;
 
     std::mutex mCurrentStateMutex;
+    std::mutex mReleaseMutex;
+    std::mutex mHardStopMutex;
   };
 } // namespace controller
 #endif // Context_HPP

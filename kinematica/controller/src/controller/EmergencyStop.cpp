@@ -1,10 +1,9 @@
-// Library
+
+#include "controller/EmergencyStop.hpp"
+#include "controller/Init.hpp"
 #include <iostream>
 #include <ros/ros.h>
 
-// Local
-#include "controller/EmergencyStop.hpp"
-#include "controller/Init.hpp"
 namespace controller
 {
   EmergencyStop::EmergencyStop(){
@@ -17,9 +16,8 @@ namespace controller
     aContext->robotStop()->publish(true);
   }
 
-  void EmergencyStop::doActivity(Context* aContext)
+  void EmergencyStop::doActivity(Context*)
   {
-    // aContext->setState(std::make_shared<Init>());
   }
 
   void EmergencyStop::exitAction(Context* aContext)

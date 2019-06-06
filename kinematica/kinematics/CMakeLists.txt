@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7.2)
 project(kinematics)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14 -Wall -Wextra -Wconversion)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O2)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -48,6 +48,7 @@ add_library(lib_kinematics
     src/kinematics/EndEffector.cpp
     src/kinematics/Link.cpp
     src/kinematics/RobotConfiguration.cpp
+    src/kinematics/BetaGenerator.cpp
     )
 
 add_dependencies(lib_kinematics
@@ -105,6 +106,7 @@ catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp
                 unitTests/Configuration_test.cpp
                 unitTests/RobotConfiguration_test.cpp
                 unitTests/EndEffector_test.cpp
+                unitTests/BetaGenerator_test.cpp
 )
 target_link_libraries(${PROJECT_NAME}_unit_tests lib_kinematics ${catkin_LIBRARIES})
   
