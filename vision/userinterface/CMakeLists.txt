@@ -7,7 +7,7 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -fPIC)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp)
+find_package(catkin REQUIRED COMPONENTS roscpp kinematica_msgs geometry_msgs message_generation environment_controller controller)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)
@@ -69,10 +69,6 @@ find_package(Qt5Widgets CONFIG)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-   # std_msgs  # Or other packages containing msgs
-   # )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,7 +102,7 @@ find_package(Qt5Widgets CONFIG)
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES userinterface
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS environment_controller kinematica_msgs geometry_msgs controller
 #  DEPENDS system_lib
 )
 
@@ -123,9 +119,9 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-qt5_wrap_cpp (moc_sources src/main.cpp src/mainwindow.cpp include/mainwindow.hpp)
-qt5_wrap_ui (uic_sources src/mainwindow.ui)
-set(Srcs src/main.cpp src/mainwindow.cpp src/mainwindow.ui drawable/resources.qrc)
+qt5_wrap_cpp (moc_sources src/userinterface/main.cpp src/userinterface/mainwindow.cpp include/userinterface/mainwindow.hpp)
+qt5_wrap_ui (uic_sources src/userinterface/mainwindow.ui)
+set(Srcs src/userinterface/main.cpp src/userinterface/mainwindow.cpp src/userinterface/mainwindow.ui drawable/resources.qrc src/userinterface/GoalPublisher.cpp src/userinterface/ReleaseTimePublisher.cpp)
 list(APPEND Srcs ${moc_sources} ${uic_sources})
 
 set(CMAKE_AUTOMOC ON)
@@ -159,12 +155,12 @@ add_executable(${PROJECT_NAME} ${Srcs})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+
+
+
 
 #############
 ## Install ##

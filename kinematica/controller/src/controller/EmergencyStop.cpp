@@ -16,9 +16,8 @@ namespace controller
     aContext->robotStop()->publish(true);
   }
 
-  void EmergencyStop::doActivity(Context* aContext)
+  void EmergencyStop::doActivity(Context*)
   {
-    // aContext->setState(std::make_shared<Init>());
   }
 
   void EmergencyStop::exitAction(Context* aContext)

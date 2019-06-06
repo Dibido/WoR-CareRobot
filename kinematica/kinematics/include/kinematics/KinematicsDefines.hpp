@@ -11,14 +11,12 @@ namespace kinematics
   const std::size_t cRobotConfigurationJoints =
       cKinematicsDoF + 1; /// Number of Links including static links
 
-  const std::vector<std::pair<double, double>> cBetaSelectors = { { 0.9, 0.1 },
-                                                                  { 0.8, 0.2 },
-                                                                  { 0.7, 0.4 },
+  const std::vector<std::pair<double, double>> cBetaSelectors = { { 0.9, 0.2 },
                                                                   { 0.0,
-                                                                    0.5 } };
+                                                                    0.3 } };
   const double cIkEpsilon_m = 0.000001;
   const double cIkEpsilon_rad = M_PI / 180 * 5;
-  const std::size_t cIkMaxIterations = 1000;
+  const std::size_t cIkMaxIterations = 5000;
   const std::size_t cDhTransformPosRadSplit = 3;
 
   const std::array<std::size_t, 1> cInvertedJoints = {
