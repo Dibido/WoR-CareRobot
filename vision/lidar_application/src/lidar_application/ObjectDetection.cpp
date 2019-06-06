@@ -227,8 +227,29 @@ namespace lidar_application
   }
 
   bool ObjectDetection::isAngleDifferent(
-      std::pair<double, double> aMeasurement) const
+      const std::pair<double, double>& aMeasurement) const
   {
+    const double lAngle = aMeasurement.first;
+    const double lDistance_m = aMeasurement.second;
+
+    const std::pair<double, double> lSurroundingDistances =
+        getSurroundingDistances(lAngle);
+
+    const double lDifferenceToLowerNeighbour =
+        std::abs(lAngle - lSurroundingDistances.first);
+    const double lDifferenceToUpperNeighbour =
+        std::abs(lAngle - lSurroundingDistances.second);
+
+    // Given measurement is too far out of line with data from mInitialScan
+    if ((lDifferenceToLowerNeighbour > mMaxDistanceDifference_m) &&
+        (lDifferenceToUpperNeighbour > mMaxDistanceDifference_m))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   std::pair<double, double>
@@ -240,16 +261,37 @@ namespace lidar_application
           "Preconditions of getSurroundingDistances not met");
     }
 
-    const double lLowerNeighbourDistance_m = 0.0;
-    const double lUpperNeighbourDistnace_m = 0.0;
+    double lLowerNeighbourDistance_m = 0.0;
+    double lUpperNeighbourDistance_m = 0.0;
 
     auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
 
-    // If there doesn't exist a key with a lower value then aAngle:
-    if ((*lIterator).first == mInitialScan.mMeasurements.size() &&
-        (*lIterator).second == 0.0)
+    // If there doesn't exist a key with a equal or higher value then aAngle:
+    if (lIterator->first == mInitialScan.mMeasurements.size() &&
+        lIterator->second == 0.0)
     {
+      // It will probably be a value close to the maximum of 2 * PI
+
+      // Take the highest angle as lower neighbour
+      lLowerNeighbourDistance_m = (*mInitialScan.mMeasurements.end()--).second;
+
+      // Take the lowest angle as upper neighbour
+      lUpperNeighbourDistance_m = (*mInitialScan.mMeasurements.begin()).second;
     }
+    else // There has been found a key with a equal or higher value then aAngle:
+    {
+      lUpperNeighbourDistance_m = lIterator->second;
+
+      // If there exists a lower angle, use that. Otherwise take the highest
+      // angle as lower neighbour.
+      lLowerNeighbourDistance_m =
+          (lIterator == mInitialScan.mMeasurements.begin())
+              ? (*mInitialScan.mMeasurements.end()--).second
+              : (*lIterator--).second;
+    }
+
+    return std::pair<double, double>(lLowerNeighbourDistance_m,
+                                     lUpperNeighbourDistance_m);
   }
 
   void ObjectDetection::printPublishData() const

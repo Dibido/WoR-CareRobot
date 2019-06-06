@@ -35,7 +35,7 @@ namespace lidar_application
     /**
      * @brief Construct a new Lidar Data object
      * @param aMeasurements - The measurements in format Angle (key) => Distance
-     * in meters (value)
+     * in meters (value) all angles must be >= 0.0, and <= 2*M_PI radians.
      */
     LidarData(const std::map<double, double> aMeasurements);
 
@@ -45,7 +45,7 @@ namespace lidar_application
      * same size, otherwise an exception is thrown.
      * @pre: -
      * @post: Given values are added to mMeasurements
-     * @param aAngles - angles in radians
+     * @param aAngles - angles in radians, must be >= 0.0 and <= 2*PI
      * @param aDistances_m - corresponding distances in meters
      */
     void addLidarData(std::vector<double>& aAngles,
@@ -55,7 +55,7 @@ namespace lidar_application
      * @brief Adds sample to the existing measurements
      * @pre: -
      * @post: Given values are added to mMeasurements
-     * @param aAngles - angle in radians
+     * @param aAngles - angle in radians, must be >= 0.0 and <= 2*PI
      * @param aDistances_m - corresponding distances in meters
      */
     void addLidarData(double aAngle, double aDistance_m);

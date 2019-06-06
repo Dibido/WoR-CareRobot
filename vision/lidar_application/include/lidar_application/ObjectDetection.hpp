@@ -86,7 +86,7 @@ namespace lidar_application
      * meters)
      * @return true if angle is different, false otherwise.
      */
-    bool isAngleDifferent(std::pair<double, double> aMeasurement) const;
+    bool isAngleDifferent(const std::pair<double, double>& aMeasurement) const;
 
     /**
      * @brief Function returns the distance of the two angles from mInitialScan
