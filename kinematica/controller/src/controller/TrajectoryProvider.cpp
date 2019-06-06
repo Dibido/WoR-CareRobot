@@ -16,8 +16,10 @@ namespace controller
 
     planning::Path lRequiredPath = findPath(aContext, aTargetLocation);
     kinematics::Configuration lConfiguration = aContext->configuration();
-    ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
 
+    for (std::size_t i = 0; i < lRequiredPath.size(); ++i)
+      ROS_ERROR("%i %i %i", lRequiredPath[i].x, lRequiredPath[i].y,
+                lRequiredPath[i].z);
     // Start at 1 because first node is start position
     for (std::size_t i = 1; i < lRequiredPath.size(); ++i)
     {

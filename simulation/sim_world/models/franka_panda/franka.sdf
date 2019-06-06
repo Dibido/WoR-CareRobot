@@ -411,7 +411,7 @@ x
 
     <link name="link7">
       <kinematic>1</kinematic>
-      <pose>0.088 0 2.033 3.14159265359 0 -0.785398</pose> <!-- -0.785398-->
+      <pose>0.088 0 2.033 3.14159265359 0 0.785398-</pose> <!-- -0.785398-->
       <visual name="visual7">
 	      <pose>0 0 0 0 0 0</pose>
         <material>
@@ -439,7 +439,7 @@ x
     <joint name="_joint7" type="revolute">
       <parent>link6</parent>
       <child>link7</child>
-      <pose>0.0 0 0.06 0 0 -0.785398</pose>
+      <pose>0.0 0 0.06 0 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
       <limit> 

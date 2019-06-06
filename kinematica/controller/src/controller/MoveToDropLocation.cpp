@@ -11,9 +11,8 @@ namespace controller
   {
     kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
         aContext->dropPosition().x_m(), aContext->dropPosition().y_m(),
-        aContext->cup().object().position().z_m() +
-            aContext->dropPosition().z_m(),
-        0, M_PI_2, M_PI_2);
+        aContext->cup().object().height_m() + aContext->dropPosition().z_m(), 0,
+        M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);
@@ -22,6 +21,7 @@ namespace controller
 
   void MoveToDropLocation::doActivity(Context* aContext)
   {
+    ROS_ERROR("move to drop location");
     int64_t lMovementDuration_ns =
         mArrivalTime.toNSec() - ros::Time::now().toNSec();
     if (lMovementDuration_ns > 0)

@@ -20,7 +20,6 @@ namespace controller
 
   void PowerOff::doActivity(Context* aContext)
   {
-    aContext->setState(std::make_shared<Init>());
   }
 
   void PowerOff::exitAction(Context*)

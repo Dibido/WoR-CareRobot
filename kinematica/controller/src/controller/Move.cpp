@@ -17,10 +17,12 @@ namespace controller
 
   void Move::entryAction(Context* aContext)
   {
-    kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
-        aContext->cup().object().position().x_m(),
-        aContext->cup().object().position().y_m(),
-        aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
+    kinematics::EndEffector lTargetLocation =
+        kinematics::EndEffector(aContext->cup().object().position().x_m(),
+                                aContext->cup().object().position().y_m(),
+                                aContext->cup().object().position().z_m() -
+                                    aContext->cup().object().height_m(),
+                                0, M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);

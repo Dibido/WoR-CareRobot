@@ -48,14 +48,10 @@ namespace controller
         mDropPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
-    mConfiguration.setTheta(3, -M_PI_2);
-    mConfiguration.setTheta(5, M_PI_2);
     mGraph->addObstacle(cRobotObstacle);
     mGraph->addObstacle(cFloorObstacle);
-    // while (!ros::ok()){}
     ros::Duration(2).sleep();
-    setState(std::make_shared<PowerOff>());
-    mCurrentState->doActivity(this);
+    setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
   }
 
