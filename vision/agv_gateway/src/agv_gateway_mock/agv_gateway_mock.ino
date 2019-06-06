@@ -7,7 +7,9 @@
 void setup()
 {
   while (!Serial)
-    ;
+  {
+    // Wait for serial
+  }
   Serial.begin(115200);
 }
 
