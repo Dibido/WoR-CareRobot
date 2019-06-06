@@ -52,7 +52,7 @@
         <max_rad>3.7525</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
-x
+
       <joint_info name="_joint7" channel="6">
         <min_pw>-3.857231089</min_pw>
         <max_pw>1.937368911</max_pw>
@@ -71,7 +71,7 @@ x
    </plugin>
 
    <link name="stance">
-    <kinematic>1</kinematic>
+    <kinematic>0</kinematic>
       <pose>0 0 0.5 0 0 0</pose>
       <inertial>
         <mass>150</mass>
@@ -129,7 +129,7 @@ x
     </joint>
 
     <link name="link0">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
 	      <pose>0 0 1 0 0 0</pose>
       <visual name="visual0">
 	      <pose>0 0 0 0 0 0</pose>
@@ -157,7 +157,7 @@ x
 
 
     <link name="link1">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0 0 1.333 0 0 0</pose>
       <visual name="visual1">
 	      <pose>0 0 0 0 0 0</pose>
@@ -190,19 +190,25 @@ x
       <axis>
         <xyz>0 0 1</xyz>
       <limit> 
-        <effort>87</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
     <link name="link2">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0 0 1.333 -1.57079632679 0 0</pose>
       <visual name="visual2">
 	      <pose>0 0 0 0 0 0</pose>
@@ -235,12 +241,21 @@ x
       <axis>
         <xyz>0 1 0</xyz>
       <limit> 
-        <effort>87</effort>
+        <effort>-1</effort>
         <lower>-1.8326</lower>
         <upper>1.8326</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      <sensor name="force_torque" type="force_torque">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
+      </sensor>
       <sensor name="force_torque" type="force_torque">
         <update_rate>1000</update_rate>
       </sensor>
@@ -248,7 +263,7 @@ x
 
 
     <link name="link3">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0 0 1.649 0 0 0</pose>
       <visual name="visual3">
 	      <pose>0 0 0 0 0 0</pose>
@@ -281,7 +296,7 @@ x
       <axis>
         <xyz>0 0 1</xyz>
       <limit> 
-        <effort>87</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.3925</velocity>
@@ -293,7 +308,7 @@ x
     </joint>
 
     <link name="link4">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0.0825 0 1.649 1.57079632679 0 0</pose>
       <visual name="visual4">
 	      <pose>0 0 0 0 0 0</pose>
@@ -326,19 +341,25 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
       <limit> 
-        <effort>87</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.3925</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
     <link name="link5">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0 0 2.033 0 0 0</pose>
       <visual name="visual5">
 	      <pose>0 0 0 0 0 0</pose>
@@ -362,6 +383,7 @@ x
           </mesh>
         </geometry>
       </collision>
+      
     </link>
 
     <joint name="_joint5" type="revolute">
@@ -371,19 +393,25 @@ x
       <axis>
         <xyz>0 0 1</xyz>
       <limit> 
-        <effort>12</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
     <link name="link6">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0 0 2.033 1.57079632679 0 0</pose>
       <visual name="visual6">
 	      <pose>0 0 0 0 0 0</pose>
@@ -416,19 +444,25 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
       <limit> 
-        <effort>12</effort>
+        <effort>-1</effort>
         <lower>-0.0873</lower>
         <upper>3.8223</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
     <link name="link7">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0.088 0 2.033 3.14159265359 0 -0.785398</pose> <!-- -0.785398-->
       <visual name="visual7">
 	      <pose>0 0 0 0 0 0</pose>
@@ -461,20 +495,26 @@ x
       <axis>
         <xyz>0 0 1</xyz>
       <limit> 
-        <effort>12</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
 
     <link name="link8">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0.088 0 1.927 3.14159265359 0 0</pose>
       <visual name="visual8">
 	      <pose>0 0 0 0 0 0</pose>
@@ -507,19 +547,25 @@ x
       <axis>
         <xyz>0 0 -1</xyz>
       <limit> 
-        <effort>12</effort>
+        <effort>-1</effort>
         <lower>-2.9671</lower>
         <upper>2.9671</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
     <link name="link9">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0.088 -0.04 1.8685 3.14159265359 0 0</pose>
       <visual name="visual9">
 	      <pose>0 0 0 0 0 0</pose>
@@ -572,18 +618,24 @@ x
         <limit> 
           <lower>0</lower>
           <upper>0.0395</upper>
-          <effort>12</effort>
+          <effort>-1</effort>
           <velocity>2.8710</velocity>
-        </limit>
+        </limit>       
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 
 
     <link name="link10">
-      <kinematic>1</kinematic>
+      <kinematic>0</kinematic>
       <pose>0.088 0.04 1.8685 3.14159265359 0 3.14159265359</pose>
       <visual name="visual10">
 	      <pose>0 0 0 0 0 0</pose>
@@ -637,12 +689,18 @@ x
         <limit> 
           <lower>0</lower>
           <upper>0.0395</upper>
-          <effort>12</effort>
+          <effort>-1</effort>
           <velocity>2.8710</velocity>
         </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
     
