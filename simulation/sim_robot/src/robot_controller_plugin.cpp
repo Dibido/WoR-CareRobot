@@ -111,7 +111,7 @@ namespace gazebo
   {
     std::vector<double> incomingTheta = fmsg->theta;
     jointVel_t speedFactor = fmsg->sf;
-    // incomingTheta[6] -=  0.785398;//temp fix gripper orientation
+     incomingTheta[6] +=  -M_PI_4;//temp fix gripper orientation
     ROS_DEBUG("Received command: %f", incomingTheta);
 
     std::vector<commands::Command> thetaContainer = {};
