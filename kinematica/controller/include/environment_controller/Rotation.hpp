@@ -31,47 +31,44 @@ namespace environment_controller
      * @param aYaw_rad
      * @param aQuaternion
      */
-    Rotation(double aRoll_rad,
-             double aPitch_rad,
-             double aYaw_rad,
-             double aQuaternion);
+    Rotation(double aX, double aY, double aZ, double aW);
     /**
      * @brief Getter & setter
      *
      * @return double&
      */
-    double roll_rad();
-    const double& roll_rad() const;
+    double x();
+    const double& x() const;
 
     /**
      * @brief Getter & setter
      *
      * @return double&
      */
-    double pitch_rad();
-    const double& pitch_rad() const;
+    double y();
+    const double& y() const;
 
     /**
      * @brief Getter & setter
      *
      * @return double&
      */
-    double yaw_rad();
-    const double& yaw_rad() const;
+    double z();
+    const double& z() const;
 
     /**
      * @brief Getter & setter
      *
      * @return double&
      */
-    double quaternion();
-    const double& quaternion() const;
+    double w();
+    const double& w() const;
 
       private:
-    double mRoll_rad;
-    double mPitch_rad;
-    double mYaw_rad;
-    double mQuaternion;
+    double mX;
+    double mY;
+    double mZ;
+    double mW;
   };
 } // namespace environment_controller
 

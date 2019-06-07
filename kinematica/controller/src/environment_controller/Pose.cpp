@@ -3,8 +3,7 @@
 namespace environment_controller
 {
 
-  Pose::Pose(const Position& aPosition,
-                 const Rotation& aRotation)
+  Pose::Pose(const Position& aPosition, const Rotation& aRotation)
       : mPosition(aPosition), mRotation(aRotation)
   {
     position();
@@ -29,19 +28,19 @@ namespace environment_controller
 
   Rotation& Pose::rotation()
   {
-    mRotation.roll_rad();
-    mRotation.pitch_rad();
-    mRotation.yaw_rad();
-    mRotation.quaternion();
+    mRotation.x();
+    mRotation.y();
+    mRotation.z();
+    mRotation.w();
     return mRotation;
   }
 
   const Rotation& Pose::rotation() const
   {
-    mRotation.roll_rad();
-    mRotation.pitch_rad();
-    mRotation.yaw_rad();
-    mRotation.quaternion();
+    mRotation.x();
+    mRotation.y();
+    mRotation.z();
+    mRotation.w();
     return mRotation;
   }
 } // namespace environment_controller

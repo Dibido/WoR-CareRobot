@@ -6,59 +6,85 @@
 namespace environment_controller
 {
 
-  Rotation::Rotation(double aRoll_rad,
-                     double aPitch_rad,
-                     double aYaw_rad,
-                     double aQuaternion)
-      : mRoll_rad(aRoll_rad),
-        mPitch_rad(aPitch_rad),
-        mYaw_rad(aYaw_rad),
-        mQuaternion(aQuaternion)
+  Rotation::Rotation(double aX, double aY, double aZ, double aW)
+      : mX(aX), mY(aY), mZ(aZ), mW(aW)
   {
-    roll_rad();
-    pitch_rad();
-    yaw_rad();
-    quaternion();
+    x();
+    y();
+    z();
+    w();
   }
 
-  double Rotation::roll_rad()
+  double Rotation::x()
   {
-    return fmod(mRoll_rad, M_PI);
+    if (mX > 1 || mX < -1)
+    {
+      throw std::range_error("x is out of range");
+    }
+    return mX;
   }
 
-  const double& Rotation::roll_rad() const
+  const double& Rotation::x() const
   {
-    return mRoll_rad;
+    if (mX > 1 || mX < -1)
+    {
+      throw std::range_error("x is out of range");
+    }
+    return mX;
   }
 
-  double Rotation::pitch_rad()
+  double Rotation::y()
   {
-    return fmod(mPitch_rad, M_PI);
+    if (mY > 1 || mY < -1)
+    {
+      throw std::range_error("y is out of range");
+    }
+    return mY;
   }
 
-  const double& Rotation::pitch_rad() const
+  const double& Rotation::y() const
   {
-    return mPitch_rad;
+    if (mY > 1 || mY < -1)
+    {
+      throw std::range_error("y is out of range");
+    }
+    return mY;
   }
 
-  double Rotation::yaw_rad()
+  double Rotation::z()
   {
-    return fmod(mYaw_rad, M_PI);
+    if (mZ > 1 || mZ < -1)
+    {
+      throw std::range_error("z is out of range");
+    }
+    return mZ;
   }
 
-  const double& Rotation::yaw_rad() const
+  const double& Rotation::z() const
   {
-    return mYaw_rad;
+    if (mZ > 1 || mZ < -1)
+    {
+      throw std::range_error("z is out of range");
+    }
+    return mZ;
   }
 
-  double Rotation::quaternion()
+  double Rotation::w()
   {
-    return mQuaternion;
+    if (mW > 1 || mW < -1)
+    {
+      throw std::range_error("w is out of range");
+    }
+    return mW;
   }
 
-  const double& Rotation::quaternion() const
+  const double& Rotation::w() const
   {
-    return mQuaternion;
+    if (mW > 1 || mW < -1)
+    {
+      throw std::range_error("w is out of range");
+    }
+    return mW;
   }
 
 } // namespace environment_controller

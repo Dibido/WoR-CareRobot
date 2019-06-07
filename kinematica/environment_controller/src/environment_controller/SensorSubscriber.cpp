@@ -52,9 +52,9 @@ namespace environment_controller
 
       ROS_DEBUG("Transform x: %f, y: %f, z: %f; r: %f, p: %f, y: %f, q: %f",
                 lPose.position().x_m(), lPose.position().y_m(),
-                lPose.position().z_m(), lPose.rotation().roll_rad(),
-                lPose.rotation().pitch_rad(), lPose.rotation().yaw_rad(),
-                lPose.rotation().quaternion());
+                lPose.position().z_m(), lPose.rotation().x(),
+                lPose.rotation().y(), lPose.rotation().z(),
+                lPose.rotation().w());
     }
     catch (tf2::TransformException& lEx)
     {

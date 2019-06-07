@@ -18,10 +18,11 @@ namespace environment_controller
     lTransformStamped.transform.translation.y = aPose.position().y_m();
     lTransformStamped.transform.translation.z = aPose.position().z_m();
 
-    tf2::Quaternion lQ;
+    tf2::Quaternion lQ =
+        tf2::Quaternion(aPose.rotation().x(), aPose.rotation().y(),
+                        aPose.rotation().z(), aPose.rotation().w());
 
-    lQ.setRPY(aPose.rotation().roll_rad(), aPose.rotation().pitch_rad(),
-              aPose.rotation().yaw_rad());
+    lQ.normalize();
 
     lTransformStamped.transform.rotation.x = lQ.x();
     lTransformStamped.transform.rotation.y = lQ.y();
