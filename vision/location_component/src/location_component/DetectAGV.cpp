@@ -12,9 +12,9 @@ namespace location_component
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(),
+        mPosCalculator(aCalibration),
         mCalibration(aCalibration),
-        mFrameCalibration(aAGVFrameCalibration),
-        mPosCalculator(aCalibration)
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
@@ -24,9 +24,9 @@ namespace location_component
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
+        mPosCalculator(aCalibration),
         mCalibration(aCalibration),
-        mFrameCalibration(aAGVFrameCalibration),
-        mPosCalculator(aCalibration)
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
@@ -164,7 +164,7 @@ namespace location_component
     {
       cv::Mat debugFrame;
       aFrame.copyTo(debugFrame);
-      for (int i = 0; i < lContours.size(); i++)
+      for (std::size_t i = 0; i < lContours.size(); i++)
         circle(debugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
                CV_RGB(100, 0, 0), -1, 8, 0);
 
