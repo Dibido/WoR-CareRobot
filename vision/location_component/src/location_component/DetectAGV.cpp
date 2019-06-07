@@ -161,13 +161,13 @@ namespace location_component
 
     if (mCalibration.mDebugStatus)
     {
-      cv::Mat debugFrame;
-      aFrame.copyTo(debugFrame);
+      cv::Mat lDebugFrame;
+      aFrame.copyTo(lDebugFrame);
       for (std::size_t i = 0; i < lContours.size(); i++)
-        circle(debugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
+        circle(lDebugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
                CV_RGB(100, 0, 0), -1, 8, 0);
 
-      imshow("DetectAGV debug window", debugFrame);
+      imshow("DetectAGV debug window", lDebugFrame);
     }
 
     // Getting the middle point of the rect and draw this point

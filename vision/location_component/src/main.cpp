@@ -3,21 +3,21 @@
 int main(int argc, char** argv)
 {
   // This code is used to determine if the user wants to use debug mode
-  bool debugStatus = false;
+  bool lDebugStatus = false;
 
   if (argc == 2)
   {
     std::string lCommandLineArgument = argv[1];
     if (lCommandLineArgument == "-d")
     {
-      debugStatus = true;
+      lDebugStatus = true;
     }
   }
 
   // Creating config values for determining what an AGV is and what a CUP is.
   location_component::CupDetectionCalibration lCupDetectionCalibration(
-      debugStatus);
-  location_component::AGVFrameCalibration lAGVFrameCalibration(debugStatus);
+      lDebugStatus);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(lDebugStatus);
 
   ros::init(argc, argv,
             location_component::location_component_constants::cComponentName);

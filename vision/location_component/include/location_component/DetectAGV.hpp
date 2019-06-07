@@ -20,6 +20,8 @@
 namespace location_component
 {
   const unsigned int cCornersOfObject = 4;
+  // The minimum size of a shape corner in order to be recognised by the polygon
+  // detection algorithm.
   const unsigned int cEpsilon = 15;
 
   class DetectAGV
