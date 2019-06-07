@@ -49,6 +49,8 @@ namespace controller
      */
     planning::Path findPath(Context* aContext,
                             const kinematics::EndEffector& aGoal);
+
+    bool isLogicNextConfiguration(const kinematics::Configuration& previousConfiguration, const kinematics::Configuration& newConfiguration);
   };
 } // namespace controller
 

@@ -17,12 +17,10 @@ namespace controller
 
   void Move::entryAction(Context* aContext)
   {
-    kinematics::EndEffector lTargetLocation =
-        kinematics::EndEffector(aContext->cup().object().position().x_m(),
-                                aContext->cup().object().position().y_m(),
-                                aContext->cup().object().position().z_m() -
-                                    aContext->cup().object().height_m(),
-                                0, M_PI_2, M_PI_2);
+    kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
+        aContext->cup().object().position().x_m(),
+        aContext->cup().object().position().y_m(),
+        aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);
@@ -47,9 +45,10 @@ namespace controller
     {
       kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
       aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
+      aContext->currentConfiguration() = aContext->goalConfiguration();
       mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
           aContext, lTargetConfiguration);
-      aContext->configuration() = lTargetConfiguration;
+      aContext->goalConfiguration() = lTargetConfiguration;
       ROS_DEBUG(
           "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",
           lTargetConfiguration[0], lTargetConfiguration[1],

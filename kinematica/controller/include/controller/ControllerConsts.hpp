@@ -20,7 +20,7 @@ namespace controller
   const double cGripperWidth_m = 0.08;
   const double cWaitTime_s = 0.5;
   const uint64_t cS_to_nano_s = pow(10, 9);
-
+  const double cMaxConfigurationDifference_rad = 0.5;
   const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.0f, 0.6f, 0.6f, 1.6f };
   const planning::Obstacle cFloorObstacle{
     0.0f, 0.0f, -0.05f, 2.0f, 2.0f, 0.1f

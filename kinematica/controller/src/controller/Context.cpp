@@ -119,9 +119,14 @@ namespace controller
     mDropPosition = aPosition;
   }
 
-  kinematics::Configuration& Context::configuration()
+  kinematics::Configuration& Context::currentConfiguration()
   {
-    return mConfiguration;
+    return mCurrentConfiguration;
+  }
+
+  kinematics::Configuration& Context::goalConfiguration()
+  {
+    return mGoalConfiguration;
   }
 
   std::shared_ptr<planning::Graph>& Context::graph()
