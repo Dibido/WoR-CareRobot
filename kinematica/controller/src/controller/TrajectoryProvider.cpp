@@ -53,8 +53,8 @@ namespace controller
       for (int i = 0; i < cJointCount; ++i)
       {
         lConfiguration.setTheta(
-            i, lConfiguration[i] +
-                   rng::RandomNumberGenerator().GenerateInRange(cMinRandomChange, cMaxRandomChange));
+            i, lConfiguration[i] + rng::RandomNumberGenerator().GenerateInRange(
+                                       cMinRandomChange, cMaxRandomChange));
       }
     }
     lConfiguration = aContext->configurationProvider()->inverseKinematics(
@@ -106,10 +106,9 @@ namespace controller
         static_cast<long>(aGoal.cZ_m *
                           planning::cConversionFromMetersToCentimeters));
     planning::Path lPath = aContext->astar()->search(lStart, lGoal);
-    ROS_ASSERT_MSG(lPath.size() > 1,
+    ROS_ASSERT_MSG(lPath.empty() == false,
                    "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
                    lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
-    ROS_INFO("Path size %i", lPath.size());
     return lPath;
   }
 
