@@ -40,7 +40,6 @@ namespace location_component
     cv::Mat lEdgesRaw, lEdges;
     cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
 
-    imshow("joeyjoey2", lEdgesRaw);
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
         [](uchar& s, __attribute__((unused)) const int position[]) {
