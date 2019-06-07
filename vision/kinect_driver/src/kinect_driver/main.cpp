@@ -11,14 +11,23 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <ros/ros.h>
+
 #include <iostream>
 #include <string>
 
 int main(int argc, char** argv)
 {
-  // Setup OpenCV
-  const std::string mainWinName = "KinectImage";
-  cv::namedWindow(mainWinName, cv::WINDOW_AUTOSIZE);
+  // Setup ROS
+  ros::init(argc, argv, "kinect_driver");
+  ros::NodeHandle lNodeHandle;
+  image_transport::ImageTransport mImageTransport(lNodeHandle);
+  image_transport::Publisher mPublisher;
+
+  mPublisher = mImageTransport.advertise("/sensor/kinect/image_raw", 1);
+
   // Set logger
   libfreenect2::setGlobalLogger(
       libfreenect2::createConsoleLogger(libfreenect2::Logger::Debug));
@@ -26,7 +35,6 @@ int main(int argc, char** argv)
   // Open the device
   libfreenect2::Freenect2 freenect2;
   libfreenect2::Freenect2Device* dev = 0;
-  libfreenect2::PacketPipeline* pipeline = 0;
   std::string serial = "";
   if (freenect2.enumerateDevices() == 0)
   {
@@ -82,12 +90,13 @@ int main(int argc, char** argv)
     libfreenect2::Frame* depth = frames[libfreenect2::Frame::Depth];
     registration->apply(rgb, depth, &undistorted, &registered);
     // Send image over ROS topic
-    cv::Mat lRgbMat(rgb->height, rgb->width, CV_8UC3, rgb->data);
-    // cv::Mat lRgbImage = cv::Mat(rgb->height, rgb->width, CV_8UC4, rgb->data);
-    cv::imshow(mainWinName, lRgbMat);
+    cv::Mat lRgbMat(static_cast<int>(rgb->height), static_cast<int>(rgb->width),
+                    CV_8UC4, rgb->data);
+    sensor_msgs::ImagePtr lMsg =
+        cv_bridge::CvImage(std_msgs::Header(), "bgr8", lRgbMat).toImageMsg();
+    mPublisher.publish(lMsg);
     // Release the frame
     listener.release(frames);
-    cv::waitKey();
   }
   dev->stop();
   dev->close();

@@ -13,6 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_interfaces
+  cv_bridge
+	image_transport
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -24,7 +26,7 @@ unit_test_framework
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp
-  DEPENDS roscpp std_msgs message_runtime sensor_interfaces)
+  DEPENDS roscpp std_msgs message_runtime sensor_interfaces cv_bridge image_transport)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)
@@ -37,6 +39,10 @@ include_directories(
   ${freenect2_INCLUDE_DIR})
 
 add_executable(kinect_driver src/${PROJECT_NAME}/main.cpp)
+
+add_dependencies(kinect_driver ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(kinect_driver ${catkin_LIBRARIES})
+
 target_compile_options(kinect_driver PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(kinect_driver ${OpenCV_LIBS} ${freenect2_LIBRARIES})
 
