@@ -29,7 +29,7 @@
       </collision>
       <visual name="visual">
         <material>
-          <ambient>0.1 0.1 0.1 1</ambient>
+          <ambient>0.220 0.600 0.867 1</ambient>
           <diffuse>0.1 0.1 0.2 1</diffuse>
           <specular>0 0 0 0</specular>
           <emissive>0 0 0 1</emissive>
