@@ -22,15 +22,16 @@ namespace controller
   void Init::doActivity(Context* aContext)
   {
     ROS_ERROR("DOING BEGIN1");
-    aContext->configuration() = kinematics::Configuration();
-    aContext->configuration().setTheta(3, -M_PI_2);
-    aContext->configuration().setTheta(5, M_PI_2);
-    aContext->configuration().setTheta(6, M_PI_4);
-    aContext->robotControl()->publish(cSpeedFactor, aContext->configuration());
+    aContext->goalConfiguration() = kinematics::Configuration();
+    aContext->goalConfiguration().setTheta(3, -M_PI_2);
+    aContext->goalConfiguration().setTheta(5, M_PI_2);
+    aContext->goalConfiguration().setTheta(6, M_PI_4);
+    aContext->robotControl()->publish(cSpeedFactor, aContext->goalConfiguration());
     aContext->setState(std::make_shared<Ready>());
   }
 
-  void Init::exitAction(Context*)
+  void Init::exitAction(Context* aContext)
   {
+    aContext->currentConfiguration() = aContext->goalConfiguration();
   }
 } // namespace controller
