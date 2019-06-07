@@ -97,6 +97,8 @@ namespace lidar_application
      * that are the closest (surrounding) the given aAngle value. If
      * mInitialScan has measurements on angles 0.0 and 1.1, and aAngle is 0.5,
      * the distances that were measured at 0.0 and 1.1 are returned.
+     * @pre mInitialScan must be filled with atleast 2 samples
+     * @post -
      * @param aAngle - The given angle in radians
      * @return std::pair<double, double>
      */

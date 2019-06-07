@@ -58,11 +58,11 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
 
   // Adding initial scan of area
   LidarData lInitialScanData;
-  lInitialScanData.addLidarData(0.0, 1.0);
-  lInitialScanData.addLidarData(0.1, 4.0);
-  lInitialScanData.addLidarData(0.2, 4.0);
-  lInitialScanData.addLidarData(0.3, 4.0);
-  lInitialScanData.addLidarData(0.4, 1.0);
+  lInitialScanData.addLidarData(0.0, 1.00);
+  lInitialScanData.addLidarData(0.1, 4.01);
+  lInitialScanData.addLidarData(0.2, 4.02);
+  lInitialScanData.addLidarData(0.3, 4.03);
+  lInitialScanData.addLidarData(0.4, 1.04);
 
   lObjectDetection.mInitialScan = lInitialScanData;
   lObjectDetection.mInitialized = true;
@@ -83,7 +83,7 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
   lObjectDetection.detectObjects();
 
   /** We expect that 3 objects are detected as the differences in distance
-   * between angles 0.1, 0.2 and 0.3,
+   * between angles 0.1, 0.2 and 0.3, and their neighbours
    * are bigger then our defined lMaxDistanceDifference_m of 0.1 */
   EXPECT_EQ(static_cast<unsigned int>(3),
             lObjectDetection.mDetectedObjects.size());

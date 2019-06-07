@@ -255,7 +255,7 @@ namespace lidar_application
   std::pair<double, double>
       ObjectDetection::getSurroundingDistances(const double aAngle) const
   {
-    if (mInitialScan.mMeasurements.size() == 0)
+    if (!(static_cast<int>(mInitialScan.mMeasurements.size()) >= 2))
     {
       throw std::logic_error(
           "Preconditions of getSurroundingDistances not met");
@@ -272,10 +272,10 @@ namespace lidar_application
       // It will probably be a value close to the maximum of 2 * PI
 
       // Take the highest angle as lower neighbour
-      lLowerNeighbourDistance_m = (*mInitialScan.mMeasurements.end()--).second;
+      lLowerNeighbourDistance_m = (--mInitialScan.mMeasurements.end())->second;
 
       // Take the lowest angle as upper neighbour
-      lUpperNeighbourDistance_m = (*mInitialScan.mMeasurements.begin()).second;
+      lUpperNeighbourDistance_m = mInitialScan.mMeasurements.begin()->second;
     }
     else // There has been found a key with a equal or higher value then aAngle:
     {
@@ -283,10 +283,15 @@ namespace lidar_application
 
       // If there exists a lower angle, use that. Otherwise take the highest
       // angle as lower neighbour.
-      lLowerNeighbourDistance_m =
-          (lIterator == mInitialScan.mMeasurements.begin())
-              ? (*mInitialScan.mMeasurements.end()--).second
-              : (*lIterator--).second;
+      if (!(lIterator == mInitialScan.mMeasurements.begin()))
+      {
+        lLowerNeighbourDistance_m = (--lIterator)->second;
+      }
+      else
+      {
+        lLowerNeighbourDistance_m =
+            (--mInitialScan.mMeasurements.end())->second;
+      }
     }
 
     return std::pair<double, double>(lLowerNeighbourDistance_m,

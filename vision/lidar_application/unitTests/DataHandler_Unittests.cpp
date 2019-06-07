@@ -72,6 +72,4 @@ TEST(DataHandler, PublishData)
   EXPECT_CALL(lDataHandler, passObstacles(_)).Times(1);
 
   lDataHandler.publishData(lObjects, 0.0);
-
-  std::cout << "publish data end" << std::endl;
 }
