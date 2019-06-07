@@ -21,7 +21,6 @@ namespace controller
 
   void MoveToDropLocation::doActivity(Context* aContext)
   {
-    ROS_ERROR("move to drop location");
     int64_t lMovementDuration_ns =
         mArrivalTime.toNSec() - ros::Time::now().toNSec();
     if (lMovementDuration_ns > 0)

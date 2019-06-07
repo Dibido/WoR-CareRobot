@@ -40,7 +40,6 @@ namespace controller
 
     if (ros::Time::now() >= mGripperCloseTime)
     {
-      ROS_ERROR("next state whoho");
       aContext->setState(std::make_shared<MoveToDropLocation>());
     }
   }
