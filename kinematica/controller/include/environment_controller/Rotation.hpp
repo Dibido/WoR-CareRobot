@@ -26,10 +26,10 @@ namespace environment_controller
     /**
      * @brief Construct a new Rotation object
      *
-     * @param aRoll_rad
-     * @param aPitch_rad
-     * @param aYaw_rad
-     * @param aQuaternion
+     * @param aX
+     * @param aY
+     * @param aZ
+     * @param aW
      */
     Rotation(double aX, double aY, double aZ, double aW);
     /**

@@ -21,7 +21,7 @@ namespace environment_controller
 {
   /**
    * @brief The data struct for a pose. A pose consists of a position (x,y,z)
-   * and a rotation (r,p,y,q)
+   * and a rotation (x,y,z,w)
    * @author Brandon Geldof
    */
   struct Pose
