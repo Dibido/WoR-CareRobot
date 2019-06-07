@@ -20,7 +20,7 @@ namespace controller
     ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
     kinematics::Configuration lPreviousConfiguration =
         aContext->currentConfiguration();
-    bool firstTry = true;
+    bool lFirstTry = true;
     // Start at 1 because first node is start position
     for (std::size_t i = 1; i < lRequiredPath.size();)
     {
@@ -38,23 +38,23 @@ namespace controller
         lConfiguration = aContext->configurationProvider()->inverseKinematics(
             lTrajectoryEndEffector, lConfiguration);
         if (isLogicNextConfiguration(lPreviousConfiguration, lConfiguration) ||
-            firstTry)
+            lFirstTry)
         {
           lPreviousConfiguration = lConfiguration;
           aTrajectory.push(lConfiguration);
           ++i;
-          firstTry = false;
+          lFirstTry = false;
         }
       }
       catch (int e)
       {
         ROS_ERROR("TRYING AGAIN");
       }
-      for (int i = 0; i < 7; ++i)
+      for (int i = 0; i < cJointCount; ++i)
       {
         lConfiguration.setTheta(
             i, lConfiguration[i] +
-                   rng::RandomNumberGenerator().GenerateInRange(-0.01, 0.01));
+                   rng::RandomNumberGenerator().GenerateInRange(cMinRandomChange, cMaxRandomChange));
       }
     }
     lConfiguration = aContext->configurationProvider()->inverseKinematics(
@@ -117,7 +117,7 @@ namespace controller
       const kinematics::Configuration& previousConfiguration,
       const kinematics::Configuration& newConfiguration)
   {
-    for (int i = 0; i < 7; ++i)
+    for (int i = 0; i < cJointCount; ++i)
     {
       double lDifference =
           std::abs(previousConfiguration[i] - newConfiguration[i]);
