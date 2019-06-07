@@ -18,6 +18,10 @@ namespace lidar_application
 
     // Z position of lidar
     const double cLidarHeight_m = 0.5;
+
+    // Reality has shown that the lidar can measure up to around 5 meters
+    // reliably.
+    const double cMaxReliableDistance_m = 5.0;
   } // namespace objectdetection_constants
 
   class ObjectDetection
@@ -100,6 +104,17 @@ namespace lidar_application
         getSurroundingDistances(const double aAngle) const;
 
     /**
+     * @brief Filters out any objects with a distance greater then
+     * mMaxReliableDistance_m
+     * @param aObjectList - Objectlist in form (theta in radians, distance in
+     * meters)
+     * @return List of objects in same form as aObjectList, only without the
+     * objects that had a distance greater then mMaxReliableDistance_m
+     */
+    std::vector<std::pair<double, double>> filterFarObjects(
+        const std::vector<std::pair<double, double>>& aObjectList) const;
+
+    /**
      * @brief Prints out mDetectedObjects
      */
     void printPublishData() const;
@@ -122,6 +137,9 @@ namespace lidar_application
     // Maximum difference allowed between adjacent/previous measurements for
     // them to be considered as measurements of the same object.
     const double mMaxDistanceDifference_m;
+
+    // Maximum distance that the lidar can reliable measure.
+    const double mMaxReliableDistance_m;
   };
 } // namespace lidar_application
 

@@ -4,7 +4,10 @@ namespace lidar_application
 {
 
   ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m)
-      : mInitialized(false), mMaxDistanceDifference_m(aMaxDistanceDifference_m)
+      : mInitialized(false),
+        mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m)
   {
   }
 
@@ -27,6 +30,8 @@ namespace lidar_application
 
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
+
+          printPublishData();
         }
         else
         {
@@ -167,7 +172,7 @@ namespace lidar_application
       }
     }
 
-    mDetectedObjects = convertVectorsTo2D(lObjectList);
+    mDetectedObjects = convertVectorsTo2D(filterFarObjects(lObjectList));
   }
 
   std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
@@ -286,6 +291,24 @@ namespace lidar_application
 
     return std::pair<double, double>(lLowerNeighbourDistance_m,
                                      lUpperNeighbourDistance_m);
+  }
+
+  std::vector<std::pair<double, double>> ObjectDetection::filterFarObjects(
+      const std::vector<std::pair<double, double>>& aObjectList) const
+  {
+    std::vector<std::pair<double, double>> lReturnObjects;
+
+    for (size_t lIndex = 0; lIndex < aObjectList.size(); ++lIndex)
+    {
+      std::pair<double, double> lPair = aObjectList.at(lIndex);
+
+      if (lPair.second <= mMaxReliableDistance_m)
+      {
+        lReturnObjects.push_back(lPair);
+      }
+    }
+
+    return lReturnObjects;
   }
 
   void ObjectDetection::printPublishData() const
