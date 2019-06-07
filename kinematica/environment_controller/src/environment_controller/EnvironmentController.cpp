@@ -11,8 +11,9 @@ namespace environment_controller
       const std::shared_ptr<controller::Context>& aContext)
       : mContext(aContext), mTfHandler(std::make_shared<TFHandler>())
   {
-    mTimer = mCallbackNode.createTimer(
-        ros::Duration(0.01), &EnvironmentController::publishTFSensors, this);
+    mTimer = mCallbackNode.createTimer(ros::Duration(cSensorTFPublishRate),
+                                       &EnvironmentController::publishTFSensors,
+                                       this);
   }
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)

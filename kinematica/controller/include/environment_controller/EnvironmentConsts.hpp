@@ -26,6 +26,8 @@ namespace environment_controller
   const double cLow_rad = -M_PI;
   const double cHigh_rad = M_PI;
   const double cMinDistanceToRobotarm_m = 2.0;
+  const double cSensorCallbackRate = 0.1;
+  const double cSensorTFPublishRate = 0.01;
 } // namespace environment_controller
 
 #endif // ENVIRONMENT_CONSTS_HPP

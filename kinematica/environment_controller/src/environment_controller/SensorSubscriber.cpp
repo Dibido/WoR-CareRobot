@@ -13,7 +13,7 @@ namespace environment_controller
                                       this)),
         mEnvironmentController(aController)
   {
-    mTimer = mHandle.createTimer(ros::Duration(0.1),
+    mTimer = mHandle.createTimer(ros::Duration(cSensorCallbackRate),
                                  &SensorSubscriber::transformListen, this);
   }
 
