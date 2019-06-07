@@ -18,7 +18,7 @@ TEST(DetectAGVSuite, CalculateMidpoint)
   lContours.push_back(cv::Point(100, 100));
   lContours.push_back(cv::Point(0, 100));
 
-  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
   location_component::AGVFrameCalibration lAGVFrameCalibration(true);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
@@ -35,7 +35,7 @@ TEST(DetectAGVSuite, ContoursMatSize)
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
   location_component::AGVFrameCalibration lAGVFrameCalibration(true);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
@@ -53,7 +53,7 @@ TEST(DetectAGVSuite, DetectAGVPosition)
       cv::imread(getImagePath("Test_picture_agv.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
   location_component::AGVFrameCalibration lAGVFrameCalibration(true);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
@@ -71,7 +71,7 @@ TEST(DetectAGVSuite, DetectAGVPositionPerspective)
       getImagePath("Test_picture_agv_perspective_view.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
 
-  location_component::CupDetectionCalibration lCupDetectionCalibration;
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
   location_component::AGVFrameCalibration lAGVFrameCalibration(true);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
@@ -79,6 +79,6 @@ TEST(DetectAGVSuite, DetectAGVPositionPerspective)
   boost::optional<location_component::DetectedAGV> lAGV =
       lAGVDetector.detect(lImage);
 
-  EXPECT_EQ(335, lAGV->mMidpoint.x);
-  EXPECT_EQ(456, lAGV->mMidpoint.y);
+  EXPECT_EQ(334, lAGV->mMidpoint.x);
+  EXPECT_EQ(457, lAGV->mMidpoint.y);
 }

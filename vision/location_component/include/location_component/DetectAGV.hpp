@@ -20,7 +20,9 @@
 namespace location_component
 {
   const unsigned int cCornersOfObject = 4;
-  const unsigned int cEpsilon = 5;
+  // The minimum size of a shape corner in order to be recognised by the polygon
+  // detection algorithm.
+  const unsigned int cEpsilon = 15;
 
   class DetectAGV
   {
@@ -121,10 +123,10 @@ namespace location_component
     void setAGVSpeed(const location_component::AGV& aAGV);
 
       private:
-    location_component::PosCalculation mPosCalculator;
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
     std::unique_ptr<RosServiceCup> mRosServiceCup;
+    location_component::PosCalculation mPosCalculator;
     CupDetectionCalibration mCalibration;
     FrameCalibration mFrameCalibration;
   };

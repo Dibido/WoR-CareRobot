@@ -12,6 +12,7 @@ namespace location_component
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(),
+        mPosCalculator(aCalibration),
         mCalibration(aCalibration),
         mFrameCalibration(aAGVFrameCalibration)
   {
@@ -23,6 +24,7 @@ namespace location_component
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
+        mPosCalculator(aCalibration),
         mCalibration(aCalibration),
         mFrameCalibration(aAGVFrameCalibration)
   {
@@ -83,6 +85,7 @@ namespace location_component
   {
     boost::optional<DetectedFrame> lDetectedFrame{};
     boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
+
     if (mCapturedFrame.cols == 0)
     {
       mCapturedFrame = cv::Mat(aFrame.rows, aFrame.cols, CV_8UC3);
@@ -118,7 +121,7 @@ namespace location_component
 
         if (lCapture)
         {
-          CupScanner lCupScanner;
+          CupScanner lCupScanner(mFrameCalibration);
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
               lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
@@ -138,9 +141,6 @@ namespace location_component
             cv::circle(lDisplayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), 0);
           }
-
-          // Disable debug windows for now.
-          /* imshow("display ", lDisplayCups); */
         }
       }
     }
@@ -159,11 +159,23 @@ namespace location_component
 
     cv::Rect lBoundRect;
 
+    if (mCalibration.mDebugStatus)
+    {
+      cv::Mat lDebugFrame;
+      aFrame.copyTo(lDebugFrame);
+      for (std::size_t i = 0; i < lContours.size(); i++)
+        circle(lDebugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
+               CV_RGB(100, 0, 0), -1, 8, 0);
+
+      imshow("DetectAGV debug window", lDebugFrame);
+    }
+
     // Getting the middle point of the rect and draw this point
     if (lContours.size() == cCornersOfObject)
     {
       DetectedAGV lDetectedAGV;
       lBoundRect = boundingRect(lContours);
+
       // The corners of the AGV.
       std::vector<cv::Point2f> lAGVCorners;
       // The corners of the bounding rectangle around the AGV.
@@ -230,8 +242,6 @@ namespace location_component
 
     mFrameCalibration.removeEverythingButAGV(aSourceMat, lMatDes);
 
-    // cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
-    //             lMatDes);
     cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 
