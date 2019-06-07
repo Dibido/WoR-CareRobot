@@ -59,7 +59,8 @@ namespace environment_controller
 
   void EnvironmentController::publishTFSensors(const ros::TimerEvent&)
   {
-    for (auto lSensor = mSensors.begin(); lSensor != mSensors.end(); ++lSensor)
+    for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
+         lSensor != mSensors.end(); ++lSensor)
     {
       mTfHandler->transform(lSensor->second,
                             std::string(cSensorFrame) +
