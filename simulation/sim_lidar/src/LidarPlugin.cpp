@@ -168,8 +168,8 @@ namespace gazebo
     sensor_msgs::LaserScan lLaserMessage;
     lLaserMessage.range_min = static_cast<float>(-M_PI);
     lLaserMessage.range_max = static_cast<float>(M_PI);
-    lLaserMessage.ranges.resize(
-        static_cast<unsigned long>(aLidarData.mMeasurements.size()));
+
+    lLaserMessage.ranges.clear();
 
     for (auto lIterator = aLidarData.mMeasurements.begin();
          lIterator != aLidarData.mMeasurements.end(); ++lIterator)
