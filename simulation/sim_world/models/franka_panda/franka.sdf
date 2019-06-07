@@ -2,6 +2,7 @@
 <sdf version='1.4'>
   <model name="Franka_panda">
     <static>false</static>
+    <plugin name="CollisionBehaviorModel" filename="libsim_torque_plugin.so"/>
     <plugin name="servo_plugin" filename="libsim_robot_plugin.so">
       <debug></debug>
 
@@ -71,7 +72,7 @@
    </plugin>
 
    <link name="stance">
-    <kinematic>0</kinematic>
+    <kinematic>1</kinematic>
       <pose>0 0 0.5 0 0 0</pose>
       <inertial>
         <mass>150</mass>
@@ -129,7 +130,7 @@
     </joint>
 
     <link name="link0">
-      <kinematic>0</kinematic>
+      <kinematic>1</kinematic>
 	      <pose>0 0 1 0 0 0</pose>
       <visual name="visual0">
 	      <pose>0 0 0 0 0 0</pose>
@@ -247,6 +248,7 @@
         <velocity>2.3925</velocity>
       </limit>
       </axis>
+      
       <sensor name="force_torque" type="force_torque">
         <always_on>true</always_on>
         <update_rate>20.0</update_rate>
@@ -255,9 +257,6 @@
           <frame>sensor</frame>
           <measure_direction>child_to_parent</measure_direction>
         </force_torque>
-      </sensor>
-      <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
       </sensor>
     </joint>
 
@@ -303,7 +302,13 @@
       </limit>
       </axis>
       <sensor name="force_torque" type="force_torque">
-        <update_rate>1000</update_rate>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        <visualize>true</visualize>
+        <force_torque>
+          <frame>sensor</frame>
+          <measure_direction>child_to_parent</measure_direction>
+        </force_torque>
       </sensor>
     </joint>
 

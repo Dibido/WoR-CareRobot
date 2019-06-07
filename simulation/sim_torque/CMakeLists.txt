@@ -15,6 +15,8 @@ find_package(Boost REQUIRED COMPONENTS
   unit_test_framework
 )
 
+
+
 #Enable CTest which is used for the codecoverage
 include(CTest)
 enable_testing()
@@ -22,6 +24,7 @@ enable_testing()
 find_package(gazebo REQUIRED)
 
 link_libraries(gcov)
+link_directories(${GAZEBO_LIBRARY_DIRS})
 
 include_directories(include
 	SYSTEM # everything after system is seen as system include (no compiler warnings)
@@ -48,9 +51,9 @@ catkin_package(
 	std_msgs
 )
 
-add_library(${PROJECT_NAME}_plugin
-    src/CollisionBehaviorData.cpp
-    src/CollisionBehaviorSubscriber.cpp
+
+add_library(${PROJECT_NAME}_plugin SHARED
+	src/CollisionBehaviorModel.cpp
     )
 
 add_dependencies(${PROJECT_NAME}_plugin
@@ -60,3 +63,9 @@ add_dependencies(${PROJECT_NAME}_plugin
 target_link_libraries(${PROJECT_NAME}_plugin
 		${catkin_LIBRARIES}
 		${GAZEBO_LIBRARIES})
+
+# add_executable(${PROJECT_NAME}_main src/Main.cpp src/Joint.cpp)
+
+# target_link_libraries(${PROJECT_NAME}_main
+# ${catkin_LIBRARIES}
+# ${GAZEBO_LIBRARIES})
