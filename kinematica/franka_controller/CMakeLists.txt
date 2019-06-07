@@ -208,6 +208,8 @@ src/Main.cpp
 src/MotionGenerator.cpp
 src/franka_controller/FrankaControl.cpp
 src/franka_controller/FrankaMovementSubscriber.cpp
+src/franka_controller/FrankaGripperSubscriber.cpp
+src/franka_controller/FrankaStopSubscriber.cpp
 )
 
 add_dependencies(franka_control
