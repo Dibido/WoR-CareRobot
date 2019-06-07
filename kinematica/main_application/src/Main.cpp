@@ -11,10 +11,15 @@
 #include <memory>
 #include <stdlib.h>
 
+#include <geometry_msgs/TransformStamped.h>
+#include <tf2_ros/transform_listener.h>
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "main_application");
   ros::start();
+
+  ros::NodeHandle node;
 
   std::shared_ptr<controller::Context> lContext =
       std::make_shared<controller::Context>();

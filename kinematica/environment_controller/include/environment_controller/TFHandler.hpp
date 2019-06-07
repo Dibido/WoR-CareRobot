@@ -13,7 +13,7 @@
 namespace environment_controller
 {
   /**
-   * @brief Helper class for ros Transform
+   * @brief Helper class for tf2_ros
    *
    */
   class TFHandler
@@ -40,14 +40,14 @@ namespace environment_controller
     void transform(const Pose& aPose, const std::string& aFrame);
 
     /**
-     * @brief Transforms fromFrame into toFrame and returns the x, y and z
-     * coordinates in the coordinate system of toFrame
+     * @brief Transforms the fromFrame coordinate system into the toFrame
+     * coordinate system
      *
-     * @param fromFrame A collection of coordinates from a single coordinate
+     * @param aFromFrame A collection of coordinates from a single coordinate
      * system
-     * @param toFrame A collection of coordinates from a single coordinate
+     * @param aToFrame A collection of coordinates from a single coordinate
      * system
-     * @return Position Struct that exists of x, y and z coordinates
+     * @return Pose See Pose.hpp
      */
     Pose calculatePosition(const std::string& aFromFrame,
                            const std::string& aToFrame);
@@ -55,6 +55,7 @@ namespace environment_controller
       private:
     tf2_ros::TransformBroadcaster mBroadcaster;
     tf2_ros::Buffer mBuffer;
+    tf2_ros::TransformListener mTfListener;
   };
 } // namespace environment_controller
 

@@ -8,7 +8,7 @@
 namespace environment_controller
 {
   /**
-   * @brief
+   * @brief Class the sensor topic subscriber
    *
    */
   class SensorSubscriber : public ISensorProvider
@@ -18,7 +18,7 @@ namespace environment_controller
      * @brief Construct a new Sensor Subscriber object
      *
      * @param aTopicName
-     * @param aController
+     * @param aController Environment controller shared pointer
      */
     SensorSubscriber(const std::string& aTopicName,
                      const std::shared_ptr<EnvironmentController>& aController);
@@ -36,11 +36,11 @@ namespace environment_controller
      */
     virtual void provideSensor(const Sensor& aSensor);
 
-    void test(const ros::TimerEvent&);
+    void transformListen(const ros::TimerEvent&);
 
       private:
     /**
-     * @brief
+     * @brief Callback function to construct a Pose object
      *
      * @param aMsg A Sensor msg
      */

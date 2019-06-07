@@ -4,6 +4,7 @@
 #include "environment_controller/TFHandler.hpp"
 
 #include <thread>
+
 namespace environment_controller
 {
   EnvironmentController::EnvironmentController(
@@ -51,9 +52,8 @@ namespace environment_controller
 
   Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
   {
-    std::string s = std::string(cSensorFrame) + std::to_string(aSensorID);
-    // std::cout << s << std::endl;
-    Pose lPose = tfHandler->calculatePosition(s, cGlobalFrame);
+    Pose lPose = tfHandler->calculatePosition(
+        std::string(cSensorFrame) + std::to_string(aSensorID), cGlobalFrame);
     return lPose;
   }
 

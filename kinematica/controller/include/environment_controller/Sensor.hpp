@@ -48,8 +48,8 @@ namespace environment_controller
     const uint8_t& sensorID() const;
 
       private:
-    Pose mPose;
     uint8_t mSensorID;
+    Pose mPose;
   };
 } // namespace environment_controller
 

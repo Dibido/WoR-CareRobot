@@ -3,9 +3,8 @@
 namespace environment_controller
 {
 
-  TFHandler::TFHandler()
+  TFHandler::TFHandler() : mTfListener(mBuffer)
   {
-    tf2_ros::TransformListener lListener(mBuffer);
   }
 
   void TFHandler::transform(const Pose& aPose, const std::string& aFrame)
@@ -18,16 +17,16 @@ namespace environment_controller
     lTransformStamped.transform.translation.x = aPose.position().x_m();
     lTransformStamped.transform.translation.y = aPose.position().y_m();
     lTransformStamped.transform.translation.z = aPose.position().z_m();
-    tf2::Quaternion q = tf2::Quaternion(
-        aPose.rotation().roll_rad(), aPose.rotation().pitch_rad(),
-        aPose.rotation().yaw_rad(), aPose.rotation().quaternion());
 
-    q.normalize();
+    tf2::Quaternion lQ;
 
-    lTransformStamped.transform.rotation.x = q.x();
-    lTransformStamped.transform.rotation.y = q.y();
-    lTransformStamped.transform.rotation.z = q.z();
-    lTransformStamped.transform.rotation.w = q.w();
+    lQ.setRPY(aPose.rotation().roll_rad(), aPose.rotation().pitch_rad(),
+              aPose.rotation().yaw_rad());
+
+    lTransformStamped.transform.rotation.x = lQ.x();
+    lTransformStamped.transform.rotation.y = lQ.y();
+    lTransformStamped.transform.rotation.z = lQ.z();
+    lTransformStamped.transform.rotation.w = lQ.w();
 
     mBroadcaster.sendTransform(lTransformStamped);
   }
@@ -38,7 +37,6 @@ namespace environment_controller
 
     geometry_msgs::TransformStamped lTransformStamped;
 
-    ros::Time lNow = ros::Time::now();
     lTransformStamped =
         mBuffer.lookupTransform(aToFrame, aFromFrame, ros::Time(0));
 
@@ -53,5 +51,4 @@ namespace environment_controller
 
     return lPose;
   }
-
 } // namespace environment_controller
