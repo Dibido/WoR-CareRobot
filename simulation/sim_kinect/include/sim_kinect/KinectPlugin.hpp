@@ -4,6 +4,7 @@
 
 #include "ros/callback_queue.h"
 #include "std_msgs/String.h"
+#include <gazebo/common/Events.hh>
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 #include <gazebo/msgs/msgs.hh>
@@ -57,12 +58,25 @@ namespace gazebo
     void passObstacles(
         const environment_controller::Obstacles& aObstacles) override;
 
+    /**
+     * Gets executed when there is data being published.
+     *
+     */
+    static void callback(const sensor_msgs::PointCloud2ConstPtr aMsg);
+
       private:
     // ROS
     ros::NodeHandlePtr mRosNode;
     ros::Publisher mKinectPublisher;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
+    ros::Subscriber mRosSub;
+
+    /**
+     * @brief Handles incoming ros messages on a separate thread when a new
+     * message is available handle it using the callback
+     */
+    void QueueThread();
   };
 
 } // namespace gazebo
