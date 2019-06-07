@@ -71,28 +71,25 @@ namespace lidar_application
              mMostRecentScan.mMeasurements.begin();
          lIt != mMostRecentScan.mMeasurements.end(); ++lIt)
     {
-      double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
+      // double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
 
-      double lCurrentDistance_m = mMostRecentScan.mDistances_m.at(i);
-      double lCurrentAngle_m = mMostRecentScan.mAngles.at(i);
+      double lCurrentDistance_m = lIt->second;
+      double lCurrentAngle_m = lIt->first;
 
-      double lDistanceDifference_m = lInitialDistance_m - lCurrentDistance_m;
-
-      // There is a positive change compared to initial scan (object came
-      // closer)
-      if ((lDistanceDifference_m > mMaxDistanceDifference_m))
+      if (isAngleDifferent((*lIt)))
       {
         // Current measurement wasn't taken of the same object as previous angle
         if (std::abs(lCurrentDistance_m - lPreviousDistance_m) >
             mMaxDistanceDifference_m)
         {
           // If lObject contains valid info (it won't at first iteration)
-          if ((lObject.mDistances_m.size() > 0))
+          if ((lObject.mMeasurements.size() > 0))
           {
             /** If begin range object hasn't been stored yet and lObject
             is detected from the very first measurement angle */
-            if (lBeginRangeObject.mAngles.size() == 0 &&
-                lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
+            if (lBeginRangeObject.mMeasurements.size() == 0 &&
+                lObject.mMeasurements.begin()->first ==
+                    mMostRecentScan.mMeasurements.begin()->first)
             {
               lBeginRangeObject = lObject;
             }
@@ -106,9 +103,7 @@ namespace lidar_application
           }
         }
 
-        lObject.mAngles.push_back(lCurrentAngle_m);
-        lObject.mDistances_m.push_back(lCurrentDistance_m);
-
+        lObject.addLidarData(lCurrentAngle_m, lCurrentDistance_m);
         lLastComparisonDifferent = true;
       }
       else
@@ -117,8 +112,9 @@ namespace lidar_application
         {
           /** If begin range object hasn't been stored yet and lObject
           is detected from the very first measurement angle */
-          if (lBeginRangeObject.mAngles.size() == 0 &&
-              lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
+          if (lBeginRangeObject.mMeasurements.size() == 0 &&
+              lObject.mMeasurements.begin()->first ==
+                  mMostRecentScan.mMeasurements.begin()->first)
           {
             lBeginRangeObject = lObject;
           }
@@ -138,21 +134,20 @@ namespace lidar_application
     }
 
     // There has been detected a object in begin of range
-    if (lBeginRangeObject.mAngles.size() > 0)
+    if (lBeginRangeObject.mMeasurements.size() > 0)
     {
       // And there has also been detected a object at the end of the range
-      if (lObject.mAngles.size() > 0)
+      if (lObject.mMeasurements.size() > 0)
       {
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
-        if (std::abs(lObject.mDistances_m.back() -
-                     lBeginRangeObject.mDistances_m.front()) <=
+        if (std::abs((*lObject.mMeasurements.end()--).second -
+                     lBeginRangeObject.mMeasurements.begin()->second) <=
             mMaxDistanceDifference_m)
         {
           // Add the begin range object data to this object, as it must be
           // measurements of the same object
-          lObject.addLidarData(lBeginRangeObject.mAngles,
-                               lBeginRangeObject.mDistances_m);
+          lObject.addLidarData(lBeginRangeObject.mMeasurements);
         }
         else
         {
@@ -235,14 +230,14 @@ namespace lidar_application
     const std::pair<double, double> lSurroundingDistances =
         getSurroundingDistances(lAngle);
 
-    const double lDifferenceToLowerNeighbour =
-        std::abs(lAngle - lSurroundingDistances.first);
-    const double lDifferenceToUpperNeighbour =
-        std::abs(lAngle - lSurroundingDistances.second);
+    const double lDifferenceToLowerNeighbour_m =
+        std::abs(lDistance_m - lSurroundingDistances.first);
+    const double lDifferenceToUpperNeighbour_m =
+        std::abs(lDistance_m - lSurroundingDistances.second);
 
     // Given measurement is too far out of line with data from mInitialScan
-    if ((lDifferenceToLowerNeighbour > mMaxDistanceDifference_m) &&
-        (lDifferenceToUpperNeighbour > mMaxDistanceDifference_m))
+    if ((lDifferenceToLowerNeighbour_m > mMaxDistanceDifference_m) &&
+        (lDifferenceToUpperNeighbour_m > mMaxDistanceDifference_m))
     {
       return true;
     }
@@ -267,8 +262,7 @@ namespace lidar_application
     auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
 
     // If there doesn't exist a key with a equal or higher value then aAngle:
-    if (lIterator->first == mInitialScan.mMeasurements.size() &&
-        lIterator->second == 0.0)
+    if ((lIterator->first == 0.0) && lIterator->second == 0.0)
     {
       // It will probably be a value close to the maximum of 2 * PI
 

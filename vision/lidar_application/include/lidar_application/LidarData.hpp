@@ -41,15 +41,25 @@ namespace lidar_application
 
     /**
      * @brief Adds samples to the existing angles/distances,
-     * aAngles and aDistances_m MUST be of
-     * same size, otherwise an exception is thrown.
      * @pre: -
      * @post: Given values are added to mMeasurements
-     * @param aAngles - angles in radians, must be >= 0.0 and <= 2*PI
-     * @param aDistances_m - corresponding distances in meters
+     * @param aMeasurements - keys angles in radians, must be >= 0.0 and <= 2*PI
+     * and values distance in meters
      */
-    void addLidarData(std::vector<double>& aAngles,
-                      std::vector<double>& aDistances_m);
+    void addLidarData(const std::map<double, double>& aMeasurements);
+
+    /**
+     * @brief Adds samples to the existing angles/distances,
+     * aAngles and aDistances_m MUST be of
+     * same size, otherwise an exception is thrown. Angle/distance
+     * is coupled by index.
+     * @pre: -
+     * @post: Given values are added to mMeasurements
+     * @param aAngles - The angles in radians
+     * @param aDistances_m - The corresponding distances in meters
+     */
+    void addLidarData(const std::vector<double>& aAngles,
+                      const std::vector<double>& aDistances_m);
 
     /**
      * @brief Adds sample to the existing measurements
