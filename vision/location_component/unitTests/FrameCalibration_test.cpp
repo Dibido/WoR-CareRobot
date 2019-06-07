@@ -7,7 +7,7 @@
 TEST(DetectAGVSuite, CalibrateAGVFrame)
 {
   cv::Mat lImage =
-      cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
+      cv::imread(getImagePath("Test_picture_frame.png"), cv::IMREAD_COLOR);
   cv::Mat lMat;
   lImage.copyTo(lMat);
 
