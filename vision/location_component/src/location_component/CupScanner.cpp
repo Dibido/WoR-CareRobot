@@ -13,10 +13,8 @@ namespace location_component
     return lRGB;
   }
 
-  CupScanner::CupScanner()
-  {
-  }
-  CupScanner::~CupScanner()
+  CupScanner::CupScanner(FrameCalibration& aFrameCalibration)
+      : mFrameCalibration(aFrameCalibration)
   {
   }
 
@@ -38,7 +36,7 @@ namespace location_component
     cvtColor(aImage, lHSV, CV_BGR2HSV);
 
     cv::Mat lEdgesRaw, lEdges;
-    cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
+    mFrameCalibration.removeEverythingButAGV(lHSV, lEdgesRaw);
 
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(

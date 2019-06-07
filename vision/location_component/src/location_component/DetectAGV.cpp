@@ -122,7 +122,7 @@ namespace location_component
 
         if (lCapture)
         {
-          CupScanner lCupScanner;
+          CupScanner lCupScanner(mFrameCalibration);
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
               lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
