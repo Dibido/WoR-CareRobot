@@ -72,12 +72,32 @@ namespace environment_controller
      */
     void provideReleaseTime(const uint8_t aReleaseTime_s);
 
+    /**
+     * @brief Register the sensor and insert it into mSensors
+     *
+     * @param aSensor Sensor object
+     */
     void registerSensor(const Sensor& aSensor);
 
+    /**
+     * @brief Transform sensor frame to world frame
+     *
+     * @param aSensorID
+     */
     Pose transformFrames(const uint8_t aSensorID);
 
+    /**
+     * @brief Publish transforms
+     *
+     */
     void publishTFSensors(const ros::TimerEvent&);
 
+    /**
+     * @brief Get the Sensor object
+     *
+     * @param aSensorID
+     * @return const Sensor
+     */
     const Sensor getSensor(const uint8_t aSensorID) const;
 
       private:
