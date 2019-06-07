@@ -9,7 +9,12 @@ find_package(catkin REQUIRED COMPONENTS
         message_runtime
         roscpp
         sensor_msgs
-        std_msgs)
+        std_msgs
+        sensor_interfaces
+        kinematica_msgs
+        controller
+        environment_controller
+)
 
 find_package(Boost REQUIRED COMPONENTS
   system
@@ -27,14 +32,23 @@ enable_testing()
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
+catkin_package(
+        DEPENDS
+        roscpp
+        gazebo_ros
+        kinematica_msgs
+        sensor_interfaces
+        )
+
 include_directories(
         include
         SYSTEM # everything after system is seen as system include (no compiler warnings)
         ${GAZEBO_INCLUDE_DIRS}
         ${catkin_INCLUDE_DIRS})
 
-add_library(${PROJECT_NAME}_plugin SHARED
-        src/KinectPlugin.cpp)
+add_library(${PROJECT_NAME}_plugin SHARED src/KinectPlugin.cpp 
+                                          ../../kinematica/controller/src/environment_controller/Position.cpp
+                                          ../../kinematica/controller/src/environment_controller/Object.cpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin
         ${GAZEBO_LIBRARIES}

@@ -7,9 +7,12 @@
     </description>
 
     <maintainer email="BJ.Cop@student.han.nl">Bas Cop</maintainer>
+    <maintainer email="TDJ.deWinkel@student.han.nl">Thomas de Winkel</maintainer>
     <license>BSD</license>
     <test_depend>rosunit</test_depend>
     <buildtool_depend>catkin</buildtool_depend>
+    <depend>sensor_interfaces</depend>
+    <depend>kinematica_msgs</depend>
     <build_depend>gazebo_msgs</build_depend>
     <build_depend>gazebo_plugins</build_depend>
     <build_depend>gazebo_ros</build_depend>
