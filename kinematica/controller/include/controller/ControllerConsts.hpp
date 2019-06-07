@@ -19,6 +19,9 @@ namespace controller
   const double cJointSpeed_rads = M_PI / 180 * 150;
   const double cGripperWidth_m = 0.08;
   const double cWaitTime_s = 0.5;
+  const uint8_t cJointCount = 7;
+  const double cMinRandomChange = -0.01;
+  const double cMaxRandomChange = 0.01;
   const uint64_t cS_to_nano_s = pow(10, 9);
   const double cMaxConfigurationDifference_rad = 0.5;
   const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.0f, 0.6f, 0.6f, 1.6f };
