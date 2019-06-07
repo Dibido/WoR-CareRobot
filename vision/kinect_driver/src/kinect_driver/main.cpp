@@ -26,7 +26,7 @@ int main(int argc, char** argv)
   image_transport::ImageTransport mImageTransport(lNodeHandle);
   image_transport::Publisher mPublisher;
 
-  mPublisher = mImageTransport.advertise("/sensor/kinect/image_raw", 1);
+  mPublisher = mImageTransport.advertise("/sensor/kinect/img_raw", 1);
 
   // Set logger
   libfreenect2::setGlobalLogger(
@@ -90,10 +90,19 @@ int main(int argc, char** argv)
     libfreenect2::Frame* depth = frames[libfreenect2::Frame::Depth];
     registration->apply(rgb, depth, &undistorted, &registered);
     // Send image over ROS topic
-    cv::Mat lRgbMat(static_cast<int>(rgb->height), static_cast<int>(rgb->width),
-                    CV_8UC4, rgb->data);
+    cv::Mat bgr[4];
+    cv::Mat rgbmat;
+    cv::Mat(static_cast<int>(rgb->height), static_cast<int>(rgb->width),
+            CV_8UC4, rgb->data)
+        .copyTo(rgbmat);
+    split(rgbmat, bgr);
+    // Only using one channel to detect the marker
+    std::vector<cv::Mat> channels = { bgr[0], bgr[1], bgr[2] };
+    cv::Mat img_original;
+    merge(channels, img_original);
     sensor_msgs::ImagePtr lMsg =
-        cv_bridge::CvImage(std_msgs::Header(), "bgr8", lRgbMat).toImageMsg();
+        cv_bridge::CvImage(std_msgs::Header(), "bgr8", img_original)
+            .toImageMsg();
     mPublisher.publish(lMsg);
     // Release the frame
     listener.release(frames);
