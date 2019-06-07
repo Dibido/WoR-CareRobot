@@ -52,7 +52,7 @@ namespace environment_controller
   Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
   {
     std::string s = std::string(cSensorFrame) + std::to_string(aSensorID);
-    std::cout << s << std::endl;
+    // std::cout << s << std::endl;
     Pose lPose = tfHandler->calculatePosition(s, cGlobalFrame);
     return lPose;
   }
@@ -61,8 +61,8 @@ namespace environment_controller
   {
     for (auto lSensor = mSensors.begin(); lSensor != mSensors.end(); ++lSensor)
     {
-      tfHandler->transform(lSensor->second,
-                           cSensorFrame + std::to_string(lSensor->first));
+      tfHandler->transform(lSensor->second, std::string(cSensorFrame) +
+                                                std::to_string(lSensor->first));
     }
   }
 

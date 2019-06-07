@@ -59,7 +59,7 @@ namespace environment_controller
   {
     // try
     // {
-    Pose lPose = mEnvironmentController->transformFrames(0);
+    // Pose lPose = mEnvironmentController->transformFrames(0);
 
     // std::cout << lPose.position().x_m() << " " << lPose.position().y_m()
     //           << " " << lPose.position().z_m() << std::endl;
@@ -70,7 +70,7 @@ namespace environment_controller
     // }
     // catch (...)
     // {
-    //   // std::cout << "shet";
+    //   std::cout << "shet";
     // }
   }
 
