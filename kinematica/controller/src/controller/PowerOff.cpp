@@ -18,7 +18,7 @@ namespace controller
   {
   }
 
-  void PowerOff::doActivity(Context* aContext)
+  void PowerOff::doActivity(Context*)
   {
   }
 

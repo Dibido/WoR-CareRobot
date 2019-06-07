@@ -8,6 +8,13 @@ Packages can be compiled by executing the following command from the workspace r
 catkin_make -DFranka_DIR:PATH=~/libfranka/build
 ```
 
+In case the `franka_controller` package is not needed, such as when the application will only be used for running the simulation
+the following command can be used from the workspace root:
+
+```
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="franka_controller"
+```
+
 Unittests for **<u>all</u>** packages can be compiled by executing the following command from the workspace root:
 
 ```

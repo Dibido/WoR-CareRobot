@@ -21,12 +21,12 @@ namespace controller
 
   void Init::doActivity(Context* aContext)
   {
-    ROS_ERROR("DOING BEGIN1");
     aContext->goalConfiguration() = kinematics::Configuration();
     aContext->goalConfiguration().setTheta(3, -M_PI_2);
     aContext->goalConfiguration().setTheta(5, M_PI_2);
     aContext->goalConfiguration().setTheta(6, M_PI_4);
-    aContext->robotControl()->publish(cSpeedFactor, aContext->goalConfiguration());
+    aContext->robotControl()->publish(cSpeedFactor,
+                                      aContext->goalConfiguration());
     aContext->setState(std::make_shared<Ready>());
   }
 

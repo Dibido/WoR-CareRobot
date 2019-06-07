@@ -3,7 +3,9 @@
 #include "controller/ControllerConsts.hpp"
 #include "franka_controller/FrankaConsts.hpp"
 #include "franka_controller/FrankaControl.hpp"
+#include "franka_controller/FrankaGripperSubscriber.hpp"
 #include "franka_controller/FrankaMovementSubscriber.hpp"
+#include "franka_controller/FrankaStopSubscriber.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -13,6 +15,11 @@ int main(int argc, char* argv[])
           franka_controller::cFrankaIp);
   franka_controller::FrankaMovementSubscriber lMoveSub(
       controller::cRobotCommandTopicName, lFC);
+  franka_controller::FrankaGripperSubscriber lGripperSub(
+      controller::cRobotGripperTopicName, lFC);
+  franka_controller::FrankaStopSubscriber lStopSub(
+      controller::cRobotStopTopicName, lFC);
+
   ros::spin();
   return 0;
 }
