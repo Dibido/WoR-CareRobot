@@ -9,9 +9,8 @@ namespace environment_controller
 {
   EnvironmentController::EnvironmentController(
       const std::shared_ptr<controller::Context>& aContext)
-      : mContext(aContext), tfHandler(std::make_shared<TFHandler>())
+      : mContext(aContext), mTfHandler(std::make_shared<TFHandler>())
   {
-    // ros::Rate(cCallbackRate);
     mTimer = mCallbackNode.createTimer(
         ros::Duration(0.01), &EnvironmentController::publishTFSensors, this);
   }
@@ -52,7 +51,7 @@ namespace environment_controller
 
   Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
   {
-    Pose lPose = tfHandler->calculatePosition(
+    Pose lPose = mTfHandler->calculatePosition(
         std::string(cSensorFrame) + std::to_string(aSensorID), cGlobalFrame);
     return lPose;
   }
@@ -61,8 +60,9 @@ namespace environment_controller
   {
     for (auto lSensor = mSensors.begin(); lSensor != mSensors.end(); ++lSensor)
     {
-      tfHandler->transform(lSensor->second, std::string(cSensorFrame) +
-                                                std::to_string(lSensor->first));
+      mTfHandler->transform(lSensor->second,
+                            std::string(cSensorFrame) +
+                                std::to_string(lSensor->first));
     }
   }
 

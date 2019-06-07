@@ -85,7 +85,7 @@ namespace environment_controller
     ros::Timer mTimer;
 
     std::shared_ptr<controller::Context> mContext;
-    std::shared_ptr<TFHandler> tfHandler;
+    std::shared_ptr<TFHandler> mTfHandler;
     std::map<uint8_t, Pose> mSensors;
   };
 } // namespace environment_controller
