@@ -210,8 +210,6 @@ namespace location_component
 
       lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
-      imshow("joyjoey", lDetectedAGV.mAGVFrame);
-
       std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
       lPoints.push_back(getMidPoint(lContoursWithPerspectiveCorrection));
 
