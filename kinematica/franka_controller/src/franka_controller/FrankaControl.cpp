@@ -32,6 +32,7 @@ namespace franka_controller
     catch (const franka::Exception& lE)
     {
       mRobot.automaticErrorRecovery();
+      executeMovement(aConfig, aSpeedFactor);
       ROS_ERROR(lE.what());
     }
   }
@@ -40,6 +41,7 @@ namespace franka_controller
   {
     try
     {
+      ROS_ERROR("MOVE THIS GRIPPER");
       mGripper.move(aWidth, aSpeedFactor);
     }
     catch (const franka::Exception& lE)

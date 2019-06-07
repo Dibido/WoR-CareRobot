@@ -53,6 +53,7 @@ namespace controller
     ros::Duration(2).sleep();
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
+    mCurrentState->doActivity(this);
   }
 
   void Context::setState(const std::shared_ptr<State>& state)

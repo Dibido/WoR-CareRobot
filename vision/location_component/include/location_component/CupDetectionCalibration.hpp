@@ -14,9 +14,9 @@ namespace location_component
     CupDetectionCalibration(bool aDebugStatus);
 
     // Camera position
-    float mCameraPosX_m = 0.35f;
-    float mCameraPosY_m = -4.0f;
-    float mCameraPosZ_m = 0.8f;
+    float mCameraPosX_m = 0.43f;
+    float mCameraPosY_m = -1.72f;
+    float mCameraPosZ_m = 0.58f;
 
     // Camera FOV
     float mCameraFOV_rads = 1.047f;
@@ -29,9 +29,9 @@ namespace location_component
     float mCameraFlipY = -1.0f;
 
     // Cup and AGV size
-    float mCupHeight_m = 0.099f;
-    float mCupDiameter_m = 0.071f;
-    float mAGVDepth_m = 0.680f;
+    float mCupHeight_m = 0.082f;
+    float mCupDiameter_m = 0.061f;
+    float mAGVDepth_m = 0.552f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
 

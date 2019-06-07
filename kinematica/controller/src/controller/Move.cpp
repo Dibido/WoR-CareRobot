@@ -24,6 +24,7 @@ namespace controller
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);
+
     mArrivalTime = ros::Time::now();
   }
 

@@ -23,8 +23,11 @@ namespace location_component
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
     float lCurrentTime_s = ( float )aCurrentTime.toSec();
     float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
-    float lPredictedArrivalTime_s = lCurrentTime_s + lTimeToArm_s;
-    return ros::Time(lPredictedArrivalTime_s);
+    aCurrentTime = aCurrentTime + ros::Duration(lTimeToArm_s);
+    std::cout << "aCupLocationY_m" << aCupLocationY_m << std::endl;
+    std::cout << "distance to arm" << lDistanceToArm_m << std::endl;
+    std::cout << "current time" << aCurrentTime << std::endl;
+    return aCurrentTime;
   }
 
   cv::Point3f PosCalculation::calculateCupLocation(cv::Point aCupScreenPos,
@@ -100,6 +103,8 @@ namespace location_component
     {
       throw std::range_error("AGV speed cannot be lower than zero");
     }
+
+    std::cout << "speed: " << aAGVSpeed_m_s << std::endl;
 
     mAGVSpeed_m_s = aAGVSpeed_m_s;
   }
