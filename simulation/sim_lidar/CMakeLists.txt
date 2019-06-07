@@ -53,6 +53,7 @@ target_link_libraries(${PROJECT_NAME}_plugin
 
 
 add_executable(${PROJECT_NAME}_calculate
+src/Main.cpp
 src/CalculateData.cpp)
 add_dependencies(${PROJECT_NAME}_calculate ${catkin_EXPORTED_TARGETS})
 

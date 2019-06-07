@@ -1,4 +1,11 @@
+#include <math.h>
+#include <numeric>
 #include <vector>
+
+#include <fstream>
+#include <iostream>
+#include <ostream>
+#include <string>
 
 namespace calculate
 {
@@ -6,7 +13,8 @@ namespace calculate
   class Calculatedata
   {
       public:
-    Calculatedata(std::vector<double> aTheta, std::vector<double> aDistance);
+    Calculatedata();
+    Calculatedata(std::vector<double> aMeasurements);
     /**
      * @brief Load the robot controller plugin, overrides the Load from
      * ModelPlugin
@@ -16,13 +24,18 @@ namespace calculate
      */
     virtual ~Calculatedata() = default;
 
-    void calculateAverage();
+    void fillVector(std::string aFile);
 
-      private:
-    std::vector<double> mTheta_;
-    std::vector<double> mDistance_;
-    double mSumDistance_;
-    double mSumTheta_;
+    void calculateStepSize();
+    void calculateAverage();
+    void calculateDeviation();
+    void processData(std::string aFile);
+
+    std::vector<double> mMeasurements;
+    std::vector<double> mStepSize;
+
+    double mMean;
+    double mDeviation;
   };
 
 } // namespace calculate
