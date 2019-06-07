@@ -86,7 +86,6 @@ namespace location_component
     boost::optional<DetectedFrame> lDetectedFrame{};
     boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
 
-    // imshow("jouyjou", lDetectedAGV->mAGVFrame);
     if (mCapturedFrame.cols == 0)
     {
       mCapturedFrame = cv::Mat(aFrame.rows, aFrame.cols, CV_8UC3);

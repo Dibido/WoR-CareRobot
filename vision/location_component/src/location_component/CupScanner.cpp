@@ -33,7 +33,6 @@ namespace location_component
 
     cv::Mat lGrayscale, lHSV;
     aImage.copyTo(lGrayscale);
-    // aImage.copyTo(lHSV);
 
     cvtColor(aImage, lHSV, CV_BGR2HSV);
 
