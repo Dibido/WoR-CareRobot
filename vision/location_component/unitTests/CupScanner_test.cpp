@@ -37,7 +37,7 @@ TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
   location_component::AGVFrameCalibration lAGVFrameCalibration(true);
   location_component::FrameCalibration lFrameCalibration(lAGVFrameCalibration);
   location_component::CupScanner lScanner(lFrameCalibration);
-  
+
   std::vector<location_component::DetectedCup> lCups =
       lScanner.detectCups(lImage, lMat);
 

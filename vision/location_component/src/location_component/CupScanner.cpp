@@ -29,13 +29,8 @@ namespace location_component
   {
     std::vector<DetectedCup> lDetectedCups;
 
-    cv::Mat lGrayscale, lHSV;
-    aImage.copyTo(lGrayscale);
-
-    cvtColor(aImage, lHSV, CV_BGR2HSV);
-
     cv::Mat lEdgesRaw, lEdges;
-    mFrameCalibration.removeEverythingButAGV(lHSV, lEdgesRaw);
+    mFrameCalibration.removeEverythingButAGV(aImage, lEdgesRaw);
 
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
