@@ -36,6 +36,10 @@ namespace environment_controller
      */
     virtual void provideSensor(const Sensor& aSensor);
 
+    /**
+     * @brief Function for listening to transforms
+     *
+     */
     void transformListen(const ros::TimerEvent&);
 
       private:

@@ -28,6 +28,7 @@ namespace environment_controller
   const double cMinDistanceToRobotarm_m = 2.0;
   const double cSensorCallbackRate = 0.1;
   const double cSensorTFPublishRate = 0.01;
+  const uint8_t cSensorIDListen = 0;
 } // namespace environment_controller
 
 #endif // ENVIRONMENT_CONSTS_HPP

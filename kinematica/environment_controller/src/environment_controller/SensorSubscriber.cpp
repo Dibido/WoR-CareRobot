@@ -48,7 +48,7 @@ namespace environment_controller
   {
     try
     {
-      Pose lPose = mEnvironmentController->transformFrames(0);
+      Pose lPose = mEnvironmentController->transformFrames(cSensorIDListen);
 
       ROS_DEBUG("Transform x: %f, y: %f, z: %f; r: %f, p: %f, y: %f, q: %f",
                 lPose.position().x_m(), lPose.position().y_m(),
