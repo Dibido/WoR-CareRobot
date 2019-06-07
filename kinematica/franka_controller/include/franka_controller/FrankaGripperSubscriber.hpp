@@ -23,7 +23,7 @@ namespace franka_controller
     ~FrankaGripperSubscriber() = default;
 
     /**
-     * @brief
+     * @brief the callback for the gripper message
      *
      * @param aMsg
      */

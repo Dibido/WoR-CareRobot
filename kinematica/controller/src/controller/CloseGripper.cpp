@@ -37,7 +37,6 @@ namespace controller
 
   void CloseGripper::doActivity(Context* aContext)
   {
-
     if (ros::Time::now() >= mGripperCloseTime)
     {
       aContext->setState(std::make_shared<MoveToDropLocation>());

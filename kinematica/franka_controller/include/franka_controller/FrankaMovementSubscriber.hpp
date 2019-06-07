@@ -23,9 +23,9 @@ namespace franka_controller
     ~FrankaMovementSubscriber() = default;
 
     /**
-     * @brief
+     * @brief call back for the movement that needs to be made
      *
-     * @param aMsg
+     * @param aMsg the message to receive
      */
     void callBackMovement(const robotcontroller_msgs::ControlConstPtr& aMsg);
 

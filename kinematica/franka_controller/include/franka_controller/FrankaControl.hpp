@@ -21,25 +21,25 @@ namespace franka_controller
     FrankaControl(const std::string& anIp);
     virtual ~FrankaControl() = default;
     /**
-     * @brief
+     * @brief move the robotarm in position
      *
-     * @param aConfig
-     * @param aSpeedFactor
+     * @param aConfig the config where it is set tp
+     * @param aSpeedFactor the speedfactor
      */
     void executeMovement(std::array<double, 7>& aConfig, double aSpeedFactor);
 
     /**
-     * @brief
+     * @brief open the gripper to a certain meters
      *
-     * @param aWidth
-     * @param aSpeedFactor
+     * @param aWidth the width of the gripper to move to
+     * @param aSpeedFactor the speed to open or close the gripper
      */
     void moveGripper(double aWidth, double aSpeedFactor);
 
     /**
-     * @brief
+     * @brief stop the robotarm
      *
-     * @param aStop
+     * @param aStop if the robotarm needs to stop
      */
     void stopRobot(bool aStop);
 

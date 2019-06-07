@@ -21,9 +21,9 @@ namespace franka_controller
     ~FrankaStopSubscriber() = default;
 
     /**
-     * @brief
+     * @brief the callback for the stop message
      *
-     * @param aMsg
+     * @param aMsg the message to receive
      */
     void stopCallBack(const robotcontroller_msgs::StopConstPtr& aMsg);
 

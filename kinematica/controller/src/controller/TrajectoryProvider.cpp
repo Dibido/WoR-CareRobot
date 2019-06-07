@@ -121,7 +121,6 @@ namespace controller
     {
       double lDifference =
           std::abs(previousConfiguration[i] - newConfiguration[i]);
-      // ROS_ERROR("%f", lDifference);
       if (lDifference > cMaxConfigurationDifference_rad)
       {
         return false;

@@ -64,7 +64,7 @@ int main(int argc, char** argv)
      */
 
     sim_robot::commands msg;
-    std::vector<double> thetas = { 0, 0, 0, -1, 1, 1, 1 };
+    std::vector<double> thetas = { 0.0, 0.0, 0.0, -1.0, 1.0, 1.0, 1.0 };
     msg.theta = thetas;
     msg.sf = 0.2;
 
