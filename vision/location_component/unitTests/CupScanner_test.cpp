@@ -42,6 +42,6 @@ TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
   EXPECT_EQ(lCups.at(2).mMidpoint.x, 650);
   EXPECT_EQ(lCups.at(2).mMidpoint.y, 338);
 
-  EXPECT_EQ(lCups.at(3).mMidpoint.x, 412);
+  EXPECT_EQ(lCups.at(3).mMidpoint.x, 411);
   EXPECT_EQ(lCups.at(3).mMidpoint.y, 248);
 }
