@@ -2,8 +2,6 @@
 
 int main(int argc, char** argv)
 {
-  std::cout << "test1234" << std::endl;
-
   // This code is used to determine if the user wants to use debug mode
   bool debugStatus = false;
 
