@@ -12,8 +12,19 @@ class ValueGuardTest
   ValueGuardTest() = default;
   ~ValueGuardTest() = default;
 
+  /**
+   * @brief This function can be used to test all the valuable guard inside the
+   * AGV message
+   *
+   * @param aTestValues -
+   * @param aStructMessage -
+   * @param aValueReference -
+   */
+
   void TestGuard(std::vector<ValueTest<Type>>& aTestValues,
                  location_component::AGV& aStructMessage,
-                 std::function<Type&(location_component::AGV & aStructMessage)>& aValueReference);
+                 short aStartValue,
+                 std::function<Type&(location_component::AGV& aStructMessage)>&
+                     aValueReference);
 };
 #endif
