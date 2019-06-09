@@ -1,21 +1,21 @@
 #include "ValueTest.hpp"
 template <typename Type>
 
-ValueTest<Type>::ValueTest(Type aValue, eExpectedResult aExpectedResult)
+ValueTest<Type>::ValueTest(const Type& aValue, const eExpectedResult& aExpectedResult)
     : mValue(aValue), mExpectedResult(aExpectedResult)
 {
 }
 
 template <typename Type>
 
-eExpectedResult ValueTest<Type>::getExpectedResult()
+eExpectedResult ValueTest<Type>::getExpectedResult() const
 {
   return mExpectedResult;
 }
 
 template <typename Type>
 
-Type ValueTest<Type>::getValue()
+Type ValueTest<Type>::getValue() const
 {
   return mValue;
 }

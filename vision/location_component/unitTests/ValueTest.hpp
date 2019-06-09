@@ -6,31 +6,34 @@
 template <typename Type>
 class ValueTest
 {
-  /**
-   * @brief
-   *
-   */
-  Type mValue;
-  eExpectedResult mExpectedResult;
-
     public:
-  /**
-   * @brief
-   *
-   */
-  ValueTest(Type aValue, eExpectedResult aExpectedResult);
+  ValueTest(const Type& aValue, const eExpectedResult& aExpectedResult);
   ~ValueTest() = default;
 
   /**
-   * @brief
+   * @brief This function will return the expected result. This could be a TROW
+   * or NOTROW.
    *
    */
-  eExpectedResult getExpectedResult();
+  eExpectedResult getExpectedResult() const;
   /**
-   * @brief
+   * @brief This function will return the set value
    *
    */
-  Type getValue();
+  Type getValue() const;
+
+    private:
+  /**
+   * @brief This is a user defines value to test a message struct
+   *
+   */
+  Type mValue;
+
+  /**
+   * @brief The user can define the expected result of the mValue.
+   *
+   */
+  eExpectedResult mExpectedResult;
 };
 
 #endif
