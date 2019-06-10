@@ -1,10 +1,17 @@
 #include "sim_lidar/CalculateData.hpp"
+#include "sim_lidar/LidarConst.hpp"
+
 #include <algorithm>
 #include <math.h>
 
 calculate::Calculatedata::Calculatedata()
-    : mMeasurements(0.0), mStepSize(0, 0), mMean(0.0), mDeviation(0)
+    : mMeasurements(0.0),
+      mStepSize(0, 0),
+      mMean(0.0),
+      mDeviation(0),
+      mDefectiveMeasurement(0)
 {
+  
 }
 
 calculate::Calculatedata::Calculatedata(std::vector<double> aMeasurements)
@@ -15,7 +22,7 @@ calculate::Calculatedata::Calculatedata(std::vector<double> aMeasurements)
 void calculate::Calculatedata::fillVector(std::string Afile)
 {
 
-  std::ifstream ifile(Afile, std::ios::in);
+  std::ifstream ifile("/home/stein/1_ws/src/wor-18-19-s2/simulation/sim_lidar/datasets/lidardataset1.txt", std::ios::in);
 
   if (!ifile.is_open())
   {
@@ -41,10 +48,21 @@ void calculate::Calculatedata::calculateStepSize()
 
   for (unsigned int i = 1; i < mMeasurements.size(); ++i)
   {
-    mStepSize.push_back(mMeasurements[i] - mMeasurements[i - 1]);
-    std::cout << "stepsize:" << mMeasurements[i] - mMeasurements[i - 1]
-              << std::endl;
+    if ((mMeasurements[i] - mMeasurements[i - 1]) > 0 &&
+        (mMeasurements[i] - mMeasurements[i - 1]) < 1)
+    {
+      mStepSize.push_back(mMeasurements[i] - mMeasurements[i - 1]);
+      std::cout << "stepsize:" << mMeasurements[i] - mMeasurements[i - 1]
+                << std::endl;
+    }
+    else
+    {
+      mDefectiveMeasurement++;
+      std::cout << "verkeerd:" << mDefectiveMeasurement << std::endl;
+    }
   }
+
+  std::cout << "size:" << mMeasurements.size() << std::endl;
 }
 
 void calculate::Calculatedata::calculateAverage()
@@ -70,10 +88,18 @@ void calculate::Calculatedata::calculateDeviation()
   std::cout << "deviation:" << mDeviation << std::endl;
 }
 
-void calculate::Calculatedata::processData(std::string aFile)
+void calculate::Calculatedata::processData()
 {
-  this->fillVector(aFile);
-  this->calculateStepSize();
-  this->calculateAverage();
-  this->calculateDeviation();
+  // std::vector<std::string> datasets;
+  // datasets.push_back(lidar::cDataset1);
+  // //datasets.push_back(lidar::cDataset1);
+  // //datasets.push_back(lidar::cDataset1);
+
+  
+    this->fillVector(lidar::cDataset1);
+    this->calculateStepSize();
+    this->calculateAverage();
+    this->calculateDeviation();
+ 
+  
 }

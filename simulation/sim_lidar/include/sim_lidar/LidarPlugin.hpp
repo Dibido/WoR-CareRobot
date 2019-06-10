@@ -11,10 +11,12 @@
 #include <gazebo/physics/physics.hh>
 #include <gazebo/plugins/RayPlugin.hh>
 
-#include <ros/ros.h>
+#include "sim_lidar/CalculateData.hpp"
+#include "sim_lidar/GenerateNoise.hpp"
 
 #include <algorithm>
 #include <iterator>
+#include <ros/ros.h>
 
 namespace gazebo
 {
@@ -100,6 +102,9 @@ namespace gazebo
     ros::NodeHandlePtr mRosNode;
     ros::Publisher mRosPub;
     ros::Publisher mLidarDataPub;
+
+    // generate::GenerateNoise mNoise;
+    // calculate::Calculatedata mCalc;
   };
   GZ_REGISTER_SENSOR_PLUGIN(LidarPlugin)
 } // namespace gazebo

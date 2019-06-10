@@ -1,3 +1,6 @@
+#ifndef CALCULATE_DATA_HPP
+#define CALCULATE_DATA_HPP
+
 #include <math.h>
 #include <numeric>
 #include <vector>
@@ -29,13 +32,15 @@ namespace calculate
     void calculateStepSize();
     void calculateAverage();
     void calculateDeviation();
-    void processData(std::string aFile);
+    void processData();
 
     std::vector<double> mMeasurements;
     std::vector<double> mStepSize;
 
     double mMean;
     double mDeviation;
+    int mDefectiveMeasurement;
   };
 
 } // namespace calculate
+#endif

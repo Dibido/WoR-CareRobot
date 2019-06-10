@@ -9,6 +9,7 @@ namespace LidarConfiguration
   // Set lidardata topic as defined in LidarData.msg
   const std::string cLidarDataTopicName = "lidardatatopicName";
   const std::string cLidarDataTopic = "/sensor/lidardata";
+
 } // namespace LidarConfiguration
 
 namespace gazebo
@@ -156,6 +157,7 @@ namespace gazebo
     lLaserMessage.angle_increment =
         static_cast<float>(2.0 * M_PI) /
         static_cast<float>(lLaserMessage.ranges.size());
+
     return lLaserMessage;
   }
 
@@ -183,17 +185,24 @@ namespace gazebo
       LidarPlugin::convertToLidarData(ConstLaserScanStampedPtr& aMsg) const
   {
     lidar_application::LidarData lLidarData;
+    auto lCounter = 0;
     float lAngleMax = static_cast<float>(M_PI);
+
+    calculate::Calculatedata lCalc;
+    lCalc.processData();
+
+    generate::GenerateNoise lNoise;
+
+    lNoise.GenerateNoiseSample(lCalc.mMean, lCalc.mDeviation);
     // Fill the angle array with the correct range. Add 1 PI so we get a range
     // from 0..2 * Pi.
-    const float lAngleOffset = static_cast<float>(2.0 * M_PI) /
-                               static_cast<float>(aMsg->scan().ranges().size());
 
-    for (float lCurrentAngle = lAngleOffset;
+    for (double lCurrentAngle = lNoise.mNoise[lCounter];
          lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));
-         lCurrentAngle += lAngleOffset)
+         lCurrentAngle += lNoise.mNoise[lCounter])
     {
       lLidarData.mAngles.push_back(lCurrentAngle);
+      ++lCounter;
     }
     for (int i = 0; i < aMsg->scan().ranges().size(); i++)
     {

@@ -1,13 +1,16 @@
 
 #include "sim_lidar/CalculateData.hpp"
+#include "sim_lidar/GenerateNoise.hpp"
 
 int main(int argc, char** argv)
 {
-  std::vector<double> measurements;
+
   calculate::Calculatedata lCalc;
-  lCalc.processData(
-      "src/wor-18-19-s2/simulation/sim_lidar/src/lidarData.txt");
+  lCalc.processData();
+
+  generate::GenerateNoise lNoise;
+
+   lNoise.GenerateNoiseSample(lCalc.mMean, lCalc.mDeviation);
 
   return 0;
 }
-
