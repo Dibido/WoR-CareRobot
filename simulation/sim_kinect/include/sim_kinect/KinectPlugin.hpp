@@ -62,7 +62,7 @@ namespace gazebo
      * Gets executed when there is data being published.
      *
      */
-    static void callback(const sensor_msgs::PointCloud2ConstPtr aMsg);
+    void callback(const sensor_msgs::PointCloud2ConstPtr& aMsg);
 
       private:
     // ROS

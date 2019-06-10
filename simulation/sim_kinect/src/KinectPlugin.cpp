@@ -6,7 +6,7 @@ namespace gazebo
   const std::string cImgSubscribeTopic = "/sensor/kinect/points";
   const std::string cKinect_Nh = "Kinect_plugin_NH";
 
-  void callback(const sensor_msgs::PointCloud2ConstPtr aMsg)
+  void callback(const sensor_msgs::PointCloud2ConstPtr& aMsg)
   {
   }
 
@@ -27,17 +27,15 @@ namespace gazebo
     mKinectPublisher = mRosNode->advertise<kinematica_msgs::Obstacles>(
         gazebo::cKinectPublishTopic, 1);
 
-    mRosNode->subscribe(gazebo::cImgSubscribeTopic, 10,
-                        &KinectPlugin::callback);
-    // ros::SubscribeOptions so =
-    //     ros::SubscribeOptions::create<sensor_msgs::PointCloud2>(
-    //         gazebo::cImgSubscribeTopic, 1,
-    //         boost::bind(&KinectPlugin::callback, this, _1), ros::VoidPtr(),
-    //         &this->mRosQueue);
-    // mRosSub = mRosNode->subscribe(so);
+    ros::SubscribeOptions so =
+        ros::SubscribeOptions::create<sensor_msgs::PointCloud2>(
+            gazebo::cImgSubscribeTopic, 1,
+            boost::bind(&KinectPlugin::callback, this, _1), ros::VoidPtr(),
+            &this->mRosQueue);
+    mRosSub = mRosNode->subscribe(so);
 
-    // this->mRosQueueThread =
-    //     std::thread(std::bind(&KinectPlugin::QueueThread, this));
+    this->mRosQueueThread =
+        std::thread(std::bind(&KinectPlugin::QueueThread, this));
   }
 
   void KinectPlugin::passObstacles(
