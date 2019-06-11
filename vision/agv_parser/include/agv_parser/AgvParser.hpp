@@ -17,6 +17,22 @@
 #include <iostream>
 #include <string>
 
+<<<<<<< Updated upstream
+=======
+// Constants for the agv_parser
+namespace agv_parser
+{
+  const std::string cCommandHeader = "#S";
+  const std::string cIntervalHeader = "#I";
+  const char cCommandDelimiter = '#';
+  const unsigned int cSmallestLegalCommandLength = 4;
+  const char cReturnChar = '\r';
+  const char cNewlineChar = '\n';
+  const std::string cAgvSpeedTopic = "/sensor/agv";
+  const unsigned int cBaudrate = 115200;
+} // namespace agv_parser
+
+>>>>>>> Stashed changes
 namespace agv_parser
 {
   /**
