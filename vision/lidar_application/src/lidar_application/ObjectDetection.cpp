@@ -30,8 +30,6 @@ namespace lidar_application
 
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
-
-          printPublishData();
         }
         else
         {
@@ -259,6 +257,11 @@ namespace lidar_application
     {
       throw std::logic_error(
           "Preconditions of getSurroundingDistances not met");
+    }
+
+    if ((aAngle < 0.0) || (aAngle > (2 * M_PI)))
+    {
+      throw std::range_error("Angle isn't a value in range [0.0 -> 2*PI]");
     }
 
     double lLowerNeighbourDistance_m = 0.0;

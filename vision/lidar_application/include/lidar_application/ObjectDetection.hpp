@@ -99,7 +99,7 @@ namespace lidar_application
      * the distances that were measured at 0.0 and 1.1 are returned.
      * @pre mInitialScan must be filled with atleast 2 samples
      * @post -
-     * @param aAngle - The given angle in radians
+     * @param aAngle - The given angle in radians, must be >= 0.0 and <= 2 * PI
      * @return std::pair<double, double>
      */
     std::pair<double, double>
