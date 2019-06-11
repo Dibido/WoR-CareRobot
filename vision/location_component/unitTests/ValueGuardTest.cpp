@@ -3,7 +3,7 @@
 
 template <typename Type>
 void ValueGuardTest<Type>::TestGuard(
-    std::vector<ValueTest<Type>>& aTestValues,
+    const std::vector<ValueTest<Type>>& aTestValues,
     location_component::AGV& aStructMessage,
     short aStartValue,
     std::function<Type&(location_component::AGV& aStructMessage)>&

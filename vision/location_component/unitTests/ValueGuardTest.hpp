@@ -16,12 +16,12 @@ class ValueGuardTest
    * @brief This function can be used to test all the valuable guard inside the
    * AGV message
    *
-   * @param aTestValues - The values that the developer want tot test
+   * @param aTestValues - The values that the developer want to test
    * @param aStructMessage - The object the developer wants to test
    * @param aValueReference - The lambda functie u want to use to get the value
    */
 
-  void TestGuard(std::vector<ValueTest<Type>>& aTestValues,
+  void TestGuard(const std::vector<ValueTest<Type>>& aTestValues,
                  location_component::AGV& aStructMessage,
                  short aStartValue,
                  std::function<Type&(location_component::AGV& aStructMessage)>&

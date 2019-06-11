@@ -29,7 +29,7 @@ namespace location_component
     std::vector<ValueTest<float>> lTestValues;
 
     // Creating the test object
-    location_component::AGV lstructMessage(1);
+    location_component::AGV lStructMessage(1);
 
     // Defining each value the developer wants to test
     lTestValues.push_back(ValueTest<float>(100, eExpectedResult::NOTHROW));
@@ -50,7 +50,7 @@ namespace location_component
 
     // Defing the right data type and running the tests
     ValueGuardTest<float> lValueGuardTest;
-    lValueGuardTest.TestGuard(lTestValues, lstructMessage, lStartValue,
+    lValueGuardTest.TestGuard(lTestValues, lStructMessage, lStartValue,
                               lValueReference);
   }
 
