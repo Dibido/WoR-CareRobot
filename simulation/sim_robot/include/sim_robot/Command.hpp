@@ -54,8 +54,11 @@ namespace commands
             jointChannel_t aChannel,
             jointRad_t aRad,
             jointVel_t aSpeedFactor);
+
     Command() = delete;
+
     virtual ~Command() = default;
+
     Command(const Command& other);
     Command& operator=(const Command& other);
     bool operator==(const Command& other) const;
