@@ -1,6 +1,5 @@
 #include "agv_parser/AgvParser.hpp"
 
-#include <iostream>
 #include <ros/console.h>
 #include <ros/ros.h>
 

@@ -47,8 +47,6 @@ namespace location_component
 
       cv_bridge::toCvShare(aMsg, "bgr8")->image.copyTo(srcMatrix);
       mDetectAGV->detectUpdate(srcMatrix, displayMatrix);
-      // Disable debug windows for now.
-      /* cv::imshow("view", displayMatrix); */
 
       int c = cv::waitKey(10);
       if (c == 27)

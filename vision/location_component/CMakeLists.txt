@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
 	kinematica_msgs
 	sensor_msgs
 	environment_controller
+	sensor_interfaces
 )
 
 
@@ -30,7 +31,7 @@ find_package(catkin REQUIRED COMPONENTS
  #   sensor_msgs
  # )
 
-catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs geometry_msgs environment_controller)
+catkin_package(CATKIN_DEPENDS cv_bridge image_transport message_runtime sensor_msgs geometry_msgs environment_controller sensor_interfaces)
 
 find_package(Threads REQUIRED)
 find_package(sensor_msgs)
@@ -43,15 +44,16 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/FrameCalibration.cpp src/location_component/LocationComponent.cpp src/location_component/AGVFrameCalibration.cpp)
+add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/FrameCalibration.cpp src/location_component/LocationComponent.cpp src/location_component/AGVFrameCalibration.cpp src/location_component/CupDetectionCalibration.cpp)
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/CupScanner_test.cpp unitTests/PosCalculation_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/LocationComponent.cpp src/location_component/FrameCalibration.cpp src/location_component/AGVFrameCalibration.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/ValueGuardTest.cpp unitTests/ValueTest.cpp unitTests/IAGVProvider_test.cpp unitTests/FrameCalibration_test.cpp unitTests/CupScanner_test.cpp unitTests/PosCalculation_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/LocationComponent.cpp src/location_component/FrameCalibration.cpp src/location_component/AGVFrameCalibration.cpp src/location_component/CupDetectionCalibration.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 if(CODE_COVERAGE)
   #We want to measure the codecoverage with a Debug build
@@ -61,6 +63,12 @@ if(CODE_COVERAGE)
 
   #Files which will be excluded for the codecoverage
   set(COVERAGE_LCOV_EXCLUDES
+    '*/devel/*'
+    '*/boost/*'
+    '*/opencv2/*'
+    '*/gcc/*'
+    '*/melodic/*'
+    '*/kinematica/*'
     '*/gtest/*'
     '/*/c++/*'
     '*/*.py'

@@ -2,7 +2,8 @@
 Calculates the speed of the AGV using a line sensor and a number of lines on a path. Waits for 3 seconds before it starts driving.
 The time difference between the lines is used to calculate the speed.
 
-The number of measurements to be taken before an average is calculated can be modified by changing the gAmountOfMeasurementsRequired variable and changing the size of the gMeasurementMillis array.
+After the first 2 lines are detected the average speed is calculated and sent to the AGV gateway.
+The system updates the average speed every time a new line is detected and sends it to the AGV gateway.
 
 ## Connection schema
 The arduino used is an Arduino Nano
@@ -37,3 +38,8 @@ CSN -> D8
 MOSI -> D11  
 MISO -> D12 
 SCK -> D13
+
+## Known problems
+* The lines are sometimes detected two times or not at all.  
+This happens because after a certain amount of time (50ms) a line is determined to be detected and the line does not end before the 50ms is elapsed for a new line causing it to be detected twice.  
+Sometimes lines are not detected at all because the time has not elapsed.
