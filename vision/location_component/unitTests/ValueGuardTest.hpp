@@ -16,7 +16,7 @@ class ValueGuardTest
    * @brief This function can be used to test all the valuable guard inside the
    * AGV message
    *
-   * @param aTestValues - The values that u want tot test
+   * @param aTestValues - The values that the developer want tot test
    * @param aStructMessage - The object u want to test
    * @param aValueReference - The lambda functie u want to use to get the value
    */

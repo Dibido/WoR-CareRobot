@@ -3,8 +3,8 @@
 
 enum class eExpectedResult
 {
-  TROW,
-  NOTROW
+  THROW,
+  NOTHROW
 };
 
 

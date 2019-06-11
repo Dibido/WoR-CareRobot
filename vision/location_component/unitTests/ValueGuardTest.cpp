@@ -5,20 +5,21 @@ template <typename Type>
 void ValueGuardTest<Type>::TestGuard(
     std::vector<ValueTest<Type>>& aTestValues,
     location_component::AGV& aStructMessage,
+    short aStartValue,
     std::function<Type&(location_component::AGV& aStructMessage)>&
         aValueReference)
 {
 
   for (auto& elem : aTestValues)
   {
-    new (&aStructMessage) location_component::AGV (1);
+    new (&aStructMessage) location_component::AGV (aStartValue);
     aValueReference(aStructMessage) = elem.getValue();
 
-    if (elem.getExpectedResult() == eExpectedResult::TROW)
+    if (elem.getExpectedResult() == eExpectedResult::THROW)
     {
       EXPECT_THROW(aValueReference(aStructMessage), std::range_error);
     }
-    else if (elem.getExpectedResult() == eExpectedResult::NOTROW)
+    else if (elem.getExpectedResult() == eExpectedResult::NOTHROW)
     {
       EXPECT_NO_THROW(aValueReference(aStructMessage));
     }

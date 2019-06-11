@@ -15,7 +15,6 @@ namespace location_component
     // Initializing the ros message that is used to send through the ros topic
     // network
     sensor_interfaces::AGVSpeed lrosMessage;
-    lrosMessage.speed;
 
     // Initializing the struct for comperising the types
     location_component::AGV lstructMessage(1);
@@ -32,21 +31,24 @@ namespace location_component
     // Creating the test object
     location_component::AGV lstructMessage(1);
 
-    // Defining each value u want to test
-    lTestValues.push_back(ValueTest<float>(100, eExpectedResult::NOTROW));
-    lTestValues.push_back(ValueTest<float>(0, eExpectedResult::NOTROW));
-    lTestValues.push_back(ValueTest<float>(-100, eExpectedResult::TROW));
-    lTestValues.push_back(ValueTest<float>(10000, eExpectedResult::NOTROW));
+    // Defining each value the developer wants to test
+    lTestValues.push_back(ValueTest<float>(100, eExpectedResult::NOTHROW));
+    lTestValues.push_back(ValueTest<float>(0, eExpectedResult::NOTHROW));
+    lTestValues.push_back(ValueTest<float>(-100, eExpectedResult::THROW));
+    lTestValues.push_back(ValueTest<float>(10000, eExpectedResult::NOTHROW));
 
-    //Creating a Lambda function that will return the value u want to test
+    // Creating a Lambda function that will return the value the developer wants to test
     std::function<float&(location_component::AGV & aStructMessage)>
-        ValueReference = [](location_component::AGV& aStructMessage) -> float& {
+        lValueReference = [](location_component::AGV& aStructMessage) -> float& {
       return aStructMessage.speed();
     };
+    
+    //Just a value to construct the object
+    short lStartValue = 1;
 
-    //Defing the right data type and running the tests
-    ValueGuardTest<float> t;
-    t.TestGuard(lTestValues, lstructMessage, ValueReference);
+    // Defing the right data type and running the tests
+    ValueGuardTest<float> lValueGuardTest;
+    lValueGuardTest.TestGuard(lTestValues, lstructMessage, lStartValue, lValueReference);
   }
 
 } // namespace location_component
