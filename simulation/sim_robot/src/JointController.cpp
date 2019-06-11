@@ -30,8 +30,10 @@ namespace gazebo
         mMaxVel(mMaxVel),
         mCurrentPos(0),
         mCurrentVel(0),
+        mCurrentForce(0),
         mTargetPos(0),
         mStepSize(0)
+
   {
   }
 
