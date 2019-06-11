@@ -287,4 +287,9 @@ namespace gazebo
   {
     mCurrentVel = aCurrentVel;
   }
+  jointVel_t JointController::getMaxVel() const
+  {
+    return mMaxVel;
+  }
+
 } // namespace gazebo

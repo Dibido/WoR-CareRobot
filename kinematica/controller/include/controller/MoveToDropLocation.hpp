@@ -12,7 +12,12 @@ namespace controller
   class Context;
 
   /**
-   * @brief Move the arm to the location to drop the cup
+   *
+   * @class MoveToDropLocation
+   *
+   * @brief Moves the arm to the location where the cup has to be dropped.
+   *
+   * @author Gianni Monteban
    *
    */
   class MoveToDropLocation : public State
@@ -40,6 +45,9 @@ namespace controller
      * @brief entryAction is being called when the MoveToDropLocation is being
      * entered.
      *
+     * @details Within the entryAction function the target location is set and
+     * the trajectory which the robotarm will take is being created.
+     *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
      */
@@ -49,6 +57,10 @@ namespace controller
      * @brief doActivity is continiously being called while the system is in the
      * MoveToDropLocation.
      *
+     * @details All different configurations of the trajectory are being
+     * executed by the robotarm one after another. Once all configurations are
+     * executed the state will transit to the waitForReleaseSignal state.
+     *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
      */
@@ -57,6 +69,8 @@ namespace controller
     /**
      * @brief exitAction is being called when the MoveToDropLocation
      * MoveToDropLocation is being exited.
+     *
+     * @details Not used at this moment.
      *
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".

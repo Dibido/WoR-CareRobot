@@ -13,10 +13,8 @@ namespace location_component
     return lRGB;
   }
 
-  CupScanner::CupScanner()
-  {
-  }
-  CupScanner::~CupScanner()
+  CupScanner::CupScanner(FrameCalibration& aFrameCalibration)
+      : mFrameCalibration(aFrameCalibration)
   {
   }
 
@@ -31,12 +29,8 @@ namespace location_component
   {
     std::vector<DetectedCup> lDetectedCups;
 
-    cv::Mat lGrayscale, lHSV;
-    aImage.copyTo(lGrayscale);
-    aImage.copyTo(lHSV);
-
     cv::Mat lEdgesRaw, lEdges;
-    cv::inRange(lHSV, cMinAGVHSVColor, cMaxAGVHSVColor, lEdgesRaw);
+    mFrameCalibration.removeEverythingButAGV(aImage, lEdgesRaw);
 
     // Invert all values in the matrix.
     lEdgesRaw.forEach<uchar>(
@@ -76,10 +70,6 @@ namespace location_component
                           lRect.height > ( int )cMinCupDiameter_px;
                  });
 
-    cv::Scalar colors[3];
-    colors[0] = cv::Scalar(255, 0, 0);
-    colors[1] = cv::Scalar(0, 255, 0);
-    colors[2] = cv::Scalar(0, 0, 255);
     for (size_t lIdx = 0; lIdx < lContours.size(); lIdx++)
     {
       DetectedCup lDetectedCup;

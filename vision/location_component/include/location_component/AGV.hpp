@@ -2,6 +2,8 @@
 #define AGV_HPP
 
 #include <iostream>
+#include <gtest/gtest_prod.h>
+
 
 namespace location_component
 {
@@ -30,6 +32,8 @@ namespace location_component
     const float& speed() const;
 
       private:
+
+    FRIEND_TEST(IAGVProviderSuite, ValueTypeSpeed);
     float mSpeed;
   };
 

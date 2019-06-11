@@ -90,6 +90,7 @@ namespace gazebo
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
     jointVel_t getCurrentVel() const;
+    jointVel_t getMaxVel() const;
     double getCurrentForce() const;
 
     /**

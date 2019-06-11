@@ -1,10 +1,18 @@
-#ifndef CALIBRATION_HPP
-#define CALIBRATION_HPP
+#ifndef CUP_DETECTION_CALIBRATION_HPP
+#define CUP_DETECTION_CALIBRATION_HPP
 
 namespace location_component
 {
-  struct Calibration
+  struct CupDetectionCalibration
   {
+    /**
+     * @brief Construct a new CupDetectionCalibration object
+     *
+     * @param aDebugStatus - This value is used to show the debug status of the
+     * AGV frame calibration
+     */
+    CupDetectionCalibration(bool aDebugStatus);
+
     // Camera position
     float mCameraPosX_m = 0.35f;
     float mCameraPosY_m = -4.0f;
@@ -26,7 +34,10 @@ namespace location_component
     float mAGVDepth_m = 0.680f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
+
+    bool mDebugStatus;
   };
+
 } // namespace location_component
 
-#endif /* CALIBRATION_HPP */
+#endif

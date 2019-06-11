@@ -53,7 +53,7 @@ namespace gazebo
     /**
      * @brief Convert the gazebo::LaserScan const message to
      * sensor_msgs::LaserScan for processing
-     * @param aMsg: The gazebo formatted message recieved from the simulation
+     * @param aMsg: The gazebo formatted message received from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
     sensor_msgs::LaserScan

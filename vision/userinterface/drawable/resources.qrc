@@ -6,5 +6,6 @@
         <file>Glas_orange.png</file>
         <file>Glas_cola.png</file>
         <file>Glas_empty.png</file>
+	<file>Cross.png</file>
     </qresource>
 </RCC>
