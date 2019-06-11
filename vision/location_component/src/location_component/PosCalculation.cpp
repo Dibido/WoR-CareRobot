@@ -21,12 +21,8 @@ namespace location_component
                                                   ros::Time aCurrentTime) const
   {
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
-    float lCurrentTime_s = ( float )aCurrentTime.toSec();
     float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
     aCurrentTime = aCurrentTime + ros::Duration(lTimeToArm_s);
-    std::cout << "aCupLocationY_m" << aCupLocationY_m << std::endl;
-    std::cout << "distance to arm" << lDistanceToArm_m << std::endl;
-    std::cout << "current time" << aCurrentTime << std::endl;
     return aCurrentTime;
   }
 
