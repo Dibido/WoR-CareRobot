@@ -50,10 +50,10 @@ namespace controller
       {
         ROS_ERROR("%s", e.what());
       }
-      for (size_t i = 0; i < lConfiguration.size; ++i)
+      for (size_t j = 0; j < lConfiguration.size; ++j)
       {
         lConfiguration.setTheta(
-            i, lConfiguration[i] + rng::RandomNumberGenerator().GenerateInRange(
+            j, lConfiguration[i] + rng::RandomNumberGenerator().GenerateInRange(
                                        cMinRandomChange, cMaxRandomChange));
       }
     }
