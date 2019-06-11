@@ -15,13 +15,12 @@ namespace controller
 
   Init::~Init(){};
 
-  void Init::entryAction(Context* aContext)
+  void Init::entryAction(Context*)
   {
   }
 
   void Init::doActivity(Context* aContext)
   {
-    ROS_ERROR("MOVE ROBOT");
     aContext->goalConfiguration() = kinematics::Configuration();
     aContext->goalConfiguration().setTheta(3, -M_PI_2);
     aContext->goalConfiguration().setTheta(5, M_PI_2);

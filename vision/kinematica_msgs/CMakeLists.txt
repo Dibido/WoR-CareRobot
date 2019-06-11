@@ -54,6 +54,7 @@ add_message_files(
   Object.msg
   Obstacles.msg
   Cup.msg
+  Sensor.msg
   ReleaseTime.msg
 )
 
