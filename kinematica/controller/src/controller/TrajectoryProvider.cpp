@@ -46,11 +46,11 @@ namespace controller
           lFirstTry = false;
         }
       }
-      catch (int e)
+      catch (const std::exception& e)
       {
-        ROS_ERROR("TRYING AGAIN");
+        ROS_ERROR("%s", e.what());
       }
-      for (int i = 0; i < cJointCount; ++i)
+      for (size_t i = 0; i < lConfiguration.size; ++i)
       {
         lConfiguration.setTheta(
             i, lConfiguration[i] + rng::RandomNumberGenerator().GenerateInRange(
@@ -116,7 +116,7 @@ namespace controller
       const kinematics::Configuration& previousConfiguration,
       const kinematics::Configuration& newConfiguration)
   {
-    for (int i = 0; i < cJointCount; ++i)
+    for (size_t i = 0; i < previousConfiguration.size; ++i)
     {
       double lDifference =
           std::abs(previousConfiguration[i] - newConfiguration[i]);
