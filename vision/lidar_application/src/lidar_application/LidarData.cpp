@@ -1,5 +1,4 @@
 #include "lidar_application/LidarData.hpp"
-#include <math.h>
 
 namespace lidar_application
 {
@@ -28,10 +27,7 @@ namespace lidar_application
     for (auto lIterator = aMeasurements.begin();
          lIterator != aMeasurements.end(); ++lIterator)
     {
-      if ((lIterator->first < 0.0) || (lIterator->first > 2 * M_PI))
-      {
-        throw std::range_error("Angle isn't a value in range [0.0 -> 2*PI]");
-      }
+      rangeCheck(lIterator->first);
 
       mMeasurements.insert(*lIterator);
     }
@@ -47,6 +43,7 @@ namespace lidar_application
 
     for (size_t lIndex = 0; lIndex < aAngles.size(); ++lIndex)
     {
+      rangeCheck(aAngles.at(lIndex));
       mMeasurements.insert(std::pair<double, double>(aAngles.at(lIndex),
                                                      aDistances_m.at(lIndex)));
     }
@@ -54,11 +51,20 @@ namespace lidar_application
 
   void LidarData::addLidarData(double aAngle, double aDistance_m)
   {
-    if ((aAngle < 0.0) || (aAngle > 2 * M_PI))
-    {
-      throw std::range_error("Angle isn't a value in range [0.0 -> 2*PI]");
-    }
+    rangeCheck(aAngle);
 
     mMeasurements.insert(std::pair<double, double>(aAngle, aDistance_m));
+  }
+
+  void LidarData::rangeCheck(const double& aValue,
+                             const double& aMin,
+                             const double& aMax) const
+  {
+    if ((aValue < aMin) || (aValue > aMax))
+    {
+      throw std::range_error(
+          "Value (" + std::to_string(aValue) + ") isn't a value in range [" +
+          std::to_string(aMin) + " -> " + std::to_string(aMax) + "]");
+    }
   }
 } // namespace lidar_application

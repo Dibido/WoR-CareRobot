@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <math>
 #include <vector>
 
 namespace lidar_application
@@ -69,6 +70,18 @@ namespace lidar_application
      * @param aDistances_m - corresponding distances in meters
      */
     void addLidarData(double aAngle, double aDistance_m);
+
+    /**
+     * @brief Checks whether given aValue falls in given range (min/max),
+     * function throws an exception if it does not (aValue < aMin or aValue >
+     * aMax) default values are 0.0 and 2 * M_PI, the radians of a full circle
+     * @param aValue - The given value
+     * @param aMin - Minimum of the range
+     * @param aMax - Maximum of the range
+     */
+    void rangeCheck(const double& aValue,
+                    const double& aMin = 0.0,
+                    const double& aMax = (2 * M_PI)) const;
   };
 } // namespace lidar_application
 
