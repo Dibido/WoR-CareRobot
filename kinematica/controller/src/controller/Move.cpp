@@ -22,8 +22,8 @@ namespace controller
         aContext->cup().object().position().y_m(),
         aContext->cup().object().position().z_m(), 0, M_PI_2, M_PI_2);
 
-    mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
-                                         mTrajectory);
+    mTrajectoryProvider.createTrajectory(aContext, lTargetLocation, mTrajectory,
+                                         false, true);
     mArrivalTime = ros::Time::now();
   }
 

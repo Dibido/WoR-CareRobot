@@ -23,10 +23,16 @@ namespace controller
      * location
      * @param aContext
      * @param aTrajectory The trajectory that is found.
+     * @param aHoverStart Move the robotarm first to a hover position before
+     * moving any further
+     * @param aHoverEnd Move the robotarm to a position that hovers above the
+     * end position before moving to endposition
      */
     void createTrajectory(Context* aContext,
                           const kinematics::EndEffector& aTargetLocation,
-                          std::queue<kinematics::Configuration>& aTrajectory);
+                          std::queue<kinematics::Configuration>& aTrajectory,
+                          bool aHoverStart,
+                          bool aHoverEnd);
     /**
      * @brief Calculate the time needed to arrive at a configuration when
      * starting from the current configuration
@@ -48,7 +54,9 @@ namespace controller
      * @return planning::Path
      */
     planning::Path findPath(Context* aContext,
-                            const kinematics::EndEffector& aGoal);
+                            const kinematics::EndEffector& aGoal,
+                            bool aHoverStart,
+                            bool aHoverEnd);
   };
 } // namespace controller
 
