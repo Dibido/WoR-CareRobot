@@ -17,7 +17,7 @@ class ValueGuardTest
    * AGV message
    *
    * @param aTestValues - The values that the developer want tot test
-   * @param aStructMessage - The object u want to test
+   * @param aStructMessage - The object the developer wants to test
    * @param aValueReference - The lambda functie u want to use to get the value
    */
 

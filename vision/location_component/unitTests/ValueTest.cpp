@@ -7,14 +7,12 @@ ValueTest<Type>::ValueTest(const Type& aValue, const eExpectedResult& aExpectedR
 }
 
 template <typename Type>
-
 eExpectedResult ValueTest<Type>::getExpectedResult() const
 {
   return mExpectedResult;
 }
 
 template <typename Type>
-
 Type ValueTest<Type>::getValue() const
 {
   return mValue;

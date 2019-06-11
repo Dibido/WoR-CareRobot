@@ -12,15 +12,15 @@ namespace location_component
 
   TEST(IAGVProviderSuite, ValueTypeSpeed)
   {
-    // Initializing the ros message that is used to send through the ros topic
+    // Initializing the ROS message that is used to send through the ros topic
     // network
-    sensor_interfaces::AGVSpeed lrosMessage;
+    sensor_interfaces::AGVSpeed lROSMessage;
 
-    // Initializing the struct for comperising the types
-    location_component::AGV lstructMessage(1);
+    // Initializing the struct for comparing the types
+    location_component::AGV lStructMessage(1);
 
-    EXPECT_EQ(typeid(lstructMessage.mSpeed).name(),
-              typeid(lrosMessage.speed).name());
+    EXPECT_EQ(typeid(lStructMessage.mSpeed).name(),
+              typeid(lROSMessage.speed).name());
   }
 
   TEST(IAGVProviderSuite, ValueGuardSpeed)
@@ -37,18 +37,21 @@ namespace location_component
     lTestValues.push_back(ValueTest<float>(-100, eExpectedResult::THROW));
     lTestValues.push_back(ValueTest<float>(10000, eExpectedResult::NOTHROW));
 
-    // Creating a Lambda function that will return the value the developer wants to test
+    // Creating a Lambda function that will return the value the developer wants
+    // to test
     std::function<float&(location_component::AGV & aStructMessage)>
-        lValueReference = [](location_component::AGV& aStructMessage) -> float& {
+        lValueReference =
+            [](location_component::AGV& aStructMessage) -> float& {
       return aStructMessage.speed();
     };
-    
-    //Just a value to construct the object
+
+    // The value used to construct the AGV object
     short lStartValue = 1;
 
     // Defing the right data type and running the tests
     ValueGuardTest<float> lValueGuardTest;
-    lValueGuardTest.TestGuard(lTestValues, lstructMessage, lStartValue, lValueReference);
+    lValueGuardTest.TestGuard(lTestValues, lstructMessage, lStartValue,
+                              lValueReference);
   }
 
 } // namespace location_component

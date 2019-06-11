@@ -12,7 +12,8 @@ void ValueGuardTest<Type>::TestGuard(
 
   for (auto& elem : aTestValues)
   {
-    new (&aStructMessage) location_component::AGV (aStartValue);
+    // Reinitializing the AGV object for a fresh new object.
+    aStructMessage = location_component::AGV (aStartValue);
     aValueReference(aStructMessage) = elem.getValue();
 
     if (elem.getExpectedResult() == eExpectedResult::THROW)
@@ -27,4 +28,6 @@ void ValueGuardTest<Type>::TestGuard(
 
 }
 
+// Define what types this class will be defined as. If the developer wants to add a type just
+// simply add a new row. Like this “template class ValueTest<TYPE>;”
 template class ValueGuardTest<float>;
