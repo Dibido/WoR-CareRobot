@@ -188,14 +188,8 @@ namespace gazebo
     auto lCounter = 0;
     float lAngleMax = static_cast<float>(M_PI);
 
-    //  calculate::Calculatedata lCalc;
-    //c lCalc.processData();
-
     generate::GenerateNoise lNoise;
-
     lNoise.GenerateNoiseSample(0.476773, 0.125522);
-    // Fill the angle array with the correct range. Add 1 PI so we get a range
-    // from 0..2 * Pi.
 
     for (double lCurrentAngle = lNoise.mNoise[lCounter];
          lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));
