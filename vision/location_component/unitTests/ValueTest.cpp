@@ -21,5 +21,5 @@ Type ValueTest<Type>::getValue() const
 }
 
 // Define what types this class will be defined as. If the developer wants to add a type just
-// simply add a new row. Like this “template class ValueTest<UR NIEUW TYPE>;”
+// simply add a new row. Like this “template class ValueTest<TYPE>;”
 template class ValueTest<float>;
