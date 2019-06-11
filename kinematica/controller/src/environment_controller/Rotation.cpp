@@ -17,7 +17,7 @@ namespace environment_controller
 
   double Rotation::x()
   {
-    if (mX > 1 || mX < -1)
+    if (mX > cQuaternionMax || mX < cQuaternionMin)
     {
       throw std::range_error("x is out of range");
     }
@@ -26,7 +26,7 @@ namespace environment_controller
 
   const double& Rotation::x() const
   {
-    if (mX > 1 || mX < -1)
+    if (mX > cQuaternionMax || mX < cQuaternionMin)
     {
       throw std::range_error("x is out of range");
     }
@@ -35,7 +35,7 @@ namespace environment_controller
 
   double Rotation::y()
   {
-    if (mY > 1 || mY < -1)
+    if (mY > cQuaternionMax || mY < cQuaternionMin)
     {
       throw std::range_error("y is out of range");
     }
@@ -44,7 +44,7 @@ namespace environment_controller
 
   const double& Rotation::y() const
   {
-    if (mY > 1 || mY < -1)
+    if (mY > cQuaternionMax || mY < cQuaternionMin)
     {
       throw std::range_error("y is out of range");
     }
@@ -53,7 +53,7 @@ namespace environment_controller
 
   double Rotation::z()
   {
-    if (mZ > 1 || mZ < -1)
+    if (mZ > cQuaternionMax || mZ < cQuaternionMin)
     {
       throw std::range_error("z is out of range");
     }
@@ -62,7 +62,7 @@ namespace environment_controller
 
   const double& Rotation::z() const
   {
-    if (mZ > 1 || mZ < -1)
+    if (mZ > cQuaternionMax || mZ < cQuaternionMin)
     {
       throw std::range_error("z is out of range");
     }
@@ -71,7 +71,7 @@ namespace environment_controller
 
   double Rotation::w()
   {
-    if (mW > 1 || mW < -1)
+    if (mW > cQuaternionMax || mW < cQuaternionMin)
     {
       throw std::range_error("w is out of range");
     }
@@ -80,7 +80,7 @@ namespace environment_controller
 
   const double& Rotation::w() const
   {
-    if (mW > 1 || mW < -1)
+    if (mW > cQuaternionMax || mW < cQuaternionMin)
     {
       throw std::range_error("w is out of range");
     }

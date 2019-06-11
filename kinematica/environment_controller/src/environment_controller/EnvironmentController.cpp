@@ -70,8 +70,10 @@ namespace environment_controller
 
   const Sensor EnvironmentController::getSensor(const uint8_t aSensorID) const
   {
-    Sensor lSensor(mSensors.find(aSensorID)->first,
-                   mSensors.find(aSensorID)->second);
+    std::map<uint8_t, Pose>::const_iterator lSensorIterator =
+        mSensors.find(aSensorID);
+
+    Sensor lSensor(lSensorIterator->first, lSensorIterator->second);
 
     return lSensor;
   }

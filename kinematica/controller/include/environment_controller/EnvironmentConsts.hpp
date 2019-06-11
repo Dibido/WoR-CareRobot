@@ -18,6 +18,8 @@ namespace environment_controller
   const std::string cSensorFrame = "sensor";
   const uint8_t cMaxRange_m = 100;
   const int8_t cMinRange_m = -100;
+  const int8_t cQuaternionMin = -1;
+  const int8_t cQuaternionMax = 1;
   const uint8_t cTooFast_ms = 10;
   const int8_t cTooSlow_ms = 0;
   const double cRobotX_m = 0.0;

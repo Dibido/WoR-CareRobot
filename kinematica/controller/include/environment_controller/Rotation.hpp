@@ -65,10 +65,10 @@ namespace environment_controller
     const double& w() const;
 
       private:
-    double mX;
-    double mY;
-    double mZ;
-    double mW;
+    double mX; // mX must be between -1 and 1
+    double mY; // mY must be between -1 and 1
+    double mZ; // mZ must be between -1 and 1
+    double mW; // mW must be between -1 and 1
   };
 } // namespace environment_controller
 
