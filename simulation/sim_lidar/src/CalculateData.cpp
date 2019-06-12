@@ -11,7 +11,6 @@ calculate::Calculatedata::Calculatedata()
       mDeviation(0),
       mDefectiveMeasurement(0)
 {
-  
 }
 
 calculate::Calculatedata::Calculatedata(std::vector<double> aMeasurements)
@@ -19,10 +18,10 @@ calculate::Calculatedata::Calculatedata(std::vector<double> aMeasurements)
 {
 }
 
-void calculate::Calculatedata::fillVector(std::string Afile)
+void calculate::Calculatedata::fillVector(std::string aFile)
 {
 
-  std::ifstream ifile("/home/stein/1_ws/src/wor-18-19-s2/simulation/sim_lidar/datasets/lidardataset1.txt", std::ios::in);
+  std::ifstream ifile(aFile, std::ios::in);
 
   if (!ifile.is_open())
   {
@@ -58,7 +57,7 @@ void calculate::Calculatedata::calculateStepSize()
     else
     {
       mDefectiveMeasurement++;
-      std::cout << "verkeerd:" << mDefectiveMeasurement << std::endl;
+      std::cout << "defective:" << mDefectiveMeasurement << std::endl;
     }
   }
 
@@ -71,7 +70,7 @@ void calculate::Calculatedata::calculateAverage()
   double lSum =
       std::accumulate(std::begin(mStepSize), std::end(mStepSize), 0.0);
 
-  mMean = (lSum / mStepSize.size());
+  mMean = (lSum / static_cast<double>(mStepSize.size()));
   std::cout << "mean:" << mMean << std::endl;
 }
 
@@ -84,22 +83,14 @@ void calculate::Calculatedata::calculateDeviation()
                   lAccum += (aDistance - mMean) * (aDistance - mMean);
                 });
 
-  mDeviation = sqrt(lAccum / (mStepSize.size() - 1));
+  mDeviation = sqrt(lAccum / (static_cast<double>(mStepSize.size() - 1)));
   std::cout << "deviation:" << mDeviation << std::endl;
 }
 
 void calculate::Calculatedata::processData()
 {
-  // std::vector<std::string> datasets;
-  // datasets.push_back(lidar::cDataset1);
-  // //datasets.push_back(lidar::cDataset1);
-  // //datasets.push_back(lidar::cDataset1);
-
-  
-    this->fillVector(lidar::cDataset1);
-    this->calculateStepSize();
-    this->calculateAverage();
-    this->calculateDeviation();
- 
-  
+  this->fillVector(lidar::cDataset1);
+  this->calculateStepSize();
+  this->calculateAverage();
+  this->calculateDeviation();
 }

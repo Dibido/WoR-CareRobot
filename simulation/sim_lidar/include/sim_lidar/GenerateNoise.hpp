@@ -1,3 +1,14 @@
+/**
+ * @file GenerateNoise.hpp
+ * @author Stein Zwerink
+ * @brief
+ * @version 0.1
+ * @date 2019-06-22
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
+
 #ifndef GENERATE_NOISE_HPP
 #define GENERATE_NOISE_HPP
 
@@ -15,17 +26,20 @@ namespace generate
   {
       public:
     GenerateNoise() = default;
-    GenerateNoise(double aMean, double aDevation);
     //
     /**
-     * @brief Load the robot controller plugin, overrides the Load from
-     * ModelPlugin
-     * @param aParent: parent model
-     * @param aSdf: the sdf (xml) in the robot model, within the <plugin>
-     * element
+     * @brief generates noise based on a mean and a devation
+     * @param aMean the mean of a dataset
+     * @param aDevation the devation of a dataset
      */
-    virtual ~GenerateNoise() = default;
+    GenerateNoise(double aMean, double aDevation);
 
+    virtual ~GenerateNoise() = default;
+    /**
+     * @brief generates noise sample based on a mean and a devation
+     * @param aMean the mean of a dataset
+     * @param aDevation the devation of a dataset
+     */
     void GenerateNoiseSample(double aMean, double aDeviation);
 
     double mMean;
