@@ -166,7 +166,6 @@ namespace location_component
       for (std::size_t i = 0; i < lContours.size(); i++)
         circle(lDebugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
                CV_RGB(100, 0, 0), -1, 8, 0);
-
       imshow("DetectAGV debug window", lDebugFrame);
     }
 
