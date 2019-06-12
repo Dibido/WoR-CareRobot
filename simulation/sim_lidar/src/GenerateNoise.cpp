@@ -12,14 +12,12 @@ void generate::GenerateNoise::GenerateNoiseSample(double aMean,
   for (int i = 0; i < lidar::cMeasurements; ++i)
   {
 
-    std::mt19937 gen;
-    gen.seed(i);
+    std::mt19937 lGen;
+    lGen.seed(i);
 
-    std::normal_distribution<double> d(aMean, aDeviation);
+    std::normal_distribution<double> ld(aMean, aDeviation);
 
-    mStep = d(gen);
+    mStep = ld(lGen);
     mNoise.push_back(mStep);
-   
   }
-
 }

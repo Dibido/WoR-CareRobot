@@ -29,11 +29,11 @@ void calculate::Calculatedata::fillVector(std::string aFile)
     exit(1);
   }
 
-  double num = 0.0;
+  double lNum = 0.0;
 
-  while (ifile >> num)
+  while (ifile >> lNum)
   {
-    mMeasurements.push_back(num);
+    mMeasurements.push_back(lNum);
   }
 }
 
