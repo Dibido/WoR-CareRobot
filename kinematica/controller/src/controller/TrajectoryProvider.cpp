@@ -95,7 +95,7 @@ namespace controller
     kinematics::EndEffector aTargetLocation =
         aContext->configurationProvider()->forwardKinematics(
             aContext->currentConfiguration());
-    long lHoverOffset_cm = static_cast<long>(
+    const long lHoverOffset_cm = static_cast<long>(
         cHoverOffset_m * planning::cConversionFromMetersToCentimeters);
 
     planning::Vertex lStart(
@@ -125,17 +125,8 @@ namespace controller
                    "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
                    lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
 
-    // If a path was found and hoverstart and/or hoverand was used, add that
-    // value to the path
-
-    std::stringstream ss;
-
-    for (std::size_t i = 0; i < lPath.size(); ++i)
-    {
-      ss << "[" << lPath[i].x << "," << lPath[i].y << "," << lPath[i].z << "]"
-         << std::endl;
-    }
-
+    // If a path was found and hoverstart and/or hoverand was used, add those
+    // values to path
     if (aHoverStart)
     {
       lStart.z -= lHoverOffset_cm;
@@ -146,14 +137,6 @@ namespace controller
       lGoal.z -= lHoverOffset_cm;
       lPath.push_back(lGoal);
     }
-
-    for (std::size_t i = 0; i < lPath.size(); ++i)
-    {
-      ss << "[" << lPath[i].x << "," << lPath[i].y << "," << lPath[i].z << "]"
-         << std::endl;
-    }
-
-    ROS_INFO_STREAM(ss.str());
     return lPath;
   }
 
