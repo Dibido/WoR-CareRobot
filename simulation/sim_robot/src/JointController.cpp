@@ -1,8 +1,8 @@
 
+#include "sim_robot/RobotControllerPluginConst.hpp"
 #include <ros/ros.h>
 #include <sim_robot/JointController.hpp>
 #include <thread>
-
 namespace gazebo
 {
   bool equalsDouble(const double& a, const double& b)
