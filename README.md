@@ -39,50 +39,7 @@ ${ROS_WORKSPACE}/build/${PACKAGE_NAME}/${PACKAGE_NAME}_coverage
 ```
 ## Kinematics Installation
 
-
-1. `cd ~`
-2. `git clone --recursive https://github.com/frankaemika/libfranka`
-3. `cd libfranka`
-4. `mkdir build`
-5. `cd build`
-6. `cmake -DCMAKE_BUILD_TYPE=Release ..`
-7. `cmake --build .`
-
-
-## Simulation install guide
-
-1. First install the required libraries:
-```
-sudo apt install libsdl2-dev
-```
-Not found error :
-```
-sudo apt install libSDL2-dev
-```
-Unmet dependency error:
-```
-sudo apt-get install aptitude
-sudo aptitude install libsdl2-dev
-```
-2. Clone kinect repo:
-```
-git clone https://github.com/OpenKinect/libfreenect2.git
-cd libfreenect2
-sudo apt-get install build-essential cmake pkg-config
-sudo apt-get install libusb-1.0-0-dev
-sudo apt-get install libturbojpeg0-dev
-sudo apt-get install libglfw3-dev
-sudo apt-get install libopenni2-dev
-```
-3. Execute in libfreenect2 root directory:
-```
-mkdir build && cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
-make
-make install
-```
-
-4. Franka Panda requires the following library to work:
+Franka Panda requires the following library to work:
 
 ```
 sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
@@ -95,7 +52,11 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 catkin_make -DFranka_DIR:PATH=~/libfranka/build
 ```
-5. edit the Cmakelists:
+
+### Adding libfranka to an executable or library
+
+Edit the Cmakelists:
+
 ```
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Eigen3 REQUIRED)
@@ -110,18 +71,50 @@ catkin_package(
   LIBRARIES franka_state_controller franka_control_services
 )
 ```
-5.1 If you want to add an executable:
+
+* If you want to add library to executable
+
 ```
 target_link_libraries( %executableName% ${catkin_LIBRARIES} ${Franka_LIBRARIES})
 ```
-6. execute:
-```
-sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
-```
-7. Navigate to git repo and execute:
+
+## Simulation install guide
+
+1. Initialise submodules in this repo:
 ```
 git submodule init
 git submodule update
+```
+
+2. First install the required libraries:
+```
+sudo apt install libsdl2-dev
+```
+Not found error :
+```
+sudo apt install libSDL2-dev
+```
+Unmet dependency error:
+```
+sudo apt-get install aptitude
+sudo aptitude install libsdl2-dev
+```
+3. Clone kinect repo:
+```
+git clone https://github.com/OpenKinect/libfreenect2.git
+cd libfreenect2
+sudo apt-get install build-essential cmake pkg-config
+sudo apt-get install libusb-1.0-0-dev
+sudo apt-get install libturbojpeg0-dev
+sudo apt-get install libglfw3-dev
+sudo apt-get install libopenni2-dev
+```
+4. Execute in libfreenect2 root directory:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
+make
+make install
 ```
 
 ## Running simulation guide
@@ -136,7 +129,7 @@ source devel/setup.bash
 ```
 
 roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.launch
-``
+```
 3. Running simulation
 ```
 roslaunch sim_world world.launch
@@ -165,16 +158,53 @@ world
 roslaunch sim_world world.launch paused:=true
 ```
 
-## Available Packages
+## Running real-world application
 
-| Package               | Description                           |
-|-----------------------|---------------------------------------|
-| sim_agv               | AGV model plugin                      |
-| sim_cup               | cup model plugin                      |
-| sim_kinect            | kinect model plugin                   |
-| sim_lidar             | lidar model plugin                    |
-| sim_robot             | cup model plugin                      |
-| sim_sonar             | sonar model plugin                    |
-| [gazebo_grasp_plugin] | Plugin which helps grasping in Gazebo |
+Terminal 1:
+
+```
+roslaunch main_application main.launch
+```
+
+Terminal 2:
+
+```
+rosrun webcam_driver webcam_driver -<WEBCAM_ID>
+```
+
+Example:
+
+```
+rosrun webcam_driver webcam_driver -2
+```
+
+## Available Packages
+| Package                   | Description                                                                                         |
+|---------------------------|-----------------------------------------------------------------------------------------------------|
+| sim_agv                   | AGV model plugin                                                                                    |
+| sim_kinect                | kinect model plugin                                                                                 |
+| sim_cup                   | cup model plugin                                                                                    |
+| sim_lidar                 | lidar model plugin                                                                                  |
+| sim_robot                 | cup model plugin                                                                                    |
+| sim_sonar                 | sonar model plugin                                                                                  |
+| [gazebo_grasp_plugin]     | Plugin which helps grasping in Gazebo                                                               |
+| controller                | central controller for the application                                                              |
+| environment_controller    | Controller that reacts to information from sensors                                                  |
+| franka_controller         | Controller that communicates and controls franka panda emika                                        |
+| kinematics                | Libraries that contains functions to calculate forward and inverse kinematics                       |
+| main_application          | Package that combines all kinematica packages into one application                                  |
+| matrix                    | Package with a template Matrix class                                                                |
+| planning                  | Package that contains functions to find the fastest path from A to B                                |
+| robotcontroller           | Contains publishers that send commands to a robot                                                   |
+| robotcontroller_msgs      | Contains messages used by robotcontroller                                                           |
+| agv_gateway               | Translates NRF data sent from agv_speed_calculator to Serial [`Arduino`]                            |
+| agv_parser                | Translates Serial data sent from agv_gateway to a ROS message                                       |
+| agv_speed_calculator      | Calculates speed of AGV [`Arduino`]                                                                 |
+| kinematica_msgs           | Contains all messages used by vision to communicate with kinematica                                 |
+| lidar_application         | Scans the environment for danger using a Lidar                                                      |
+| location_component        | Detects AGV and Cup and makes a guess as to the arrival time of the Cup in relation to the robotarm |
+| sensor_interfaces         | Contains all messages necessary to send raw sensordata                                              |
+| userinterface             | UserInterface for the application                                                                   |
+| webcam_driver             | Captures video from a webcam and shares it using a ROS message                                      |
 
 Every package has its own README for further instructions
