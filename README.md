@@ -167,24 +167,44 @@ roslaunch main_application main.launch
 ```
 
 Terminal 2:
+
 ```
 rosrun webcam_driver webcam_driver -<WEBCAM_ID>
 ```
+
 Example:
+
 ```
 rosrun webcam_driver webcam_driver -2
 ```
 
 ## Available Packages
-
-| Package               | Description                           |
-|-----------------------|---------------------------------------|
-| sim_agv               | AGV model plugin                      |
-| sim_cup               | cup model plugin                      |
-| sim_kinect            | kinect model plugin                   |
-| sim_lidar             | lidar model plugin                    |
-| sim_robot             | cup model plugin                      |
-| sim_sonar             | sonar model plugin                    |
-| [gazebo_grasp_plugin] | Plugin which helps grasping in Gazebo |
+| Package                   | Description                                                                                         |
+|---------------------------|-----------------------------------------------------------------------------------------------------|
+| sim_agv                   | AGV model plugin                                                                                    |
+| sim_kinect                | kinect model plugin                                                                                 |
+| sim_cup                   | cup model plugin                                                                                    |
+| sim_lidar                 | lidar model plugin                                                                                  |
+| sim_robot                 | cup model plugin                                                                                    |
+| sim_sonar                 | sonar model plugin                                                                                  |
+| [gazebo_grasp_plugin]     | Plugin which helps grasping in Gazebo                                                               |
+| controller                | central controller for the application                                                              |
+| environment_controller    | Controller that reacts to information from sensors                                                  |
+| franka_controller         | Controller that communicates and controls franka panda emika                                        |
+| kinematics                | Libraries that contains functions to calculate forward and inverse kinematics                       |
+| main_application          | Package that combines all kinematica packages into one application                                  |
+| matrix                    | Package with a template Matrix class                                                                |
+| planning                  | Package that contains functions to find the fastest path from A to B                                |
+| robotcontroller           | Contains publishers that send commands to a robot                                                   |
+| robotcontroller_msgs      | Contains messages used by robotcontroller                                                           |
+| agv_gateway               | Translates NRF data sent from agv_speed_calculator to Serial [`Arduino`]                            |
+| agv_parser                | Translates Serial data sent from agv_gateway to a ROS message                                       |
+| agv_speed_calculator      | Calculates speed of AGV [`Arduino`]                                                                 |
+| kinematica_msgs           | Contains all messages used by vision to communicate with kinematica                                 |
+| lidar_application         | Scans the environment for danger using a Lidar                                                      |
+| location_component        | Detects AGV and Cup and makes a guess as to the arrival time of the Cup in relation to the robotarm |
+| sensor_interfaces         | Contains all messages necessary to send raw sensordata                                              |
+| userinterface             | UserInterface for the application                                                                   |
+| webcam_driver             | Captures video from a webcam and shares it using a ROS message                                      |
 
 Every package has its own README for further instructions
