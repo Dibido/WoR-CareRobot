@@ -53,7 +53,7 @@ namespace controller
       for (size_t j = 0; j < lConfiguration.size; ++j)
       {
         lConfiguration.setTheta(
-            j, lConfiguration[i] + rng::RandomNumberGenerator().GenerateInRange(
+            j, lConfiguration[j] + rng::RandomNumberGenerator().GenerateInRange(
                                        cMinRandomChange, cMaxRandomChange));
       }
     }
