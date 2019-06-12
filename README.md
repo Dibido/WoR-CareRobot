@@ -39,50 +39,7 @@ ${ROS_WORKSPACE}/build/${PACKAGE_NAME}/${PACKAGE_NAME}_coverage
 ```
 ## Kinematics Installation
 
-
-1. `cd ~`
-2. `git clone --recursive https://github.com/frankaemika/libfranka`
-3. `cd libfranka`
-4. `mkdir build`
-5. `cd build`
-6. `cmake -DCMAKE_BUILD_TYPE=Release ..`
-7. `cmake --build .`
-
-
-## Simulation install guide
-
-1. First install the required libraries:
-```
-sudo apt install libsdl2-dev
-```
-Not found error :
-```
-sudo apt install libSDL2-dev
-```
-Unmet dependency error:
-```
-sudo apt-get install aptitude
-sudo aptitude install libsdl2-dev
-```
-2. Clone kinect repo:
-```
-git clone https://github.com/OpenKinect/libfreenect2.git
-cd libfreenect2
-sudo apt-get install build-essential cmake pkg-config
-sudo apt-get install libusb-1.0-0-dev
-sudo apt-get install libturbojpeg0-dev
-sudo apt-get install libglfw3-dev
-sudo apt-get install libopenni2-dev
-```
-3. Execute in libfreenect2 root directory:
-```
-mkdir build && cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
-make
-make install
-```
-
-4. Franka Panda requires the following library to work:
+Franka Panda requires the following library to work:
 
 ```
 sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
@@ -95,7 +52,11 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 catkin_make -DFranka_DIR:PATH=~/libfranka/build
 ```
-5. edit the Cmakelists:
+
+### Adding libfranka to an executable or library
+
+Edit the Cmakelists:
+
 ```
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Eigen3 REQUIRED)
@@ -110,18 +71,50 @@ catkin_package(
   LIBRARIES franka_state_controller franka_control_services
 )
 ```
-5.1 If you want to add an executable:
+
+* If you want to add library to executable
+
 ```
 target_link_libraries( %executableName% ${catkin_LIBRARIES} ${Franka_LIBRARIES})
 ```
-6. execute:
-```
-sudo apt install build-essential cmake git libpoco-dev libeigen3-dev
-```
-7. Navigate to git repo and execute:
+
+## Simulation install guide
+
+1. Initialise submodules in this repo:
 ```
 git submodule init
 git submodule update
+```
+
+2. First install the required libraries:
+```
+sudo apt install libsdl2-dev
+```
+Not found error :
+```
+sudo apt install libSDL2-dev
+```
+Unmet dependency error:
+```
+sudo apt-get install aptitude
+sudo aptitude install libsdl2-dev
+```
+3. Clone kinect repo:
+```
+git clone https://github.com/OpenKinect/libfreenect2.git
+cd libfreenect2
+sudo apt-get install build-essential cmake pkg-config
+sudo apt-get install libusb-1.0-0-dev
+sudo apt-get install libturbojpeg0-dev
+sudo apt-get install libglfw3-dev
+sudo apt-get install libopenni2-dev
+```
+4. Execute in libfreenect2 root directory:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
+make
+make install
 ```
 
 ## Running simulation guide
@@ -163,6 +156,23 @@ world
 6. Running simulation with argument example
 ```
 roslaunch sim_world world.launch paused:=true
+```
+
+## Running real-world application
+
+Terminal 1:
+
+```
+roslaunch main_application main.launch
+```
+
+Terminal 2:
+```
+rosrun webcam_driver webcam_driver -<WEBCAM_ID>
+```
+Example:
+```
+rosrun webcam_driver webcam_driver -2
 ```
 
 ## Available Packages
