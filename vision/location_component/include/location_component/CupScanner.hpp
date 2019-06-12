@@ -1,10 +1,10 @@
 #ifndef CUPSCANNER_HPP
 #define CUPSCANNER_HPP
 
+#include "location_component/FrameCalibration.hpp"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <opencv2/opencv.hpp>
-#include "location_component/FrameCalibration.hpp"
 
 namespace location_component
 {
