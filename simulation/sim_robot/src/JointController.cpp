@@ -122,7 +122,7 @@ namespace gazebo
   {
 
     mTargetPos = aRad;
-
+    aUpdateRate = robotcontrollerplugin::cUpdateRate;
     if (equalsDouble(mTargetPos, mCurrentPos))
     {
       return false;

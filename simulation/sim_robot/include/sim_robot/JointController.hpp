@@ -2,9 +2,10 @@
 #ifndef PROJECT_JOINTINFO_HPP
 #define PROJECT_JOINTINFO_HPP
 
+#include "sim_robot/RobotControllerPluginConst.hpp"
 #include "types.hpp"
 #include <gazebo/physics/Joint.hh>
-
+  
 namespace gazebo
 {
   /**
