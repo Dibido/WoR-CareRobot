@@ -4,7 +4,6 @@
 
 #include "types.hpp"
 #include <gazebo/physics/Joint.hh>
-
 namespace gazebo
 {
   /**

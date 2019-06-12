@@ -25,7 +25,7 @@ namespace controller
     aContext->goalConfiguration().setTheta(3, -M_PI_2);
     aContext->goalConfiguration().setTheta(5, M_PI_2);
     aContext->goalConfiguration().setTheta(6, M_PI_4);
-    aContext->robotControl()->publish(cSpeedFactor,
+    aContext->robotControl()->publish(cSafeStartUpSpeedFactor,
                                       aContext->goalConfiguration());
     aContext->setState(std::make_shared<Ready>());
   }

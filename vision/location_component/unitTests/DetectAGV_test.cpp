@@ -19,7 +19,7 @@ TEST(DetectAGVSuite, CalculateMidpoint)
   lContours.push_back(cv::Point(0, 100));
 
   location_component::CupDetectionCalibration lCupDetectionCalibration(false);
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
 
@@ -36,7 +36,7 @@ TEST(DetectAGVSuite, ContoursMatSize)
   cv::Mat lMat;
 
   location_component::CupDetectionCalibration lCupDetectionCalibration(false);
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
 
@@ -54,7 +54,7 @@ TEST(DetectAGVSuite, DetectAGVPosition)
   cv::Mat lMat;
 
   location_component::CupDetectionCalibration lCupDetectionCalibration(false);
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
 
@@ -72,7 +72,7 @@ TEST(DetectAGVSuite, DetectAGVPositionPerspective)
   cv::Mat lMat;
 
   location_component::CupDetectionCalibration lCupDetectionCalibration(false);
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
   location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
                                              lAGVFrameCalibration);
 
