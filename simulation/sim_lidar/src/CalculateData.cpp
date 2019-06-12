@@ -21,9 +21,9 @@ calculate::Calculatedata::Calculatedata(std::vector<double> aMeasurements)
 void calculate::Calculatedata::fillVector(std::string aFile)
 {
 
-  std::ifstream ifile(aFile, std::ios::in);
+  std::ifstream lFile(aFile, std::ios::in);
 
-  if (!ifile.is_open())
+  if (!lFile.is_open())
   {
     std::cerr << "There was a problem opening the input file!\n";
     exit(1);
@@ -31,7 +31,7 @@ void calculate::Calculatedata::fillVector(std::string aFile)
 
   double lNum = 0.0;
 
-  while (ifile >> lNum)
+  while (lFile >> lNum)
   {
     mMeasurements.push_back(lNum);
   }

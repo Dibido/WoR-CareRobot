@@ -45,7 +45,7 @@ namespace generate
     double mMean;
     double mDeviation;
     double mStep;
-    std::random_device mrd;
+    std::random_device mRd;
     std::vector<double> mNoise;
   };
 
