@@ -77,7 +77,7 @@ namespace gazebo
      * the interface sensor_interfaces/LidarData.msg
      */
     sensor_interfaces::LidarData
-        convertToLidarData(const sensor_msgs::LaserScan aMsg) const;
+        convertToLidarData(const sensor_msgs::LaserScan& aMsg) const;
 
     /**
      * @brief Convert the LaserScan message

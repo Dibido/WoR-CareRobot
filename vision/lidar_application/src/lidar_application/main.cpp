@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ObjectDetection");
 
-  // 0.20 meter has proven to be a good default.
+  // 0.20 meter had been proven a good default.
   double lMaxDifference_m = 0.20;
 
   if (argc == 2)

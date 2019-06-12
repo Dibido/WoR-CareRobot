@@ -144,7 +144,9 @@ namespace lidar_application
       {
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
-        if (std::abs((*lObject.mMeasurements.end()--).second -
+        std::pair<double, double> lObjectsLastMeasurement = *(lObject.mMeasurements.end()--);
+
+        if (std::abs(lObjectsLastMeasurement.second -
                      lBeginRangeObject.mMeasurements.begin()->second) <=
             mMaxDistanceDifference_m)
         {

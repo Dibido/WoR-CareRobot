@@ -38,7 +38,7 @@ namespace lidar_application
      * @param aMeasurements - The measurements in format Angle (key) => Distance
      * in meters (value) all angles must be >= 0.0, and <= 2*M_PI radians.
      */
-    LidarData(const std::map<double, double> aMeasurements);
+    LidarData(const std::map<double, double>& aMeasurements);
 
     /**
      * @brief Adds samples to the existing angles/distances,

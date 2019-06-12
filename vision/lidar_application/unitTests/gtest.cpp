@@ -19,7 +19,6 @@ int main(int argc, char** argv)
 
   std::vector<std::pair<std::string, std::string>> lRemappings;
   ros::init(lRemappings, "ObjectDetection");
-  // ros::init(argc, argv, "tester");
-  // ros::NodeHandle nh;
+
   return RUN_ALL_TESTS();
 }

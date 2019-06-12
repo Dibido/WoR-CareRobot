@@ -132,9 +132,9 @@ TEST(ObjectDetection, getSurroundingDistances_Default)
 
 TEST(ObjectDetection, isAngleDifferent)
 {
-  const double lMaxDistanceDifference_m = 0.2;
+  const double cMaxDistanceDifference_m = 0.2;
 
-  ObjectDetection lObjectDetection(lMaxDistanceDifference_m);
+  ObjectDetection lObjectDetection(cMaxDistanceDifference_m);
 
   // mInitialScan is used to compare values with.
   lObjectDetection.mInitialScan.addLidarData(0.0, 1.00);

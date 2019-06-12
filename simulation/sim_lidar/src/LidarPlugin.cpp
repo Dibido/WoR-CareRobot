@@ -173,7 +173,7 @@ namespace gazebo
 
     lLaserMessage.ranges.clear();
 
-    for (auto lIterator = aLidarData.mMeasurements.begin();
+    for (std::map<double, double>::const_iterator lIterator = aLidarData.mMeasurements.begin();
          lIterator != aLidarData.mMeasurements.end(); ++lIterator)
     {
       lLaserMessage.ranges.push_back(static_cast<float>(lIterator->second));
@@ -207,9 +207,9 @@ namespace gazebo
     }
 
     // Reverse the measured distances so the scan is taken from left to right.
-    for (int i = aMsg->scan().ranges().size() - 1; i >= 0; i--)
+    for (int lIndex = aMsg->scan().ranges().size() - 1; lIndex >= 0; --lIndex)
     {
-      lDistances_m.push_back(aMsg->scan().ranges().Get(i));
+      lDistances_m.push_back(aMsg->scan().ranges().Get(lIndex));
     }
 
     lLidarData.addLidarData(lAngles, lDistances_m);
@@ -218,7 +218,7 @@ namespace gazebo
   }
 
   sensor_interfaces::LidarData
-      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
+      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan& aMsg) const
   {
     sensor_interfaces::LidarData lLidarDataMessage;
     lLidarDataMessage.header.stamp = ros::Time::now();

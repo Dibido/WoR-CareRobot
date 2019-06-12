@@ -20,7 +20,7 @@ namespace lidar_application
     const double cLidarHeight_m = 0.5;
 
     // Reality has shown that the lidar can measure up to around 5 meters
-    // reliably.
+    // reliably. See http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/Vision+-+Onderzoek+toepassingen+lidar
     const double cMaxReliableDistance_m = 5.0;
   } // namespace objectdetection_constants
 

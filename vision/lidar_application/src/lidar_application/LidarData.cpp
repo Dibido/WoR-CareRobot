@@ -6,9 +6,10 @@ namespace lidar_application
   {
   }
 
-  LidarData::LidarData(const std::map<double, double> aMeasurements)
+  LidarData::LidarData(const std::map<double, double>& aMeasurements)
       : mMeasurements(aMeasurements)
   {
+    // Checking if any of the measurements was out of the full-circle range
     if ((aMeasurements.size() > 0) &&
         ((aMeasurements.begin()->first < 0.0) ||
          (aMeasurements.end()--->first > (2 * M_PI))))
