@@ -28,6 +28,7 @@ namespace controller
   const planning::Obstacle cFloorObstacle{
     0.0f, 0.0f, -0.05f, 2.0f, 2.0f, 0.1f
   };
+  const double cGripperCorrection = 0.35;
 } // namespace controller
 
 #endif // CONTROLLER_CONSTS_HPP

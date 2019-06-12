@@ -49,8 +49,7 @@ namespace controller
           lTargetConfiguration[6]);
       mTrajectory.pop();
     }
-
-  } // namespace controller
+  }
 
   void MoveToDropLocation::exitAction(Context*)
   {
