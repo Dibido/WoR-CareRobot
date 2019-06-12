@@ -15,10 +15,9 @@
 #include <ros/ros.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 
-<<<<<<< Updated upstream
-=======
 // Constants for the agv_parser
 namespace agv_parser
 {
@@ -32,7 +31,6 @@ namespace agv_parser
   const unsigned int cBaudrate = 115200;
 } // namespace agv_parser
 
->>>>>>> Stashed changes
 namespace agv_parser
 {
   /**
@@ -42,6 +40,7 @@ namespace agv_parser
   {
       public:
     AgvParser(std::string aPort);
+    AgvParser();
     virtual ~AgvParser();
 
     /**
@@ -72,7 +71,7 @@ namespace agv_parser
     // Serial variables
     std::string mSerialPort;
     boost::asio::io_service mIoService;
-    boost::asio::serial_port mSerial;
+    boost::shared_ptr<boost::asio::serial_port> mSerial;
 
     // Ros variables
     ros::NodeHandlePtr mRosNode;
