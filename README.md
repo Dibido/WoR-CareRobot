@@ -129,7 +129,7 @@ source devel/setup.bash
 ```
 
 roslaunch ${PACKAGE_NAME} ${WORLD_NAME}.launch
-``
+```
 3. Running simulation
 ```
 roslaunch sim_world world.launch
