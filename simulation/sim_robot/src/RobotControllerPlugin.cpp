@@ -111,11 +111,8 @@ namespace gazebo
       const robotcontroller_msgs::ControlPtr& aMsg)
   {
     control_data::CommandData lCommand(aMsg->theta, aMsg->sf);
-<<<<<<< HEAD
     lCommand.getTheta()[6] += -M_PI_4; // temp fix gripper orientation
-=======
 
->>>>>>> 4ea6f4e11fccba79df712d4d7d9feea85e92a0f1
     ROS_DEBUG("Received command: %f", lCommand.getTheta());
 
     std::vector<commands::Command> thetaContainer = {};
