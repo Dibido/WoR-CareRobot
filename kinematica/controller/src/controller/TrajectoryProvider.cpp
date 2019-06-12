@@ -23,10 +23,11 @@ namespace controller
     ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
     kinematics::Configuration lPreviousConfiguration =
         aContext->currentConfiguration();
-    bool lFirstTry = true;
     // Start at 1 because first node is start position
+    std::size_t lIsLogicCount = 0;
     for (std::size_t i = 1; i < lRequiredPath.size();)
     {
+      ++lIsLogicCount;
       kinematics::EndEffector lTrajectoryEndEffector = kinematics::EndEffector(
           static_cast<double>(lRequiredPath[i].x) /
               planning::cConversionFromMetersToCentimeters,
@@ -41,12 +42,16 @@ namespace controller
         lConfiguration = aContext->configurationProvider()->inverseKinematics(
             lTrajectoryEndEffector, lConfiguration);
         if (isLogicNextConfiguration(lPreviousConfiguration, lConfiguration) ||
-            lFirstTry)
+            lIsLogicCount == 0 || lIsLogicCount > cMaxLogicConfigTries)
         {
+          if (lIsLogicCount > cMaxLogicConfigTries)
+          {
+            ROS_WARN("Could not find a good configuration");
+          }
           lPreviousConfiguration = lConfiguration;
           aTrajectory.push(lConfiguration);
           ++i;
-          lFirstTry = false;
+          lIsLogicCount = 0;
         }
       }
       catch (const std::exception& e)
@@ -125,7 +130,7 @@ namespace controller
                    "No path was found from [%i,%i,%i] to [%i,%i,%i]", lStart.x,
                    lStart.y, lStart.z, lGoal.x, lGoal.y, lGoal.z);
 
-    // If a path was found and hoverstart and/or hoverand was used, add those
+    // If a path was found and hoverstart and/or hover and was used, add those
     // values to path
     if (aHoverStart)
     {

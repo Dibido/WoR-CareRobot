@@ -22,8 +22,8 @@ namespace controller
   const double cHoverOffset_m = 0.1;
   const double cWaitTime_s = 0.5;
   const uint8_t cJointCount = 7;
-  const double cMinRandomChange = -0.01;
-  const double cMaxRandomChange = 0.01;
+  const double cMinRandomChange = -0.02;
+  const double cMaxRandomChange = 0.02;
   const uint64_t cS_to_nano_s = pow(10, 9);
   const double cMaxConfigurationDifference_rad = 0.5;
   const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.0f, 0.6f, 0.6f, 1.6f };
@@ -31,6 +31,7 @@ namespace controller
     0.0f, 0.0f, -0.05f, 2.0f, 2.0f, 0.1f
   };
   const double cGripperCorrection_m = 0.061;
+  const std::size_t cMaxLogicConfigTries = 500;
 } // namespace controller
 
 #endif // CONTROLLER_CONSTS_HPP
