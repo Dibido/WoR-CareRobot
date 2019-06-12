@@ -5,6 +5,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <ros/ros.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
 
@@ -37,7 +38,10 @@ namespace environment_controller
      * @param position Object that exists of x, y and z coordinates
      * @param frame A collection of coordinates from a single coordinate system
      */
-    void transform(const Pose& aPose, const std::string& aFrame);
+    void transform(const Pose& aPose,
+                   const bool aStatic,
+                   const std::string& aHeaderFrame,
+                   const std::string& aChildFrame);
 
     /**
      * @brief Transforms the fromFrame coordinate system into the toFrame
@@ -54,6 +58,7 @@ namespace environment_controller
 
       private:
     tf2_ros::TransformBroadcaster mBroadcaster;
+    static tf2_ros::StaticTransformBroadcaster mStaticBroadcaster;
     tf2_ros::Buffer mBuffer;
     tf2_ros::TransformListener mTfListener;
   };

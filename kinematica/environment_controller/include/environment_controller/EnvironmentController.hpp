@@ -91,6 +91,11 @@ namespace environment_controller
      *
      */
     void publishTFSensors(const ros::TimerEvent&);
+    /**
+     * @brief
+     *
+     */
+    void setObstacles(const Obstacles& aObstacles);
 
     /**
      * @brief Get the Sensor object
@@ -107,6 +112,7 @@ namespace environment_controller
     std::shared_ptr<controller::Context> mContext;
     std::shared_ptr<TFHandler> mTfHandler;
     std::map<uint8_t, Pose> mSensors;
+    std::vector<Obstacle> mObstacles;
   };
 } // namespace environment_controller
 

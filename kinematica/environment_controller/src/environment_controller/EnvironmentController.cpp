@@ -69,10 +69,15 @@ namespace environment_controller
     for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
          lSensor != mSensors.end(); ++lSensor)
     {
-      mTfHandler->transform(lSensor->second,
+      mTfHandler->transform(lSensor->second, true, cGlobalFrame,
                             std::string(cSensorFrame) +
                                 std::to_string(lSensor->first));
     }
+  }
+
+  void EnvironmentController::setObstacles(const Obstacles& aObstacles)
+  {
+    mObstacles = aObstacles;
   }
 
   const Sensor EnvironmentController::getSensor(const uint8_t aSensorID) const
