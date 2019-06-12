@@ -4,7 +4,6 @@ generate::GenerateNoise::GenerateNoise(double aMean, double aDevation)
     : mMean(aMean), mDeviation(aDevation)
 
 {
-  std::cout << "mean:" << mMean << "devation:" << mDeviation << std::endl;
 }
 
 void generate::GenerateNoise::GenerateNoiseSample(double aMean,
@@ -13,15 +12,14 @@ void generate::GenerateNoise::GenerateNoiseSample(double aMean,
   for (int i = 0; i < lidar::cMeasurements; ++i)
   {
 
-    std::mt19937 gen(mrd());
+    std::mt19937 gen;
+    gen.seed(i);
 
     std::normal_distribution<double> d(aMean, aDeviation);
 
     mStep = d(gen);
     mNoise.push_back(mStep);
+   
   }
-  for (unsigned int i = 0; i < mNoise.size(); ++i)
-  {
-    std::cout << mNoise[i] << std::endl;
-  }
+
 }

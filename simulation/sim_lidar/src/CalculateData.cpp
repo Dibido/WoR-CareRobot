@@ -35,11 +35,6 @@ void calculate::Calculatedata::fillVector(std::string aFile)
   {
     mMeasurements.push_back(num);
   }
-
-  for (unsigned int i = 0; i < mMeasurements.size(); ++i)
-  {
-    std::cout << mMeasurements[i] << std::endl;
-  }
 }
 
 void calculate::Calculatedata::calculateStepSize()
@@ -51,17 +46,12 @@ void calculate::Calculatedata::calculateStepSize()
         (mMeasurements[i] - mMeasurements[i - 1]) < 1)
     {
       mStepSize.push_back(mMeasurements[i] - mMeasurements[i - 1]);
-      std::cout << "stepsize:" << mMeasurements[i] - mMeasurements[i - 1]
-                << std::endl;
     }
     else
     {
       mDefectiveMeasurement++;
-      std::cout << "defective:" << mDefectiveMeasurement << std::endl;
     }
   }
-
-  std::cout << "size:" << mMeasurements.size() << std::endl;
 }
 
 void calculate::Calculatedata::calculateAverage()
@@ -71,7 +61,6 @@ void calculate::Calculatedata::calculateAverage()
       std::accumulate(std::begin(mStepSize), std::end(mStepSize), 0.0);
 
   mMean = (lSum / static_cast<double>(mStepSize.size()));
-  std::cout << "mean:" << mMean << std::endl;
 }
 
 void calculate::Calculatedata::calculateDeviation()
@@ -84,7 +73,6 @@ void calculate::Calculatedata::calculateDeviation()
                 });
 
   mDeviation = sqrt(lAccum / (static_cast<double>(mStepSize.size() - 1)));
-  std::cout << "deviation:" << mDeviation << std::endl;
 }
 
 void calculate::Calculatedata::processData()

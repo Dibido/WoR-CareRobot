@@ -69,7 +69,7 @@ target_link_libraries(${PROJECT_NAME}_calculate
         RayPlugin)
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/LidarPlugin_UnitTests.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/CalculateData_UnitTests.cpp  unitTests/GenerateNoise_UnitTests.cpp unitTests/LidarPlugin_UnitTests.cpp )
 
 add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
 

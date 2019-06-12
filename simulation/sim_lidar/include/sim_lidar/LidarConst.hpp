@@ -2,6 +2,7 @@
 #define LIDARCONST_HPP
 
 #include <string>
+#include <vector>
 
 namespace lidar
 {
@@ -10,5 +11,6 @@ namespace lidar
       "src/wor-18-19-s2/simulation/sim_lidar/datasets/lidardataset1.txt";
   const double cMean = 0.476773;
   const double cDeviation = 0.125522;
+
 } // namespace lidar
 #endif
