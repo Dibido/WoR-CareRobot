@@ -11,11 +11,6 @@ namespace gazebo
 
   const std::string cAgvPublishTopic = "/sensor/agv";
   const std::string cLineDataTopic = "/sensor/sonar";
-  const double cMinRange = 0.30;
-  const double cMaxRange = 0.40;
-  const double cMaxlines = 4;
-  const double cDistanceBetweenlines = 1;
-  const double cInterval = 3;
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
       : mMovingForward(true),
@@ -36,46 +31,20 @@ namespace gazebo
   {
   }
 
-  void AutomatedGuidedVehiclePlugin::parseAgvSpeed(
-      const agv_parser::AgvSpeed& aAgvSpeed)
-  {
-    sensor_interfaces::AGVSpeed lAgvMessage;
-    lAgvMessage.speed = aAgvSpeed.mAgvSpeed;
-    // Publish to ROS topic
-    mAgvPublisher.publish(lAgvMessage);
-  }
-
   void AutomatedGuidedVehiclePlugin::callback(
       const sensor_msgs::RangeConstPtr aMsg)
   {
-
-    if (aMsg->range > cMinRange && aMsg->range < cMaxRange)
+    mSecs = ros::Time::now().toSec();
+    if (mSecs - mPreviousTime >= mInterval)
     {
-      if (mWhitelinedetected)
-      {
-        mPreviousTime = ros::Time::now().toSec();
-        if (mNumberofLines > 0)
-        {
-          float lSpeed =
-              ( float )(cDistanceBetweenlines /
-                        std::abs(mTimebetweenLines - ros::Time::now().toSec()));
-
-          agv_parser::AgvSpeed lAgvSpeed;
-          lAgvSpeed.mAgvSpeed = lSpeed;
-          parseAgvSpeed(lAgvSpeed);
-        }
-        mTimebetweenLines = ros::Time::now().toSec();
-        ++mNumberofLines;
-        if (mNumberofLines == cMaxlines)
-        {
-          mNumberofLines = 0;
-        }
-      }
-      mWhitelinedetected = false;
-    }
-    if (ros::Time::now().toSec() - mPreviousTime >= cInterval)
-    {
-      mWhitelinedetected = true;
+      ROS_INFO("speed pushed : %f from: %d", this->mSpeedY,
+               aMsg->radiation_type);
+      mPreviousTime = mSecs;
+      sensor_interfaces::AGVSpeed speedMsg;
+      speedMsg.speed = ( float )this->mSpeedY;
+      mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
+          gazebo::cAgvPublishTopic, 1);
+      mAgvPublisher.publish(speedMsg);
     }
   }
 
@@ -111,9 +80,6 @@ namespace gazebo
     // Start updating the plugin every itteration of the simulation
     mUpdateConnection = event::Events::ConnectWorldUpdateBegin(
         std::bind(&AutomatedGuidedVehiclePlugin::onUpdate, this));
-
-    mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
-        gazebo::cAgvPublishTopic, 1);
 
     ros::SubscribeOptions so =
         ros::SubscribeOptions::create<sensor_msgs::Range>(

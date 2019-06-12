@@ -11,12 +11,10 @@
 #include <gazebo/physics/physics.hh>
 #include <gazebo/plugins/RayPlugin.hh>
 
-#include "sim_lidar/CalculateData.hpp"
-#include "sim_lidar/GenerateNoise.hpp"
+#include <ros/ros.h>
 
 #include <algorithm>
 #include <iterator>
-#include <ros/ros.h>
 
 namespace gazebo
 {
@@ -55,7 +53,7 @@ namespace gazebo
     /**
      * @brief Convert the gazebo::LaserScan const message to
      * sensor_msgs::LaserScan for processing
-     * @param aMsg: The gazebo formatted message received from the simulation
+     * @param aMsg: The gazebo formatted message recieved from the simulation
      * @return: The converted sensor_msgs::LaserScan message
      */
     sensor_msgs::LaserScan
@@ -102,9 +100,6 @@ namespace gazebo
     ros::NodeHandlePtr mRosNode;
     ros::Publisher mRosPub;
     ros::Publisher mLidarDataPub;
-
-    // generate::GenerateNoise mNoise;
-    // calculate::Calculatedata mCalc;
   };
   GZ_REGISTER_SENSOR_PLUGIN(LidarPlugin)
 } // namespace gazebo
