@@ -1,5 +1,6 @@
 #include "controller/TrajectoryProvider.hpp"
 #include "controller/ControllerConsts.hpp"
+#include "rng/RandomNumberGenerator.hpp"
 
 namespace controller
 {
@@ -15,11 +16,13 @@ namespace controller
     ROS_ASSERT_MSG(aTrajectory.empty() == true, "Queue is not empty");
 
     planning::Path lRequiredPath = findPath(aContext, aTargetLocation);
-    kinematics::Configuration lConfiguration = aContext->configuration();
+    kinematics::Configuration lConfiguration = aContext->currentConfiguration();
     ROS_DEBUG("Found path, size: %i", lRequiredPath.size());
-
+    kinematics::Configuration lPreviousConfiguration =
+        aContext->currentConfiguration();
+    bool lFirstTry = true;
     // Start at 1 because first node is start position
-    for (std::size_t i = 1; i < lRequiredPath.size(); ++i)
+    for (std::size_t i = 1; i < lRequiredPath.size();)
     {
       kinematics::EndEffector lTrajectoryEndEffector = kinematics::EndEffector(
           static_cast<double>(lRequiredPath[i].x) /
@@ -30,24 +33,29 @@ namespace controller
               planning::cConversionFromMetersToCentimeters,
           0, M_PI_2, M_PI_2);
 
-      lConfiguration = aContext->configurationProvider()->inverseKinematics(
-          lTrajectoryEndEffector, lConfiguration);
-
-      ROS_DEBUG(
-          "TrajectoryProvider, node [%i] Configuration: "
-          "{%.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f} [%i]",
-          i, lConfiguration[0], lConfiguration[1], lConfiguration[2],
-          lConfiguration[3], lConfiguration[4], lConfiguration[5],
-          lConfiguration[6], lConfiguration.result());
-      ROS_ASSERT_MSG(
-          lConfiguration.result() == true,
-          "Could not find configuration for trajectory point %i: "
-          "[%.5f,%.5f,%.5f,%.5f,%.5f,%.5f]",
-          i, lTrajectoryEndEffector.cX_m, lTrajectoryEndEffector.cY_m,
-          lTrajectoryEndEffector.cZ_m, lTrajectoryEndEffector.cYaw_rad,
-          lTrajectoryEndEffector.cPitch_rad, lTrajectoryEndEffector.cRoll_rad);
-
-      aTrajectory.push(lConfiguration);
+      try
+      {
+        lConfiguration = aContext->configurationProvider()->inverseKinematics(
+            lTrajectoryEndEffector, lConfiguration);
+        if (isLogicNextConfiguration(lPreviousConfiguration, lConfiguration) ||
+            lFirstTry)
+        {
+          lPreviousConfiguration = lConfiguration;
+          aTrajectory.push(lConfiguration);
+          ++i;
+          lFirstTry = false;
+        }
+      }
+      catch (const std::exception& e)
+      {
+        ROS_ERROR("%s", e.what());
+      }
+      for (size_t j = 0; j < lConfiguration.size; ++j)
+      {
+        lConfiguration.setTheta(
+            j, lConfiguration[j] + rng::RandomNumberGenerator().GenerateInRange(
+                                       cMinRandomChange, cMaxRandomChange));
+      }
     }
     lConfiguration = aContext->configurationProvider()->inverseKinematics(
         aTargetLocation, lConfiguration);
@@ -64,10 +72,10 @@ namespace controller
     for (size_t i = 0; i < aConfiguration.size; ++i)
     {
       if (lMaxDeltaTheta <
-          std::abs(aConfiguration[i] - aContext->configuration()[i]))
+          std::abs(aConfiguration[i] - aContext->currentConfiguration()[i]))
       {
         lMaxDeltaTheta =
-            std::abs(aConfiguration[i] - aContext->configuration()[i]);
+            std::abs(aConfiguration[i] - aContext->currentConfiguration()[i]);
       }
     }
     return ros::Time::now() +
@@ -80,7 +88,7 @@ namespace controller
   {
     kinematics::EndEffector aTargetLocation =
         aContext->configurationProvider()->forwardKinematics(
-            aContext->configuration());
+            aContext->currentConfiguration());
 
     planning::Vertex lStart(
         static_cast<long>(aTargetLocation.cX_m *
@@ -104,4 +112,19 @@ namespace controller
     return lPath;
   }
 
+  bool TrajectoryProvider::isLogicNextConfiguration(
+      const kinematics::Configuration& previousConfiguration,
+      const kinematics::Configuration& newConfiguration)
+  {
+    for (size_t i = 0; i < previousConfiguration.size; ++i)
+    {
+      double lDifference =
+          std::abs(previousConfiguration[i] - newConfiguration[i]);
+      if (lDifference > cMaxConfigurationDifference_rad)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
 } // namespace controller

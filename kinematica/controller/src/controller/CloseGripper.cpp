@@ -17,7 +17,7 @@ namespace controller
   void CloseGripper::entryAction(Context* aContext)
   {
     aContext->gripperData() = robotcontroller::GripperData(
-        aContext->cup().object().width_m(), cSpeedFactor);
+        aContext->cup().object().width_m() - cGripperCorrection, cSpeedFactor);
     aContext->robotGripper()->moveGripper(aContext->gripperData());
     mGripperCloseTime =
         ros::Time::now() +

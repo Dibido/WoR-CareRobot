@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <map>
-#include <math>
+#include <math.h>
 #include <vector>
 
 namespace lidar_application

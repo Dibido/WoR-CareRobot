@@ -11,9 +11,8 @@ namespace controller
   {
     kinematics::EndEffector lTargetLocation = kinematics::EndEffector(
         aContext->dropPosition().x_m(), aContext->dropPosition().y_m(),
-        aContext->cup().object().position().z_m() +
-            aContext->dropPosition().z_m(),
-        0, M_PI_2, M_PI_2);
+        aContext->cup().object().height_m() + aContext->dropPosition().z_m(), 0,
+        M_PI_2, M_PI_2);
 
     mTrajectoryProvider.createTrajectory(aContext, lTargetLocation,
                                          mTrajectory);
@@ -38,9 +37,10 @@ namespace controller
     {
       kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
       aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
+      aContext->currentConfiguration() = aContext->goalConfiguration();
       mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
           aContext, lTargetConfiguration);
-      aContext->configuration() = lTargetConfiguration;
+      aContext->goalConfiguration() = lTargetConfiguration;
       ROS_DEBUG(
           "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",
           lTargetConfiguration[0], lTargetConfiguration[1],
@@ -49,8 +49,7 @@ namespace controller
           lTargetConfiguration[6]);
       mTrajectory.pop();
     }
-
-  } // namespace controller
+  }
 
   void MoveToDropLocation::exitAction(Context*)
   {

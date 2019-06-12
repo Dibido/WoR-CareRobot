@@ -77,20 +77,24 @@ namespace kinematics
     EXPECT_EQ(false, foundConfiguration2.result());
   }
 
-  TEST(DenavitHartenberg, ForwardKinematics)
+  TEST(DenavitHartenberg, FK_StraightUpEndEffector)
   {
+    DenavitHartenberg denavitHartenberg;
     Configuration bigTheta;
 
-    DenavitHartenberg denavitHartenberg;
-
     const auto endEffector = denavitHartenberg.forwardKinematicsYPR(bigTheta);
-    const Matrix<double, 6, 1> expectedEndEffector{ 0.088, 0.0, 0.9259999999,
-                                                    0.0,   0.0, 3.141592653 };
+    const Matrix<double, 6, 1> straightUpEndEffector{ 0.088, 0.0, 0.7759999999,
+                                                      0.0,   0.0, 3.141592653 };
 
-    EXPECT_EQ(true, equals(expectedEndEffector,
-                           denavitHartenberg.forwardKinematicsYPR(bigTheta),
-                           0.000000001));
+    EXPECT_EQ(true, transformationMatrixEquals(
+                        straightUpEndEffector,
+                        denavitHartenberg.forwardKinematicsYPR(bigTheta),
+                        0.000001, 0.000001, cDhTransformPosRadSplit));
+  }
 
+  TEST(DenavitHartenberg, FK_SomeConfig)
+  {
+    DenavitHartenberg denavitHartenberg;
     Configuration bigTheta2;
     bigTheta2.setTheta(0, M_PI / 5);
     bigTheta2.setTheta(1, M_PI / 3);
@@ -98,22 +102,23 @@ namespace kinematics
     bigTheta2.setTheta(3, M_PI * 1.5);
     bigTheta2.setTheta(4, M_PI * 1.7);
     bigTheta2.setTheta(5, M_PI / 8);
-    bigTheta2.setTheta(6, M_PI / 2);
+    bigTheta2.setTheta(6, M_PI / 4);
 
-    const Matrix<double, 6, 1> expectedEndEffector2{
-      0.03297219602, 0.520015779,  0.410671164,
-      0.6283185307,  0.1047197551, 1.963495408
+    const Matrix<double, 6, 1> randomConfigEndEffector{
+      0.1095743495, 0.4043738155, 0.3535831062,
+      1.031183531,  0.8090263823, 2.154853371
     };
-    EXPECT_EQ(true, equals(expectedEndEffector2,
-                           denavitHartenberg.forwardKinematicsYPR(bigTheta2),
-                           0.000000001));
+    EXPECT_EQ(true, transformationMatrixEquals(
+                        randomConfigEndEffector,
+                        denavitHartenberg.forwardKinematicsYPR(bigTheta2),
+                        0.000001, 0.000001, cDhTransformPosRadSplit));
   }
 
   TEST(DenavitHartenberg, EnduranceTest)
   {
     DenavitHartenberg denavitHartenberg;
     Configuration currentBigTheta;
-    currentBigTheta.setTheta(0, M_PI + M_PI_2);
+    currentBigTheta.setTheta(0, 3.1);
     currentBigTheta.setTheta(1, M_PI + M_PI_2);
     currentBigTheta.setTheta(2, M_PI + M_PI_2);
     currentBigTheta.setTheta(3, M_PI + M_PI_2);
@@ -132,7 +137,7 @@ namespace kinematics
 
     RobotConfiguration robotConfig;
 
-    std::size_t max_it = 500;
+    std::size_t max_it = 1000;
     for (std::size_t i = 0; i < max_it; ++i)
     {
       Configuration startConfig = currentBigTheta;

@@ -11,7 +11,8 @@ class ValueTest
    * @brief Constructor for ValueTest object
    *
    * @param aValue - This is a user defines value to test a message struct.
-   * @param aExpectedResult - The user can define the expected result of the mValue.
+   * @param aExpectedResult - The user can define the expected result of the
+   * mValue.
    */
 
   ValueTest(const Type& aValue, const eExpectedResult& aExpectedResult);
