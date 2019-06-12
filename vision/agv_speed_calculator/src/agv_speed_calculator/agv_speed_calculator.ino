@@ -55,15 +55,15 @@ unsigned long gMeasurementMillis[gMaxNumberOfMeasurements + 1] = { 0 };
 const unsigned int gLengthBetweenMeasurements = 50;
 // Amount of ms the tracker sensor needs to return true for the signal to be
 // considered valid.
-const unsigned long gMinIntervalTimeMs = 50;
+const unsigned long gMinIntervalTimeMs = 100;
 // Amount of ms to wait until the next attempt to detect a line
-const unsigned int gDetectDelayTimeMs = 150;
+const unsigned int gDetectDelayTimeMs = 2000;
 
 void sendEstimatedSpeed(double aEstimatedSpeed);
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
