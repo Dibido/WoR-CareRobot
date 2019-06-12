@@ -45,8 +45,9 @@ TEST(DataHandler, GetNewData)
   EXPECT_TRUE(lDataHandler.isNewDataAvailable());
   EXPECT_TRUE(lDataHandler.isNewDataAvailable());
 
-  // After receiving data 
-  EXPECT_EQ(lLidarData.mAngles.size(), lDataHandler.getLidarData().mAngles.size());
+  // After receiving data
+  EXPECT_EQ(lLidarData.mAngles.size(),
+            lDataHandler.getLidarData().mAngles.size());
 
   // There should be no 'new' data available
   EXPECT_FALSE(lDataHandler.isNewDataAvailable());

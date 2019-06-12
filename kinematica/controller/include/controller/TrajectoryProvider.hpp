@@ -57,6 +57,10 @@ namespace controller
                             const kinematics::EndEffector& aGoal,
                             bool aHoverStart,
                             bool aHoverEnd);
+
+    bool isLogicNextConfiguration(
+        const kinematics::Configuration& previousConfiguration,
+        const kinematics::Configuration& newConfiguration);
   };
 } // namespace controller
 

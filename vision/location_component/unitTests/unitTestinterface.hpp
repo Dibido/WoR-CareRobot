@@ -7,5 +7,4 @@ enum class eExpectedResult
   NOTHROW
 };
 
-
 #endif

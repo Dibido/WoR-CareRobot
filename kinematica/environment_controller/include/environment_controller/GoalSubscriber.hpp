@@ -32,6 +32,14 @@ namespace environment_controller
     virtual ~GoalSubscriber() = default;
 
     /**
+     * @brief Passes the Goal position object to the EnvironmentController
+     *
+     * @param aPosition
+     */
+    virtual void selectGoalPosition(const Position& aPosition);
+
+      private:
+    /**
      * @brief Callback function for setting the x, y and z coordinates. This
      * function will be called when the position is published on the /goal
      * topic.
@@ -40,14 +48,6 @@ namespace environment_controller
      */
     void goalCallback(const kinematica_msgs::GoalConstPtr& aMsg);
 
-    /**
-     * @brief Passes the Goal position object to the EnvironmentController
-     *
-     * @param aPosition
-     */
-    virtual void selectGoalPosition(const Position& aPosition);
-
-      private:
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
     std::shared_ptr<EnvironmentController> mEnvironmentController;
