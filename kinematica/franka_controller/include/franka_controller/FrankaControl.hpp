@@ -1,5 +1,7 @@
 #ifndef FRANKA_CONTROL_HPP
 #define FRANKA_CONTROL_HPP
+
+#include "FrankaConsts.hpp"
 #include <franka/exception.h>
 #include <franka/gripper.h>
 #include <franka/robot.h>
@@ -26,7 +28,8 @@ namespace franka_controller
      * @param aConfig the config where it is set tp
      * @param aSpeedFactor the speedfactor
      */
-    void executeMovement(std::array<double, 7>& aConfig, double aSpeedFactor);
+    void executeMovement(std::array<double, cDegreesOfFreedom>& aConfig,
+                         double aSpeedFactor);
 
     /**
      * @brief open the gripper to a certain meters

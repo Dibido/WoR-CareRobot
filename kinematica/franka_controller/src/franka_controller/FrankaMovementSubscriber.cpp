@@ -18,8 +18,8 @@ namespace franka_controller
   {
     std::vector<double> lMoves = aMsg->theta;
     double lSpeedFactor = aMsg->sf;
-    std::array<double, 7> lArrayMoves;
-    std::copy_n(lMoves.begin(), 7, lArrayMoves.begin());
+    std::array<double, cDegreesOfFreedom> lArrayMoves;
+    std::copy_n(lMoves.begin(), cDegreesOfFreedom, lArrayMoves.begin());
     mFrankaControl->executeMovement(lArrayMoves, lSpeedFactor);
   }
 } // namespace franka_controller

@@ -21,8 +21,9 @@ namespace franka_controller
     mRobot.setCartesianImpedance({ { 3000, 3000, 3000, 300, 300, 300 } });
   }
 
-  void FrankaControl::executeMovement(std::array<double, 7>& aConfig,
-                                      double aSpeedFactor)
+  void FrankaControl::executeMovement(
+      std::array<double, cDegreesOfFreedom>& aConfig,
+      double aSpeedFactor)
   {
     try
     {
