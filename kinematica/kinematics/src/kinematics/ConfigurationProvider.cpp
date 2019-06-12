@@ -45,11 +45,11 @@ namespace kinematics
 
   void
       ConfigurationProvider::prepareConfiguration(Configuration& aConfiguration,
-                                                  bool positive)
+                                                  bool aPositive)
   {
     for (std::size_t i = 0; i < cOffsetJoints.size(); ++i)
     {
-      if (positive == true)
+      if (aPositive == true)
       {
         aConfiguration.setTheta(i, aConfiguration[i] + cOffsetJoints[i]);
       }

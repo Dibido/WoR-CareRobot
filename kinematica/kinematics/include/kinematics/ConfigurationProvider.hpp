@@ -37,7 +37,7 @@ namespace kinematics
         forwardKinematics(const Configuration& aCurrentConfiguration) override;
 
       private:
-    void prepareConfiguration(Configuration& configuration, bool positive);
+    void prepareConfiguration(Configuration& aConfiguration, bool aPositive);
     DenavitHartenberg denavitHartenberg;
   };
 } // namespace kinematics
