@@ -38,19 +38,16 @@ TEST(StateTransition, MoveToEmergencyStop)
 {
   controller::Context* lContext = new controller::Context();
   environment_controller::Object lObject = environment_controller::Object(
-      environment_controller::Position(0.2, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
+      environment_controller::Position(0.4, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
       0.0, ros::Time::now(), 0);
   environment_controller::Cup lCup =
       environment_controller::Cup(lObject, ros::Time::now());
   lContext->foundCup(lCup);
   lContext->currentState()->doActivity(lContext);
   std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
   EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::Move));
-
   lContext->hardStop(true);
   lContext->currentState()->doActivity(lContext);
-
   EXPECT_EQ(typeid(*lContext->currentState()),
             typeid(controller::EmergencyStop));
 }
@@ -60,17 +57,22 @@ TEST(StateTransition, WaitForCupToGripper)
   controller::Context* lContext = new controller::Context();
   std::thread(&controller::Context::run, lContext).detach();
   environment_controller::Object lObject = environment_controller::Object(
-      environment_controller::Position(0.2, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
+      environment_controller::Position(0.4, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
       0.0, ros::Time::now(), 0);
-  environment_controller::Cup lCup = environment_controller::Cup(
-      lObject, ros::Time::now() + ros::Duration(0, 10000000));
+  environment_controller::Cup lCup =
+      environment_controller::Cup(lObject, ros::Time::now() + ros::Duration(4));
+  lContext->provideDropPosition(
+      environment_controller::Position(-0.3, 0.3, 0.1));
   lContext->cup() = lCup;
-  lContext->setState(std::make_shared<controller::WaitForCup>());
+  std::thread(&controller::Context::setState, lContext,
+              std::make_shared<controller::WaitForCup>())
+      .detach();
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::WaitForCup));
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(4));
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::WaitForCup));
-  std::this_thread::sleep_for(std::chrono::milliseconds(6));
+  std::this_thread::sleep_for(std::chrono::seconds(1));
 
   EXPECT_EQ(typeid(*lContext->currentState()),
             typeid(controller::CloseGripper));
@@ -93,7 +95,7 @@ TEST(StateTransition, ReadyToMove)
 {
   controller::Context* lContext = new controller::Context();
   environment_controller::Object lObject = environment_controller::Object(
-      environment_controller::Position(0.2, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
+      environment_controller::Position(0.4, 0.2, 0.2), 0.08, 0.08, 0.08, 0.0,
       0.0, ros::Time::now(), 0);
   environment_controller::Cup lCup =
       environment_controller::Cup(lObject, ros::Time::now());
