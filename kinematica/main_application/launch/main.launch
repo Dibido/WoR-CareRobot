@@ -1,5 +1,9 @@
 <launch>
-  <node name="location_component" pkg="location_component" type="location_component"/>
-  <!-- <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" /> -->
+<!-- <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" output="screen"/> -->
+  <node name="location_component" pkg="location_component" type="location_component" output="screen"/>
+  <node name="franka_controller" pkg="franka_controller" type="franka_control" output="screen"/>
+<!--  <node name="webcam_driver" pkg="webcam_driver" type="webcam_driver" args="-2"/> -->
+  <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" output="screen"/>
   <node name="main_application" pkg="main_application" type="main_application" output="screen" />
+  <node name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
 </launch>

@@ -1,8 +1,8 @@
 
+#include "sim_robot/RobotControllerPluginConst.hpp"
 #include <ros/ros.h>
 #include <sim_robot/JointController.hpp>
 #include <thread>
-
 namespace gazebo
 {
   bool equalsDouble(const double& a, const double& b)
@@ -30,8 +30,10 @@ namespace gazebo
         mMaxVel(mMaxVel),
         mCurrentPos(0),
         mCurrentVel(0),
+        mCurrentForce(0),
         mTargetPos(0),
         mStepSize(0)
+
   {
   }
 
@@ -120,7 +122,7 @@ namespace gazebo
   {
 
     mTargetPos = aRad;
-
+    aUpdateRate = robotcontrollerplugin::cUpdateRate;
     if (equalsDouble(mTargetPos, mCurrentPos))
     {
       return false;

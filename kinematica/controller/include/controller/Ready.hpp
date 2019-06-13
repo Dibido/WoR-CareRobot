@@ -16,12 +16,12 @@ namespace controller
   {
       public:
     /**
-     * @brief Construct a new Emergency Stop object
+     * @brief Construct a new Ready object
      *
      */
     Ready();
     /**
-     * @brief Destroy the Emergency Stop object
+     * @brief Destroy the Ready object
      *
      */
     ~Ready();
@@ -29,10 +29,11 @@ namespace controller
      * @brief entryAction is being called when the Ready state is being
      * entered.
      *
+     *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void entryAction(Context* aContext);
+    void entryAction(Context* aContext) override;
 
     /**
      * @brief doActivity is continiously being called while the system is in the
@@ -41,7 +42,7 @@ namespace controller
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void doActivity(Context* aContext);
+    void doActivity(Context* aContext) override;
     /**
      * @brief exitAction is being called when the Ready state is being
      * exited.
@@ -49,7 +50,7 @@ namespace controller
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void exitAction(Context* aContext);
+    void exitAction(Context* aContext) override;
   };
 } // namespace controller
 #endif // READY_HPP

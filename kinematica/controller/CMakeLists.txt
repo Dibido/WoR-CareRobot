@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
+add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O2)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -139,10 +139,53 @@ src/controller/WaitForReleaseSignal.cpp
 src/controller/TrajectoryProvider.cpp
 src/environment_controller/Cup.cpp
 src/environment_controller/Object.cpp
-src/environment_controller/Position.cpp)
+src/environment_controller/Pose.cpp
+src/environment_controller/Position.cpp
+src/environment_controller/Rotation.cpp
+src/environment_controller/Sensor.cpp)
 
 add_dependencies(lib_controller
 ${catkin_EXPORTED_TARGETS})
+
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp 
+unitTests/arrivalTime.cpp
+unitTests/stateTransitions.cpp
+unitTests/environment.cpp
+)
+target_link_libraries(${PROJECT_NAME}_unit_tests lib_controller lib_kinematics ${catkin_LIBRARIES})
+  
+if(CODE_COVERAGE)
+  #We want to measure the codecoverage with a Debug build
+  set(CMAKE_BUILD_TYPE Debug)
+
+
+  include(../../cmake/CodeCoverage.cmake)
+    
+  #Files which will be excluded for the codecoverage
+  set(COVERAGE_LCOV_EXCLUDES
+    '*/planning/*'
+    '*/kinematics/*'
+    '*/robotcontroller/*'
+    '*/boost/*'
+    '*/melodic/*'
+    '*/gtest/*'
+    '/*/c++/*'
+    '*/*.py'
+    '*/unitTests/*.cpp'
+    '*/*main.cpp'
+    '*/matrix/include/*'
+  )
+
+  APPEND_COVERAGE_COMPILER_FLAGS()
+
+
+  SETUP_TARGET_FOR_COVERAGE_LCOV(
+          NAME ${PROJECT_NAME}_coverage
+          EXECUTABLE ctest -j ${n_cores}
+          DEPENDENCIES
+          ${PROJECT_NAME}_unit_tests
+             )   
+endif()
 
 
 ## Declare a C++ library

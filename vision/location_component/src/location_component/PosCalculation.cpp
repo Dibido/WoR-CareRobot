@@ -1,5 +1,5 @@
 #include "location_component/PosCalculation.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include <cmath>
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
@@ -7,7 +7,8 @@
 namespace location_component
 {
 
-  PosCalculation::PosCalculation(Calibration aCalibration /* = Calibration()*/)
+  PosCalculation::PosCalculation(
+      CupDetectionCalibration aCalibration /* = Calibration()*/)
       : mCalibration(aCalibration)
   {
   }
@@ -20,10 +21,9 @@ namespace location_component
                                                   ros::Time aCurrentTime) const
   {
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
-    float lCurrentTime_s = ( float )aCurrentTime.toSec();
     float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
-    float lPredictedArrivalTime_s = lCurrentTime_s + lTimeToArm_s;
-    return ros::Time(lPredictedArrivalTime_s);
+    aCurrentTime = aCurrentTime + ros::Duration(lTimeToArm_s);
+    return aCurrentTime;
   }
 
   cv::Point3f PosCalculation::calculateCupLocation(cv::Point aCupScreenPos,
@@ -99,6 +99,8 @@ namespace location_component
     {
       throw std::range_error("AGV speed cannot be lower than zero");
     }
+
+    std::cout << "speed: " << aAGVSpeed_m_s << std::endl;
 
     mAGVSpeed_m_s = aAGVSpeed_m_s;
   }

@@ -6,29 +6,8 @@ Based on J. Craig, Robotics and Control 3rd Edition
 */
 
 fpprintprec: 5;
-Denavit : matrix(
-    [cos(theta), -sin(theta), 0, a],
-    [sin(theta)*cos(alpha), cos(theta) * cos(alpha) , -sin(alpha) , -sin(alpha)*d],
-    [sin(theta)*sin(alpha), cos(theta)*sin(alpha), cos(alpha), cos(alpha) * d],
-    [0, 0, 0, 1]);
 
-J1 : subst([theta=t_1, alpha=0, a=0, d=0.333], Denavit);
-J2 : subst([theta=t_2, alpha=-%pi/2, a=0, d=0], Denavit);
-J3 : subst([theta=t_3, alpha=%pi/2, a=0, d=0.316],  Denavit);
-J4 : subst([theta=t_4, alpha=%pi/2, a=0.0825, d=0],  Denavit);
-J5 : subst([theta=t_5, alpha=-%pi/2, a=-0.0825, d=0.384], Denavit);
-J6 : subst([theta=t_6, alpha=%pi/2, a=0, d=0], Denavit);
-J7 : subst([theta=t_7, alpha=%pi/2, a=0.088, d=0],  Denavit);
-FL : subst([theta=0,   alpha=0, a=0, d=0.107], Denavit);
-
-T : J1 . J2 . J3 . J4 . J5 . J6 . J7 . FL;
-
-yaw: atan2(T[2][1], T[1][1]);
-pitch: atan2(-T[3][1], sqrt(T[3][2]*T[3][2] + T[3][3]*T[3][3]));
-roll: atan2(T[3][2], T[3][3]);
-
-TransformationABG : [T[1][4], T[2][4], T[3][4], yaw, pitch, roll];
-
+load("forward_kinematics.mac");
 
 Jacobian : jacobian(TransformationABG, [t_1, t_2, t_3, t_4, t_5, t_6, t_7]);
 
@@ -42,19 +21,7 @@ JacobiSubst : subst([
    t_7 = 0
 ], Jacobian);
 
-stringout("JacobiSubst", float(%));
-
-JacobiSubst : subst([
-   t_1 = %pi/5,
-   t_2 = %pi/3,
-   t_3 = %pi/2,
-   t_4 = %pi*1.5,
-   t_5 = %pi*1.7,
-   t_6 = %pi/8,
-   t_7 = %pi/2
-], Jacobian);
-stringout("JacobiOne", float(%));
-
+stringout("AllZeroJacobian", float(%));
 
 fpprintprec: 10;
 
@@ -68,7 +35,7 @@ StraigtUp : subst([
    t_7 = 0
 ],TransformationABG);
 
-stringout("StraightUp", float(%));
+stringout("FK_StraightUpEndEffector", float(%));
 
 RandomConfig : subst([
    t_1 = %pi/5,
@@ -80,4 +47,4 @@ RandomConfig : subst([
    t_7 = %pi/4
 ],TransformationABG);
 
-stringout("RandomConfig", float(%));
+stringout("FK_SomeConfig", float(%));

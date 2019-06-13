@@ -1,5 +1,5 @@
 #include "location_component/DetectAGV.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/CupScanner.hpp"
 #include "location_component/RosServiceCup.hpp"
 #include <cmath>
@@ -7,19 +7,26 @@
 
 namespace location_component
 {
-  DetectAGV::DetectAGV(Calibration aCalibration)
+  DetectAGV::DetectAGV(CupDetectionCalibration& aCalibration,
+                       AGVFrameCalibration& aAGVFrameCalibration)
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(),
-        mCalibration(aCalibration)
+        mPosCalculator(aCalibration),
+        mCalibration(aCalibration),
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
-  DetectAGV::DetectAGV(ros::NodeHandle& nh, Calibration aCalibration)
+  DetectAGV::DetectAGV(ros::NodeHandle& nh,
+                       CupDetectionCalibration& aCalibration,
+                       AGVFrameCalibration& aAGVFrameCalibration)
       : mPrevDetectedAGV(),
         mCapturedFrame(0, 0, CV_8UC3),
         mRosServiceCup(std::make_unique<RosServiceCup>(nh)),
-        mCalibration(aCalibration)
+        mPosCalculator(aCalibration),
+        mCalibration(aCalibration),
+        mFrameCalibration(aAGVFrameCalibration)
   {
   }
 
@@ -78,6 +85,7 @@ namespace location_component
   {
     boost::optional<DetectedFrame> lDetectedFrame{};
     boost::optional<DetectedAGV> lDetectedAGV = detect(aFrame);
+
     if (mCapturedFrame.cols == 0)
     {
       mCapturedFrame = cv::Mat(aFrame.rows, aFrame.cols, CV_8UC3);
@@ -113,7 +121,7 @@ namespace location_component
 
         if (lCapture)
         {
-          CupScanner lCupScanner;
+          CupScanner lCupScanner(mFrameCalibration);
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
               lCupScanner.detectCups(lDetectedAGV->mAGVFrame);
@@ -133,9 +141,6 @@ namespace location_component
             cv::circle(lDisplayCups, detectedCup.mMidpoint, 10,
                        cv::Scalar(255, 0, 0), 0);
           }
-
-          // Disable debug windows for now.
-          /* imshow("display ", lDisplayCups); */
         }
       }
     }
@@ -148,17 +153,28 @@ namespace location_component
   boost::optional<DetectedAGV> DetectAGV::detect(const cv::Mat& aFrame) const
   {
     cv::Mat lDisFrame;
-    std::vector<std::vector<cv::Point>> lContours(1);
+    std::vector<cv::Point> lContours(1);
 
-    getContoursMat(aFrame, lContours);
+    getContourMat(aFrame, lContours);
 
     cv::Rect lBoundRect;
 
+    if (mCalibration.mDebugStatus)
+    {
+      cv::Mat lDebugFrame;
+      aFrame.copyTo(lDebugFrame);
+      for (std::size_t i = 0; i < lContours.size(); i++)
+        circle(lDebugFrame, cvPoint(lContours[i].x, lContours[i].y), 4,
+               CV_RGB(100, 0, 0), -1, 8, 0);
+      imshow("DetectAGV debug window", lDebugFrame);
+    }
+
     // Getting the middle point of the rect and draw this point
-    if (lContours.at(0).size() == cCornersOfObject)
+    if (lContours.size() == cCornersOfObject)
     {
       DetectedAGV lDetectedAGV;
-      lBoundRect = boundingRect(lContours.at(0));
+      lBoundRect = boundingRect(lContours);
+
       // The corners of the AGV.
       std::vector<cv::Point2f> lAGVCorners;
       // The corners of the bounding rectangle around the AGV.
@@ -166,10 +182,10 @@ namespace location_component
 
       for (size_t idx = 0; idx < cCornersOfObject; ++idx)
       {
-        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(0).at(idx).x,
-                                          ( float )lContours.at(0).at(idx).y));
+        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(idx).x,
+                                          ( float )lContours.at(idx).y));
 
-        lDetectedAGV.mCorners.push_back(lContours.at(0).at(idx));
+        lDetectedAGV.mCorners.push_back(lContours.at(idx));
       }
 
       lEstimatedSquare.push_back(
@@ -187,13 +203,13 @@ namespace location_component
 
       makePerspectiveCorrection(lTransmtx, aFrame, lDisFrame);
 
-      std::vector<std::vector<cv::Point>> lContours(1);
-      getContoursMat(lDisFrame, lContours);
+      std::vector<cv::Point> lContoursWithPerspectiveCorrection(1);
+      getContourMat(lDisFrame, lContoursWithPerspectiveCorrection);
 
       lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
 
       std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
-      lPoints.push_back(getMidPoint(lContours.at(0)));
+      lPoints.push_back(getMidPoint(lContoursWithPerspectiveCorrection));
 
       cv::perspectiveTransform(lPoints, lPointInOriginalPerspective,
                                lTransmtx.inv());
@@ -217,14 +233,14 @@ namespace location_component
     warpPerspective(aSourceMat, aDist, aTransmtx, aSourceMat.size());
   }
 
-  void DetectAGV::getContoursMat(
-      const cv::Mat& aSourceMat,
-      std::vector<std::vector<cv::Point>>& aContoursPoly) const
+  void DetectAGV::getContourMat(const cv::Mat& aSourceMat,
+                                std::vector<cv::Point>& aContoursPoly) const
   {
     std::vector<std::vector<cv::Point>> lContours;
     cv::Mat lMatDes;
-    cv::inRange(aSourceMat, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 30),
-                lMatDes);
+
+    mFrameCalibration.removeEverythingButAGV(aSourceMat, lMatDes);
+
     cv::findContours(lMatDes, lContours, CV_RETR_EXTERNAL,
                      CV_CHAIN_APPROX_SIMPLE);
 
@@ -245,9 +261,8 @@ namespace location_component
     }
 
     // Copy the right rectengle tot contour_poly
-
-    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)),
-                 aContoursPoly.at(0), 5, true);
+    approxPolyDP(cv::Mat(lContours.at(lLargestContourIndex)), aContoursPoly,
+                 cEpsilon, true);
   }
 
   cv::Point

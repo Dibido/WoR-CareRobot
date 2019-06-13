@@ -1,4 +1,3 @@
-// Local
 #include "controller/Context.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
@@ -6,11 +5,11 @@
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
-// Libary
 #include <chrono>
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
+
 namespace controller
 {
   Context::Context()
@@ -49,10 +48,11 @@ namespace controller
         mDropPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
-    const planning::Obstacle cRobotAsObstacle{ -0.5f, 0.0f, 0.0f,
-                                               1.0f,  0.5f, 1.0f };
-    mGraph->addObstacle(cRobotAsObstacle);
+    mGraph->addObstacle(cRobotObstacle);
+    mGraph->addObstacle(cFloorObstacle);
+    ros::Duration(2).sleep();
     setState(std::make_shared<Init>());
+    mCurrentState->doActivity(this);
     mCurrentState->doActivity(this);
   }
 
@@ -76,10 +76,11 @@ namespace controller
              typeid(*mCurrentState) == typeid(Ready)) &&
            ros::ok())
     {
+      mHardStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
-
       mCurrentStateMutex.unlock();
+      mHardStopMutex.lock();
     }
   }
 
@@ -90,13 +91,12 @@ namespace controller
 
   void Context::hardStop(bool aStop)
   {
-    mCurrentStateMutex.lock();
+    std::lock_guard<std::mutex> lHardLock(mHardStopMutex);
+    std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
     else
       setState(std::make_shared<Init>());
-
-    mCurrentStateMutex.unlock();
   }
 
   void Context::provideObstacles(
@@ -120,9 +120,14 @@ namespace controller
     mDropPosition = aPosition;
   }
 
-  kinematics::Configuration& Context::configuration()
+  kinematics::Configuration& Context::currentConfiguration()
   {
-    return mConfiguration;
+    return mCurrentConfiguration;
+  }
+
+  kinematics::Configuration& Context::goalConfiguration()
+  {
+    return mGoalConfiguration;
   }
 
   std::shared_ptr<planning::Graph>& Context::graph()

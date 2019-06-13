@@ -1,9 +1,9 @@
 #include <boost/bind.hpp>
-#include <gazebo/gazebo.hh>
-#include <gazebo/physics/physics.hh>
-#include <gazebo/physics/ContactManager.hh>
-#include <gazebo/physics/Contact.hh>
 #include <gazebo/common/common.hh>
+#include <gazebo/gazebo.hh>
+#include <gazebo/physics/Contact.hh>
+#include <gazebo/physics/ContactManager.hh>
+#include <gazebo/physics/physics.hh>
 #include <stdio.h>
 
 #include <gazebo_grasp_plugin/GazeboGraspGripper.h>
@@ -21,15 +21,15 @@ GazeboGraspGripper::GazeboGraspGripper() : attached(false)
 }
 
 GazeboGraspGripper::GazeboGraspGripper(const GazeboGraspGripper& o)
-  : model(o.model)
-  , gripperName(o.gripperName)
-  , linkNames(o.linkNames)
-  , collisionElems(o.collisionElems)
-  , fixedJoint(o.fixedJoint)
-  , palmLink(o.palmLink)
-  , disableCollisionsOnAttach(o.disableCollisionsOnAttach)
-  , attached(o.attached)
-  , attachedObjName(o.attachedObjName)
+    : model(o.model),
+      gripperName(o.gripperName),
+      linkNames(o.linkNames),
+      collisionElems(o.collisionElems),
+      fixedJoint(o.fixedJoint),
+      palmLink(o.palmLink),
+      disableCollisionsOnAttach(o.disableCollisionsOnAttach),
+      attached(o.attached),
+      attachedObjName(o.attachedObjName)
 {
 }
 
@@ -38,10 +38,13 @@ GazeboGraspGripper::~GazeboGraspGripper()
   this->model.reset();
 }
 
-bool GazeboGraspGripper::Init(physics::ModelPtr& _model, const std::string& _gripperName,
-                              const std::string& palmLinkName, const std::vector<std::string>& fingerLinkNames,
-                              bool _disableCollisionsOnAttach,
-                              std::map<std::string, physics::CollisionPtr>& _collisionElems)
+bool GazeboGraspGripper::Init(
+    physics::ModelPtr& _model,
+    const std::string& _gripperName,
+    const std::string& palmLinkName,
+    const std::vector<std::string>& fingerLinkNames,
+    bool _disableCollisionsOnAttach,
+    std::map<std::string, physics::CollisionPtr>& _collisionElems)
 {
   this->gripperName = _gripperName;
   this->attached = false;
@@ -53,31 +56,38 @@ bool GazeboGraspGripper::Init(physics::ModelPtr& _model, const std::string& _gri
   this->palmLink = this->model->GetLink(palmLinkName);
   if (!this->palmLink)
   {
-    gzerr << "GazeboGraspGripper: Palm link " << palmLinkName << " not found. The gazebo grasp plugin will not work."
-          << std::endl;
+    gzerr << "GazeboGraspGripper: Palm link " << palmLinkName
+          << " not found. The gazebo grasp plugin will not work." << std::endl;
     return false;
   }
-  for (std::vector<std::string>::const_iterator fingerIt = fingerLinkNames.begin(); fingerIt != fingerLinkNames.end();
-       ++fingerIt)
+  for (std::vector<std::string>::const_iterator fingerIt =
+           fingerLinkNames.begin();
+       fingerIt != fingerLinkNames.end(); ++fingerIt)
   {
     physics::LinkPtr link = this->model->GetLink(*fingerIt);
-    // std::cout <<"Got link "<<fingerLinkElem->Get<std::string>()<<std::endl;
+
     if (!link.get())
     {
       gzerr << "GazeboGraspGripper ERROR: Link " << *fingerIt
-            << " can't be found in gazebo for GazeboGraspGripper model plugin. Skipping." << std::endl;
+            << " can't be found in gazebo for GazeboGraspGripper model plugin. "
+               "Skipping."
+            << std::endl;
       continue;
     }
     for (unsigned int j = 0; j < link->GetChildCount(); ++j)
     {
       physics::CollisionPtr collision = link->GetCollision(j);
       std::string collName = collision->GetScopedName();
-      // collision->SetContactsEnabled(true);
-      std::map<std::string, physics::CollisionPtr>::iterator collIter = collisionElems.find(collName);
+
+      std::map<std::string, physics::CollisionPtr>::iterator collIter =
+          collisionElems.find(collName);
       if (collIter != this->collisionElems.end())
-      {  // this collision was already added before
-        gzwarn << "GazeboGraspGripper: Adding Gazebo collision link element " << collName
-               << " multiple times, the gazebo grasp handler may not work properly" << std::endl;
+      {
+        gzwarn
+            << "GazeboGraspGripper: Adding Gazebo collision link element "
+            << collName
+            << " multiple times, the gazebo grasp handler may not work properly"
+            << std::endl;
         continue;
       }
       this->collisionElems[collName] = collision;
@@ -94,7 +104,8 @@ const std::string& GazeboGraspGripper::getGripperName() const
 
 bool GazeboGraspGripper::hasLink(const std::string& linkName) const
 {
-  for (std::vector<std::string>::const_iterator it = linkNames.begin(); it != linkNames.end(); ++it)
+  for (std::vector<std::string>::const_iterator it = linkNames.begin();
+       it != linkNames.end(); ++it)
   {
     if (*it == linkName)
       return true;
@@ -117,14 +128,13 @@ const std::string& GazeboGraspGripper::attachedObject() const
   return attachedObjName;
 }
 
-// #define USE_MODEL_ATTACH // this only works if the object is a model in itself, which is usually not
-// the case. Leaving this in here anyway for documentation of what has been
-// tried, and for and later re-evaluation.
 bool GazeboGraspGripper::HandleAttach(const std::string& objName)
 {
   if (!this->palmLink)
   {
-    gzwarn << "GazeboGraspGripper: palm link not found, not enforcing grasp hack!\n" << std::endl;
+    gzwarn << "GazeboGraspGripper: palm link not found, not enforcing grasp "
+              "hack!\n"
+           << std::endl;
     return false;
   }
   physics::WorldPtr world = this->model->GetWorld();
@@ -137,31 +147,34 @@ bool GazeboGraspGripper::HandleAttach(const std::string& objName)
   physics::ModelPtr obj = world->GetModel(objName);
   if (!obj.get())
   {
-    std::cerr << "ERROR: Object ModelPtr " << objName << " not found in world, can't attach it" << std::endl;
+    std::cerr << "ERROR: Object ModelPtr " << objName
+              << " not found in world, can't attach it" << std::endl;
     return false;
   }
 
-  ignition::math::Pose3d diff = obj->GetLink()->WorldPose() - this->palmLink->WorldPose();
+  ignition::math::Pose3d diff =
+      obj->GetLink()->WorldPose() - this->palmLink->WorldPose();
   this->palmLink->AttachStaticModel(obj, diff);
 #else
-  physics::CollisionPtr obj = boost::dynamic_pointer_cast<physics::Collision>(world->EntityByName(objName));
+  physics::CollisionPtr obj = boost::dynamic_pointer_cast<physics::Collision>(
+      world->EntityByName(objName));
   if (!obj.get())
   {
-    std::cerr << "ERROR: Object " << objName << " not found in world, can't attach it" << std::endl;
+    std::cerr << "ERROR: Object " << objName
+              << " not found in world, can't attach it" << std::endl;
     return false;
   }
-  ignition::math::Pose3d diff = obj->GetLink()->WorldPose() - this->palmLink->WorldPose();
+  ignition::math::Pose3d diff =
+      obj->GetLink()->WorldPose() - this->palmLink->WorldPose();
   this->fixedJoint->Load(this->palmLink, obj->GetLink(), diff);
   this->fixedJoint->Init();
   this->fixedJoint->SetUpperLimit(0, 0);
   this->fixedJoint->SetLowerLimit(0, 0);
   if (this->disableCollisionsOnAttach)
   {
-    // we can disable collisions of the grasped object, because when the fingers keep colliding with
-    // it, the fingers keep wobbling, which can create difficulties when moving the arm.
     obj->GetLink()->SetCollideMode("none");
   }
-#endif  // USE_MODEL_ATTACH
+#endif
   this->attached = true;
   this->attachedObjName = objName;
   return true;
@@ -179,15 +192,18 @@ void GazeboGraspGripper::HandleDetach(const std::string& objName)
   physics::ModelPtr obj = world->GetModel(objName);
   if (!obj.get())
   {
-    std::cerr << "ERROR: Object ModelPtr " << objName << " not found in world, can't detach it" << std::endl;
+    std::cerr << "ERROR: Object ModelPtr " << objName
+              << " not found in world, can't detach it" << std::endl;
     return;
   }
   this->palmLink->DetachStaticModel(objName);
 #else
-  physics::CollisionPtr obj = boost::dynamic_pointer_cast<physics::Collision>(world->EntityByName(objName));
+  physics::CollisionPtr obj = boost::dynamic_pointer_cast<physics::Collision>(
+      world->EntityByName(objName));
   if (!obj.get())
   {
-    std::cerr << "ERROR: Object " << objName << " not found in world, can't attach it" << std::endl;
+    std::cerr << "ERROR: Object " << objName
+              << " not found in world, can't attach it" << std::endl;
     return;
   }
   else if (this->disableCollisionsOnAttach)
@@ -195,7 +211,7 @@ void GazeboGraspGripper::HandleDetach(const std::string& objName)
     obj->GetLink()->SetCollideMode("all");
   }
   this->fixedJoint->Detach();
-#endif  // USE_MODEL_ATTACH
+#endif
   this->attached = false;
   this->attachedObjName = "";
 }

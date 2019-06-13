@@ -12,6 +12,9 @@ namespace controller
    * @brief WaitForReleaseSignal is the class which represents the
    * WaitForReleaseSignal state.
    *
+   * @details The class will wait for a release message and wait the time
+   * specified in the message before transiting to the ReleaseCup state.
+   *
    */
   class WaitForReleaseSignal : public State
   {
@@ -30,27 +33,36 @@ namespace controller
      * @brief entryAction is being called when the WaitForReleaseSignal state is
      * being entered.
      *
+     * @details At this point nothing is being done in the entry of the
+     * WaitForReleaseSignal state.
+     *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void entryAction(Context* aContext);
+    void entryAction(Context* aContext) override;
 
     /**
      * @brief doActivity is continiously being called while the system is in the
      * WaitForReleaseSignal.
      *
-     * @param aContext is an object which gives the states an interface to the
-     * "outside world".
-     */
-    void doActivity(Context* aContext);
-    /**
-     * @brief exitAction is being called when the WaitForReleaseSignal state is
-     * being exited.
+     * @details Within the doActivity function will be blocking untill a
+     * ReleaseMessage has been received. Once a release message has been
+     * received we will wait the time specified in the message.
      *
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void exitAction(Context* aContext);
+    void doActivity(Context* aContext) override;
+    /**
+     * @brief exitAction is being called when the WaitForReleaseSignal state is
+     * being exited.
+     *
+     * @details At this moment nothing is done in the exitAction.
+     *
+     * @param aContext is an object which gives the states an interface to the
+     * "outside world".
+     */
+    void exitAction(Context* aContext) override;
   };
 } // namespace controller
 #endif // WAIT_FOR_RELEASE_SIGNAL

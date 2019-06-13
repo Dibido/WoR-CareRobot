@@ -2,10 +2,15 @@
 #define DETECTAGV_HPP
 
 #include "location_component/AGV.hpp"
-#include "location_component/Calibration.hpp"
+#include "location_component/AGVFrameCalibration.hpp"
 #include "location_component/CupScanner.hpp"
+#include "location_component/FrameCalibration.hpp"
 #include "location_component/PosCalculation.hpp"
 #include "location_component/RosServiceCup.hpp"
+
+#include "location_component/DetectedAGV.hpp"
+#include "location_component/DetectedFrame.hpp"
+
 #include <boost/optional.hpp>
 #include <iostream>
 #include <math.h>
@@ -15,28 +20,32 @@
 namespace location_component
 {
   const unsigned int cCornersOfObject = 4;
-
-  struct DetectedAGV
-  {
-    std::vector<cv::Point> mCorners;
-    cv::Point mMidpoint;
-    cv::Rect mBoundRect;
-    cv::Mat mAGVFrame;
-  };
-
-  struct DetectedFrame
-  {
-    DetectedAGV mDetectedAGV;
-    std::vector<DetectedCup> mDetectedCups;
-    cv::Size mAGVFrameSize;
-    cv::Size mCupFrameSize;
-  };
+  // The minimum size of a shape corner in order to be recognised by the polygon
+  // detection algorithm.
+  const unsigned int cEpsilon = 15;
 
   class DetectAGV
   {
       public:
-    DetectAGV(Calibration aCalibration = Calibration());
-    DetectAGV(ros::NodeHandle& nh, Calibration aCalibration = Calibration());
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
+    DetectAGV(CupDetectionCalibration& aCalibration,
+              AGVFrameCalibration& aAGVFrameCalibration);
+    /**
+     * @brief Creates a DetectAGV instance.
+     *
+     * @param nh The node handle to be used for creating the cup location
+     * publisher.
+     * @param aCalibration The cup detection calibration to be used.
+     * @param aAGVFrameCalibration The AGV detection calibration to be used.
+     */
+    DetectAGV(ros::NodeHandle& nh,
+              CupDetectionCalibration& aCalibration,
+              AGVFrameCalibration& aAGVFrameCalibration);
     ~DetectAGV();
 
     /**
@@ -47,7 +56,7 @@ namespace location_component
 
     /**
      * @brief The detectFrame function will analyse the frame and decide what
-     * the current position is of the agv.
+     * the current position is of the AGV.
      *
      * @pre -
      * @post The captured view of the AGV/cups has been written to displayFrame.
@@ -65,7 +74,7 @@ namespace location_component
      * @brief This function will create a correct perspective image. If the
      * webcam is tilted it will correct the perspective.
      *
-     * @param aFrame - This matrix is the input image of the agv
+     * @param aFrame - This matrix is the input image of the AGV
      * @return boost::optional<DetectedAGV> - This param will only return if
      * there is an AGV detected. There can only be made a perspective image if
      * there is an AGV detected.
@@ -89,11 +98,12 @@ namespace location_component
     /**
      * @brief Get the Contours Mat object
      *
-     * @param aSourceMat - The matrix to get the contours of
-     * @param aContours - A reference of a vector with all the found contours
+     * @param aSourceMat - The matrix to get the contour of
+     * @param aContours - A reference of a vector with all the found points of
+     * the contour
      */
-    void getContoursMat(const cv::Mat& aSourceMat,
-                        std::vector<std::vector<cv::Point>>& aContours) const;
+    void getContourMat(const cv::Mat& aSourceMat,
+                       std::vector<cv::Point>& aContours) const;
 
     /**
      * @brief This function will return the midpoint of a contour aka a vector
@@ -113,11 +123,12 @@ namespace location_component
     void setAGVSpeed(const location_component::AGV& aAGV);
 
       private:
-    location_component::PosCalculation mPosCalculator;
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
     std::unique_ptr<RosServiceCup> mRosServiceCup;
-    Calibration mCalibration;
+    location_component::PosCalculation mPosCalculator;
+    CupDetectionCalibration mCalibration;
+    FrameCalibration mFrameCalibration;
   };
 } // namespace location_component
 

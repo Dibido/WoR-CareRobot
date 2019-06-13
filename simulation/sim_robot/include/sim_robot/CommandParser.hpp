@@ -8,7 +8,7 @@
 namespace commands
 {
   /**
-   *@brief Parser class to parse commands with the lynxmotion protocol
+   * @brief Parser class to parse commands with the lynxmotion protocol
    */
   class CommandParser
   {
@@ -17,14 +17,14 @@ namespace commands
                       std::vector<commands::Command>& out);
 
     /**
-     *@brief Parser class to parse commands with the custom made protocol
+     * @brief Parser class to parse commands with the custom made protocol
      */
     void parseCommandTheta(const std::vector<double>& commandTheta,
                            jointVel_t speedFactor,
                            std::vector<commands::Command>& thetaOut);
 
     /**
-     *@brief Parser class to parse stop commands with the custom made protocol
+     * @brief Parser class to parse stop commands with the custom made protocol
      */
 
     void parseCommandStop(const bool& stop, std::vector<Command>& Out);

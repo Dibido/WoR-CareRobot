@@ -58,10 +58,12 @@ include_directories(
 		${Boost_LIBRARY_DIRS})
 
 add_library(${PROJECT_NAME}_plugin
-	src/robot_controller_plugin.cpp
+	src/RobotControllerPlugin.cpp
 	src/Command.cpp
 	src/CommandParser.cpp
-	src/JointController.cpp)
+  src/JointController.cpp
+  src/ControlData.cpp
+  src/StopData.cpp)
 add_dependencies(${PROJECT_NAME}_plugin sim_robot_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_plugin
