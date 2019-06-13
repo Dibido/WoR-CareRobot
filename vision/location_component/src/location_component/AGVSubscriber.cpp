@@ -13,11 +13,6 @@ namespace location_component
   {
   }
 
-  AGVSubscriber::~AGVSubscriber()
-  {
-    
-  }
-
   void AGVSubscriber::publishAGVSpeed(const location_component::AGV& aAGV)
   {
     mDetectAGV->setAGVSpeed(aAGV);

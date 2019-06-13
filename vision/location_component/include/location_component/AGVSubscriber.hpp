@@ -27,7 +27,7 @@ namespace location_component
      * @brief Destroy the AGVSubscriber object
      *
      */
-    virtual ~AGVSubscriber();
+    virtual ~AGVSubscriber() = default;
 
     /**
      * @brief The inherited function from the IAgvProvided interface
