@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/new/icons">
+        <file>Noodstop.png</file>
+        <file>glasses.png</file>
+        <file>Glas_water.png</file>
+        <file>Glas_orange.png</file>
+        <file>Glas_cola.png</file>
+        <file>Glas_empty.png</file>
+	<file>Cross.png</file>
+    </qresource>
+</RCC>

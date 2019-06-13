@@ -1,0 +1,5 @@
+float64 width
+float64 speedfactor
+float64 force
+float64 epsilon_inner
+float64 epsilon_outer

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sim_child</name>
+  <version>0.0.1</version>
+  <description>The sim_child package</description>
+
+  <maintainer email="mpw.muijsert@student.han.nl">Maurits Muijsert</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>roslaunch</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>gazebo_ros</build_export_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+</package>

@@ -1,0 +1,50 @@
+
+/*
+Author: Emiel Bosman
+Transformation Matrix function,
+Based on J. Craig, Robotics and Control 3rd Edition
+*/
+
+fpprintprec: 5;
+
+load("forward_kinematics.mac");
+
+Jacobian : jacobian(TransformationABG, [t_1, t_2, t_3, t_4, t_5, t_6, t_7]);
+
+JacobiSubst : subst([
+   t_1 = 0,
+   t_2 = 0,
+   t_3 = 0,
+   t_4 = 0,
+   t_5 = 0,
+   t_6 = 0,
+   t_7 = 0
+], Jacobian);
+
+stringout("AllZeroJacobian", float(%));
+
+fpprintprec: 10;
+
+StraigtUp : subst([
+   t_1 = 0,
+   t_2 = 0,
+   t_3 = 0,
+   t_4 = 0,
+   t_5 = 0,
+   t_6 = 0,
+   t_7 = 0
+],TransformationABG);
+
+stringout("FK_StraightUpEndEffector", float(%));
+
+RandomConfig : subst([
+   t_1 = %pi/5,
+   t_2 = %pi/3,
+   t_3 = %pi/2,
+   t_4 = %pi*1.5,
+   t_5 = %pi*1.7,
+   t_6 = %pi/8,
+   t_7 = %pi/4
+],TransformationABG);
+
+stringout("FK_SomeConfig", float(%));

@@ -1,0 +1,30 @@
+<launch>
+  <arg name="world" default="current_world" />
+  <arg name="verbose" default="false" />
+  <arg name="all_nodes" default="true" />
+  <arg name="paused" default="true" />
+
+  <env name="GAZEBO_MODEL_PATH" value="$(find sim_world)/models"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg if="$(eval world == 'al5d')" name="world_name" value="$(find sim_world)/worlds/al5d.world"/>
+    <arg if="$(eval world == 'franka')" name="world_name" value="$(find sim_world)/worlds/franka.world"/>
+    <arg if="$(eval world == 'franka_agv')" name="world_name" value="$(find sim_world)/worlds/franka_agv.world"/>
+    <arg if="$(eval world == 'franka_empty')" name="world_name" value="$(find sim_world)/worlds/franka_empty.world"/>
+    <arg if="$(eval world == 'child_with_lidar')" name="world_name" value="$(find sim_world)/worlds/child_with_lidar.world"/>
+    <arg if="$(eval world == 'current_world')" name="world_name" value="$(find sim_world)/worlds/current_sim_world.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+
+  </include>
+
+  <include file="$(find sonar_interpreter)/launch/sonar_interpreter.launch" />
+
+  <node if="$(arg all_nodes)" name="location_component" pkg="location_component" type="location_component" output="screen" />
+  <node if="$(arg all_nodes)" name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
+  <node if="$(arg all_nodes)" name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" output="screen" />
+  <node if="$(arg all_nodes)" name="main_application" pkg="main_application" type="main_application" output="screen" />
+</launch>

@@ -69,7 +69,7 @@ local.properties
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
-*.launch
+#*.launch
 
 # PyDev specific (Python IDE for Eclipse)
 *.pydevproject
@@ -179,7 +179,7 @@ CMakeLists.txt.user*
 *.includes
 
 # Project configuration settings like predefined Macros
-*.config
+#*.config
 
 # Qt Creator settings
 *.creator
@@ -276,14 +276,12 @@ tags
 [._]*.un~
 
 ### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
 
 # End of https://www.gitignore.io/api/qt,vim,ros,c++,cmake,eclipse,valgrind,qtcreator,visualstudiocode
+
+doxygen

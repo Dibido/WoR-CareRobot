@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<sdf version="1.6">
+    <model name="child">
+        <pose>0 0 1 0 0 0</pose>
+        <link name="link">
+
+        <gravity>0</gravity>
+        <collision name="collision">
+            <geometry>
+            <box>
+                <size>0.2 0.5 1.5 </size>
+            </box>
+            </geometry>
+        </collision>
+
+        <visual name="visual">
+            <geometry>
+            <box>
+                <size>0.2 0.5 1.5</size>
+            </box>
+            </geometry>
+        </visual>
+        </link>
+
+        <plugin name="model_child" filename="libmodel_child.so">
+            <velocity>0</velocity>
+            <angle>90</angle>
+        </plugin>
+    </model>
+</sdf>

@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+  <model name="my_camera">
+      <pose>0.35 -4 1.8 0 1.570796 0</pose>
+      <static>true</static>
+      <link name="link">
+        <sensor name="webcam" type="camera">  
+        <plugin name="webcam_plugin" filename="libgazebo_ros_camera.so" >
+           <robotNamespace>camera_plugin</robotNamespace>
+           <updateRate>30.0</updateRate>
+           <cameraName>webcam</cameraName>
+           <imageTopicName>/sensor/webcam/img_raw</imageTopicName>
+           <cameraInfoTopicName>sensor/webcam/camera_info</cameraInfoTopicName>
+        </plugin>
+        <plugin name="webcam_plugin" filename="libsim_webcam_plugin.so">
+	</plugin>
+        <update_rate>30</update_rate>
+        <camera>
+           <save enabled="false">
+              <path>/tmp/camera_save_tutorial</path>
+           </save>
+           <horizontal_fov>1.047</horizontal_fov>
+           <image>
+              <width>720</width>
+               <height>480</height>
+               <format>R8G8B8</format>
+           </image>
+
+           <aspect_ratio>1.8</aspect_ratio>
+        </camera>
+          <visualize>true</visualize>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+    <physics type="ode">
+      <gravity>0.000000 0.000000 -9.810000</gravity>
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>100</real_time_update_rate>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>100</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.000000</sor>
+        </solver>
+        <constraints>
+          <cfm>0.000000</cfm>
+          <erp>0.500000</erp>
+          <contact_max_correcting_vel>1000.000000</contact_max_correcting_vel>
+          <contact_surface_layer>0.00000</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+  </world>
+</sdf>
