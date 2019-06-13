@@ -8,6 +8,19 @@
 #include <RF24.h>
 #include <SPI.h>
 #include <nRF24L01.h>
+
+//#define USE_DEBUGLN
+
+#ifdef USE_DEBUGLN
+#define DEBUG(x) Serial.print(x)
+#define DEBUGLN(x) Serial.println(x)
+#define DEBUGLNFLOAT(x, y) Serial.println(x, y)
+#else
+#define DEBUG(x) void
+#define DEBUGLN(x) void
+#define DEBUGLNFLOAT(x, y) void
+#endif
+
 // Set up NRF values
 RF24 radio(7, 8);
 const byte rxAddr[6] = "00001";
@@ -122,8 +135,8 @@ void loop()
         // If we detected 2 lines, we've measured 1 interval, 3 - 2 etc...
         gAmountOfMeasurementsTaken = gAmountOfOns - 1;
 
-        //        Serial.print("Lines measured : ");
-        //        Serial.println(gAmountOfOns);
+        DEBUG("Lines measured : ");
+        DEBUGLN(gAmountOfOns);
 
         // An interval has been measured
         if (gAmountOfMeasurementsTaken >= gAmountOfMeasurementsRequired)
@@ -137,26 +150,25 @@ void loop()
           for (unsigned int i = 1; i < gAmountOfOns; i++)
           {
             lSumIntervals += gMeasurementMillis[i] - gMeasurementMillis[i - 1];
-            //           Serial.print("Interval");
-            //           Serial.print(i);
-            //           Serial.print(" : ");
-            //           Serial.println((gMeasurementMillis[i] -
-            //           gMeasurementMillis[i - 1]));
+            DEBUG("Interval");
+            DEBUG(i);
+            DEBUG(" : ");
+            DEBUGLN((gMeasurementMillis[i] - gMeasurementMillis[i - 1]));
           }
-          //         Serial.print("Distance :");
-          //         Serial.println(lDistance);
-          //         Serial.print("Suminterval :");
-          //         Serial.println(lSumIntervals);
+          DEBUG("Distance :");
+          DEBUGLN(lDistance);
+          DEBUG("Suminterval :");
+          DEBUGLN(lSumIntervals);
           // Calculate the current speed in m/s
           double lDistanceMeters = lDistance / 100;
           double lTimeSeconds = lSumIntervals / 1000;
-          //         Serial.print("DistanceMeters :");
-          //         Serial.println(lDistanceMeters, 8);
-          //         Serial.print("TimeSeconds :");
-          //         Serial.println(lTimeSeconds, 8);
+          DEBUG("DistanceMeters :");
+          DEBUGLNFLOAT(lDistanceMeters, 8);
+          DEBUG("TimeSeconds :");
+          DEBUGLNFLOAT(lTimeSeconds, 8);
           gCurrentSpeed = lDistanceMeters / lTimeSeconds;
-          //         Serial.print("Speed :");
-          //         Serial.println(gCurrentSpeed, 8);
+          DEBUG("Speed :");
+          DEBUGLNFLOAT(gCurrentSpeed, 8);
           sendEstimatedSpeed(gCurrentSpeed);
           // Wait with getting a new measurement until the end of the signal
           while (digitalRead(TRACKER_SIGNAL_PIN))
@@ -172,7 +184,7 @@ void loop()
       }
       else
       {
-        Serial.println("Invalid Signal");
+        DEBUGLN("Invalid Signal");
       }
     }
     else
@@ -193,5 +205,5 @@ void sendEstimatedSpeed(double aEstimatedSpeed)
   String lEstimatedSpeedString = "#S#" + String(lFloatBuffer);
   radio.write(lEstimatedSpeedString.c_str(),
               sizeof(lEstimatedSpeedString) + 12);
-  Serial.println("send");
+  DEBUGLN("send");
 }
