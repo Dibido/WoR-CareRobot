@@ -3,11 +3,13 @@
 namespace lidar_application
 {
 
-  ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m, bool aIgnoreSmallObjects)
+  ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m,
+                                   bool aIgnoreSmallObjects)
       : mInitialized(false),
         mMaxDistanceDifference_m(aMaxDistanceDifference_m),
         mMaxReliableDistance_m(
-            objectdetection_constants::cMaxReliableDistance_m), mIgnoreSmallObjects(aIgnoreSmallObjects)
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(aIgnoreSmallObjects)
   {
   }
 
@@ -94,8 +96,12 @@ namespace lidar_application
                 lObject.mMeasurements.begin()->first ==
                     mMostRecentScan.mMeasurements.begin()->first)
             {
-              // If we want to ignore small objects, and objectsize is lower then the required 2 measurements
-              if(mIgnoreSmallObjects && (static_cast<int>(lObject.mMeasurements.size()) < 2))
+              // If we want to ignore small objects, and objectsize is lower
+              // then required
+              if (mIgnoreSmallObjects &&
+                  (static_cast<int>(lObject.mMeasurements.size()) <
+                   objectdetection_constants::
+                       cObjectMinNumberOfAdjacentMeasurements))
               {
                 lObject.reset();
               }
@@ -106,8 +112,12 @@ namespace lidar_application
             }
             else // Not the first object
             {
-              // If we want to ignore small objects, and objectsize is lower then 2
-              if(mIgnoreSmallObjects && (static_cast<int>(lObject.mMeasurements.size()) < 2))
+              // If we want to ignore small objects, and objectsize is lower
+              // then required
+              if (mIgnoreSmallObjects &&
+                  (static_cast<int>(lObject.mMeasurements.size()) <
+                   objectdetection_constants::
+                       cObjectMinNumberOfAdjacentMeasurements))
               {
                 lObject.reset();
               }
@@ -135,28 +145,36 @@ namespace lidar_application
               lObject.mMeasurements.begin()->first ==
                   mMostRecentScan.mMeasurements.begin()->first)
           {
-            // If we want to ignore small objects, and objectsize is lower then 2
-              if(mIgnoreSmallObjects && (static_cast<int>(lObject.mMeasurements.size()) < 2))
-              {
-                lObject.reset();
-              }
-              else
-              {
-                lBeginRangeObject = lObject;
-              }
+            // If we want to ignore small objects, and objectsize is lower then
+            // required
+            if (mIgnoreSmallObjects &&
+                (static_cast<int>(lObject.mMeasurements.size()) <
+                 objectdetection_constants::
+                     cObjectMinNumberOfAdjacentMeasurements))
+            {
+              lObject.reset();
+            }
+            else
+            {
+              lBeginRangeObject = lObject;
+            }
           }
           else // Not begin range object
           {
-            // If we want to ignore small objects, and objectsize is lower then 2
-              if(mIgnoreSmallObjects && (static_cast<int>(lObject.mMeasurements.size()) < 2))
-              {
-                lObject.reset();
-              }
-              else
-              {
-                // Add centerpoint of this object to list
-                lObjectList.push_back(getAverageMeasurement(lObject));
-              }
+            // If we want to ignore small objects, and objectsize is lower then
+            // required
+            if (mIgnoreSmallObjects &&
+                (static_cast<int>(lObject.mMeasurements.size()) <
+                 objectdetection_constants::
+                     cObjectMinNumberOfAdjacentMeasurements))
+            {
+              lObject.reset();
+            }
+            else
+            {
+              // Add centerpoint of this object to list
+              lObjectList.push_back(getAverageMeasurement(lObject));
+            }
           }
 
           lObject.reset();
@@ -176,7 +194,8 @@ namespace lidar_application
       {
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
-        std::pair<double, double> lObjectsLastMeasurement = *(lObject.mMeasurements.end()--);
+        std::pair<double, double> lObjectsLastMeasurement =
+            *(lObject.mMeasurements.end()--);
 
         if (std::abs(lObjectsLastMeasurement.second -
                      lBeginRangeObject.mMeasurements.begin()->second) <=
@@ -192,16 +211,19 @@ namespace lidar_application
           lObjectList.push_back(getAverageMeasurement(lBeginRangeObject));
         }
 
-      // If we want to ignore small objects, and objectsize is lower then 2
-              if(mIgnoreSmallObjects && (static_cast<int>(lObject.mMeasurements.size()) < 2))
-              {
-                lObject.reset();
-              }
-              else
-              {
-                // Add centerpoint of this object to list
-                lObjectList.push_back(getAverageMeasurement(lObject));
-              }
+        // If we want to ignore small objects, and objectsize is lower then
+        // required
+        if (mIgnoreSmallObjects &&
+            (static_cast<int>(lObject.mMeasurements.size()) <
+             objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements))
+        {
+          lObject.reset();
+        }
+        else
+        {
+          // Add centerpoint of this object to list
+          lObjectList.push_back(getAverageMeasurement(lObject));
+        }
       }
       // There was no object detected at the end of the range, the object
       // detected at begin of range must be isolated and can be added on its

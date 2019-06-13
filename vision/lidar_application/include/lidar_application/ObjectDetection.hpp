@@ -20,8 +20,15 @@ namespace lidar_application
     const double cLidarHeight_m = 0.5;
 
     // Reality has shown that the lidar can measure up to around 5 meters
-    // reliably. See http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/Vision+-+Onderzoek+toepassingen+lidar
+    // reliably. See
+    // http://wor.wiki.icaprojecten.nl/confluence/display/EBGURG/Vision+-+Onderzoek+toepassingen+lidar
     const double cMaxReliableDistance_m = 5.0;
+
+    /** Is used to determine whether a object should be filtered out because of
+    its size. If an object is detected, but it has only 1 different angle
+    compared to mInitialScan, it will be left out since 1 is <
+    cObjectMinNumberOfAdjacentMeasurements */
+    const unsigned int cObjectMinNumberOfAdjacentMeasurements = 2;
   } // namespace objectdetection_constants
 
   class ObjectDetection
@@ -34,10 +41,14 @@ namespace lidar_application
      * its the same object. Example: [Theta => Distance] [0.0 => 1.5],
      * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
      * equal to aMaxDistanceDifference_m, both these measurements are taken of
-     * the same object.   */
-     ObjectDetection(
+     * the same object.
+     * @param aIgnoreSmallObjects - When this is true, objects with less then 2
+     * adjacent measurements are ignored. This should
+     * filter out thin real-life objects like a cable */
+    ObjectDetection(
         double aMaxDistanceDifference_m =
-            objectdetection_constants::cDefaultMaxDistanceDifference_m, bool aIgnoreSmallObjects = false);
+            objectdetection_constants::cDefaultMaxDistanceDifference_m,
+        bool aIgnoreSmallObjects = false);
 
     ~ObjectDetection() = default;
 
@@ -143,9 +154,10 @@ namespace lidar_application
     // Maximum distance that the lidar can reliable measure.
     const double mMaxReliableDistance_m;
 
-    /** If this boolean is true, objects require atleast 2 adjacent measurements.
-    this means that if just a single angle is considered different, this won't be registered as an object.
-    This filters out really small objects like a cable */
+    /** If this boolean is true, objects require atleast 2 adjacent
+    measurements. this means that if just a single angle is considered
+    different, this won't be registered as an object. This filters out really
+    small objects like a cable */
     bool mIgnoreSmallObjects;
   };
 } // namespace lidar_application
