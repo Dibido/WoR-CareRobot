@@ -7,10 +7,45 @@
 
 #include <vector>
 
+TEST(CalculateData, radiansToDegrees)
+{
+  unsigned int iterator = 0;
+  const double cMaximumDeviation = 0.05;
+  const std::vector<double> cRadians = {
+    5.452535, 5.469696, 5.486762, 5.492322, 5.503923, 5.506991, 5.520989,
+    5.538150, 5.555216, 5.572377, 5.589538, 5.636804, 5.640831, 5.651856,
+    5.657992, 5.675058, 5.692219, 5.709381, 5.726446, 5.743608, 5.760673,
+    5.777835, 5.794900, 5.812061, 5.829223, 5.846288, 5.863450, 5.880515,
+    5.897677, 5.914742, 5.931904, 5.949065, 5.966131, 5.983292, 6.000358,
+    6.017519, 6.034680, 6.051746, 6.068907, 6.085973, 6.103134, 6.120200,
+    6.137361, 6.154523, 6.171588, 6.188750, 6.205815, 6.222977, 6.240042,
+    6.257204
+  };
+  const std::vector<double> cDegrees = {
+    312.407, 313.39,  314.368, 314.687, 315.352, 315.527, 316.329, 317.313,
+    318.29,  319.274, 320.257, 322.965, 323.196, 323.827, 324.179, 325.157,
+    326.14,  327.123, 328.101, 329.084, 330.062, 331.046, 332.023, 333.007,
+    333.99,  334.968, 335.951, 336.929, 337.912, 338.89,  339.873, 340.856,
+    341.834, 342.817, 343.795, 344.778, 345.762, 346.74,  347.723, 348.701,
+    349.684, 350.662, 351.645, 352.628, 353.606, 354.589, 355.567, 356.55,
+    357.528, 358.511
+  };
+  calculate::Calculatedata lCalcData;
+  lCalcData.mRadians = cRadians;
+  lCalcData.radiansToDegrees();
+  for (const auto& m : lCalcData.mMeasurements)
+  {
+    EXPECT_NEAR(cDegrees[iterator], m, cMaximumDeviation);
+    ++iterator;
+  }
+}
+
 TEST(CalculateData, calculateStepSize)
 {
-  auto iterator = 0;
+  unsigned int iterator = 0;
   const double cMaximumDeviation = 0.000005;
+  const unsigned int cLowerBound = 0;
+  const unsigned int cUpperBound = 1;
   const std::vector<double> cMeasurements = {
     8.41,   8.98,   9.59,   10.19,  10.80,  10.78,  11.36,  11.95,  12.53,
     13.12,  13.70,  14.27,  14.86,  15.44,  16.03,  16.59,  17.17,  17.77,
@@ -157,7 +192,7 @@ TEST(CalculateData, calculateStepSize)
   };
 
   calculate::Calculatedata lCalcData(cMeasurements);
-  lCalcData.calculateStepSize();
+  lCalcData.calculateStepSize(cLowerBound,cUpperBound);
   for (const auto& step : lCalcData.mStepSize)
   {
     EXPECT_NEAR(stepSize[iterator], step, cMaximumDeviation);

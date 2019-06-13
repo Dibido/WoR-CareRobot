@@ -6,7 +6,7 @@ generate::GenerateNoise::GenerateNoise(double aMean, double aDevation)
 {
 }
 
-void generate::GenerateNoise::GenerateNoiseSample(double aMean,
+void generate::GenerateNoise::generateNoiseSample(double aMean,
                                                   double aDeviation)
 {
   for (int i = 0; i < lidar::cMeasurements; ++i)

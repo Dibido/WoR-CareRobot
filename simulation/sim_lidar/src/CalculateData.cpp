@@ -33,24 +33,42 @@ void calculate::Calculatedata::fillVector(std::string aFile)
 
   while (lFile >> lNum)
   {
-    mMeasurements.push_back(lNum);
+    mRadians.push_back(lNum);
   }
 }
 
-void calculate::Calculatedata::calculateStepSize()
+void calculate::Calculatedata::radiansToDegrees()
+{
+
+  auto lIterator = 0;
+  for (const auto& m : mRadians)
+  {
+    // std::cout << m << std::endl;
+    mMeasurements.push_back((m * 180) / M_PI);
+    // std::cout << mMeasurements[lIterator] << std::endl;
+    ++lIterator;
+  }
+}
+
+void calculate::Calculatedata::calculateStepSize(unsigned int aLowerBound,
+                                                 unsigned int aUpperBound)
 {
 
   for (unsigned int i = 1; i < mMeasurements.size(); ++i)
   {
-    if ((mMeasurements[i] - mMeasurements[i - 1]) > 0 &&
-        (mMeasurements[i] - mMeasurements[i - 1]) < 1)
+    if ((mMeasurements[i] - mMeasurements[i - 1]) > aLowerBound &&
+        (mMeasurements[i] - mMeasurements[i - 1]) < aUpperBound)
     {
       mStepSize.push_back(mMeasurements[i] - mMeasurements[i - 1]);
     }
     else
     {
-      mDefectiveMeasurement++;
+      ++mDefectiveMeasurement;
     }
+  }
+  for (unsigned int i = 0; i < mStepSize.size(); ++i)
+  {
+    //   std::cout << mStepSize[i] << std::endl;
   }
 }
 
@@ -66,19 +84,21 @@ void calculate::Calculatedata::calculateAverage()
 void calculate::Calculatedata::calculateDeviation()
 {
 
-  double lAccum = 0.0;
+  double lSum = 0.0;
   std::for_each(std::begin(mStepSize), std::end(mStepSize),
                 [&](const double aDistance) {
-                  lAccum += (aDistance - mMean) * (aDistance - mMean);
+                  lSum += (aDistance - mMean) * (aDistance - mMean);
                 });
 
-  mDeviation = sqrt(lAccum / (static_cast<double>(mStepSize.size() - 1)));
+  mDeviation = sqrt(lSum / (static_cast<double>(mStepSize.size() - 1)));
+  // std::cout << "mean:" << mMean << "dev:" << mDeviation << std::endl;
 }
 
-void calculate::Calculatedata::processData()
+void calculate::Calculatedata::processData(unsigned int aLowerBound,
+                                           unsigned int aUpperBound)
 {
   this->fillVector(lidar::cDataset1);
-  this->calculateStepSize();
+  this->calculateStepSize(aLowerBound, aUpperBound);
   this->calculateAverage();
   this->calculateDeviation();
 }

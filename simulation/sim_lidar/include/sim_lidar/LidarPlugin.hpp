@@ -102,9 +102,6 @@ namespace gazebo
     ros::NodeHandlePtr mRosNode;
     ros::Publisher mRosPub;
     ros::Publisher mLidarDataPub;
-
-    // generate::GenerateNoise mNoise;
-    // calculate::Calculatedata mCalc;
   };
   GZ_REGISTER_SENSOR_PLUGIN(LidarPlugin)
 } // namespace gazebo

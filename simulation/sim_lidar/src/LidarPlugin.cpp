@@ -190,7 +190,7 @@ namespace gazebo
 
     generate::GenerateNoise lNoise;
 
-    lNoise.GenerateNoiseSample(lidar::cMean, lidar::cDeviation);
+    lNoise.generateNoiseSample(lidar::cMean, lidar::cDeviation);
 
     for (double lCurrentAngle = lNoise.mNoise[lCounter];
          lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));

@@ -40,7 +40,7 @@ namespace generate
      * @param aMean the mean of a dataset
      * @param aDevation the devation of a dataset
      */
-    void GenerateNoiseSample(double aMean, double aDeviation);
+    void generateNoiseSample(double aMean, double aDeviation);
 
     double mMean;
     double mDeviation;

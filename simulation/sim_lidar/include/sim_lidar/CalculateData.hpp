@@ -45,8 +45,12 @@ namespace calculate
      * @brief calculateStepSize calculates the increment between two steps
      *
      */
-    void calculateStepSize();
-
+    void calculateStepSize(unsigned int aLowerBound, unsigned int aUpperBound);
+    /**
+     * @brief converts the Measurements taken from radians to degrees
+     *
+     */
+    void radiansToDegrees();
     /**
      * @brief calculates the mean of all the Measurements taken
      *
@@ -64,8 +68,8 @@ namespace calculate
      * deviation
      *
      */
-    void processData();
-
+    void processData(unsigned int aLowerBound, unsigned int aUpperBound);
+    std::vector<double> mRadians;
     std::vector<double> mMeasurements;
     std::vector<double> mStepSize;
 

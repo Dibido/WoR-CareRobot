@@ -7,10 +7,10 @@
 
 #include <vector>
 
-TEST(GenerateNoise, GenerateSample)
+TEST(GenerateNoise, generateSample)
 {
   generate::GenerateNoise lGenerateNoise;
-  auto iterator = 0;
+  unsigned int iterator = 0;
   const double cMean = 0.476773;
   const double cDeviation = 0.125522;
   const double cMaximumDeviation = 0.000005;
@@ -68,7 +68,7 @@ TEST(GenerateNoise, GenerateSample)
     0.557925, 0.290003, 0.481701, 0.407856, 0.728971, 0.469201, 0.346101,
     0.435424, 0.400319, 0.648333,
   };
-  lGenerateNoise.GenerateNoiseSample(cMean, cDeviation);
+  lGenerateNoise.generateNoiseSample(cMean, cDeviation);
   for (const auto& sample : lGenerateNoise.mNoise)
   {
     EXPECT_NEAR(static_cast<double>(samplesTest[iterator]),
