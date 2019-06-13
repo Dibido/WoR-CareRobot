@@ -18,7 +18,7 @@ int main()
       astar.search(planning::Vertex(0, 0, 0), planning::Vertex(66, 38, -200));
   for (const planning::Vertex& lV : lP)
   {
-    std::cout  << lV << std::endl;
+    std::cout << lV << std::endl;
   }
   return 0;
 }

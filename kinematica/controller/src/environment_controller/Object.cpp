@@ -24,6 +24,7 @@ namespace environment_controller
     height_m();
     width_m();
     depth_m();
+    direction_rad();
     speed_ms();
     measurementTime();
   }

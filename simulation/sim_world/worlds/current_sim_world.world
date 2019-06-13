@@ -42,7 +42,7 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.38 -3.73 1.07</pose>
+      <pose>0.37 -5.03 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>

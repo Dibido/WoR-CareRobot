@@ -38,6 +38,11 @@ namespace webcam_driver
     mPublisher.publish(lMsg);
     if (mDebug)
     {
+      circle(lCapturedFrame,
+             cvPoint(lCapturedFrame.size().width / 2,
+                     lCapturedFrame.size().height / 2),
+             3, cv::Scalar(255, 255, 0), 2);
+
       cv::imshow("WebcamDriver debug", lCapturedFrame);
     }
   }

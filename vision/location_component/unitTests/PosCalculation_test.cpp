@@ -8,22 +8,28 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 
-const location_component::CupDetectionCalibration cTestCalibration = {
-  .mCameraPosX_m = 0.50f,
-  .mCameraPosY_m = -4.0f,
-  .mCameraPosZ_m = 1.0f,
-  // Camera FOV is 90° to make unit testing easier.
-  .mCameraFOV_rads = M_PI / 2.0f,
-  .mArmY_m = 0.0f,
-  .mCameraFlipX = -1.0f,
-  .mCameraFlipY = -1.0f,
-  .mCupHeight_m = 0.100f,
-  .mCupDiameter_m = 0.075f,
-  .mAGVDepth_m = 0.680f,
-  .mAGVWidth_m = 0.350f,
-  .mAGVHeight_m = 0.400f
-};
+location_component::CupDetectionCalibration createTestCalibration()
+{
+  location_component::CupDetectionCalibration lTestCalibration(false);
 
+  lTestCalibration.mCameraPosX_m = 0.50f;
+  lTestCalibration.mCameraPosY_m = -4.0f;
+  lTestCalibration.mCameraPosZ_m = 1.0f;
+  // Camera FOV is 90° to make unit testing easier.
+  lTestCalibration.mCameraFOV_rads = M_PI / 2.0f;
+  lTestCalibration.mArmY_m = 0.0f;
+  lTestCalibration.mCameraFlipX = -1.0f;
+  lTestCalibration.mCameraFlipY = -1.0f;
+  lTestCalibration.mCupHeight_m = 0.100f;
+  lTestCalibration.mCupDiameter_m = 0.075f;
+  lTestCalibration.mAGVDepth_m = 0.680f;
+  lTestCalibration.mAGVWidth_m = 0.350f;
+  lTestCalibration.mAGVHeight_m = 0.400f;
+  return lTestCalibration;
+}
+
+const location_component::CupDetectionCalibration cTestCalibration =
+    createTestCalibration();
 const float cTestAGVSpeed_m_s = 0.25f;
 
 TEST(PosCalculationSuite, AGVPositionInMiddleOfScreen)

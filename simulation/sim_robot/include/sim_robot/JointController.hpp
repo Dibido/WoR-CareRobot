@@ -4,7 +4,6 @@
 
 #include "types.hpp"
 #include <gazebo/physics/Joint.hh>
-
 namespace gazebo
 {
   /**
@@ -47,7 +46,7 @@ namespace gazebo
     void update();
 
     /**
-     *@brief Check if given pulse width is in valid range for this joint
+     * @brief Check if given pulse width is in valid range for this joint
      * @param mPw : pulse width to check if it is in range
      * @return true if in range
      */
@@ -71,7 +70,7 @@ namespace gazebo
                    commandTime_t aTime,
                    double aUpdateRate);
     /**
-     *@brief Stop the joint movement
+     * @brief Stop the joint movement
      */
     void stop();
 

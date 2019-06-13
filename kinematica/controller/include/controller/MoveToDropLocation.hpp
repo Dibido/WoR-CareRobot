@@ -51,7 +51,7 @@ namespace controller
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
      */
-    void entryAction(Context* aContext);
+    void entryAction(Context* aContext) override;
 
     /**
      * @brief doActivity is continiously being called while the system is in the
@@ -64,7 +64,7 @@ namespace controller
      * @param aContext is an object which gives the MoveToDropLocations an
      * interface to the "outside world".
      */
-    void doActivity(Context* aContext);
+    void doActivity(Context* aContext) override;
 
     /**
      * @brief exitAction is being called when the MoveToDropLocation
