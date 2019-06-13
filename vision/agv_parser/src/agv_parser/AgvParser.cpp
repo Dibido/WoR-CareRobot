@@ -4,7 +4,7 @@ void agv_parser::AgvParser::run()
 {
   // Open serial
   boost::system::error_code lBoostError;
-  mSerial.open(mSerialPort, lBoostError);
+  mSerial->open(mSerialPort, lBoostError);
   ROS_INFO("AvgParser started.");
   while (true)
   {
@@ -19,13 +19,25 @@ void agv_parser::AgvParser::run()
 }
 
 agv_parser::AgvParser::AgvParser(std::string aPort)
-    : mIoService(), mSerial(mIoService, aPort)
+    : mIoService(),
+      mSerial(boost::make_shared<boost::asio::serial_port>(mIoService, aPort))
 {
   // Set up serial
   mSerialPort = aPort;
-  mSerial.set_option(
+  mSerial->set_option(
       boost::asio::serial_port_base::baud_rate(agv_parser::cBaudrate));
   // Set up ROS
+  // Create a ros NodeHandle
+  mRosNode = std::make_unique<ros::NodeHandle>();
+  // Advertise ROS node
+  mAgvPublisher = mRosNode->advertise<sensor_interfaces::AGVSpeed>(
+      agv_parser::cAgvSpeedTopic, 1);
+}
+
+agv_parser::AgvParser::AgvParser()
+    : mIoService(),
+      mSerial(boost::make_shared<boost::asio::serial_port>(mIoService))
+{
   // Create a ros NodeHandle
   mRosNode = std::make_unique<ros::NodeHandle>();
   // Advertise ROS node
@@ -45,7 +57,7 @@ std::string agv_parser::AgvParser::readLine()
   std::string lResultString;
   for (;;)
   {
-    boost::asio::read(mSerial, boost::asio::buffer(&lCurrentChar, 1));
+    boost::asio::read(*mSerial, boost::asio::buffer(&lCurrentChar, 1));
     switch (lCurrentChar)
     {
     case agv_parser::cReturnChar:
