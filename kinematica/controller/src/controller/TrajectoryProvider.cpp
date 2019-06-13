@@ -42,7 +42,7 @@ namespace controller
         lConfiguration = aContext->configurationProvider()->inverseKinematics(
             lTrajectoryEndEffector, lConfiguration);
         if (isLogicNextConfiguration(lPreviousConfiguration, lConfiguration) ||
-            lIsLogicCount == 0 || lIsLogicCount > cMaxLogicConfigTries)
+            lIsLogicCount == 1 || lIsLogicCount > cMaxLogicConfigTries)
         {
           if (lIsLogicCount > cMaxLogicConfigTries)
           {
@@ -51,7 +51,7 @@ namespace controller
           lPreviousConfiguration = lConfiguration;
           aTrajectory.push(lConfiguration);
           ++i;
-          lIsLogicCount = 0;
+          lIsLogicCount = 1;
         }
       }
       catch (const std::exception& e)
