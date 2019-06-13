@@ -50,7 +50,7 @@ namespace controller
   {
     mGraph->addObstacle(cRobotObstacle);
     mGraph->addObstacle(cFloorObstacle);
-    ros::Duration(2).sleep();
+    ros::Duration(cSafeWaitTime_s).sleep();
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
     mCurrentState->doActivity(this);

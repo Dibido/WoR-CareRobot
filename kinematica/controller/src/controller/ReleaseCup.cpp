@@ -1,6 +1,6 @@
 #include "controller/ReleaseCup.hpp"
 #include "controller/ControllerConsts.hpp"
-#include "controller/Ready.hpp"
+#include "controller/Init.hpp"
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
@@ -36,7 +36,9 @@ namespace controller
   {
     if (ros::Time::now() >= mReleaseTime)
     {
-      aContext->setState(std::make_shared<Ready>());
+      std::this_thread::sleep_for(
+          std::chrono::seconds(( uint64_t )cSafeWaitTime_s));
+      aContext->setState(std::make_shared<Init>());
     }
   }
 
