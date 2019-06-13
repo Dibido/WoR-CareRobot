@@ -35,9 +35,9 @@ namespace lidar_application
      * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
      * equal to aMaxDistanceDifference_m, both these measurements are taken of
      * the same object.   */
-    explicit ObjectDetection(
+     ObjectDetection(
         double aMaxDistanceDifference_m =
-            objectdetection_constants::cDefaultMaxDistanceDifference_m);
+            objectdetection_constants::cDefaultMaxDistanceDifference_m, bool aIgnoreSmallObjects = false);
 
     ~ObjectDetection() = default;
 
@@ -142,6 +142,11 @@ namespace lidar_application
 
     // Maximum distance that the lidar can reliable measure.
     const double mMaxReliableDistance_m;
+
+    /** If this boolean is true, objects require atleast 2 adjacent measurements.
+    this means that if just a single angle is considered different, this won't be registered as an object.
+    This filters out really small objects like a cable */
+    bool mIgnoreSmallObjects;
   };
 } // namespace lidar_application
 
