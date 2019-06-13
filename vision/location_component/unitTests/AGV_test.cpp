@@ -2,8 +2,8 @@
 #include "location_component/AGV.hpp"
 #include "location_component/AGVSubscriber.hpp"
 
-#include <gtest/gtest.h>
 #include <exception>
+#include <gtest/gtest.h>
 
 const float cValidSpeed_m_s = 1.0;
 const float cValidZeroSpeed_m_s = 0.0;
@@ -32,7 +32,8 @@ TEST(AGVSuite, AGVReferenceSpeedBelowZero)
 TEST(AGVSuite, AGVConstReferenceSpeedBelowZero)
 {
   location_component::AGV lAGV{ cValidSpeed_m_s };
-  ASSERT_NO_THROW(lAGV.speed());
+  const location_component::AGV& lAGVConstRef = lAGV;
+  ASSERT_NO_THROW(lAGVConstRef.speed());
   lAGV.speed() = cInvalidSpeed_m_s;
-  ASSERT_THROW(lAGV.speed(), std::range_error);
+  ASSERT_THROW(lAGVConstRef.speed(), std::range_error);
 }
