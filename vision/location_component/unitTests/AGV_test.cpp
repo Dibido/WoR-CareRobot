@@ -1,7 +1,9 @@
 // Bring in gtest
 #include "location_component/AGV.hpp"
-#include <exception>
+#include "location_component/AGVSubscriber.hpp"
+
 #include <gtest/gtest.h>
+#include <exception>
 
 const float cValidSpeed_m_s = 1.0;
 const float cValidZeroSpeed_m_s = 0.0;

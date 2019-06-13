@@ -115,6 +115,12 @@ namespace location_component
     cv::Point getMidPoint(const std::vector<cv::Point>& aContours) const;
 
     /**
+     * @brief Get agv speed function
+     * 
+     */
+    float getAGVSpeed() const;
+
+    /**
      * @brief This function will pass through the speed of the AVG to the
      * PosCalculation class
      *
