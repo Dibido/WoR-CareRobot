@@ -4,7 +4,7 @@ namespace gazebo
 {
   const std::string cKinectPublishTopic = "/sensor/kinect/obstacles";
   const std::string cImgSubscribeTopic = "/sensor/kinect/points";
-  const std::string cKinect_Nh = "Kinect_plugin_NH";
+  const std::string cKinect_Nh = "KinectPlugin";
 
   void callback(const sensor_msgs::PointCloud2ConstPtr& aMsg)
   {
@@ -18,11 +18,13 @@ namespace gazebo
     {
       int argc = 0;
       char** argv = nullptr;
-      ros::init(argc, argv, "Kinect_plugin",
-                ros::init_options::NoSigintHandler);
+      ros::init(argc, argv, "KinectPlugin", ros::init_options::NoSigintHandler);
     }
 
-    mRosNode = std::make_unique<ros::NodeHandle>(cKinect_Nh);
+    ros::Rate loop_rate(100);
+
+    // mRosNode = std::make_unique<ros::NodeHandle>(cKinect_Nh);
+    mRosNode.reset(new ros::NodeHandle(cKinect_Nh));
 
     mKinectPublisher = mRosNode->advertise<kinematica_msgs::Obstacles>(
         gazebo::cKinectPublishTopic, 1);
@@ -49,6 +51,7 @@ namespace gazebo
     while (this->mRosNode->ok())
     {
       this->mRosQueue.callAvailable(ros::WallDuration(timeout));
+      ros::spinOnce();
     }
   }
 
