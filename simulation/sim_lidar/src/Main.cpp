@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 
   calculate::Calculatedata lCalc;
   lCalc.fillVector(
-      "/home/stein/1_ws/src/wor-18-19-s2/simulation/sim_lidar/datasets/"
+      "wor-18-19-s2/simulation/sim_lidar/datasets/"
       "lidardataset1.txt");
   // lCalc.processData();
   lCalc.calculateStepSize();
