@@ -13,9 +13,9 @@
 
 #include <ros/ros.h>
 
+#include "sim_lidar/GenerateNoise.hpp"
 #include <algorithm>
 #include <iterator>
-
 namespace gazebo
 {
   class LidarPlugin : public RayPlugin,
@@ -50,7 +50,7 @@ namespace gazebo
      */
     virtual void parseLidarData(const lidar_application::LidarData& aMsg);
 
-    /**
+    /** 
      * @brief Convert the gazebo::LaserScan const message to
      * sensor_msgs::LaserScan for processing
      * @param aMsg: The gazebo formatted message received from the simulation
