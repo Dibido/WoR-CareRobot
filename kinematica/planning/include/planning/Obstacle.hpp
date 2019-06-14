@@ -37,26 +37,26 @@ namespace planning
      * @author Martijn Vogelaar
      */
 
-    bool coversPoint(const Vertex& aVertex) const
+    bool coversPoint(const Vertex& aVertex, uint8_t aStep) const
     {
       bool lPointCovered = false;
-
-      if ((static_cast<float>(aVertex.x - 5) /
+      aStep /= 2;
+      if ((static_cast<float>(aVertex.x - aStep) /
                    cConversionFromMetersToCentimeters <=
                mX_m + mWidth_m / 2 &&
-           static_cast<float>(aVertex.x + 5) /
+           static_cast<float>(aVertex.x + aStep) /
                    cConversionFromMetersToCentimeters >=
                mX_m - mWidth_m / 2) &&
-          (static_cast<float>(aVertex.y - 5) /
+          (static_cast<float>(aVertex.y - aStep) /
                    cConversionFromMetersToCentimeters <=
                mY_m + mDepth_m / 2 &&
-           static_cast<float>(aVertex.y + 5) /
+           static_cast<float>(aVertex.y + aStep) /
                    cConversionFromMetersToCentimeters >=
                mY_m - mDepth_m / 2) &&
-          (static_cast<float>(aVertex.z - 5) /
+          (static_cast<float>(aVertex.z - aStep) /
                    cConversionFromMetersToCentimeters <=
                mZ_m + mHeight_m / 2 &&
-           static_cast<float>(aVertex.z + 5) /
+           static_cast<float>(aVertex.z + aStep) /
                    cConversionFromMetersToCentimeters >=
                mZ_m - mHeight_m / 2))
       {
