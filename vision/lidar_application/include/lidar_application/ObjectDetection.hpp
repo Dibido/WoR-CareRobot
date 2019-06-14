@@ -45,10 +45,10 @@ namespace lidar_application
      * @param aIgnoreSmallObjects - When this is true, objects with less then 2
      * adjacent measurements are ignored. This should
      * filter out thin real-life objects like a cable */
-    ObjectDetection(
-        double aMaxDistanceDifference_m =
-            objectdetection_constants::cDefaultMaxDistanceDifference_m,
-        bool aIgnoreSmallObjects = true);
+    ObjectDetection(const double& aMaxDistanceDifference_m,
+                    bool aIgnoreSmallObjects,
+                    const unsigned int& aObjectMinNumberOfAdjacentAngles,
+                    const unsigned int& aAmountOfInitialScansRequired);
 
     ~ObjectDetection() = default;
 
@@ -56,9 +56,6 @@ namespace lidar_application
      * @brief Run function, blocking function that handles all logic
      */
     void run();
-
-    // Debug variable for minimum amount of adjacent measurements
-    unsigned int cObjectMinNumberOfAdjacentMeasurementsDebug = 2;
 
       private:
     /**
@@ -117,7 +114,7 @@ namespace lidar_application
      * @return std::pair<double, double>
      */
     std::pair<double, double>
-        getSurroundingDistances(const double aAngle, bool aDebug = false) const;
+        getSurroundingDistances(const double aAngle) const;
 
     /**
      * @brief Filters out any objects with a distance greater then
@@ -162,11 +159,24 @@ namespace lidar_application
     // Maximum distance that the lidar can reliable measure.
     const double mMaxReliableDistance_m;
 
-    /** If this boolean is true, objects require atleast 2 adjacent
+    /** If this boolean is true, objects require atleast multiple djacent
     measurements. this means that if just a single angle is considered
     different, this won't be registered as an object. This filters out really
     small objects like a cable */
     bool mIgnoreSmallObjects;
+
+    /** Amount of adjacent measurements that must be off (compared to
+     * mInitialScan), for it to be considered an object. By setting a minimum of
+     * 2-3+, small objects like a cable will most likely be filtered out if
+     * mIgnoreSmallObjects is true
+     */
+    const unsigned int mObjectMinNumberOfAdjacentMeasurements;
+
+    /**
+     * @brief Amount of full 360 scans that will be used as initialscandata. The
+     * higher the number, the more detailed info mInitialScan will have.
+     */
+    const unsigned int mAmountOfInitialScansRequired;
   };
 } // namespace lidar_application
 
