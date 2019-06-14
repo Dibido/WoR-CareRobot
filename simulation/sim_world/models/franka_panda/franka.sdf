@@ -444,8 +444,8 @@ x
         <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-2.8973</lower>
-        <upper>2.8973</upper>
+        <lower>-1.8973</lower>
+        <upper>1.8973</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
