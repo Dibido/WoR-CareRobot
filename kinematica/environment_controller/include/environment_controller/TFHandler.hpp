@@ -58,7 +58,6 @@ namespace environment_controller
 
       private:
     tf2_ros::TransformBroadcaster mBroadcaster;
-    static tf2_ros::StaticTransformBroadcaster mStaticBroadcaster;
     tf2_ros::Buffer mBuffer;
     tf2_ros::TransformListener mTfListener;
   };

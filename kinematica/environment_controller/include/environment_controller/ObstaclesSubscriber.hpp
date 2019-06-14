@@ -37,6 +37,7 @@ namespace environment_controller
      */
     ObstaclesSubscriber(
         const std::shared_ptr<SafetyController>& aSafetyController,
+        const std::shared_ptr<EnvironmentController>& aEnvironmentController,
         const std::string& aSubName);
 
     /**

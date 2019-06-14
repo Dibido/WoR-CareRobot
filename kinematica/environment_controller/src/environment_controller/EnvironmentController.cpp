@@ -60,10 +60,11 @@ namespace environment_controller
                               std::to_string(aSensor.sensorID()));
   }
 
-  Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
+  Pose EnvironmentController::transformFrames(const std::string& aFrame,
+                                              const uint8_t aID)
   {
     Pose lPose = mTfHandler->calculatePosition(
-        std::string(cSensorFrame) + std::to_string(aSensorID), cGlobalFrame);
+        std::string(aFrame) + std::to_string(aID), cGlobalFrame);
     return lPose;
   }
 
@@ -80,10 +81,9 @@ namespace environment_controller
 
   void EnvironmentController::setObstacles(const Obstacles& aObstacles)
   {
+    mObstacles.clear();
     mObstacles = aObstacles;
-    Rotation lRotationTemp(0, 0, 0, 0);
-
-    ROS_INFO("%s", "Yeet2");
+    Rotation lRotationTemp(0.0, 0.0, 0.0, 1.0);
 
     for (uint8_t i = 0; i < aObstacles.size(); ++i)
     {

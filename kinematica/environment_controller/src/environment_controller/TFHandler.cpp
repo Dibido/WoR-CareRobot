@@ -12,6 +12,8 @@ namespace environment_controller
                             const std::string& aHeaderFrame,
                             const std::string& aChildFrame)
   {
+    static tf2_ros::StaticTransformBroadcaster mStaticBroadcaster;
+
     geometry_msgs::TransformStamped lTransformStamped;
 
     lTransformStamped.header.stamp = ros::Time::now();
@@ -34,7 +36,9 @@ namespace environment_controller
 
     if (aStatic)
     {
-      tf2_ros::StaticTransformBroadcaster mStaticBroadcaster;
+      ROS_INFO("Static broadcast %s %s", aHeaderFrame.c_str(),
+               aChildFrame.c_str());
+      ROS_INFO_STREAM(lTransformStamped);
       mStaticBroadcaster.sendTransform(lTransformStamped);
     }
     else

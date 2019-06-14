@@ -84,7 +84,7 @@ namespace environment_controller
      *
      * @param aSensorID
      */
-    Pose transformFrames(const uint8_t aSensorID);
+    Pose transformFrames(const std::string& aFrame, const uint8_t aID);
 
     /**
      * @brief Publish transforms

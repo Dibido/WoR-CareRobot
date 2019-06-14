@@ -7,8 +7,10 @@ namespace environment_controller
 {
   ObstaclesSubscriber::ObstaclesSubscriber(
       const std::shared_ptr<SafetyController>& aSafetyController,
+      const std::shared_ptr<EnvironmentController>& aEnvironmentController,
       const std::string& aSubName)
       : mSafetyController(aSafetyController),
+        mEnvironmentController(aEnvironmentController),
         mSubscriber(mHandle.subscribe(
             aSubName,
             cQueue_size,
@@ -21,7 +23,6 @@ namespace environment_controller
       const kinematica_msgs::ObstaclesConstPtr& aMsg)
   {
     Obstacles lObstacles;
-    ROS_INFO("%s", "?");
     for (std::size_t i = 0; i < aMsg->obstacles.size(); ++i)
     {
       try
@@ -47,8 +48,6 @@ namespace environment_controller
 
   void ObstaclesSubscriber::passObstacles(const Obstacles& aObstacles)
   {
-    ROS_INFO("%s", "Yeet1");
-
     mSafetyController->executeHardstopOnObstacleThreat(aObstacles);
     mEnvironmentController->setObstacles(aObstacles);
   }
