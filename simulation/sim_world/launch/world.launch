@@ -23,7 +23,7 @@
 
   <include file="$(find sonar_interpreter)/launch/sonar_interpreter.launch" />
 
-  <node if="$(arg all_nodes)" name="location_component" pkg="location_component" type="location_component" output="screen" />
+  <node if="$(arg all_nodes)" name="location_component" pkg="location_component" type="location_component" output="screen" args="-d" />
   <node if="$(arg all_nodes)" name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
   <node if="$(arg all_nodes)" name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" output="screen" />
   <node if="$(arg all_nodes)" name="main_application" pkg="main_application" type="main_application" output="screen" />

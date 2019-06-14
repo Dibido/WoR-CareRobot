@@ -608,7 +608,7 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
         <limit> 
-          <lower>0</lower>
+          <lower>0.02</lower>
           <upper>0.0395</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>
