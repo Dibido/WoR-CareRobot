@@ -7,26 +7,42 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
-TEST(JointController, converseScaleToRad)
+TEST(JointController, convertScaleToRad)
 {
-  gazebo::physics::JointPtr joint;
-  const std::string mName = "mName";
-  const jointChannel_t mChannel = 0;
-  const jointPw_t mMinPw = 0;
-  const jointPw_t mMaxPw = 0; 
-  const jointRad_t mMinRad = -10;
-  const jointRad_t mMaxRad = 10;
-  const jointRad_t mMediumRad = mMinRad + (abs(mMinRad-mMaxRad)/2.0);
-  const jointVel_t mMaxVel = 0;
+  gazebo::physics::JointPtr lJoint;
+  const std::string cName = "mName";
+  const jointChannel_t cChannel = 0;
+  const jointPw_t cMinPw = 0;
+  const jointPw_t cMaxPw = 0;
+  const jointRad_t cMinRad = -10;
+  const jointRad_t cMaxRad = 10;
+  const jointRad_t cMediumRad = cMinRad + (abs(cMinRad - cMaxRad) / 2.0);
+  const jointVel_t cMaxVel = 0;
 
-  gazebo::JointController jointController(joint, mName, mChannel, mMinPw, mMaxPw, mMinRad, mMaxRad,
-                                           mMaxVel);
-  
-  EXPECT_EQ(jointController.converseScaleToRad(0, 0, 10), mMinRad);
-  EXPECT_EQ(jointController.converseScaleToRad(10, 0, 10), mMaxRad);
-  EXPECT_EQ(jointController.converseScaleToRad(5, 0, 10), mMediumRad);
-  EXPECT_EQ(jointController.converseScaleToRad(10, 10, 0), mMinRad);
-  EXPECT_EQ(jointController.converseScaleToRad(0, 10, 0), mMaxRad);
+  const gazebo::JointController cJointController(
+      lJoint, cName, cChannel, cMinPw, cMaxPw, cMinRad, cMaxRad, cMaxVel);
+
+  EXPECT_NO_THROW(cJointController.convertScaleToRad(5, 0, 10));
+  ASSERT_THROW(cJointController.convertScaleToRad(-5, 0, 10),
+               std::invalid_argument);
+  ASSERT_THROW(cJointController.convertScaleToRad(15, 0, 10),
+               std::invalid_argument);
+  EXPECT_EQ(cJointController.convertScaleToRad(0, 0, 10), cMinRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(10, 0, 10), cMaxRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(5, 0, 10), cMediumRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(10, 10, 0), cMinRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(0, 10, 0), cMaxRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(-10, -10, 0), cMinRad);
+}
+
+TEST(JointController, isInRange)
+{
+  gazebo::physics::JointPtr lJoint;
+  const gazebo::JointController cJointController(lJoint, "mName", 0, -10, 10,
+                                                 -10, 10, 10);
+  EXPECT_EQ(cJointController.isInRange(5, 0, 10), true);
+  EXPECT_EQ(cJointController.isInRange(-5, 0, 10), false);
+  EXPECT_EQ(cJointController.isInRange(15, 0, 10), false);
 }
 
 TEST(operatorJointController, equalsOperator)
