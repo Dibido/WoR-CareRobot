@@ -18,6 +18,8 @@ namespace lidar_application
     // Hertz rate of 100, max 10 ms in between cycles
     ros::Rate lRate(100);
 
+    int lInitialScanIterations = 0;
+
     while (ros::ok())
     {
       ros::spinOnce();
@@ -32,11 +34,27 @@ namespace lidar_application
 
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
+
+          printPublishData();
         }
         else
         {
-          mInitialScan = mDataHandler.getLidarData();
-          mInitialized = true;
+          mInitialScan.addLidarData(mDataHandler.getLidarData().mMeasurements);
+
+          std::cout << "mInitialScan: " << std::endl;
+
+          for (auto lMeasurement : mInitialScan.mMeasurements)
+          {
+            std::cout << std::to_string(lMeasurement.first) << ","
+                      << std::to_string(lMeasurement.second) << std::endl;
+          }
+
+          lInitialScanIterations++;
+
+          if (lInitialScanIterations > 20)
+          {
+            mInitialized = true;
+          }
         }
       }
       lRate.sleep();
@@ -173,7 +191,7 @@ namespace lidar_application
             else
             {
 
-              debugObject(lObject);
+              // debugObject(lObject);
 
               // Add centerpoint of this object to list
               lObjectList.push_back(getAverageMeasurement(lObject));
@@ -343,6 +361,10 @@ namespace lidar_application
     // If there doesn't exist a key with a equal or higher value then aAngle:
     if ((lIterator->first == 0.0) && lIterator->second == 0.0)
     {
+      if (aDebug)
+      {
+        std::cout << "No key" << std::endl;
+      }
       // It will probably be a value close to the maximum of 2 * PI
 
       // Take the highest angle as lower neighbour
@@ -357,6 +379,11 @@ namespace lidar_application
     }
     else // There has been found a key with a equal or higher value then aAngle:
     {
+      if (aDebug)
+      {
+        std::cout << "Yes key" << std::endl;
+      }
+
       lUpperNeighbourDistance_m = lIterator->second;
 
       lUpperNeighbourAngle = lIterator->first;
@@ -365,16 +392,24 @@ namespace lidar_application
       // angle as lower neighbour.
       if (!(lIterator == mInitialScan.mMeasurements.begin()))
       {
-        lLowerNeighbourDistance_m = (--lIterator)->second;
+        if (aDebug)
+        {
+          std::cout << "Lower angle exists" << std::endl;
+        }
 
-        lLowerNeighbourAngle = (--lIterator)->first;
+        auto lPreviousElementIterator = lIterator;
+        lPreviousElementIterator--;
+
+        lLowerNeighbourDistance_m = lPreviousElementIterator->second;
+
+        lLowerNeighbourAngle = lPreviousElementIterator->first;
       }
       else
       {
         lLowerNeighbourDistance_m =
-            (--mInitialScan.mMeasurements.end())->second;
+            (mInitialScan.mMeasurements.end()--)->second;
 
-        lLowerNeighbourAngle = (--mInitialScan.mMeasurements.end())->first;
+        lLowerNeighbourAngle = (mInitialScan.mMeasurements.end()--)->first;
       }
     }
 
@@ -437,7 +472,7 @@ namespace lidar_application
 
     for (auto lMeasurement : aObject.mMeasurements)
     {
-      getSurroundingDistances(lMeasurement.first, true);
+      getSurroundingDistances(lMeasurement.first);
     }
 
     // Temporary for testing

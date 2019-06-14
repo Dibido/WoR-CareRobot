@@ -28,7 +28,7 @@ namespace lidar_application
     its size. If an object is detected, but it has only 1 different angle
     compared to mInitialScan, it will be left out since 1 is <
     cObjectMinNumberOfAdjacentMeasurements */
-    const unsigned int cObjectMinNumberOfAdjacentMeasurements = 2;
+    const unsigned int cObjectMinNumberOfAdjacentMeasurements = 3;
   } // namespace objectdetection_constants
 
   class ObjectDetection
@@ -48,7 +48,7 @@ namespace lidar_application
     ObjectDetection(
         double aMaxDistanceDifference_m =
             objectdetection_constants::cDefaultMaxDistanceDifference_m,
-        bool aIgnoreSmallObjects = false);
+        bool aIgnoreSmallObjects = true);
 
     ~ObjectDetection() = default;
 

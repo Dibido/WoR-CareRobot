@@ -27,12 +27,15 @@ catkin_package()
 add_executable(node src/rplidar_hardware/node.cpp ${RPLIDAR_SDK_SRC})
 target_link_libraries(node ${catkin_LIBRARIES})
 
-add_executable(client src/rplidar_hardware/client.cpp)
-target_link_libraries(client ${catkin_LIBRARIES})
+add_dependencies(node ${catkin_EXPORTED_TARGETS})
 
-install(TARGETS node client
+install(TARGETS node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+install(DIRECTORY sdk
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  USE_SOURCE_PERMISSIONS
+)
