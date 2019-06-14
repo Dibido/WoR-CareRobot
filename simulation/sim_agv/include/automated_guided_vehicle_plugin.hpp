@@ -2,6 +2,7 @@
 #define AUTOMATEDGUIDEDVEHICLEPLUGIN_HPP
 
 #include "ros/callback_queue.h"
+#include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
@@ -14,10 +15,6 @@
 #include <string>
 #include <thread>
 
-#include "agv_parser/AgvParser.hpp"
-#include "agv_parser/AgvSpeed.hpp"
-#include "agv_parser/IAgvSpeedProvider.hpp"
-
 #include <sim_agv/agv_path.h>
 #include <sim_agv/agv_speed.h>
 
@@ -25,7 +22,6 @@
 
 /*
  * @author Wouter van Uum
- * @author Thomas de Winkel
  * @brief Used to store a position
  */
 struct Position
@@ -43,8 +39,7 @@ struct Position
 
 namespace gazebo
 {
-  class AutomatedGuidedVehiclePlugin : public ModelPlugin,
-                                       public agv_parser::IAgvSpeedProvider
+  class AutomatedGuidedVehiclePlugin : public ModelPlugin
   {
       public:
     AutomatedGuidedVehiclePlugin();
@@ -72,13 +67,6 @@ namespace gazebo
      */
     void callback(const sensor_msgs::RangeConstPtr aMsg);
 
-    /**
-     * @brief virtual interface
-     * @param aAgvSpeed: The speed that has been calculated and sent to the
-     * topic
-     */
-    void parseAgvSpeed(const agv_parser::AgvSpeed& aAgvSpeed) override;
-
       private:
     // Movement
     bool mMovingForward;
@@ -97,11 +85,9 @@ namespace gazebo
     ros::Subscriber mRosSub;
     ros::CallbackQueue mRosQueue;
     std::thread mRosQueueThread;
-
+    double mSecs;
     double mPreviousTime = 0;
-    double mTimebetweenLines = 0;
-    double mNumberofLines = 0;
-    bool mWhitelinedetected = true;
+    double mInterval = 5;
 
     /**
      * @brief Handles incoming ros messages on a separate thread when a new

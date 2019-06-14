@@ -3,8 +3,13 @@
 namespace lidar_application
 {
 
-  ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m)
-      : mInitialized(false), mMaxDistanceDifference_m(aMaxDistanceDifference_m)
+  ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m,
+                                   bool aIgnoreSmallObjects)
+      : mInitialized(false),
+        mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(aIgnoreSmallObjects)
   {
   }
 
@@ -41,13 +46,13 @@ namespace lidar_application
   void ObjectDetection::detectObjects()
   {
     // Checking preconditions
-    if ((mInitialScan.mDistances_m.size() == 0) ||
-        (mMostRecentScan.mDistances_m.size() == 0))
+    if ((mInitialScan.mMeasurements.size() == 0) ||
+        (mMostRecentScan.mMeasurements.size() == 0))
     {
       throw std::logic_error("Preconditions of detectObjects weren't met");
     }
 
-    // Will contain a list of centerpoints of objects [Angle(key) ->
+    // Will contain a list of (front-)centerpoints of objects [Angle(key) ->
     // Distance(value)]
     std::vector<std::pair<double, double>> lObjectList;
 
@@ -67,46 +72,67 @@ namespace lidar_application
 
     double lPreviousDistance_m = 0.0;
 
-    for (size_t i = 0; i < mMostRecentScan.mDistances_m.size(); ++i)
+    for (std::map<double, double>::iterator lIt =
+             mMostRecentScan.mMeasurements.begin();
+         lIt != mMostRecentScan.mMeasurements.end(); ++lIt)
     {
-      double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
+      // double lInitialDistance_m = mInitialScan.mDistances_m.at(i);
 
-      double lCurrentDistance_m = mMostRecentScan.mDistances_m.at(i);
-      double lCurrentAngle_m = mMostRecentScan.mAngles.at(i);
+      double lCurrentDistance_m = lIt->second;
+      double lCurrentAngle_m = lIt->first;
 
-      double lDistanceDifference_m = lInitialDistance_m - lCurrentDistance_m;
-
-      // There is a positive change compared to initial scan (object came
-      // closer)
-      if ((lDistanceDifference_m > mMaxDistanceDifference_m))
+      if (isAngleDifferent((*lIt)))
       {
         // Current measurement wasn't taken of the same object as previous angle
         if (std::abs(lCurrentDistance_m - lPreviousDistance_m) >
             mMaxDistanceDifference_m)
         {
           // If lObject contains valid info (it won't at first iteration)
-          if ((lObject.mDistances_m.size() > 0))
+          if ((lObject.mMeasurements.size() > 0))
           {
             /** If begin range object hasn't been stored yet and lObject
             is detected from the very first measurement angle */
-            if (lBeginRangeObject.mAngles.size() == 0 &&
-                lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
+            if (lBeginRangeObject.mMeasurements.size() == 0 &&
+                lObject.mMeasurements.begin()->first ==
+                    mMostRecentScan.mMeasurements.begin()->first)
             {
-              lBeginRangeObject = lObject;
+              // If we want to ignore small objects, and objectsize is lower
+              // then required
+              if (mIgnoreSmallObjects &&
+                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
+                   objectdetection_constants::
+                       cObjectMinNumberOfAdjacentMeasurements))
+              {
+                lObject.reset();
+              }
+              else
+              {
+                lBeginRangeObject = lObject;
+              }
             }
             else // Not the first object
             {
-              // Add centerpoint of this object to list
-              lObjectList.push_back(getAverageMeasurement(lObject));
+              // If we want to ignore small objects, and objectsize is lower
+              // then required
+              if (mIgnoreSmallObjects &&
+                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
+                   objectdetection_constants::
+                       cObjectMinNumberOfAdjacentMeasurements))
+              {
+                lObject.reset();
+              }
+              else
+              {
+                // Add centerpoint of this object to list
+                lObjectList.push_back(getAverageMeasurement(lObject));
+              }
             }
 
             lObject.reset();
           }
         }
 
-        lObject.mAngles.push_back(lCurrentAngle_m);
-        lObject.mDistances_m.push_back(lCurrentDistance_m);
-
+        lObject.addLidarData(lCurrentAngle_m, lCurrentDistance_m);
         lLastComparisonDifferent = true;
       }
       else
@@ -115,15 +141,40 @@ namespace lidar_application
         {
           /** If begin range object hasn't been stored yet and lObject
           is detected from the very first measurement angle */
-          if (lBeginRangeObject.mAngles.size() == 0 &&
-              lObject.mAngles.at(0) == mMostRecentScan.mAngles.at(0))
+          if (lBeginRangeObject.mMeasurements.size() == 0 &&
+              lObject.mMeasurements.begin()->first ==
+                  mMostRecentScan.mMeasurements.begin()->first)
           {
-            lBeginRangeObject = lObject;
+            // If we want to ignore small objects, and objectsize is lower then
+            // required
+            if (mIgnoreSmallObjects &&
+                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
+                 objectdetection_constants::
+                     cObjectMinNumberOfAdjacentMeasurements))
+            {
+              lObject.reset();
+            }
+            else
+            {
+              lBeginRangeObject = lObject;
+            }
           }
           else // Not begin range object
           {
-            // Add centerpoint of this object to list
-            lObjectList.push_back(getAverageMeasurement(lObject));
+            // If we want to ignore small objects, and objectsize is lower then
+            // required
+            if (mIgnoreSmallObjects &&
+                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
+                 objectdetection_constants::
+                     cObjectMinNumberOfAdjacentMeasurements))
+            {
+              lObject.reset();
+            }
+            else
+            {
+              // Add centerpoint of this object to list
+              lObjectList.push_back(getAverageMeasurement(lObject));
+            }
           }
 
           lObject.reset();
@@ -136,21 +187,23 @@ namespace lidar_application
     }
 
     // There has been detected a object in begin of range
-    if (lBeginRangeObject.mAngles.size() > 0)
+    if (lBeginRangeObject.mMeasurements.size() > 0)
     {
       // And there has also been detected a object at the end of the range
-      if (lObject.mAngles.size() > 0)
+      if (lObject.mMeasurements.size() > 0)
       {
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
-        if (std::abs(lObject.mDistances_m.back() -
-                     lBeginRangeObject.mDistances_m.front()) <=
+        std::pair<double, double> lObjectsLastMeasurement =
+            *(lObject.mMeasurements.end()--);
+
+        if (std::abs(lObjectsLastMeasurement.second -
+                     lBeginRangeObject.mMeasurements.begin()->second) <=
             mMaxDistanceDifference_m)
         {
           // Add the begin range object data to this object, as it must be
           // measurements of the same object
-          lObject.addLidarData(lBeginRangeObject.mAngles,
-                               lBeginRangeObject.mDistances_m);
+          lObject.addLidarData(lBeginRangeObject.mMeasurements);
         }
         else
         {
@@ -158,8 +211,19 @@ namespace lidar_application
           lObjectList.push_back(getAverageMeasurement(lBeginRangeObject));
         }
 
-        // Add centerpoint of this object to the list
-        lObjectList.push_back(getAverageMeasurement(lObject));
+        // If we want to ignore small objects, and objectsize is lower then
+        // required
+        if (mIgnoreSmallObjects &&
+            (static_cast<unsigned int>(lObject.mMeasurements.size()) <
+             objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements))
+        {
+          lObject.reset();
+        }
+        else
+        {
+          // Add centerpoint of this object to list
+          lObjectList.push_back(getAverageMeasurement(lObject));
+        }
       }
       // There was no object detected at the end of the range, the object
       // detected at begin of range must be isolated and can be added on its
@@ -170,7 +234,7 @@ namespace lidar_application
       }
     }
 
-    mDetectedObjects = convertVectorsTo2D(lObjectList);
+    mDetectedObjects = convertVectorsTo2D(filterFarObjects(lObjectList));
   }
 
   std::vector<std::pair<double, double>> ObjectDetection::convertVectorsTo2D(
@@ -206,12 +270,13 @@ namespace lidar_application
     double lSumAngles = 0.0;
     double lSumDistance_m = 0.0;
 
-    int lSampleSize = static_cast<int>(aData.mAngles.size());
+    int lSampleSize = static_cast<int>(aData.mMeasurements.size());
 
-    for (size_t i = 0; i < aData.mDistances_m.size(); ++i)
+    for (std::map<double, double>::iterator lIt = aData.mMeasurements.begin();
+         lIt != aData.mMeasurements.end(); ++lIt)
     {
-      lSumAngles += aData.mAngles.at(i);
-      lSumDistance_m += aData.mDistances_m.at(i);
+      lSumAngles += lIt->first;
+      lSumDistance_m += lIt->second;
     }
 
     if (lSampleSize > 0)
@@ -221,6 +286,101 @@ namespace lidar_application
     }
 
     return std::make_pair(lAverageAngle, lAverageDistance_m);
+  }
+
+  bool ObjectDetection::isAngleDifferent(
+      const std::pair<double, double>& aMeasurement) const
+  {
+    const double lAngle = aMeasurement.first;
+    const double lDistance_m = aMeasurement.second;
+
+    const std::pair<double, double> lSurroundingDistances =
+        getSurroundingDistances(lAngle);
+
+    const double lDifferenceToLowerNeighbour_m =
+        std::abs(lDistance_m - lSurroundingDistances.first);
+    const double lDifferenceToUpperNeighbour_m =
+        std::abs(lDistance_m - lSurroundingDistances.second);
+
+    // Given measurement is too far out of line with data from mInitialScan
+    if ((lDifferenceToLowerNeighbour_m > mMaxDistanceDifference_m) &&
+        (lDifferenceToUpperNeighbour_m > mMaxDistanceDifference_m))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  std::pair<double, double>
+      ObjectDetection::getSurroundingDistances(const double aAngle) const
+  {
+    if (!(static_cast<int>(mInitialScan.mMeasurements.size()) >= 2))
+    {
+      throw std::logic_error(
+          "Preconditions of getSurroundingDistances not met");
+    }
+
+    if ((aAngle < 0.0) || (aAngle > (2 * M_PI)))
+    {
+      throw std::range_error("Angle isn't a value in range [0.0 -> 2*PI]");
+    }
+
+    double lLowerNeighbourDistance_m = 0.0;
+    double lUpperNeighbourDistance_m = 0.0;
+
+    auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
+
+    // If there doesn't exist a key with a equal or higher value then aAngle:
+    if ((lIterator->first == 0.0) && lIterator->second == 0.0)
+    {
+      // It will probably be a value close to the maximum of 2 * PI
+
+      // Take the highest angle as lower neighbour
+      lLowerNeighbourDistance_m = (--mInitialScan.mMeasurements.end())->second;
+
+      // Take the lowest angle as upper neighbour
+      lUpperNeighbourDistance_m = mInitialScan.mMeasurements.begin()->second;
+    }
+    else // There has been found a key with a equal or higher value then aAngle:
+    {
+      lUpperNeighbourDistance_m = lIterator->second;
+
+      // If there exists a lower angle, use that. Otherwise take the highest
+      // angle as lower neighbour.
+      if (!(lIterator == mInitialScan.mMeasurements.begin()))
+      {
+        lLowerNeighbourDistance_m = (--lIterator)->second;
+      }
+      else
+      {
+        lLowerNeighbourDistance_m =
+            (--mInitialScan.mMeasurements.end())->second;
+      }
+    }
+
+    return std::pair<double, double>(lLowerNeighbourDistance_m,
+                                     lUpperNeighbourDistance_m);
+  }
+
+  std::vector<std::pair<double, double>> ObjectDetection::filterFarObjects(
+      const std::vector<std::pair<double, double>>& aObjectList) const
+  {
+    std::vector<std::pair<double, double>> lReturnObjects;
+
+    for (size_t lIndex = 0; lIndex < aObjectList.size(); ++lIndex)
+    {
+      std::pair<double, double> lPair = aObjectList.at(lIndex);
+
+      if (lPair.second <= mMaxReliableDistance_m)
+      {
+        lReturnObjects.push_back(lPair);
+      }
+    }
+
+    return lReturnObjects;
   }
 
   void ObjectDetection::printPublishData() const
