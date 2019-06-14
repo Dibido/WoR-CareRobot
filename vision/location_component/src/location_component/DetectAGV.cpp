@@ -283,6 +283,12 @@ namespace location_component
     return cv::Point(lAverageX, lAverageY);
   }
 
+
+  float DetectAGV::getAGVSpeed() const
+  {
+    return mPosCalculator.getAGVSpeed_m_s();
+  }
+
   void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)
   {
     ROS_DEBUG_STREAM("AGV speed is updated to " + std::to_string(aAGV.speed()));
