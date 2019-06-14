@@ -114,7 +114,7 @@ namespace lidar_application
      * @return std::pair<double, double>
      */
     std::pair<double, double>
-        getSurroundingDistances(const double aAngle) const;
+        getSurroundingDistances(const double aAngle, bool aDebug = false) const;
 
     /**
      * @brief Filters out any objects with a distance greater then
@@ -131,6 +131,11 @@ namespace lidar_application
      * @brief Prints out mDetectedObjects
      */
     void printPublishData() const;
+
+    /**
+     * @brief function for debug purposes, shows info about object and
+     */
+    void debugObject(LidarData& aObject) const;
 
     bool mInitialized;
 
