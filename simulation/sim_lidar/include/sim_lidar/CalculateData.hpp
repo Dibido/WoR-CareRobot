@@ -7,7 +7,7 @@
  *
  * @copyright Copyright (c) 2019
  *
- */
+ */ 
 
 #ifndef CALCULATE_DATA_HPP
 #define CALCULATE_DATA_HPP

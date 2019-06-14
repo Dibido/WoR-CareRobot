@@ -92,7 +92,8 @@ namespace controller
     std::shared_ptr<robotcontroller::RobotGripperPublisher>& robotGripper();
     std::shared_ptr<robotcontroller::RobotStopPublisher>& robotStop();
     std::shared_ptr<kinematics::ConfigurationProvider>& configurationProvider();
-    kinematics::Configuration& configuration();
+    kinematics::Configuration& currentConfiguration();
+    kinematics::Configuration& goalConfiguration();
     environment_controller::Cup& cup();
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
@@ -113,7 +114,8 @@ namespace controller
         mRobotGripperPublisher;
     std::shared_ptr<robotcontroller::RobotStopPublisher> mRobotStopPublisher;
     std::shared_ptr<kinematics::ConfigurationProvider> mConfigurationProvider;
-    kinematics::Configuration mConfiguration;
+    kinematics::Configuration mCurrentConfiguration;
+    kinematics::Configuration mGoalConfiguration;
     std::shared_ptr<State> mCurrentState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;

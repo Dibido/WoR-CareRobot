@@ -39,7 +39,7 @@ namespace generate
      * @brief generates noise sample based on a mean and a devation
      * @param aMean the mean of a dataset
      * @param aDevation the devation of a dataset
-     */
+     */ 
     void generateNoiseSample(double aMean, double aDeviation);
 
     double mMean;

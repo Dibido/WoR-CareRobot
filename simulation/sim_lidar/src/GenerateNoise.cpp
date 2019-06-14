@@ -14,7 +14,7 @@ void generate::GenerateNoise::generateNoiseSample(double aMean,
 
     std::mt19937 lGen;
     lGen.seed(i);
-
+//
     std::normal_distribution<double> ld(aMean, aDeviation);
 
     mStep = ld(lGen);

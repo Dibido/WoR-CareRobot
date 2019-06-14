@@ -13,8 +13,6 @@ namespace environment_controller
                                       this)),
         mEnvironmentController(aController)
   {
-    mTimer = mHandle.createTimer(ros::Duration(cSensorCallbackDuration_s),
-                                 &SensorSubscriber::transformListen, this);
   }
 
   void SensorSubscriber::sensorCallback(
@@ -43,23 +41,4 @@ namespace environment_controller
   {
     mEnvironmentController->registerSensor(aSensor);
   }
-
-  void SensorSubscriber::transformListen(const ros::TimerEvent&)
-  {
-    try
-    {
-      Pose lPose = mEnvironmentController->transformFrames(cSensorIDListen);
-
-      ROS_DEBUG("Transform x: %f, y: %f, z: %f; x: %f, y: %f, z: %f, w: %f",
-                lPose.position().x_m(), lPose.position().y_m(),
-                lPose.position().z_m(), lPose.rotation().x(),
-                lPose.rotation().y(), lPose.rotation().z(),
-                lPose.rotation().w());
-    }
-    catch (tf2::TransformException& lEx)
-    {
-      ROS_WARN("%s", lEx.what());
-    }
-  }
-
 } // namespace environment_controller

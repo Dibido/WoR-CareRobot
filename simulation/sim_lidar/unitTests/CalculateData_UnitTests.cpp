@@ -9,6 +9,7 @@
 
 TEST(CalculateData, radiansToDegrees)
 {
+  
   unsigned int iterator = 0;
   const double cMaximumDeviation = 0.05;
   const std::vector<double> cRadians = {

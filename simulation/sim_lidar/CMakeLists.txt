@@ -41,29 +41,11 @@ catkin_package(
     lidar_application)
 
 add_library(${PROJECT_NAME}_plugin SHARED
-        src/LidarPlugin.cpp 
-        ../../vision/lidar_application/src/lidar_application/LidarData.cpp
-        src/CalculateData.cpp
-        src/GenerateNoise.cpp
-        datasets/lidardataset1.txt)
-
+        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp)
 
 add_dependencies(${PROJECT_NAME}_plugin ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(${PROJECT_NAME}_plugin
-        ${catkin_LIBRARIES}
-        ${GAZEBO_LIBRARIES}
-        RayPlugin)
-        
-
-
-add_executable(${PROJECT_NAME}_calculate
-src/Main.cpp
-src/CalculateData.cpp
-src/GenerateNoise.cpp)
-add_dependencies(${PROJECT_NAME}_calculate ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(${PROJECT_NAME}_calculate
         ${catkin_LIBRARIES}
         ${GAZEBO_LIBRARIES}
         RayPlugin)

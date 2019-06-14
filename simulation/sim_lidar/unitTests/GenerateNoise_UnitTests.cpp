@@ -8,7 +8,7 @@
 #include <vector>
 
 TEST(GenerateNoise, generateSample)
-{
+{ 
   generate::GenerateNoise lGenerateNoise;
   unsigned int iterator = 0;
   const double cMean = 0.476773;

@@ -9,7 +9,7 @@ int main(int argc, char** argv)
   lCalc.fillVector(
       "wor-18-19-s2/simulation/sim_lidar/datasets/"
       "lidardataset2.txt");
-
+//
   lCalc.radiansToDegrees();
   lCalc.calculateStepSize();
   lCalc.calculateAverage();

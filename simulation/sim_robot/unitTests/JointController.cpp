@@ -7,6 +7,44 @@
 // Bring in gtest
 #include <gtest/gtest.h>
 
+TEST(JointController, convertScaleToRad)
+{
+  gazebo::physics::JointPtr lJoint;
+  const std::string cName = "mName";
+  const jointChannel_t cChannel = 0;
+  const jointPw_t cMinPw = 0;
+  const jointPw_t cMaxPw = 0;
+  const jointRad_t cMinRad = -10;
+  const jointRad_t cMaxRad = 10;
+  const jointRad_t cMediumRad = cMinRad + (abs(cMinRad - cMaxRad) / 2.0);
+  const jointVel_t cMaxVel = 0;
+
+  const gazebo::JointController cJointController(
+      lJoint, cName, cChannel, cMinPw, cMaxPw, cMinRad, cMaxRad, cMaxVel);
+
+  EXPECT_NO_THROW(cJointController.convertScaleToRad(5, 0, 10));
+  ASSERT_THROW(cJointController.convertScaleToRad(-5, 0, 10),
+               std::invalid_argument);
+  ASSERT_THROW(cJointController.convertScaleToRad(15, 0, 10),
+               std::invalid_argument);
+  EXPECT_EQ(cJointController.convertScaleToRad(0, 0, 10), cMinRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(10, 0, 10), cMaxRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(5, 0, 10), cMediumRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(10, 10, 0), cMinRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(0, 10, 0), cMaxRad);
+  EXPECT_EQ(cJointController.convertScaleToRad(-10, -10, 0), cMinRad);
+}
+
+TEST(JointController, isInRange)
+{
+  gazebo::physics::JointPtr lJoint;
+  const gazebo::JointController cJointController(lJoint, "mName", 0, -10, 10,
+                                                 -10, 10, 10);
+  EXPECT_EQ(cJointController.isInRange(5, 0, 10), true);
+  EXPECT_EQ(cJointController.isInRange(-5, 0, 10), false);
+  EXPECT_EQ(cJointController.isInRange(15, 0, 10), false);
+}
+
 TEST(operatorJointController, equalsOperator)
 {
   gazebo::physics::JointPtr joint;
