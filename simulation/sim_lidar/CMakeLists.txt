@@ -41,7 +41,7 @@ catkin_package(
     lidar_application)
 
 add_library(${PROJECT_NAME}_plugin SHARED
-        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp)
+        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp src/CalculateData.cpp src/GenerateNoise.cpp)
 
 add_dependencies(${PROJECT_NAME}_plugin ${catkin_EXPORTED_TARGETS})
 
