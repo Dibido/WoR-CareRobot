@@ -151,7 +151,10 @@ namespace gazebo
             .convertScaleToRad(
                 aMsg->width, robotcontrollerplugin::maxWidthgripper,
                 robotcontrollerplugin::minWidthgripper); // Width needs to be
-                                                         // inverted.
+    if(lWidth>0.01){
+ lWidth = 0.01;
+    }
+   
     double lSpeedfactor = aMsg->speedfactor;
 
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
