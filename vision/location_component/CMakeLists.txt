@@ -66,7 +66,7 @@ target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 catkin_add_gtest(${PROJECT_NAME}_unit_tests 
                   unitTests/gtest.cpp 
                   unitTests/DetectAGV_test.cpp 
-                  unitTests/AGVProvider_test.cpp 
+                  unitTests/AGVSubscriber_test.cpp 
                   unitTests/ValueGuardTest.cpp 
                   unitTests/AGV_test.cpp 
                   unitTests/ValueTest.cpp 
