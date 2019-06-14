@@ -180,12 +180,20 @@ namespace location_component
       // The corners of the bounding rectangle around the AGV.
       std::vector<cv::Point2f> lEstimatedSquare;
 
-      for (size_t idx = 0; idx < cCornersOfObject; ++idx)
+      unsigned int idxOffsetCornersOfObject = 0;
+      if (lContours.at(0).x > lContours.at(2).x)
       {
-        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(idx).x,
-                                          ( float )lContours.at(idx).y));
+        idxOffsetCornersOfObject = 1;
+      }
 
-        lDetectedAGV.mCorners.push_back(lContours.at(idx));
+      for (size_t idx = idxOffsetCornersOfObject;
+           idx < cCornersOfObject + idxOffsetCornersOfObject; ++idx)
+      {
+        lAGVCorners.push_back(
+            cv::Point2f(( float )lContours.at(idx % cCornersOfObject).x,
+                        ( float )lContours.at(idx % cCornersOfObject).y));
+
+        lDetectedAGV.mCorners.push_back(lContours.at(idx % cCornersOfObject));
       }
 
       lEstimatedSquare.push_back(
