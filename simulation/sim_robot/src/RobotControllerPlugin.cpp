@@ -148,7 +148,7 @@ namespace gazebo
   {
     double lWidth =
         mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
-            .converseScaleToRad(
+            .convertScaleToRad(
                 aMsg->width, robotcontrollerplugin::maxWidthgripper,
                 robotcontrollerplugin::minWidthgripper); // Width needs to be
                                                          // inverted.

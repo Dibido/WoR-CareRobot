@@ -53,10 +53,15 @@ namespace gazebo
   {
   }
 
-  jointRad_t JointController::converseScaleToRad(double aScale,
-                                                 double aMinScale,
-                                                 double aMaxScale)
+  jointRad_t JointController::convertScaleToRad(double aScale,
+                                                double aMinScale,
+                                                double aMaxScale) const
   {
+    if (!(isInRange(aScale, aMinScale, aMaxScale) ||
+          isInRange(aScale, aMaxScale, aMinScale)))
+    {
+      throw std::invalid_argument("Value is not in range!");
+    }
     return mMinRad + (mMaxRad - mMinRad) *
                          ((aScale - aMinScale) / (aMaxScale - aMinScale));
   }
@@ -227,7 +232,14 @@ namespace gazebo
 
   bool JointController::inRange(jointPw_t aPw) const
   {
-    return (aPw >= mMinPw && aPw <= mMaxPw);
+    return isInRange(aPw, mMinPw, mMaxPw);
+  }
+
+  bool JointController::isInRange(double aValue,
+                                  double aLower,
+                                  double aUpper) const
+  {
+    return aValue >= aLower && aValue <= aUpper;
   }
 
   jointRad_t JointController::convertPw2Radians(jointPw_t aPw) const
