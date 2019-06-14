@@ -12,7 +12,7 @@ namespace lidar_application
     // Checking if any of the measurements was out of the full-circle range
     if ((aMeasurements.size() > 0) &&
         ((aMeasurements.begin()->first < 0.0) ||
-         (aMeasurements.end()--->first > (2 * M_PI))))
+         ((aMeasurements.end()--)->first > (2 * M_PI))))
     {
       throw std::range_error("Angle isn't a value in range [0.0 -> 2*PI]");
     }

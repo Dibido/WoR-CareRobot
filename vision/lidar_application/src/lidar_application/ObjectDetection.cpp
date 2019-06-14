@@ -99,7 +99,7 @@ namespace lidar_application
               // If we want to ignore small objects, and objectsize is lower
               // then required
               if (mIgnoreSmallObjects &&
-                  (static_cast<int>(lObject.mMeasurements.size()) <
+                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
                    objectdetection_constants::
                        cObjectMinNumberOfAdjacentMeasurements))
               {
@@ -115,7 +115,7 @@ namespace lidar_application
               // If we want to ignore small objects, and objectsize is lower
               // then required
               if (mIgnoreSmallObjects &&
-                  (static_cast<int>(lObject.mMeasurements.size()) <
+                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
                    objectdetection_constants::
                        cObjectMinNumberOfAdjacentMeasurements))
               {
@@ -148,7 +148,7 @@ namespace lidar_application
             // If we want to ignore small objects, and objectsize is lower then
             // required
             if (mIgnoreSmallObjects &&
-                (static_cast<int>(lObject.mMeasurements.size()) <
+                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
                  objectdetection_constants::
                      cObjectMinNumberOfAdjacentMeasurements))
             {
@@ -164,7 +164,7 @@ namespace lidar_application
             // If we want to ignore small objects, and objectsize is lower then
             // required
             if (mIgnoreSmallObjects &&
-                (static_cast<int>(lObject.mMeasurements.size()) <
+                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
                  objectdetection_constants::
                      cObjectMinNumberOfAdjacentMeasurements))
             {
@@ -214,7 +214,7 @@ namespace lidar_application
         // If we want to ignore small objects, and objectsize is lower then
         // required
         if (mIgnoreSmallObjects &&
-            (static_cast<int>(lObject.mMeasurements.size()) <
+            (static_cast<unsigned int>(lObject.mMeasurements.size()) <
              objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements))
         {
           lObject.reset();
