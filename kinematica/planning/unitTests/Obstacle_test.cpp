@@ -18,14 +18,14 @@ namespace planning
   TEST(ObstaclePathfinding, 2Dpath_1)
   {
     /*
-        S . . . | ― ― ―
-        . P P P P . . .
-        ― ― ― ― ― P . .
-        . . . . . . P G
+      . . P S . . . | ― ― ― .
+      . P . . . . . . . . . .
+      P . . ― ― ― ― ― . . . .
+      P . . . . . . . . . P G
+      . P P P P P P P P P . .
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
     lGraph->addObstacle(Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.2f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
@@ -33,11 +33,16 @@ namespace planning
     lGraph->addObstacle(Obstacle{ 0.4f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.5f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+    lGraph->addObstacle(Obstacle{ 0.7f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
+
     AStar astar(lGraph);
-    Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 10, 0, 0 },
-                        Vertex{ 20, 10, 0 }, Vertex{ 30, 10, 0 },
-                        Vertex{ 40, 10, 0 }, Vertex{ 50, 20, 0 },
-                        Vertex{ 60, 30, 0 }, Vertex{ 70, 30, 0 } };
+    Path lExpectedPath{ Vertex{ 0, 0, 0 },    Vertex{ -10, 0, 0 },
+                        Vertex{ -20, 10, 0 }, Vertex{ -20, 20, 0 },
+                        Vertex{ -20, 30, 0 }, Vertex{ -10, 40, 0 },
+                        Vertex{ 0, 40, 0 },   Vertex{ 10, 40, 0 },
+                        Vertex{ 20, 40, 0 },  Vertex{ 30, 40, 0 },
+                        Vertex{ 40, 40, 0 },  Vertex{ 50, 40, 0 },
+                        Vertex{ 60, 30, 0 },  Vertex{ 70, 30, 0 } };
     Path lP = astar.search(Vertex(0, 0, 0), Vertex(70, 30, 0));
     EXPECT_EQ(lExpectedPath, lP);
   }
@@ -47,13 +52,11 @@ namespace planning
     /*
         S . . . | ― ― ―
         . P . . | . . .
-        ― ― P ― ― . . .
-        . . . P P P P G
+        . P . ― ― . . .
+        . P . . . . . .
+        . . P P P P P G
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
-    lGraph->addObstacle(Obstacle{ 0.0f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(Obstacle{ 0.0f, 0.3f, 0.0f, 0.1f, 0.1f, 1.0f });
-    lGraph->addObstacle(Obstacle{ 0.1f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.3f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.4f, 0.2f, 0.0f, 0.1f, 0.1f, 1.0f });
     lGraph->addObstacle(Obstacle{ 0.4f, 0.1f, 0.0f, 0.1f, 0.1f, 1.0f });
@@ -62,10 +65,11 @@ namespace planning
     lGraph->addObstacle(Obstacle{ 0.6f, 0.0f, 0.0f, 0.1f, 0.1f, 1.0f });
     AStar astar(lGraph);
     Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 10, 10, 0 },
-                        Vertex{ 20, 20, 0 }, Vertex{ 30, 30, 0 },
-                        Vertex{ 40, 30, 0 }, Vertex{ 50, 30, 0 },
-                        Vertex{ 60, 30, 0 }, Vertex{ 70, 30, 0 } };
-    Path lP = astar.search(Vertex(0, 0, 0), Vertex(70, 30, 0));
+                        Vertex{ 10, 20, 0 }, Vertex{ 10, 30, 0 },
+                        Vertex{ 20, 40, 0 }, Vertex{ 30, 40, 0 },
+                        Vertex{ 40, 40, 0 }, Vertex{ 50, 40, 0 },
+                        Vertex{ 60, 40, 0 }, Vertex{ 70, 40, 0 } };
+    Path lP = astar.search(Vertex(0, 0, 0), Vertex(70, 40, 0));
     EXPECT_EQ(lExpectedPath, lP);
   }
 
@@ -73,10 +77,10 @@ namespace planning
   {
     /*
       ― ― ― ― ― ― ― ― ― ― ―
-      | S | P P P | P P P |
-      | P | P | P | P | P |
-      | P | P | P | P | P |
-      | P P P | P P P | G |
+      | S | . . . | . . . |
+      | . | . | . | . | . |
+      | . | . | . | . | . |
+      | . . . | . . . | . |
       ― ― ― ― ― ― ― ― ― ― ―
     */
     std::shared_ptr<Graph> lGraph = std::make_shared<Graph>();
@@ -89,14 +93,7 @@ namespace planning
     lGraph->addObstacle(Obstacle{ 0.5f, 0.1f, 0.0f, 0.1f, 0.4f, 10.0f });
     lGraph->addObstacle(Obstacle{ 0.7f, 0.2f, 0.0f, 0.1f, 0.4f, 10.0f });
     AStar astar(lGraph);
-    Path lExpectedPath{ Vertex{ 0, 0, 0 },   Vertex{ 0, 10, 0 },
-                        Vertex{ 0, 20, 0 },  Vertex{ 10, 30, 0 },
-                        Vertex{ 20, 20, 0 }, Vertex{ 20, 10, 0 },
-                        Vertex{ 30, 0, 0 },  Vertex{ 40, 10, 0 },
-                        Vertex{ 40, 20, 0 }, Vertex{ 50, 30, 0 },
-                        Vertex{ 60, 20, 0 }, Vertex{ 60, 10, 0 },
-                        Vertex{ 70, 0, 0 },  Vertex{ 80, 10, 0 },
-                        Vertex{ 80, 20, 0 }, Vertex{ 80, 30, 0 } };
+    Path lExpectedPath{};
 
     Path lP = astar.search(Vertex(0, 0, 0), Vertex(80, 30, 0));
     EXPECT_EQ(lExpectedPath, lP);
@@ -161,13 +158,6 @@ namespace planning
     lGraph->addObstacle(Obstacle{ 0.4f, 0.3f, 0.2f, 0.1f, 0.1f, 0.1f });
     AStar astar(lGraph);
     Path lExpectedPath{
-      Vertex{ 0, 0, 0 },    Vertex{ 10, 0, 0 },   Vertex{ 20, 0, 0 },
-      Vertex{ 30, 0, 0 },   Vertex{ 40, 0, 0 },   Vertex{ 50, 0, 0 },
-      Vertex{ 60, 0, 0 },   Vertex{ 70, 0, 0 },   Vertex{ 80, 0, 10 },
-      Vertex{ 90, 10, 20 }, Vertex{ 80, 20, 20 }, Vertex{ 70, 20, 20 },
-      Vertex{ 60, 20, 20 }, Vertex{ 50, 20, 20 }, Vertex{ 40, 30, 10 },
-      Vertex{ 30, 30, 10 }, Vertex{ 20, 30, 10 }, Vertex{ 10, 30, 10 },
-      Vertex{ 0, 30, 10 }
     };
     Path lP = astar.search(Vertex(0, 0, 0), Vertex(0, 30, 10));
     EXPECT_EQ(lExpectedPath, lP);

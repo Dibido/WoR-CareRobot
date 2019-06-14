@@ -80,7 +80,7 @@ namespace planning
   {
     for (const Obstacle& obstacle : mObstacles)
     {
-      if (obstacle.coversPoint(aVertex))
+      if (obstacle.coversPoint(aVertex, cStep))
       {
         return true;
       }

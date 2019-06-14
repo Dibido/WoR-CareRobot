@@ -2,7 +2,6 @@
 #define OBSTACLE_HPP
 
 #include "planning/Vertex.hpp"
-
 namespace planning
 {
   const uint8_t cConversionFromMetersToCentimeters = 100;
@@ -38,29 +37,30 @@ namespace planning
      * @author Martijn Vogelaar
      */
 
-    bool coversPoint(const Vertex& aVertex) const
+    bool coversPoint(const Vertex& aVertex, uint8_t aStep) const
     {
       bool lPointCovered = false;
-      if (static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters >
-              mX_m - mWidth_m / 2 &&
-          static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters <
-              mX_m + mWidth_m / 2)
+      aStep /= 2;
+      if ((static_cast<float>(aVertex.x - aStep) /
+                   cConversionFromMetersToCentimeters <=
+               mX_m + mWidth_m / 2 &&
+           static_cast<float>(aVertex.x + aStep) /
+                   cConversionFromMetersToCentimeters >=
+               mX_m - mWidth_m / 2) &&
+          (static_cast<float>(aVertex.y - aStep) /
+                   cConversionFromMetersToCentimeters <=
+               mY_m + mDepth_m / 2 &&
+           static_cast<float>(aVertex.y + aStep) /
+                   cConversionFromMetersToCentimeters >=
+               mY_m - mDepth_m / 2) &&
+          (static_cast<float>(aVertex.z - aStep) /
+                   cConversionFromMetersToCentimeters <=
+               mZ_m + mHeight_m / 2 &&
+           static_cast<float>(aVertex.z + aStep) /
+                   cConversionFromMetersToCentimeters >=
+               mZ_m - mHeight_m / 2))
       {
-        if (static_cast<float>(aVertex.y) / cConversionFromMetersToCentimeters >
-                mY_m - mDepth_m / 2 &&
-            static_cast<float>(aVertex.y) / cConversionFromMetersToCentimeters <
-                mY_m + mDepth_m / 2)
-        {
-          if (static_cast<float>(aVertex.z) /
-                      cConversionFromMetersToCentimeters >
-                  mZ_m - mHeight_m / 2 &&
-              static_cast<float>(aVertex.z) /
-                      cConversionFromMetersToCentimeters <
-                  mZ_m + mHeight_m / 2)
-          {
-            lPointCovered = true;
-          }
-        }
+        lPointCovered = true;
       }
       return lPointCovered;
     }
