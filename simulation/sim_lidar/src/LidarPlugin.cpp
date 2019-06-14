@@ -1,3 +1,4 @@
+#include "sim_lidar/LidarConst.hpp"
 #include <sim_lidar/LidarPlugin.hpp>
 
 #include <iostream>
@@ -14,7 +15,7 @@ namespace LidarConfiguration
 } // namespace LidarConfiguration
 
 namespace gazebo
-{
+{ 
   void LidarPlugin::Load(sensors::SensorPtr aParent, sdf::ElementPtr aSdf)
   {
     RayPlugin::Load(aParent, aSdf);
@@ -171,7 +172,8 @@ namespace gazebo
 
     lLaserMessage.ranges.clear();
 
-    for (std::map<double, double>::const_iterator lIterator = aLidarData.mMeasurements.begin();
+    for (std::map<double, double>::const_iterator lIterator =
+             aLidarData.mMeasurements.begin();
          lIterator != aLidarData.mMeasurements.end(); ++lIterator)
     {
       lLaserMessage.ranges.push_back(static_cast<float>(lIterator->second));
@@ -193,6 +195,9 @@ namespace gazebo
     const float lAngleOffset = static_cast<float>(2.0 * M_PI) /
                                static_cast<float>(aMsg->scan().ranges().size());
 
+    generate::GenerateNoise lNoise;
+
+    lNoise.generateNoiseSample(lidar::cMean, lidar::cDeviation);
     std::vector<double> lAngles;
     std::vector<double> lDistances_m;
 
