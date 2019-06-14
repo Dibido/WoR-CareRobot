@@ -57,6 +57,9 @@ namespace lidar_application
      */
     void run();
 
+    // Debug variable for minimum amount of adjacent measurements
+    unsigned int cObjectMinNumberOfAdjacentMeasurementsDebug = 2;
+
       private:
     /**
      * @brief Detects objects. Uses mInitialScan for comparison.

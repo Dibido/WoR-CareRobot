@@ -10,12 +10,18 @@ int main(int argc, char** argv)
   // 0.20 meter had been proven a good default.
   double lMaxDifference_m = 0.20;
 
-  if (argc == 2)
+  uint16_t lMinNumberArgv = 2;
+
+  if (argc == 3)
   {
     ROS_INFO("Setting lMaxDifference_m to %s", argv[1]);
     lMaxDifference_m = strtod(argv[1], NULL);
+
+    ROS_INFO("Setting lMinNumberArgv to %s", argv[2]);
+    lMinNumberArgv = std::stoi(argv[2]);
   }
 
   lidar_application::ObjectDetection lObjectDetector(lMaxDifference_m);
+  lObjectDetector.cObjectMinNumberOfAdjacentMeasurementsDebug = lMinNumberArgv;
   lObjectDetector.run();
 }

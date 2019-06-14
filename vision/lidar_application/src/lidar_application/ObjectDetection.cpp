@@ -118,8 +118,7 @@ namespace lidar_application
               // then required
               if (mIgnoreSmallObjects &&
                   (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   objectdetection_constants::
-                       cObjectMinNumberOfAdjacentMeasurements))
+                   cObjectMinNumberOfAdjacentMeasurementsDebug))
               {
                 lObject.reset();
               }
@@ -134,8 +133,7 @@ namespace lidar_application
               // then required
               if (mIgnoreSmallObjects &&
                   (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   objectdetection_constants::
-                       cObjectMinNumberOfAdjacentMeasurements))
+                   cObjectMinNumberOfAdjacentMeasurementsDebug))
               {
                 lObject.reset();
               }
@@ -167,8 +165,7 @@ namespace lidar_application
             // required
             if (mIgnoreSmallObjects &&
                 (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 objectdetection_constants::
-                     cObjectMinNumberOfAdjacentMeasurements))
+                 cObjectMinNumberOfAdjacentMeasurementsDebug))
             {
               lObject.reset();
             }
@@ -183,8 +180,7 @@ namespace lidar_application
             // required
             if (mIgnoreSmallObjects &&
                 (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 objectdetection_constants::
-                     cObjectMinNumberOfAdjacentMeasurements))
+                 cObjectMinNumberOfAdjacentMeasurementsDebug))
             {
               lObject.reset();
             }
@@ -236,7 +232,7 @@ namespace lidar_application
         // required
         if (mIgnoreSmallObjects &&
             (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-             objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements))
+             cObjectMinNumberOfAdjacentMeasurementsDebug))
         {
           lObject.reset();
         }
