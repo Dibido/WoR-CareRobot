@@ -58,11 +58,11 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
 
   // Adding initial scan of area
   LidarData lInitialScanData;
-  lInitialScanData.addLidarData(0.0, 1.0);
-  lInitialScanData.addLidarData(0.1, 4.0);
-  lInitialScanData.addLidarData(0.2, 4.0);
-  lInitialScanData.addLidarData(0.3, 4.0);
-  lInitialScanData.addLidarData(0.4, 1.0);
+  lInitialScanData.addLidarData(0.0, 1.00);
+  lInitialScanData.addLidarData(0.1, 4.01);
+  lInitialScanData.addLidarData(0.2, 4.02);
+  lInitialScanData.addLidarData(0.3, 4.03);
+  lInitialScanData.addLidarData(0.4, 1.04);
 
   lObjectDetection.mInitialScan = lInitialScanData;
   lObjectDetection.mInitialized = true;
@@ -83,10 +83,87 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
   lObjectDetection.detectObjects();
 
   /** We expect that 3 objects are detected as the differences in distance
-   * between angles 0.1, 0.2 and 0.3,
+   * between angles 0.1, 0.2 and 0.3, and their neighbours
    * are bigger then our defined lMaxDistanceDifference_m of 0.1 */
   EXPECT_EQ(static_cast<unsigned int>(3),
             lObjectDetection.mDetectedObjects.size());
+}
+
+TEST(ObjectDetection, getSurroundingDistances_Exceptions)
+{
+  ObjectDetection lObjectDetection;
+
+  ASSERT_EQ(
+      static_cast<int>(0),
+      static_cast<int>(lObjectDetection.mInitialScan.mMeasurements.size()));
+
+  // We expect an exception as mInitialScan contains no data.
+  EXPECT_THROW(lObjectDetection.getSurroundingDistances(0.0), std::logic_error);
+
+  lObjectDetection.mInitialScan.addLidarData(0.0, 4.01);
+  lObjectDetection.mInitialScan.addLidarData(0.1, 4.01);
+
+  // Angle greater then 2 * M_PI
+  const double lAngle = 2 * M_PI + 1;
+
+  EXPECT_THROW(lObjectDetection.getSurroundingDistances(lAngle),
+               std::range_error);
+}
+
+TEST(ObjectDetection, getSurroundingDistances_Default)
+{
+  ObjectDetection lObjectDetection;
+
+  // mInitialScan is used to compare values with.
+  lObjectDetection.mInitialScan.addLidarData(0.0, 1.00);
+  lObjectDetection.mInitialScan.addLidarData(0.1, 4.01);
+  lObjectDetection.mInitialScan.addLidarData(0.2, 4.02);
+  lObjectDetection.mInitialScan.addLidarData(0.3, 4.03);
+  lObjectDetection.mInitialScan.addLidarData(0.4, 1.04);
+
+  std::pair<double, double> lNeighbours =
+      lObjectDetection.getSurroundingDistances(0.05);
+
+  /** Neighbours of 0.05 degrees should be 0.0 and 0.1 of mInitialScan, so
+  expected corresponding distances are their 1.00 and 4.01 */
+  ASSERT_NEAR(1.00, lNeighbours.first, std::numeric_limits<double>::epsilon());
+  ASSERT_NEAR(4.01, lNeighbours.second, std::numeric_limits<double>::epsilon());
+}
+
+TEST(ObjectDetection, isAngleDifferent)
+{
+  const double cMaxDistanceDifference_m = 0.2;
+
+  ObjectDetection lObjectDetection(cMaxDistanceDifference_m);
+
+  // mInitialScan is used to compare values with.
+  lObjectDetection.mInitialScan.addLidarData(0.0, 1.00);
+  lObjectDetection.mInitialScan.addLidarData(0.1, 4.01);
+  lObjectDetection.mInitialScan.addLidarData(0.2, 4.02);
+  lObjectDetection.mInitialScan.addLidarData(0.3, 4.03);
+  lObjectDetection.mInitialScan.addLidarData(0.4, 1.04);
+
+  lObjectDetection.mInitialized = true;
+
+  // Measurement (angle in radians => distance in meters)
+  std::pair<double, double> lMeasurement =
+      std::pair<double, double>(0.05, 1.00);
+
+  // We expect false, as the value of angle 0.0 has a corresponding distance
+  // of 1.00, which is equal to lMeasurement.second
+  EXPECT_FALSE(lObjectDetection.isAngleDifferent(lMeasurement));
+
+  lMeasurement = std::pair<double, double>(0.15, 2.00);
+
+  // We expect true, as the value of distances corresponding to angles 0.1 and
+  // 0.2 are different compared to lMeasurement.second
+  EXPECT_TRUE(lObjectDetection.isAngleDifferent(lMeasurement));
+
+  lMeasurement = std::pair<double, double>(0.9, 1.02);
+
+  // We expect false, this measurement should be compared with distances at 0.4
+  // (lower) and 0.0 (upper)
+  EXPECT_FALSE(lObjectDetection.isAngleDifferent(lMeasurement));
 }
 
 TEST(ObjectDetection, convertVectorsTo2D)

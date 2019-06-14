@@ -27,7 +27,7 @@ namespace environment_controller
   const double cRobotZ_m = 0.0;
   const double cLow_rad = -M_PI;
   const double cHigh_rad = M_PI;
-  const double cMinDistanceToRobotarm_m = 2.0;
+  const double cMinDistanceToRobotarm_m = 1.5;
   const double cSensorCallbackDuration_s = 0.1;
   const double cSensorTFPublishRate_hz = 100;
   const uint8_t cSensorIDListen = 0;

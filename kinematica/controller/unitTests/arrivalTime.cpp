@@ -7,14 +7,14 @@
 TEST(ArrivalTime, singleJointChanged)
 {
   controller::Context* lContext = new controller::Context();
-  lContext->configuration().setTheta(0, 0);
-  lContext->configuration().setTheta(1, 10);
-  lContext->configuration().setTheta(2, 20);
-  lContext->configuration().setTheta(3, 30);
-  lContext->configuration().setTheta(4, 40);
-  lContext->configuration().setTheta(5, 50);
-  lContext->configuration().setTheta(6, 60);
-  kinematics::Configuration lGoalConfiguration = lContext->configuration();
+  lContext->currentConfiguration().setTheta(0, 0);
+  lContext->currentConfiguration().setTheta(1, 10);
+  lContext->currentConfiguration().setTheta(2, 20);
+  lContext->currentConfiguration().setTheta(3, 30);
+  lContext->currentConfiguration().setTheta(4, 40);
+  lContext->currentConfiguration().setTheta(5, 50);
+  lContext->currentConfiguration().setTheta(6, 60);
+  kinematics::Configuration lGoalConfiguration = lContext->goalConfiguration();
   lGoalConfiguration.setTheta(6, 100);
   controller::TrajectoryProvider lTrajectoryProvider =
       controller::TrajectoryProvider();
@@ -30,14 +30,14 @@ TEST(ArrivalTime, singleJointChanged)
 TEST(ArrivalTime, multipleJointsChanged)
 {
   controller::Context* lContext = new controller::Context();
-  lContext->configuration().setTheta(0, 0);
-  lContext->configuration().setTheta(1, 10);
-  lContext->configuration().setTheta(2, 20);
-  lContext->configuration().setTheta(3, 30);
-  lContext->configuration().setTheta(4, 40);
-  lContext->configuration().setTheta(5, 50);
-  lContext->configuration().setTheta(6, 60);
-  kinematics::Configuration lGoalConfiguration = lContext->configuration();
+  lContext->currentConfiguration().setTheta(0, 0);
+  lContext->currentConfiguration().setTheta(1, 10);
+  lContext->currentConfiguration().setTheta(2, 20);
+  lContext->currentConfiguration().setTheta(3, 30);
+  lContext->currentConfiguration().setTheta(4, 40);
+  lContext->currentConfiguration().setTheta(5, 50);
+  lContext->currentConfiguration().setTheta(6, 60);
+  kinematics::Configuration lGoalConfiguration = lContext->goalConfiguration();
   lGoalConfiguration.setTheta(5, 10);
   lGoalConfiguration.setTheta(6, 100);
   controller::TrajectoryProvider lTrajectoryProvider =
@@ -50,4 +50,3 @@ TEST(ArrivalTime, multipleJointsChanged)
       lTrajectoryProvider.calculateArrivalTime(lContext, lGoalConfiguration),
       ros::Time::now() + ros::Duration(2));
 }
-

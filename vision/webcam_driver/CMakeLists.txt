@@ -61,6 +61,11 @@ if(CODE_COVERAGE)
 
   #Files which will be excluded for the codecoverage
   set(COVERAGE_LCOV_EXCLUDES
+    '*/devel/*'
+    '*/boost/*'
+    '*/opencv2/*'
+    '*/gcc/*'
+    '*/melodic/*'
     '*/gtest/*'
     '/*/c++/*'
     '*/*.py'

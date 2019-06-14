@@ -19,7 +19,7 @@ namespace userinterface
     const double cDemoGoalZ_m = 0.10;
     const environment_controller::Position
         mDemoPos(cDemoGoalX_m, cDemoGoalY_m, cDemoGoalZ_m);
-    const uint8_t cReleaseTime_s = 10;
+    const uint8_t cReleaseTime_s = 5;
   } // namespace goal_constants
 
   /**

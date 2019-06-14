@@ -8,6 +8,19 @@
 #include <RF24.h>
 #include <SPI.h>
 #include <nRF24L01.h>
+
+//#define USE_DEBUGLN
+
+#ifdef USE_DEBUGLN
+#define DEBUG(x) Serial.print(x)
+#define DEBUGLN(x) Serial.println(x)
+#define DEBUGLNFLOAT(x, y) Serial.println(x, y)
+#else
+#define DEBUG(x) void
+#define DEBUGLN(x) void
+#define DEBUGLNFLOAT(x, y) void
+#endif
+
 // Set up NRF values
 RF24 radio(7, 8);
 const byte rxAddr[6] = "00001";
@@ -33,10 +46,6 @@ unsigned int gAmountOfOns = 0;
 unsigned long gStartMillis;
 // The time the program is in start-up, ignores lines during this time
 const unsigned long gSetupPeriodMillis = 3000;
-// Predict factor, if measurements are taken each 50cm for example and the
-// predict factor is 2, there will be a prediction made for when then AGV passed
-// an additional 50 * 2 = 100cm.
-const double gPredictionFactor = 1.0;
 // The estimated arrival time.
 unsigned long gEstimatedArrivalTime = 0;
 // Amount of intervals between lines that should be used before making a
@@ -55,15 +64,18 @@ unsigned long gMeasurementMillis[gMaxNumberOfMeasurements + 1] = { 0 };
 const unsigned int gLengthBetweenMeasurements = 50;
 // Amount of ms the tracker sensor needs to return true for the signal to be
 // considered valid.
-const unsigned long gMinIntervalTimeMs = 50;
+const unsigned long gMinIntervalTimeMs = 3;
 // Amount of ms to wait until the next attempt to detect a line
-const unsigned int gDetectDelayTimeMs = 150;
+const unsigned int gDetectDelayTimeMs = 100;
+
+// The speed for the servo's
+const unsigned int gServoSpeed = 100; // Was 63
 
 void sendEstimatedSpeed(double aEstimatedSpeed);
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
@@ -73,8 +85,8 @@ void setup()
   digitalWrite(M1, HIGH);
   digitalWrite(M2, HIGH);
 
-  analogWrite(E1, 63); // PWM Speed Control
-  analogWrite(E2, 63); // PWM Speed Control
+  analogWrite(E1, gServoSpeed); // PWM Speed Control
+  analogWrite(E2, gServoSpeed); // PWM Speed Control
 
   // Start NRF
   radio.begin();
@@ -123,8 +135,8 @@ void loop()
         // If we detected 2 lines, we've measured 1 interval, 3 - 2 etc...
         gAmountOfMeasurementsTaken = gAmountOfOns - 1;
 
-        Serial.print("Lines measured : ");
-        Serial.println(gAmountOfOns);
+        DEBUG("Lines measured : ");
+        DEBUGLN(gAmountOfOns);
 
         // An interval has been measured
         if (gAmountOfMeasurementsTaken >= gAmountOfMeasurementsRequired)
@@ -138,32 +150,41 @@ void loop()
           for (unsigned int i = 1; i < gAmountOfOns; i++)
           {
             lSumIntervals += gMeasurementMillis[i] - gMeasurementMillis[i - 1];
-            Serial.print("Interval");
-            Serial.print(i);
-            Serial.print(" : ");
-            Serial.println((gMeasurementMillis[i] - gMeasurementMillis[i - 1]));
+            DEBUG("Interval");
+            DEBUG(i);
+            DEBUG(" : ");
+            DEBUGLN((gMeasurementMillis[i] - gMeasurementMillis[i - 1]));
           }
-          Serial.print("Distance :");
-          Serial.println(lDistance);
-          Serial.print("Suminterval :");
-          Serial.println(lSumIntervals);
+          DEBUG("Distance :");
+          DEBUGLN(lDistance);
+          DEBUG("Suminterval :");
+          DEBUGLN(lSumIntervals);
           // Calculate the current speed in m/s
           double lDistanceMeters = lDistance / 100;
           double lTimeSeconds = lSumIntervals / 1000;
-          Serial.print("DistanceMeters :");
-          Serial.println(lDistanceMeters, 8);
-          Serial.print("TimeSeconds :");
-          Serial.println(lTimeSeconds, 8);
+          DEBUG("DistanceMeters :");
+          DEBUGLNFLOAT(lDistanceMeters, 8);
+          DEBUG("TimeSeconds :");
+          DEBUGLNFLOAT(lTimeSeconds, 8);
           gCurrentSpeed = lDistanceMeters / lTimeSeconds;
-          Serial.print("Speed :");
-          Serial.println(gCurrentSpeed, 8);
+          DEBUG("Speed :");
+          DEBUGLNFLOAT(gCurrentSpeed, 8);
           sendEstimatedSpeed(gCurrentSpeed);
+          // Wait with getting a new measurement until the end of the signal
+          while (digitalRead(TRACKER_SIGNAL_PIN))
+          {
+            // wait until low
+          }
         }
         else
         {
           // Wait with getting a new measurement until the end of the signal
           delay(gDetectDelayTimeMs);
         }
+      }
+      else
+      {
+        DEBUGLN("Invalid Signal");
       }
     }
     else
@@ -184,4 +205,5 @@ void sendEstimatedSpeed(double aEstimatedSpeed)
   String lEstimatedSpeedString = "#S#" + String(lFloatBuffer);
   radio.write(lEstimatedSpeedString.c_str(),
               sizeof(lEstimatedSpeedString) + 12);
+  DEBUGLN("send");
 }

@@ -1,5 +1,7 @@
 #include <sim_lidar/LidarPlugin.hpp>
 
+#include <iostream>
+
 namespace LidarConfiguration
 {
   const std::string cFrameName = "frameName";
@@ -110,6 +112,7 @@ namespace gazebo
   {
     // Convert to LidarData
     lidar_application::LidarData lLidarData = convertToLidarData(aMsg);
+
     // Handle the LidarData
     parseLidarData(lLidarData);
   }
@@ -165,13 +168,14 @@ namespace gazebo
     sensor_msgs::LaserScan lLaserMessage;
     lLaserMessage.range_min = static_cast<float>(-M_PI);
     lLaserMessage.range_max = static_cast<float>(M_PI);
-    lLaserMessage.ranges.resize(
-        static_cast<unsigned long>(aLidarData.mDistances_m.size()));
 
-    // Reverse the measured distances so the scan is taken from left to right.
-    std::reverse_copy(aLidarData.mDistances_m.begin(),
-                      aLidarData.mDistances_m.end(),
-                      lLaserMessage.ranges.begin());
+    lLaserMessage.ranges.clear();
+
+    for (std::map<double, double>::const_iterator lIterator = aLidarData.mMeasurements.begin();
+         lIterator != aLidarData.mMeasurements.end(); ++lIterator)
+    {
+      lLaserMessage.ranges.push_back(static_cast<float>(lIterator->second));
+    }
 
     lLaserMessage.angle_increment =
         static_cast<float>(2.0 * M_PI) /
@@ -189,21 +193,29 @@ namespace gazebo
     const float lAngleOffset = static_cast<float>(2.0 * M_PI) /
                                static_cast<float>(aMsg->scan().ranges().size());
 
+    std::vector<double> lAngles;
+    std::vector<double> lDistances_m;
+
     for (float lCurrentAngle = lAngleOffset;
          lCurrentAngle < (lAngleMax + static_cast<float>(M_PI));
          lCurrentAngle += lAngleOffset)
     {
-      lLidarData.mAngles.push_back(lCurrentAngle);
+      lAngles.push_back(lCurrentAngle);
     }
-    for (int i = 0; i < aMsg->scan().ranges().size(); i++)
+
+    // Reverse the measured distances so the scan is taken from left to right.
+    for (int lIndex = aMsg->scan().ranges().size() - 1; lIndex >= 0; --lIndex)
     {
-      lLidarData.mDistances_m.push_back(aMsg->scan().ranges().Get(i));
+      lDistances_m.push_back(aMsg->scan().ranges().Get(lIndex));
     }
+
+    lLidarData.addLidarData(lAngles, lDistances_m);
+
     return lLidarData;
   }
 
   sensor_interfaces::LidarData
-      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan aMsg) const
+      LidarPlugin::convertToLidarData(const sensor_msgs::LaserScan& aMsg) const
   {
     sensor_interfaces::LidarData lLidarDataMessage;
     lLidarDataMessage.header.stamp = ros::Time::now();
