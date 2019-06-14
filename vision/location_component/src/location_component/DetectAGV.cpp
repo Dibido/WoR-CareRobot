@@ -180,7 +180,7 @@ namespace location_component
       // The corners of the bounding rectangle around the AGV.
       std::vector<cv::Point2f> lEstimatedSquare;
 
-      // Adjusting the first point of the squire
+      // Adjusting the first point of the square
       unsigned int lIdxOffsetCornersOfObject = 0;
       if (lContours.at(0).x > lContours.at(2).x)
       {
