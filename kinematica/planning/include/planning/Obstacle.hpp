@@ -2,7 +2,6 @@
 #define OBSTACLE_HPP
 
 #include "planning/Vertex.hpp"
-
 namespace planning
 {
   const uint8_t cConversionFromMetersToCentimeters = 100;
@@ -41,26 +40,27 @@ namespace planning
     bool coversPoint(const Vertex& aVertex) const
     {
       bool lPointCovered = false;
-      if (static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters >
-              mX_m - mWidth_m / 2 &&
-          static_cast<float>(aVertex.x) / cConversionFromMetersToCentimeters <
-              mX_m + mWidth_m / 2)
+
+      if ((static_cast<float>(aVertex.x - 5) /
+                   cConversionFromMetersToCentimeters <=
+               mX_m + mWidth_m / 2 &&
+           static_cast<float>(aVertex.x + 5) /
+                   cConversionFromMetersToCentimeters >=
+               mX_m - mWidth_m / 2) &&
+          (static_cast<float>(aVertex.y - 5) /
+                   cConversionFromMetersToCentimeters <=
+               mY_m + mDepth_m / 2 &&
+           static_cast<float>(aVertex.y + 5) /
+                   cConversionFromMetersToCentimeters >=
+               mY_m - mDepth_m / 2) &&
+          (static_cast<float>(aVertex.z - 5) /
+                   cConversionFromMetersToCentimeters <=
+               mZ_m + mHeight_m / 2 &&
+           static_cast<float>(aVertex.z + 5) /
+                   cConversionFromMetersToCentimeters >=
+               mZ_m - mHeight_m / 2))
       {
-        if (static_cast<float>(aVertex.y) / cConversionFromMetersToCentimeters >
-                mY_m - mDepth_m / 2 &&
-            static_cast<float>(aVertex.y) / cConversionFromMetersToCentimeters <
-                mY_m + mDepth_m / 2)
-        {
-          if (static_cast<float>(aVertex.z) /
-                      cConversionFromMetersToCentimeters >
-                  mZ_m - mHeight_m / 2 &&
-              static_cast<float>(aVertex.z) /
-                      cConversionFromMetersToCentimeters <
-                  mZ_m + mHeight_m / 2)
-          {
-            lPointCovered = true;
-          }
-        }
+        lPointCovered = true;
       }
       return lPointCovered;
     }
