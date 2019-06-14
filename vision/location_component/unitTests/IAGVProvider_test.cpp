@@ -54,7 +54,6 @@ namespace location_component
                               lValueReference);
   }
 
-
   TEST(IAGVProviderSuite, ValueGuardSpeedConst)
   {
     // Creating the test values
