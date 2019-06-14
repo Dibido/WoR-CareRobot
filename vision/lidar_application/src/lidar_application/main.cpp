@@ -10,7 +10,8 @@ int main(int argc, char** argv)
   // 0.20 meter had been proven a good default.
   double lMaxDifference_m = 0.20;
 
-  uint16_t lMinNumberArgv = 2;
+  // 3 has been proven a good default
+  uint16_t lMinNumberArgv = 3;
 
   if (argc == 3)
   {
