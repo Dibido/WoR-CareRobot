@@ -168,6 +168,9 @@ namespace lidar_application
             }
             else
             {
+
+              debugObject(lObject);
+
               // Add centerpoint of this object to list
               lObjectList.push_back(getAverageMeasurement(lObject));
             }
@@ -311,7 +314,8 @@ namespace lidar_application
   }
 
   std::pair<double, double>
-      ObjectDetection::getSurroundingDistances(const double aAngle) const
+      ObjectDetection::getSurroundingDistances(const double aAngle,
+                                               bool aDebug) const
   {
     if (!(static_cast<int>(mInitialScan.mMeasurements.size()) >= 2))
     {
@@ -327,6 +331,9 @@ namespace lidar_application
     double lLowerNeighbourDistance_m = 0.0;
     double lUpperNeighbourDistance_m = 0.0;
 
+    double lLowerNeighbourAngle = 0.0;
+    double lUpperNeighbourAngle = 0.0;
+
     auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
 
     // If there doesn't exist a key with a equal or higher value then aAngle:
@@ -337,26 +344,47 @@ namespace lidar_application
       // Take the highest angle as lower neighbour
       lLowerNeighbourDistance_m = (--mInitialScan.mMeasurements.end())->second;
 
+      lLowerNeighbourAngle = (--mInitialScan.mMeasurements.end())->first;
+
       // Take the lowest angle as upper neighbour
       lUpperNeighbourDistance_m = mInitialScan.mMeasurements.begin()->second;
+
+      lUpperNeighbourAngle = mInitialScan.mMeasurements.begin()->first;
     }
     else // There has been found a key with a equal or higher value then aAngle:
     {
       lUpperNeighbourDistance_m = lIterator->second;
+
+      lUpperNeighbourAngle = lIterator->first;
 
       // If there exists a lower angle, use that. Otherwise take the highest
       // angle as lower neighbour.
       if (!(lIterator == mInitialScan.mMeasurements.begin()))
       {
         lLowerNeighbourDistance_m = (--lIterator)->second;
+
+        lLowerNeighbourAngle = (--lIterator)->first;
       }
       else
       {
         lLowerNeighbourDistance_m =
             (--mInitialScan.mMeasurements.end())->second;
+
+        lLowerNeighbourAngle = (--mInitialScan.mMeasurements.end())->first;
       }
     }
 
+    if (aDebug)
+    {
+      std::cout << "Lower neighbour:(" << std::to_string(lLowerNeighbourAngle)
+                << "," << std::to_string(lLowerNeighbourDistance_m) << ")"
+                << std::endl;
+      std::cout << "Actual angle: " << std::to_string(aAngle) << std::endl;
+      std::cout << "Upper neighbour:(" << std::to_string(lUpperNeighbourAngle)
+                << "," << std::to_string(lUpperNeighbourDistance_m) << ")"
+                << std::endl;
+      std::cout << std::endl;
+    }
     return std::pair<double, double>(lLowerNeighbourDistance_m,
                                      lUpperNeighbourDistance_m);
   }
@@ -388,5 +416,29 @@ namespace lidar_application
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
     ROS_INFO("----------------------");
+  }
+
+  void ObjectDetection::debugObject(LidarData& aObject) const
+  {
+    std::cout << "Debugobject ===============================:" << std::endl;
+    std::cout << "Different distances: " << std::endl;
+
+    for (auto lMeasurement : aObject.mMeasurements)
+    {
+      std::cout << "A: " << std::to_string(lMeasurement.first)
+                << " D: " << std::to_string(lMeasurement.second) << std::endl;
+    }
+
+    std::cout << "Distances and their neighbours: " << std::endl;
+
+    for (auto lMeasurement : aObject.mMeasurements)
+    {
+      getSurroundingDistances(lMeasurement.first, true);
+    }
+
+    // Temporary for testing
+    while (true)
+    {
+    }
   }
 } // namespace lidar_application
