@@ -21,6 +21,7 @@ namespace environment_controller
       const kinematica_msgs::ObstaclesConstPtr& aMsg)
   {
     Obstacles lObstacles;
+    ROS_INFO("%s", "?");
     for (std::size_t i = 0; i < aMsg->obstacles.size(); ++i)
     {
       try
@@ -46,6 +47,9 @@ namespace environment_controller
 
   void ObstaclesSubscriber::passObstacles(const Obstacles& aObstacles)
   {
+    ROS_INFO("%s", "Yeet1");
+
     mSafetyController->executeHardstopOnObstacleThreat(aObstacles);
+    mEnvironmentController->setObstacles(aObstacles);
   }
 } // namespace environment_controller

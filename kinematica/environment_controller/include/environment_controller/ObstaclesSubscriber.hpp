@@ -64,6 +64,7 @@ namespace environment_controller
 
       private:
     std::shared_ptr<SafetyController> mSafetyController;
+    std::shared_ptr<EnvironmentController> mEnvironmentController;
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
     ros::NodeHandle mHandlePub;

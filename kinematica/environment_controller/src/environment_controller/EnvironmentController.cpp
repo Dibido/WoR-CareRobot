@@ -55,6 +55,9 @@ namespace environment_controller
   void EnvironmentController::registerSensor(const Sensor& aSensor)
   {
     mSensors.insert(std::make_pair(aSensor.sensorID(), aSensor.pose()));
+    mTfHandler->transform(aSensor.pose(), true, cGlobalFrame,
+                          std::string(cSensorFrame) +
+                              std::to_string(aSensor.sensorID()));
   }
 
   Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
@@ -66,18 +69,30 @@ namespace environment_controller
 
   void EnvironmentController::publishTFSensors(const ros::TimerEvent&)
   {
-    for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
-         lSensor != mSensors.end(); ++lSensor)
-    {
-      mTfHandler->transform(lSensor->second, true, cGlobalFrame,
-                            std::string(cSensorFrame) +
-                                std::to_string(lSensor->first));
-    }
+    // for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
+    //      lSensor != mSensors.end(); ++lSensor)
+    // {
+    //   mTfHandler->transform(lSensor->second, true, cGlobalFrame,
+    //                         std::string(cSensorFrame) +
+    //                             std::to_string(lSensor->first));
+    // }
   }
 
   void EnvironmentController::setObstacles(const Obstacles& aObstacles)
   {
     mObstacles = aObstacles;
+    Rotation lRotationTemp(0, 0, 0, 0);
+
+    ROS_INFO("%s", "Yeet2");
+
+    for (uint8_t i = 0; i < aObstacles.size(); ++i)
+    {
+      Pose lPose(aObstacles.at(i).position(), lRotationTemp);
+      mTfHandler->transform(lPose, false,
+                            std::string(cSensorFrame) +
+                                std::to_string(aObstacles.at(i).sensorId()),
+                            std::string(cObstacleFrame) + std::to_string(i));
+    }
   }
 
   const Sensor EnvironmentController::getSensor(const uint8_t aSensorID) const
