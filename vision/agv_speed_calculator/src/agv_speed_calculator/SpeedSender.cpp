@@ -4,21 +4,17 @@
 #include <RF24.h>
 #include <nRF24L01.h>
 
-// Set up NRF values
 RF24 radio(cChipSelectPin, cChipEnablePin);
 String gEstimatedSpeedString = "";
+
 void initialiseRadio()
 {
-  // Start NRF
   radio.begin();
   radio.setRetries(cRetryDelay_ns, cRetryCount);
   radio.openWritingPipe(cRxAddr);
   radio.stopListening();
 }
 
-/*
- * Sends the estimated value over the NRF to the AGV gateway.
- */
 void sendEstimatedSpeed(double aEstimatedSpeed)
 {
   gEstimatedSpeedString = "#S#" + String(aEstimatedSpeed, cFloatPrecision);

@@ -6,8 +6,6 @@
    @author Emiel Bosman
 
 */
-// Include the libraries for the NRF module
-#include <SPI.h>
 #include "AgvConstants.hpp"
 #include "Debug.hpp"
 #include "SpeedSender.hpp"
@@ -27,8 +25,8 @@ void setup()
   digitalWrite(M1, HIGH);
   digitalWrite(M2, HIGH);
 
-  analogWrite(E1, gServoSpeed_pwm);  // PWM Speed Control
-  analogWrite(E2, gServoSpeed_pwm);  // PWM Speed Control
+  analogWrite(E1, gServoSpeed_pwm);
+  analogWrite(E2, gServoSpeed_pwm);
 
   initialiseRadio();
   initialiseSensor(speedSensor, 2);
