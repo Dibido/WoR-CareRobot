@@ -1,7 +1,7 @@
 #ifndef _DEBUG_HPP_
 #define _DEBUG_HPP_
 
-#define USE_DEBUGLN
+// #define USE_DEBUGLN
 
 #ifdef USE_DEBUGLN
 #define DEBUG(x) Serial.print(x)
