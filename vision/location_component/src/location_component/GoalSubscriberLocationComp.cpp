@@ -36,6 +36,11 @@ namespace location_component
   /* virtual*/ void GoalSubscriberLocationComp::selectGoalPosition(
       const environment_controller::Position& aPosition)
   {
+    // Position isn't used bit needed for the interface
+    aPosition.x_m();
+
+    // Changing the boolean to let the location component know to look for an
+    // AGV
     mDetectAGV->setDetectObject(true);
   }
 
