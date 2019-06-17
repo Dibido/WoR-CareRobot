@@ -131,7 +131,7 @@ src/controller/State.cpp
 src/controller/CloseGripper.cpp
 src/controller/Move.cpp
 src/controller/Ready.cpp
-src/controller/ReleaseCup.cpp
+src/controller/OpenGripper.cpp
 src/controller/WaitForCup.cpp
 src/controller/PowerOff.cpp
 src/controller/MoveToDropLocation.cpp

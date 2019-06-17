@@ -1,7 +1,7 @@
 #include "controller/Move.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/Init.hpp"
-#include "controller/ReleaseCup.hpp"
+#include "controller/OpenGripper.hpp"
 #include "controller/WaitForCup.hpp"
 #include "kinematics/EndEffector.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"

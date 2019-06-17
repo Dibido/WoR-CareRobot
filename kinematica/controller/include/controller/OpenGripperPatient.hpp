@@ -1,32 +1,32 @@
-#ifndef RELEASE_CUP_HPP
-#define RELEASE_CUP_HPP
+#ifndef OPEN_GRIPPER_PATIENT_HPP
+#define OPEN_GRIPPER_PATIENT_HPP
 
 // Local
 #include "Context.hpp"
-#include "State.hpp"
+#include "OpenGripper.hpp"
 namespace controller
 {
   /**
-   * @class ReleaseCup
+   * @class OpenGripperPatient
    *
-   * @brief ReleaseCup is the class which represents the ReleaseCup state.
+   * @brief OpenGripperPatient is the class which represents the OpenGripperPatient state.
    *
    */
-  class ReleaseCup : public State
+  class OpenGripperPatient : public OpenGripper
   {
       public:
     /**
-     * @brief Construct a new ReleaseCup object
+     * @brief Construct a new OpenGripperPatient object
      *
      */
-    ReleaseCup();
+    OpenGripperPatient() = default;
     /**
-     * @brief Destroy the ReleaseCup object
+     * @brief Destroy the OpenGripperPatient object
      *
      */
-    ~ReleaseCup();
+    virtual ~OpenGripperPatient() = defaut;
     /**
-     * @brief entryAction is being called when the ReleaseCup state is being
+     * @brief entryAction is being called when the OpenGripperPatient state is being
      * entered.
      *
      * @details The entryAction will calculate the time it takes to open the
@@ -42,7 +42,7 @@ namespace controller
 
     /**
      * @brief doActivity is continiously being called while the system is in the
-     * ReleaseCup.
+     * OpenGripperPatient.
      *
      * @details The doActivity function will check whether the time it
      * takes to open the gripper has passed. Once the time it took to open the
@@ -53,7 +53,7 @@ namespace controller
      */
     void doActivity(Context* aContext) override;
     /**
-     * @brief exitAction is being called when the ReleaseCup state is being
+     * @brief exitAction is being called when the OpenGripperPatient state is being
      * exited.
      *
      * @details At this moment the exitAction is not used.
@@ -63,8 +63,10 @@ namespace controller
      */
     void exitAction(Context* aContext) override;
 
+    virtual void transition(Context* aContext) override;
+
       private:
     ros::Time mReleaseTime;
   };
 } // namespace controller
-#endif // RELEASE_CUP_HPP
+#endif // OPEN_GRIPPER_HPP

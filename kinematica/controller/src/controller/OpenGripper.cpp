@@ -1,4 +1,4 @@
-#include "controller/ReleaseCup.hpp"
+#include "controller/OpenGripper.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/Init.hpp"
 #include <iostream>
@@ -7,12 +7,12 @@
 
 namespace controller
 {
-  ReleaseCup::ReleaseCup(){
+  OpenGripper::OpenGripper(){
 
   };
-  ReleaseCup::~ReleaseCup(){};
+  OpenGripper::~OpenGripper(){};
 
-  void ReleaseCup::entryAction(Context* aContext)
+  void OpenGripper::entryAction(Context* aContext)
   {
     aContext->gripperData() =
         robotcontroller::GripperData(cGripperWidth_m, cSpeedFactor);
@@ -32,17 +32,22 @@ namespace controller
     }
   }
 
-  void ReleaseCup::doActivity(Context* aContext)
+  void OpenGripper::doActivity(Context* aContext)
   {
     if (ros::Time::now() >= mReleaseTime)
     {
       std::this_thread::sleep_for(
           std::chrono::seconds(( uint64_t )cSafeWaitTime_s));
-      aContext->setState(std::make_shared<Init>());
     }
   }
 
-  void ReleaseCup::exitAction(Context*)
+  void OpenGripper::exitAction(Context*)
   {
   }
+
+  void OpenGripper::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<Init>());
+  }
+
 } // namespace controller
