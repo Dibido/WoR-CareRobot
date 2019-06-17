@@ -12,8 +12,8 @@ void buttonSetup(Button& aButton, uint8_t mPin)
 
 void buttonLoop(Button& aButton)
 {
-  bool newState = readButton(aButton);
-  if (newState != aButton.mState && aButton.mChecking == false)
+  bool lNewState = readButton(aButton);
+  if (lNewState != aButton.mState && aButton.mChecking == false)
   {
     aButton.mChecking = true;
     aButton.mLastAction_ms = millis();
@@ -21,9 +21,9 @@ void buttonLoop(Button& aButton)
   else if (aButton.mLastAction_ms + gMinIntervalTime_ms < millis() &&
            aButton.mChecking == true)
   {
-    if (newState != aButton.mState)
+    if (lNewState != aButton.mState)
     {
-      aButton.mState = newState;
+      aButton.mState = lNewState;
     }
     aButton.mChecking = false;
   }
@@ -38,9 +38,9 @@ bool changed(Button& aButton)
   return aButton.mLastState != aButton.mState;
 }
 
-bool changedTo(Button& aButton, bool to)
+bool changedTo(Button& aButton, bool aTo)
 {
-  return changed(aButton) && aButton.mState == to;
+  return changed(aButton) && aButton.mState == aTo;
 }
 
 bool readButton(Button& aButton)

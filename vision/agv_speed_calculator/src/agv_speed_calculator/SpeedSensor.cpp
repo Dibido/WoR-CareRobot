@@ -20,7 +20,7 @@ bool speedAvailable(SpeedSensor& aSensor)
 
 bool readSensor(SpeedSensor& aSensor)
 {
-  const uint32_t lCurrentMeasurements = aSensor.mAmountOfMeasurements;
+  const uint16_t lCurrentMeasurements = aSensor.mAmountOfMeasurements;
   const uint32_t lCurrentTime_ms = millis();
   buttonLoop(aSensor.mSensor);
 

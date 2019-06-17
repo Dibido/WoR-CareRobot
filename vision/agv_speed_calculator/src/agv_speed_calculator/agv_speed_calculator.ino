@@ -11,7 +11,7 @@
 #include "SpeedSender.hpp"
 #include "SpeedSensor.hpp"
 
-SpeedSensor speedSensor;
+SpeedSensor gSpeedSensor;
 
 void setup()
 {
@@ -29,18 +29,18 @@ void setup()
   analogWrite(E2, gServoSpeed_pwm);
 
   initialiseRadio();
-  initialiseSensor(speedSensor, 2);
+  initialiseSensor(gSpeedSensor, 2);
 }
 
 void loop()
 {
-  if (readSensor(speedSensor))
+  if (readSensor(gSpeedSensor))
   {
-    if (speedSensor.mCurrentSpeed_m_s > 0)
+    if (gSpeedSensor.mCurrentSpeed_m_s > 0)
     {
       DEBUG(F("Current speed "));
-      DEBUGLNFLOAT(speedSensor.mCurrentSpeed_m_s, 4);
-      sendEstimatedSpeed(speedSensor.mCurrentSpeed_m_s);
+      DEBUGLNFLOAT(gSpeedSensor.mCurrentSpeed_m_s, 4);
+      sendEstimatedSpeed(gSpeedSensor.mCurrentSpeed_m_s);
     }
   }
 }

@@ -41,4 +41,4 @@ SCK -> D13
 
 ## Known problems
 
-* Sometimes a message is not sent or received by the NRF. Cause of this problem is not clear, but with a sufficient amount of measurements does not lead to significant problems
+* Sometimes a message is not sent or received by the NRF. Increasing the time between each transmission decreases the chance of this happening
