@@ -29,11 +29,34 @@ namespace lidar_application
     compared to mInitialScan, it will be left out since 1 is <
     cObjectMinNumberOfAdjacentMeasurements */
     const unsigned int cObjectMinNumberOfAdjacentMeasurements = 3;
+
+    /**
+     * @brief Number of 360-scans the lidar will perform during the
+     * initialization. The more scans the longer it will take, but initial data
+     * will also be more detailed.
+     */
+    const unsigned int cDefaultAmountOfInitialScans = 1;
   } // namespace objectdetection_constants
 
   class ObjectDetection
   {
       public:
+    /**
+     * @brief Default constructor
+     */
+    ObjectDetection();
+
+    /**
+     * @brief Constructor
+     * @param aMaxDistanceDifference_m - This variable describes the max amount
+     * of difference in meters between two adjacent measurements to still assume
+     * its the same object. Example: [Theta => Distance] [0.0 => 1.5],
+     * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
+     * equal to aMaxDistanceDifference_m, both these measurements are taken of
+     * the same object.
+     */
+    ObjectDetection(const double& aMaxDistanceDifference_m);
+
     /**
      * @brief Constructor
      * @param aMaxDistanceDifference_m - This variable describes the max amount
@@ -133,9 +156,11 @@ namespace lidar_application
     void printPublishData() const;
 
     /**
-     * @brief function for debug purposes, shows info about object and
+     * @brief Checkes wheter a given object is considered small.
+     * This is the case if the amount of measurements the object has
+     * is lower then mObjectMinNumberOfAdjacentMeasurements
      */
-    void debugObject(LidarData& aObject) const;
+    bool isSmallObject(const LidarData& lObject) const;
 
     bool mInitialized;
 

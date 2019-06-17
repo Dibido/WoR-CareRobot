@@ -2,6 +2,32 @@
 
 namespace lidar_application
 {
+  ObjectDetection::ObjectDetection()
+      : mInitialized(false),
+        mMaxDistanceDifference_m(
+            objectdetection_constants::cDefaultMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(false),
+        mObjectMinNumberOfAdjacentMeasurements(
+            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+        mAmountOfInitialScansRequired(
+            objectdetection_constants::cDefaultAmountOfInitialScans)
+  {
+  }
+
+  ObjectDetection::ObjectDetection(const double& aMaxDistanceDifference_m)
+      : mInitialized(false),
+        mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(false),
+        mObjectMinNumberOfAdjacentMeasurements(
+            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+        mAmountOfInitialScansRequired(
+            objectdetection_constants::cDefaultAmountOfInitialScans)
+  {
+  }
 
   ObjectDetection::ObjectDetection(
       const double& aMaxDistanceDifference_m,
@@ -40,8 +66,6 @@ namespace lidar_application
 
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
-
-          printPublishData();
         }
         else
         {
@@ -114,9 +138,7 @@ namespace lidar_application
             {
               // If we want to ignore small objects, and objectsize is lower
               // then required
-              if (mIgnoreSmallObjects &&
-                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   mObjectMinNumberOfAdjacentMeasurements))
+              if (mIgnoreSmallObjects && isSmallObject(lObject))
               {
                 lObject.reset();
               }
@@ -130,9 +152,7 @@ namespace lidar_application
             {
               // If we want to ignore small objects, and objectsize is lower
               // then required
-              if (mIgnoreSmallObjects &&
-                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   mObjectMinNumberOfAdjacentMeasurements))
+              if (mIgnoreSmallObjects && isSmallObject(lObject))
               {
                 lObject.reset();
               }
@@ -163,9 +183,7 @@ namespace lidar_application
           {
             // If we want to ignore small objects, and objectsize is lower then
             // required
-            if (mIgnoreSmallObjects &&
-                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 mObjectMinNumberOfAdjacentMeasurements))
+            if (mIgnoreSmallObjects && isSmallObject(lObject))
             {
               lObject.reset();
             }
@@ -178,17 +196,12 @@ namespace lidar_application
           {
             // If we want to ignore small objects, and objectsize is lower then
             // required
-            if (mIgnoreSmallObjects &&
-                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 mObjectMinNumberOfAdjacentMeasurements))
+            if (mIgnoreSmallObjects && isSmallObject(lObject))
             {
               lObject.reset();
             }
             else
             {
-
-              // debugObject(lObject);
-
               // Add centerpoint of this object to list
               lObjectList.push_back(getAverageMeasurement(lObject));
             }
@@ -230,9 +243,7 @@ namespace lidar_application
 
         // If we want to ignore small objects, and objectsize is lower then
         // required
-        if (mIgnoreSmallObjects &&
-            (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-             mObjectMinNumberOfAdjacentMeasurements))
+        if (mIgnoreSmallObjects && isSmallObject(lObject))
         {
           lObject.reset();
         }
@@ -365,14 +376,15 @@ namespace lidar_application
     {
       lUpperNeighbourDistance_m = lIterator->second;
 
-      // If there exists a lower angle, use that. Otherwise take the highest
-      // angle as lower neighbour.
+      // If there exists a lower angle, use that.
       if (!(lIterator == mInitialScan.mMeasurements.begin()))
       {
-        auto lPreviousElementIterator = (lIterator--);
+        auto lPreviousElementIterator = lIterator;
+        lPreviousElementIterator--;
 
         lLowerNeighbourDistance_m = lPreviousElementIterator->second;
       }
+      // Otherwise take the highest angle as lower neighbour.
       else
       {
         lLowerNeighbourDistance_m =
@@ -411,5 +423,17 @@ namespace lidar_application
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
     ROS_INFO("----------------------");
+  }
+
+  bool ObjectDetection::isSmallObject(const LidarData& lObject) const
+  {
+    if (lObject.mMeasurements.size() < mObjectMinNumberOfAdjacentMeasurements)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 } // namespace lidar_application
