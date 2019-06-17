@@ -193,6 +193,10 @@ namespace controller
     return mDropPosition;
   }
 
+  environment_controller::Position& Context::patientPosition()
+  {
+    return mPatientPosition;
+  }
   std::condition_variable& Context::waitForRelease()
   {
     return mWaitForRelease;
