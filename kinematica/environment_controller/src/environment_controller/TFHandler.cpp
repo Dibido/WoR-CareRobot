@@ -36,9 +36,6 @@ namespace environment_controller
 
     if (aStatic)
     {
-      ROS_INFO("Static broadcast %s %s", aHeaderFrame.c_str(),
-               aChildFrame.c_str());
-      ROS_INFO_STREAM(lTransformStamped);
       mStaticBroadcaster.sendTransform(lTransformStamped);
     }
     else

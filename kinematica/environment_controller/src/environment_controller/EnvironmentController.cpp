@@ -11,9 +11,8 @@ namespace environment_controller
       const std::shared_ptr<controller::Context>& aContext)
       : mContext(aContext), mTfHandler(std::make_shared<TFHandler>())
   {
-    mTimer = mCallbackNode.createTimer(ros::Rate(cSensorTFPublishRate_hz),
-                                       &EnvironmentController::publishTFSensors,
-                                       this);
+    mTimer = mHandle.createTimer(ros::Duration(cSensorCallbackDuration_s),
+                                 &EnvironmentController::transformDebug, this);
   }
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)
@@ -68,17 +67,6 @@ namespace environment_controller
     return lPose;
   }
 
-  void EnvironmentController::publishTFSensors(const ros::TimerEvent&)
-  {
-    // for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
-    //      lSensor != mSensors.end(); ++lSensor)
-    // {
-    //   mTfHandler->transform(lSensor->second, true, cGlobalFrame,
-    //                         std::string(cSensorFrame) +
-    //                             std::to_string(lSensor->first));
-    // }
-  }
-
   void EnvironmentController::setObstacles(const Obstacles& aObstacles)
   {
     mObstacles.clear();
@@ -103,5 +91,26 @@ namespace environment_controller
     Sensor lSensor(lSensorIterator->first, lSensorIterator->second);
 
     return lSensor;
+  }
+
+  void EnvironmentController::transformDebug(const ros::TimerEvent&)
+  {
+    for (uint8_t i = 0; i < mObstacles.size(); ++i)
+    {
+      try
+      {
+        Pose lPose = transformFrames(cObstacleFrame, i);
+
+        ROS_DEBUG("Transform x: %f, y: %f, z: %f; x: %f, y: %f, z: %f, w: %f",
+                  lPose.position().x_m(), lPose.position().y_m(),
+                  lPose.position().z_m(), lPose.rotation().x(),
+                  lPose.rotation().y(), lPose.rotation().z(),
+                  lPose.rotation().w());
+      }
+      catch (tf2::TransformException& lEx)
+      {
+        ROS_WARN("%s", lEx.what());
+      }
+    }
   }
 } // namespace environment_controller

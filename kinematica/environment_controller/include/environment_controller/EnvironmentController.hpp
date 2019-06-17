@@ -87,11 +87,6 @@ namespace environment_controller
     Pose transformFrames(const std::string& aFrame, const uint8_t aID);
 
     /**
-     * @brief Publish transforms
-     *
-     */
-    void publishTFSensors(const ros::TimerEvent&);
-    /**
      * @brief
      *
      */
@@ -105,9 +100,16 @@ namespace environment_controller
      */
     const Sensor getSensor(const uint8_t aSensorID) const;
 
+    /**
+     * @brief
+     *
+     */
+    void transformDebug(const ros::TimerEvent&);
+
       private:
     ros::NodeHandle mCallbackNode;
     ros::Timer mTimer;
+    ros::NodeHandle mHandle;
 
     std::shared_ptr<controller::Context> mContext;
     std::shared_ptr<TFHandler> mTfHandler;
