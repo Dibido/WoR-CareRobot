@@ -35,4 +35,8 @@ namespace controller
   void Ready::exitAction(Context*)
   {
   }
+
+  void Ready::transition(Context*)
+  {
+  }
 } // namespace controller

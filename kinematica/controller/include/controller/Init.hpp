@@ -51,6 +51,13 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* aContext) override;
+
+    /**
+     * @brief
+     *
+     * @param aContext
+     */
+    virtual void transition(Context* aContext);
   };
 } // namespace controller
 #endif // INIT_HPP

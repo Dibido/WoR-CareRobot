@@ -24,4 +24,8 @@ namespace controller
   {
     aContext->robotStop()->publish(false);
   }
+
+  void EmergencyStop::Transition(Context*)
+  {
+  }
 } // namespace controller
