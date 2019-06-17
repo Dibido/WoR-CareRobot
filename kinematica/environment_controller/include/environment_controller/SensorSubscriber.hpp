@@ -51,7 +51,6 @@ namespace environment_controller
     void sensorCallback(const kinematica_msgs::SensorConstPtr& aMsg);
 
     ros::NodeHandle mHandle;
-    ros::Timer mTimer;
     ros::Subscriber mSubscriber;
     std::shared_ptr<EnvironmentController> mEnvironmentController;
   };
