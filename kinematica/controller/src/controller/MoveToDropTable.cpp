@@ -1,4 +1,4 @@
-#include "controller/MoveToDropLocation.hpp"
+#include "controller/MoveToDropTable.hpp"
 #include "controller/OpenGripperTable.hpp"
 namespace controller
 {

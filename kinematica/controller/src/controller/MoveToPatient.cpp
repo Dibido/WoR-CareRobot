@@ -1,4 +1,5 @@
-#include "MoveToPatient.hpp"
+#include "controller/MoveToPatient.hpp"
+#include "controller/WaitForReleaseSignal.hpp"
 
 namespace controller
 {

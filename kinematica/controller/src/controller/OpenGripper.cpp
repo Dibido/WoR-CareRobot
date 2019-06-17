@@ -38,6 +38,7 @@ namespace controller
     {
       std::this_thread::sleep_for(
           std::chrono::seconds(( uint64_t )cSafeWaitTime_s));
+          transition(aContext);
     }
   }
 

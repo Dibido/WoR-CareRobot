@@ -67,10 +67,10 @@ namespace controller
 
     virtual void transition(Context* aContext);
 
-    virtual
-
-        private : ros::Time mGripperCloseTime;
-  };s
+      private:
+    ros::Time mGripperCloseTime;
+  };
+  
 
 } // namespace controller
 #endif // CLOSE_GRIPPER_HPP

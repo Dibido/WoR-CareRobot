@@ -21,10 +21,15 @@ namespace controller
     }
     std::this_thread::sleep_for(
         std::chrono::seconds(aContext->releaseTime_s()));
-    aContext->setState(std::make_shared<OpenGripper>());
+        transition(aContext);
   }
 
   void WaitForReleaseSignal::exitAction(Context*)
   {
+  }
+
+  void WaitForReleaseSignal::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<OpenGripper>());
   }
 } // namespace controller

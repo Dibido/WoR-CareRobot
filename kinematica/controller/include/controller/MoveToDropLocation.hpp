@@ -26,7 +26,7 @@ namespace controller
     /**
      * @brief Default constructor
      */
-    MoveToDropLocation();
+    MoveToDropLocation() = default;
 
     /**
      * @brief Constructor
@@ -46,7 +46,7 @@ namespace controller
      *
      * @param aContext
      */
-    virtual void MoveToDropLocation::entryAction(Context* aContext);
+    virtual void entryAction(Context* aContext);
 
     /**
      * @brief

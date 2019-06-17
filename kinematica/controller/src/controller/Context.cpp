@@ -47,6 +47,7 @@ namespace controller
             ros::Time(0))),
         mGripperData(0.0, 0.0),
         mDropPosition(0.0, 0.0, 0.0),
+        mPatientPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
     mGraph->addObstacle(cRobotObstacle);

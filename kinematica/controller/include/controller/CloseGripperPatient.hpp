@@ -29,7 +29,7 @@ namespace controller
      *
      */
     virtual ~CloseGripperPatient() = default;
-    virtual void transition(Context* aContext) override;
+    virtual void transition(Context* aContext);
 
       private:
     ros::Time mGripperCloseTime;

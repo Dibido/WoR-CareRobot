@@ -40,7 +40,7 @@ namespace controller
   {
     if (ros::Time::now() >= mGripperCloseTime)
     {
-      this->transition(aContext);
+      transition(aContext);
     }
   }
 
@@ -48,7 +48,8 @@ namespace controller
   {
   }
 
-  void CloseGripper::transition(Context* aContext){
-      aContext->setState(std::make_shared<MoveToDropLocation>());
+  void CloseGripper::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<MoveToDropLocation>());
   }
 } // namespace controller
