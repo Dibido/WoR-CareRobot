@@ -1,5 +1,5 @@
 #include "controller/MoveToPatient.hpp"
-#include "controller/WaitForReleaseSignal.hpp"
+#include "controller/WaitForClosedSignal.hpp"
 
 namespace controller
 {
@@ -15,6 +15,6 @@ namespace controller
   }
   void MoveToPatient::transition(Context* aContext)
   {
-    aContext->setState(std::make_shared<WaitForReleaseSignal>());
+    aContext->setState(std::make_shared<WaitForClosedSignal>());
   }
 } // namespace controller

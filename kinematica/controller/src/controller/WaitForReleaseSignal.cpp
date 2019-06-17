@@ -1,5 +1,5 @@
 #include "controller/WaitForReleaseSignal.hpp"
-#include "controller/OpenGripper.hpp"
+#include "controller/OpenGripperPatient.hpp"
 #include <thread>
 
 namespace controller
@@ -30,6 +30,6 @@ namespace controller
 
   void WaitForReleaseSignal::transition(Context* aContext)
   {
-    aContext->setState(std::make_shared<OpenGripper>());
+    aContext->setState(std::make_shared<OpenGripperPatient>());
   }
 } // namespace controller

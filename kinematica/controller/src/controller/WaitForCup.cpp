@@ -6,7 +6,7 @@
 #include <thread>
 
 // Local
-#include "controller/CloseGripper.hpp"
+#include "controller/CloseGripperCup.hpp"
 #include "controller/WaitForCup.hpp"
 namespace controller
 {
@@ -49,6 +49,6 @@ namespace controller
 
   void WaitForCup::transition(Context* aContext)
   {
-    aContext->setState(std::make_shared<CloseGripper>());
+    aContext->setState(std::make_shared<CloseGripperCup>());
   }
 } // namespace controller
