@@ -2,6 +2,7 @@
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
 #include "controller/Init.hpp"
+#include "controller/Move.hpp"
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
@@ -96,7 +97,16 @@ namespace controller
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
     else
-      setState(std::make_shared<Init>());
+    {
+      if (ros::Time::now() > mCup.timeOfArrival())
+      {
+        setState(std::make_shared<Init>());
+      }
+      else
+      {
+        setState(std::make_shared<Move>());
+      }
+    }
   }
 
   void Context::provideObstacles(
