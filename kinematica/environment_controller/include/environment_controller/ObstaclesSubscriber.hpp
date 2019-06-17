@@ -31,6 +31,8 @@ namespace environment_controller
     /**
      * @brief Construct a new Obstacles Subscriber object
      *
+     * @param aSafetyController
+     * @param aEnvironmentController
      * @param aSubName
      *
      * @author Gianni Monteban

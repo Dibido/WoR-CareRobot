@@ -35,8 +35,12 @@ namespace environment_controller
     /**
      * @brief Publishes frame information
      *
-     * @param position Object that exists of x, y and z coordinates
-     * @param frame A collection of coordinates from a single coordinate system
+     * @param aPose Pose of the object
+     * @param aStatic Boolean that indicaties whether the transform is static or
+     * not
+     * @param aHeaderFrame
+     * @param aChildFrame
+     *
      */
     void transform(const Pose& aPose,
                    const bool aStatic,

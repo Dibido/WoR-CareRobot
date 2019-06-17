@@ -11,8 +11,6 @@ namespace environment_controller
       const std::shared_ptr<controller::Context>& aContext)
       : mContext(aContext), mTfHandler(std::make_shared<TFHandler>())
   {
-    mTimer = mHandle.createTimer(ros::Duration(cSensorCallbackDuration_s),
-                                 &EnvironmentController::transformDebug, this);
   }
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)
@@ -59,11 +57,9 @@ namespace environment_controller
                               std::to_string(aSensor.sensorID()));
   }
 
-  Pose EnvironmentController::transformFrames(const std::string& aFrame,
-                                              const uint8_t aID)
+  Pose EnvironmentController::transformFrames(const std::string& aFrame)
   {
-    Pose lPose = mTfHandler->calculatePosition(
-        std::string(aFrame) + std::to_string(aID), cGlobalFrame);
+    Pose lPose = mTfHandler->calculatePosition(aFrame, cGlobalFrame);
     return lPose;
   }
 
@@ -93,24 +89,4 @@ namespace environment_controller
     return lSensor;
   }
 
-  void EnvironmentController::transformDebug(const ros::TimerEvent&)
-  {
-    for (uint8_t i = 0; i < mObstacles.size(); ++i)
-    {
-      try
-      {
-        Pose lPose = transformFrames(cObstacleFrame, i);
-
-        ROS_DEBUG("Transform x: %f, y: %f, z: %f; x: %f, y: %f, z: %f, w: %f",
-                  lPose.position().x_m(), lPose.position().y_m(),
-                  lPose.position().z_m(), lPose.rotation().x(),
-                  lPose.rotation().y(), lPose.rotation().z(),
-                  lPose.rotation().w());
-      }
-      catch (tf2::TransformException& lEx)
-      {
-        ROS_WARN("%s", lEx.what());
-      }
-    }
-  }
 } // namespace environment_controller
