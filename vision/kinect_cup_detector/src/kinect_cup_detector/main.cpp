@@ -13,19 +13,27 @@
 #include <string>
 #include <vector>
 
+#include "environment_controller/EnvironmentConsts.hpp"
+#include "environment_controller/ICupProvider.hpp"
+#include "kinematica_msgs/Cup.h"
+#include "std_msgs/String.h"
+
 bool gCalibrated = false;
+ros::Publisher gCupPublisher;
 
 void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg);
 
 int main(int argc, char** argv)
 {
   // Setup opencv
-  cv::namedWindow("Contours", CV_WINDOW_AUTOSIZE);
   cv::namedWindow("result");
-  cv::namedWindow("ROI");
   // Setup ROS
   ros::init(argc, argv, "kinect_cup_detector");
   ros::NodeHandle lNodeHandle;
+
+  gCupPublisher = lNodeHandle.advertise<kinematica_msgs::Cup>(
+      environment_controller::cCupTopicName, 1000);
+
   image_transport::ImageTransport mImageTransport(lNodeHandle);
   image_transport::Subscriber mSubscriber;
   image_transport::Publisher mPublisher;
@@ -52,9 +60,14 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   {
     // Calibrate the center of the kinect image  to be 70 cm away from the
     // robotarm.
+    // Draw a cirlce in the center of the image
     cv::circle(displayMatrix,
                cv::Point(displayMatrix.cols / 2, displayMatrix.rows / 2), 4,
                cv::Scalar(0, 0, 255), 2);
+    // Draw a line across the center of the image
+    cv::line(displayMatrix, cv::Point((displayMatrix.cols / 2), 0),
+             cv::Point((displayMatrix.cols / 2), displayMatrix.rows),
+             cv::Scalar(0, 0, 255), 4);
     cv::imshow("result", displayMatrix);
     int c = cv::waitKey(10);
     if (c == 27) // Escape
@@ -69,12 +82,10 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
 
   // Find the cup on the background
   std::vector<std::vector<cv::Point>> contours;
-  std::vector<std::vector<cv::Point>> regionOfInterestContours;
   std::vector<cv::Vec4i> hierarchy;
   cv::Mat displayHSV;
   cv::Mat lColorMask;
   cv::Mat mApproxImage;
-  cv::Mat regionOfInterest;
   int centerX;
   int centerY;
   // Filter color
@@ -94,9 +105,6 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     {
       if (contourArea(contours.at(i)) > 500)
       {
-        // Found the rectangle, set the region of interest
-        cv::Rect boundedRect = cv::boundingRect(contours.at(i));
-        regionOfInterest = lColorMask(boundedRect);
         // Get the number of pixels per cm (longest side of rectangle is 30cm)
         cv::RotatedRect lRotatedRect = cv::minAreaRect(contours.at(i));
         // Get the biggest side
@@ -126,7 +134,7 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
                    cv::Scalar(0, 0, 255), 2);
         std::cout << "Centerx : " << centerX << " CenterY : " << centerY
                   << std::endl;
-        /*// Find Cup on rectangle
+        /* TODO Find Cup on rectangle
         cv::findContours(regionOfInterest, regionOfInterestContours, hierarchy,
         CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0)); for (unsigned
         int j = 0; j < regionOfInterestContours.size(); j++)
@@ -136,30 +144,39 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
 
           // Calculate position and size (cup should be ~7cm)
         }*/
+        // Determine position relative to the robotarm
+        int distFromCenterX = (displayMatrix.cols / 2) - centerX;
+        int distFromCenterY = (displayMatrix.rows / 2) - centerY;
+        double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
+        double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
+        distFromCenterXCM = -distFromCenterXCM;
+        distFromCenterYCM -= 70;
+        distFromCenterYCM = -distFromCenterYCM;
+        std::cout << "Centerx : " << distFromCenterXCM
+                  << " CenterY : " << distFromCenterYCM << std::endl;
         // Send it to the location component
+        kinematica_msgs::Cup lFoundCup;
+        lFoundCup.aDepth = 0.07;
+        lFoundCup.aDirection = 0;
+        lFoundCup.aHeight = 0.07;
+        lFoundCup.aMeasurementTime = ros::Time::now();
+        lFoundCup.aSensorId = 1;
+        lFoundCup.aSpeed = 0;
+        lFoundCup.aWidth = 0.07;
+
+        lFoundCup.mX_m = distFromCenterXCM / 100;
+        lFoundCup.mY_m = distFromCenterYCM / 100;
+        lFoundCup.mZ_m = 0.02;
+
+        lFoundCup.timeOfArrival = ros::Time::now();
+        gCupPublisher.publish(lFoundCup);
+        ros::spinOnce();
       }
     }
   }
-  /// Draw contours
-  cv::Mat displayImage = cv::Mat::zeros(regionOfInterest.size(), CV_8UC3);
-  for (unsigned int i = 0; i < regionOfInterestContours.size(); i++)
-  {
-    cv::Scalar color = cv::Scalar(0, 0, 255);
-    cv::drawContours(displayImage, regionOfInterestContours, i, color, 2, 8,
-                     hierarchy, 0, cv::Point());
-  }
-
-  /// Show in a window
+  // Show in a window
   cv::cvtColor(displayHSV, displayMatrix, cv::COLOR_HSV2RGB);
   cv::imshow("result", displayMatrix);
-  if (displayImage.cols > 0 && displayImage.rows > 0)
-  {
-    cv::imshow("Contours", displayImage);
-  }
-  if (regionOfInterest.cols > 0 && regionOfInterest.rows > 0)
-  {
-    cv::imshow("ROI", regionOfInterest);
-  }
   int c = cv::waitKey(10);
   if (c == 27) // Escape
   {

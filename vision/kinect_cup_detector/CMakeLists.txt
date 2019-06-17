@@ -3,16 +3,21 @@ project(kinect_cup_detector)
 
 add_compile_options(-Wall -Wconversion -Wextra -std=c++14)
 set(CMAKE_CXX_CPPCHECK "cppcheck" "–enable=all -Wall -Wextra -Wconversion --inline-suppr")
+SET(GCC_OPENCV_FLAGS "-lopencv_core -lopencv_highgui")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_OPENCV_FLAGS}")
 
 find_package(OpenCV 3.2.0 REQUIRED)
 include_directories(include)
 
 find_package(catkin REQUIRED COMPONENTS 
+  message_generation  
   roscpp
   std_msgs
   sensor_interfaces
   cv_bridge
-	image_transport
+  image_transport
+  kinematica_msgs
+  environment_controller
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -24,7 +29,7 @@ unit_test_framework
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp
-  DEPENDS roscpp std_msgs message_runtime sensor_interfaces cv_bridge image_transport)
+  DEPENDS roscpp std_msgs message_runtime sensor_interfaces environment_controller cv_bridge image_transport)
 
 #Enable CTest which is used for the codecoverage
 include(CTest)
