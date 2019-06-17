@@ -56,8 +56,8 @@ x
       <joint_info name="_joint7" channel="6">
         <min_pw>-3.857231089</min_pw>
         <max_pw>1.937368911</max_pw>
-        <min_rad>−3.857231089</min_rad>
-        <max_rad>1.937368911</max_rad>
+        <min_rad>-2.8973</min_rad>
+        <max_rad>2.8973</max_rad>
         <max_vel>180</max_vel>
       </joint_info>
 
@@ -441,11 +441,11 @@ x
       <child>link7</child>
       <pose>0.0 0 0.06 0 0 -0.785398</pose>
       <axis>
-        <xyz>0 0 1</xyz>
+        <xyz>0 0 -1</xyz>
       <limit> 
         <effort>12</effort>
-        <lower>-2.9671</lower>
-        <upper>2.9671</upper>
+        <lower>-1.8973</lower>
+        <upper>1.8973</upper>
         <velocity>2.8710</velocity>
       </limit>
       </axis>
@@ -608,7 +608,7 @@ x
       <axis>
         <xyz>0 -1 0</xyz>
         <limit> 
-          <lower>0</lower>
+          <lower>0.02</lower>
           <upper>0.0395</upper>
           <effort>12</effort>
           <velocity>2.8710</velocity>

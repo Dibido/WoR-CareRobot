@@ -8,7 +8,6 @@ namespace environment_controller
 {
   const uint16_t cQueue_size = 1000;
   const uint8_t cRate = 10;
-  // const uint8_t cCallbackRate_hz = 100;
   const std::string cObstacleTopicName = "/detected_objects";
   const std::string cCupTopicName = "/location/cup";
   const std::string cGoalPositionTopicName = "goal";
@@ -16,6 +15,7 @@ namespace environment_controller
   const std::string cSensorTopicName = "sensor";
   const std::string cGlobalFrame = "world";
   const std::string cSensorFrame = "sensor";
+  const std::string cObstacleFrame = "obstacle";
   const uint8_t cMaxRange_m = 100;
   const int8_t cMinRange_m = -100;
   const int8_t cQuaternionMin = -1;
@@ -27,7 +27,7 @@ namespace environment_controller
   const double cRobotZ_m = 0.0;
   const double cLow_rad = -M_PI;
   const double cHigh_rad = M_PI;
-  const double cMinDistanceToRobotarm_m = 2.0;
+  const double cMinDistanceToRobotarm_m = 1.5;
   const double cSensorCallbackDuration_s = 0.1;
   const double cSensorTFPublishRate_hz = 100;
   const uint8_t cSensorIDListen = 0;

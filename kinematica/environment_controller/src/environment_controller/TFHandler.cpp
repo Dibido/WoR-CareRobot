@@ -7,13 +7,18 @@ namespace environment_controller
   {
   }
 
-  void TFHandler::transform(const Pose& aPose, const std::string& aFrame)
+  void TFHandler::transform(const Pose& aPose,
+                            const bool aStatic,
+                            const std::string& aHeaderFrame,
+                            const std::string& aChildFrame)
   {
+    static tf2_ros::StaticTransformBroadcaster mStaticBroadcaster;
+
     geometry_msgs::TransformStamped lTransformStamped;
 
     lTransformStamped.header.stamp = ros::Time::now();
-    lTransformStamped.header.frame_id = cGlobalFrame;
-    lTransformStamped.child_frame_id = aFrame;
+    lTransformStamped.header.frame_id = aHeaderFrame;
+    lTransformStamped.child_frame_id = aChildFrame;
     lTransformStamped.transform.translation.x = aPose.position().x_m();
     lTransformStamped.transform.translation.y = aPose.position().y_m();
     lTransformStamped.transform.translation.z = aPose.position().z_m();
@@ -29,7 +34,14 @@ namespace environment_controller
     lTransformStamped.transform.rotation.z = lQ.z();
     lTransformStamped.transform.rotation.w = lQ.w();
 
-    mBroadcaster.sendTransform(lTransformStamped);
+    if (aStatic)
+    {
+      mStaticBroadcaster.sendTransform(lTransformStamped);
+    }
+    else
+    {
+      mBroadcaster.sendTransform(lTransformStamped);
+    }
   }
 
   Pose TFHandler::calculatePosition(const std::string& aFromFrame,

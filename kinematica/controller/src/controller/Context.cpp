@@ -2,6 +2,7 @@
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
 #include "controller/Init.hpp"
+#include "controller/Move.hpp"
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
 #include "environment_controller/Position.hpp"
@@ -50,8 +51,9 @@ namespace controller
   {
     mGraph->addObstacle(cRobotObstacle);
     mGraph->addObstacle(cFloorObstacle);
-
+    ros::Duration(cSafeWaitTime_s).sleep();
     setState(std::make_shared<Init>());
+    mCurrentState->doActivity(this);
     mCurrentState->doActivity(this);
   }
 
@@ -95,7 +97,16 @@ namespace controller
     if (aStop)
       setState(std::make_shared<EmergencyStop>());
     else
-      setState(std::make_shared<Init>());
+    {
+      if (ros::Time::now() > mCup.timeOfArrival())
+      {
+        setState(std::make_shared<Init>());
+      }
+      else
+      {
+        setState(std::make_shared<Move>());
+      }
+    }
   }
 
   void Context::provideObstacles(
@@ -119,9 +130,14 @@ namespace controller
     mDropPosition = aPosition;
   }
 
-  kinematics::Configuration& Context::configuration()
+  kinematics::Configuration& Context::currentConfiguration()
   {
-    return mConfiguration;
+    return mCurrentConfiguration;
+  }
+
+  kinematics::Configuration& Context::goalConfiguration()
+  {
+    return mGoalConfiguration;
   }
 
   std::shared_ptr<planning::Graph>& Context::graph()

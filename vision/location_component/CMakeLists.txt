@@ -44,14 +44,48 @@ enable_testing()
 include_directories(include SYSTEM ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 # add the publisher example
-add_executable(location_component src/main.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/FrameCalibration.cpp src/location_component/LocationComponent.cpp src/location_component/AGVFrameCalibration.cpp src/location_component/CupDetectionCalibration.cpp)
+add_executable(location_component 
+                src/main.cpp 
+                src/location_component/DetectAGV.cpp 
+                src/location_component/CupScanner.cpp 
+                src/location_component/PosCalculation.cpp 
+                src/location_component/RosServiceCup.cpp 
+                src/location_component/AGV.cpp 
+                src/location_component/AGVSubscriber.cpp 
+                src/location_component/FrameCalibration.cpp 
+                src/location_component/LocationComponent.cpp 
+                src/location_component/AGVFrameCalibration.cpp 
+                src/location_component/CupDetectionCalibration.cpp)
+                
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
 
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/DetectAGV_test.cpp unitTests/ValueGuardTest.cpp unitTests/ValueTest.cpp unitTests/IAGVProvider_test.cpp unitTests/FrameCalibration_test.cpp unitTests/CupScanner_test.cpp unitTests/PosCalculation_test.cpp unitTests/ImagePath.cpp src/location_component/DetectAGV.cpp src/location_component/CupScanner.cpp src/location_component/PosCalculation.cpp src/location_component/RosServiceCup.cpp src/location_component/AGV.cpp src/location_component/AGVSubscriber.cpp src/location_component/LocationComponent.cpp src/location_component/FrameCalibration.cpp src/location_component/AGVFrameCalibration.cpp src/location_component/CupDetectionCalibration.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests 
+                  unitTests/gtest.cpp 
+                  unitTests/DetectAGV_test.cpp 
+                  unitTests/AGVSubscriber_test.cpp 
+                  unitTests/ValueGuardTest.cpp 
+                  unitTests/AGV_test.cpp 
+                  unitTests/ValueTest.cpp 
+                  unitTests/IAGVProvider_test.cpp 
+                  unitTests/FrameCalibration_test.cpp 
+                  unitTests/CupScanner_test.cpp 
+                  unitTests/PosCalculation_test.cpp 
+                  unitTests/ImagePath.cpp 
+                  src/location_component/DetectAGV.cpp 
+                  src/location_component/CupScanner.cpp 
+                  src/location_component/PosCalculation.cpp 
+                  src/location_component/RosServiceCup.cpp 
+                  src/location_component/AGV.cpp 
+                  src/location_component/AGVSubscriber.cpp 
+                  src/location_component/LocationComponent.cpp 
+                  src/location_component/FrameCalibration.cpp 
+                  src/location_component/AGVFrameCalibration.cpp 
+                  src/location_component/CupDetectionCalibration.cpp)
+
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 

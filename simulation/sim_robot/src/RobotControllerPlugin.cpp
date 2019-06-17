@@ -111,7 +111,7 @@ namespace gazebo
       const robotcontroller_msgs::ControlPtr& aMsg)
   {
     control_data::CommandData lCommand(aMsg->theta, aMsg->sf);
-
+    lCommand.getTheta()[6] += -M_PI_4; // temp fix gripper orientation
     ROS_DEBUG("Received command: %f", lCommand.getTheta());
 
     std::vector<commands::Command> thetaContainer = {};
@@ -148,10 +148,13 @@ namespace gazebo
   {
     double lWidth =
         mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
-            .converseScaleToRad(
+            .convertScaleToRad(
                 aMsg->width, robotcontrollerplugin::maxWidthgripper,
                 robotcontrollerplugin::minWidthgripper); // Width needs to be
-                                                         // inverted.
+    if(lWidth>0.01){
+ lWidth = 0.01;
+    }
+   
     double lSpeedfactor = aMsg->speedfactor;
 
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)

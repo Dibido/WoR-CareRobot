@@ -82,7 +82,7 @@ bool GazeboGraspGripper::Init(
       std::map<std::string, physics::CollisionPtr>::iterator collIter =
           collisionElems.find(collName);
       if (collIter != this->collisionElems.end())
-      { 
+      {
         gzwarn
             << "GazeboGraspGripper: Adding Gazebo collision link element "
             << collName
@@ -211,7 +211,7 @@ void GazeboGraspGripper::HandleDetach(const std::string& objName)
     obj->GetLink()->SetCollideMode("all");
   }
   this->fixedJoint->Detach();
-#endif 
+#endif
   this->attached = false;
   this->attachedObjName = "";
 }

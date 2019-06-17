@@ -57,10 +57,9 @@ namespace lidar_application
 
     for (size_t i = 0; i < aLidarDataMessage->distances.size(); ++i)
     {
-      mLidarData.mAngles.push_back(
-          static_cast<double>(aLidarDataMessage->measurement_angles.at(i)));
-      mLidarData.mDistances_m.push_back(
-          static_cast<double>(aLidarDataMessage->distances.at(i)));
+      mLidarData.mMeasurements.insert(
+          std::pair<double, double>(aLidarDataMessage->measurement_angles.at(i),
+                                    aLidarDataMessage->distances.at(i)));
     }
   }
 

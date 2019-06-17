@@ -1,4 +1,5 @@
 // Bring in gtest
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #define private public
@@ -6,6 +7,14 @@
 #undef private
 
 using namespace lidar_application;
+using ::testing::_;
+
+class DataHandlerDerived : public DataHandler
+{
+    public:
+  MOCK_METHOD1(passObstacles,
+               void(const environment_controller::Obstacles& aObstacles));
+};
 
 TEST(DataHandler, ConstructorTopicNames)
 {
@@ -35,8 +44,7 @@ TEST(DataHandler, GetNewData)
   DataHandler lDataHandler;
 
   LidarData lLidarData;
-  lLidarData.mAngles.push_back(1);
-  lLidarData.mDistances_m.push_back(1);
+  lLidarData.mMeasurements.insert(std::pair<double, double>(1.0, 1.0));
 
   lDataHandler.mLidarData = lLidarData;
   lDataHandler.mNewDataAvailable = true;
@@ -46,9 +54,22 @@ TEST(DataHandler, GetNewData)
   EXPECT_TRUE(lDataHandler.isNewDataAvailable());
 
   // After receiving data
-  EXPECT_EQ(lLidarData.mAngles.size(),
-            lDataHandler.getLidarData().mAngles.size());
+  EXPECT_EQ(lLidarData.mMeasurements.size(),
+            lDataHandler.getLidarData().mMeasurements.size());
 
   // There should be no 'new' data available
   EXPECT_FALSE(lDataHandler.isNewDataAvailable());
+}
+
+TEST(DataHandler, PublishData)
+{
+  DataHandlerDerived lDataHandler;
+
+  std::vector<std::pair<double, double>> lObjects;
+  lObjects.push_back(std::pair<double, double>(0.0, 0.0));
+  lObjects.push_back(std::pair<double, double>(1.0, 0.0));
+
+  EXPECT_CALL(lDataHandler, passObstacles(_)).Times(1);
+
+  lDataHandler.publishData(lObjects, 0.0);
 }

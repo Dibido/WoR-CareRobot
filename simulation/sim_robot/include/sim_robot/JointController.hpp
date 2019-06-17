@@ -4,7 +4,6 @@
 
 #include "types.hpp"
 #include <gazebo/physics/Joint.hh>
-
 namespace gazebo
 {
   /**
@@ -53,6 +52,8 @@ namespace gazebo
      */
     bool inRange(jointPw_t aPw) const;
 
+    bool isInRange(double aValue, double aLower, double aUpper) const;
+
     /**
      * Move the joint to given position with given speed, only if given pulse
      * width is in range
@@ -83,9 +84,9 @@ namespace gazebo
      * @param aMaxScale the maximum of the value range
      * @return jointRad_t the converted value in radials.
      */
-    jointRad_t converseScaleToRad(double aScale,
-                                  double aMinScale = 0,
-                                  double aMaxScale = 1);
+    jointRad_t convertScaleToRad(double aScale,
+                                 double aMinScale = 0,
+                                 double aMaxScale = 1) const;
 
     jointRad_t getTargetPos() const;
     jointRad_t getCurrentPos() const;
