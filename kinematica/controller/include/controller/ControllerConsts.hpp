@@ -22,11 +22,11 @@ namespace controller
   const double cHoverOffset_m = 0.1;
   const double cWaitTime_s = 0.5;
   const uint8_t cJointCount = 7;
-  const double cMinRandomChange = -0.01;
-  const double cMaxRandomChange = 0.01;
+  const double cMinRandomChange = -0.05;
+  const double cMaxRandomChange = 0.05;
   const uint64_t cS_to_nano_s = pow(10, 9);
-  const double cMaxConfigurationDifference_rad = 0.75;
-  const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.0f, 0.6f, 0.6f, 1.6f };
+  const double cMaxConfigurationDifference_rad = M_PI_4;
+  const planning::Obstacle cRobotObstacle{ 0.0f, 0.0f, 0.0f, 0.4f, 0.4f, 1.6f };
   const planning::Obstacle cFloorObstacle{
     0.0f, 0.0f, -0.05f, 2.0f, 2.0f, 0.1f
   };
