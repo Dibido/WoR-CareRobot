@@ -106,22 +106,21 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       if (contourArea(contours.at(i)) > 500)
       {
         // Get the number of pixels per cm (longest side of rectangle is 30cm)
-        cv::RotatedRect lRotatedRect = cv::minAreaRect(contours.at(i));
+        cv::Rect lBoundedRect = cv::boundingRect(contours.at(i));
         // Get the biggest side
         double lMaxDistance = 0;
         cv::Point2f lVertices[4];
-        lRotatedRect.points(lVertices);
-        for (int i = 0; i < 4; i++)
+        if (lBoundedRect.height > lBoundedRect.width)
         {
-          double lDistance =
-              ( double )cv::norm(lVertices[i] - lVertices[(i + 1) % 4]);
-          if (lDistance > lMaxDistance)
-          {
-            lMaxDistance = ( double )lDistance;
-          }
+          lMaxDistance = lBoundedRect.height;
         }
+        else
+        {
+          lMaxDistance = lBoundedRect.width;
+        }
+
         std::cout << "Pixels : " << lMaxDistance << std::endl;
-        double lPixelsPerCm = lMaxDistance / 30.0;
+        double lPixelsPerCm = lMaxDistance / 29.0;
         std::cout << "lPixelsPerCm : " << lPixelsPerCm << std::endl;
         // Get the center of the rectangle in the frame
         // Calculate center
