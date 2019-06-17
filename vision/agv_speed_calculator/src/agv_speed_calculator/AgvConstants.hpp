@@ -2,6 +2,7 @@
 #define _AGV_CONSTANTS_HPP_
 #include <Arduino.h>
 
+const char cProtocolPrefix[] = "#S#";
 // Data pin used for the tracker sensor
 const uint8_t cTrackerSignalPin = 2;
 const uint8_t cChipSelectPin = 7;

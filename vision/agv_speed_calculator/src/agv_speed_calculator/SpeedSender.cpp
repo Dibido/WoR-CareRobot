@@ -17,7 +17,8 @@ void initialiseRadio()
 
 void sendEstimatedSpeed(double aEstimatedSpeed)
 {
-  gEstimatedSpeedString = "#S#" + String(aEstimatedSpeed, cFloatPrecision);
+  gEstimatedSpeedString =
+      cProtocolPrefix + String(aEstimatedSpeed, cFloatPrecision);
   DEBUG(F("Send: "));
   DEBUGLN(gEstimatedSpeedString);
   DEBUG("Size: ");
