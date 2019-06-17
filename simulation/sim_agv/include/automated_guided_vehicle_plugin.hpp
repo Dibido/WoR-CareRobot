@@ -101,7 +101,7 @@ namespace gazebo
     double mPreviousTime = 0;
     double mTimebetweenLines = 0;
     double mNumberofLines = 0;
-    bool mWhitelinedetected = true;
+    bool mWhitelineDetected = true;
 
     /**
      * @brief Handles incoming ros messages on a separate thread when a new

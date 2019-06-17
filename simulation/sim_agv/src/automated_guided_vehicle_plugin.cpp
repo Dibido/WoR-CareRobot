@@ -51,7 +51,7 @@ namespace gazebo
 
     if (aMsg->range > cMinRange && aMsg->range < cMaxRange)
     {
-      if (mWhitelinedetected)
+      if (mWhitelineDetected)
       {
         mPreviousTime = ros::Time::now().toSec();
         if (mNumberofLines > 0)
@@ -71,11 +71,11 @@ namespace gazebo
           mNumberofLines = 0;
         }
       }
-      mWhitelinedetected = false;
+      mWhitelineDetected = false;
     }
     if (ros::Time::now().toSec() - mPreviousTime >= cInterval)
     {
-      mWhitelinedetected = true;
+      mWhitelineDetected = true;
     }
   }
 
