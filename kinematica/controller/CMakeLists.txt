@@ -142,6 +142,7 @@ src/controller/OpenGripper.cpp
 src/controller/OpenGripperPatient.cpp
 src/controller/OpenGripperTable.cpp
 src/controller/WaitForReleaseSignal.cpp
+src/controller/WaitForClosedSignal.cpp
 src/controller/TrajectoryProvider.cpp
 src/environment_controller/Cup.cpp
 src/environment_controller/Object.cpp
