@@ -225,7 +225,7 @@ namespace lidar_application
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
         std::pair<double, double> lObjectsLastMeasurement =
-            *(lObject.mMeasurements.end()--);
+            (*lObject.mMeasurements.rbegin());
 
         if (std::abs(lObjectsLastMeasurement.second -
                      lBeginRangeObject.mMeasurements.begin()->second) <=
@@ -361,13 +361,15 @@ namespace lidar_application
 
     auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
 
+    auto lLastElementIterator = mInitialScan.mMeasurements.rbegin();
+
     // If there doesn't exist a key with a equal or higher value than aAngle:
     if ((lIterator->first == 0.0) && lIterator->second == 0.0)
     {
       // It will probably be a value close to the maximum of 2 * PI
 
       // Take the highest angle as lower neighbour
-      lLowerNeighbourDistance_m = (--mInitialScan.mMeasurements.end())->second;
+      lLowerNeighbourDistance_m = (lLastElementIterator)->second;
 
       // Take the lowest angle as upper neighbour
       lUpperNeighbourDistance_m = mInitialScan.mMeasurements.begin()->second;
@@ -387,8 +389,7 @@ namespace lidar_application
       // Otherwise take the highest angle as lower neighbour.
       else
       {
-        lLowerNeighbourDistance_m =
-            (--mInitialScan.mMeasurements.end())->second;
+        lLowerNeighbourDistance_m = (lLastElementIterator)->second;
       }
     }
 
