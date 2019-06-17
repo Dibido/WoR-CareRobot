@@ -36,8 +36,19 @@ namespace location_component
 
   void DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
   {
-    boost::optional<DetectedFrame> lDetectedFrame =
-        detectFrame(aFrame, aDisplayFrame);
+
+    if(mDetectObject)
+      std::cout << "APP IS ACTIVE >>> " <<std::endl;
+
+    boost::optional<DetectedFrame> lDetectedFrame;
+
+    // Here we will wait for the input from the GUI. If the user wants to pick
+    // up a moving cup this boolean will be true.
+    if (mDetectObject)
+    {
+      lDetectedFrame = detectFrame(aFrame, aDisplayFrame);
+    }
+
     if (lDetectedFrame)
     {
       PosCalculation lPosCalculator(mCalibration);
@@ -71,6 +82,7 @@ namespace location_component
           environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
 
           mRosServiceCup->passCup(lCup);
+          mDetectObject = false;
         }
       }
 
@@ -301,6 +313,11 @@ namespace location_component
   {
     ROS_DEBUG_STREAM("AGV speed is updated to " + std::to_string(aAGV.speed()));
     mPosCalculator.setAGVSpeed_m_s(aAGV.speed());
+  }
+
+  void DetectAGV::setDetectObject(bool aDetectObject)
+  {
+    aDetectObject = aDetectObject;
   }
 
 } // namespace location_component

@@ -21,8 +21,11 @@ namespace location_component
         mNodeHandle, aCupDetectionCalibration, aAGVFrameCalibration);
 
     // Subscribe to the AGV topic for receaving the speed
-    location_component::AGVSubscriber mSubscriber(
+    location_component::AGVSubscriber lAGVSubscriber(
         location_component_constants::cAGVTopic, mDetectAGV);
+
+    // Subscribe to the goal topic for receaving the user prefrence
+    location_component::GoalSubscriberLocationComp lGoalSubscriber("/goal", mDetectAGV);
 
     ros::Rate loop_rate(location_component_constants::cLoopRate);
 

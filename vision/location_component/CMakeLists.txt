@@ -55,7 +55,9 @@ add_executable(location_component
                 src/location_component/FrameCalibration.cpp 
                 src/location_component/LocationComponent.cpp 
                 src/location_component/AGVFrameCalibration.cpp 
-                src/location_component/CupDetectionCalibration.cpp)
+                src/location_component/CupDetectionCalibration.cpp
+                src/location_component/GoalSubscriberLocationComp.cpp
+                )
                 
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
