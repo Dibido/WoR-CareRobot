@@ -15,7 +15,7 @@ namespace gazebo
   const double cMaxRange = 0.40;
   const double cMaxlines = 6;
   const double cDistanceBetweenlines = 0.5;
-  const double cInterval = 2.56;
+  const double cInterval = 2.54;
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
       : mMovingForward(true),
