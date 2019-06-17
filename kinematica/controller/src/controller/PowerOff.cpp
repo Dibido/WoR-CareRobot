@@ -25,4 +25,8 @@ namespace controller
   void PowerOff::exitAction(Context*)
   {
   }
+
+  void PowerOff::transition(Context*)
+  {
+  }
 } // namespace controller
