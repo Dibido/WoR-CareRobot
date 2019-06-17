@@ -63,28 +63,42 @@
     </model>
 
     <model name="ultrasonic1">
-      <pose>0.10 -4 1.05 0 0 0</pose>
+      <pose>0.10 -4.75 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic2">
-      <pose>0.10 -3 1.05 0 0 0</pose>
+      <pose>0.10 -4.25 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic3">
-      <pose>0.10 -2 1.05 0 0 0</pose>
+      <pose>0.10 -3.75 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic4">
-      <pose>0.10 -1 1.05 0 0 0</pose>
+      <pose>0.10 -3.25 1.05 0 0 0</pose>
+      <include>
+        <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="ultrasonic5">
+      <pose>0.10 -2.75 1.05 0 0 0</pose>
+      <include>
+        <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="ultrasonic6">
+      <pose>0.10 -2.25 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>

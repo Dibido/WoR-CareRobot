@@ -21,7 +21,16 @@ namespace location_component
                                                   ros::Time aCurrentTime) const
   {
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
-    float lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
+    float lTimeToArm_s;
+    if (mAGVSpeed_m_s == 0.0f)
+    {
+      ROS_WARN("No AGV speed was set. Delaying cup pickup indefinitely.");
+      lTimeToArm_s = ( float )INT_MAX;
+    }
+    else
+    {
+      lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
+    }
     aCurrentTime = aCurrentTime + ros::Duration(lTimeToArm_s);
     return aCurrentTime;
   }
