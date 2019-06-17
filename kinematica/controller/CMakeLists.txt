@@ -135,6 +135,7 @@ src/controller/OpenGripper.cpp
 src/controller/WaitForCup.cpp
 src/controller/PowerOff.cpp
 src/controller/MoveToDropLocation.cpp
+src/controller/MoveToDropTable.cpp
 src/controller/WaitForReleaseSignal.cpp
 src/controller/TrajectoryProvider.cpp
 src/environment_controller/Cup.cpp

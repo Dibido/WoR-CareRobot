@@ -39,7 +39,7 @@ namespace controller
     }
     if (mTrajectory.size() == 0)
     {
-      aContext->setState(std::make_shared<WaitForCup>());
+      transition(aContext);
       return;
     }
     else
@@ -62,5 +62,10 @@ namespace controller
 
   void Move::exitAction(Context*)
   {
+  }
+
+  void Move::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<WaitForCup>());
   }
 } // namespace controller

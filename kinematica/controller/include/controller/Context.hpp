@@ -98,6 +98,7 @@ namespace controller
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
     environment_controller::Position& dropPosition();
+    environment_controller::Position& patientPosition();
     std::condition_variable& waitForRelease();
     int16_t& releaseTime_s();
     std::mutex& releaseMutex();
@@ -120,6 +121,7 @@ namespace controller
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
     environment_controller::Position mDropPosition;
+    environment_controller::Position mPatientPosition;
     int16_t mReleaseTime_s;
     std::condition_variable mWaitForRelease;
 

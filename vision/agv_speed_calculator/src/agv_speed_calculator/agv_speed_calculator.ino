@@ -2,18 +2,76 @@
    AGV Speed Calculator
    Uses a line sensor on a vehicle to determine it's speed, then sends the speed
    using NRF.
-   @author Dibran Dokter
-   @author Emiel Bosman
-
+   @Author: Dibran Dokter
 */
 // Include the libraries for the NRF module
+#include <RF24.h>
 #include <SPI.h>
-#include "AgvConstants.hpp"
-#include "Debug.hpp"
-#include "SpeedSender.hpp"
-#include "SpeedSensor.hpp"
+#include <nRF24L01.h>
 
-SpeedSensor speedSensor;
+//#define USE_DEBUGLN
+
+#ifdef USE_DEBUGLN
+#define DEBUG(x) Serial.print(x)
+#define DEBUGLN(x) Serial.println(x)
+#define DEBUGLNFLOAT(x, y) Serial.println(x, y)
+#else
+#define DEBUG(x) void
+#define DEBUGLN(x) void
+#define DEBUGLNFLOAT(x, y) void
+#endif
+
+// Set up NRF values
+RF24 radio(7, 8);
+const byte rxAddr[6] = "00001";
+
+// Data pin used for the tracker sensor
+#define TRACKER_SIGNAL_PIN 2
+
+// Pin that is connected to the LED
+// const unsigned int gLedPin = 10;
+
+// Pins for the servo's connected to the wheels
+const unsigned int E1 = 3;
+const unsigned int M1 = 4;
+const unsigned int E2 = 5;
+const unsigned int M2 = 6;
+// Whether an estimation has been made
+boolean gEstimationMade = false;
+// Whether a signal is being detected from the line sensor
+boolean gSignalActive = false;
+// The number of lines that have been detected
+unsigned int gAmountOfOns = 0;
+// The start time of a signal
+unsigned long gStartMillis;
+// The time the program is in start-up, ignores lines during this time
+const unsigned long gSetupPeriodMillis = 3000;
+// The estimated arrival time.
+unsigned long gEstimatedArrivalTime = 0;
+// Amount of intervals between lines that should be used before making a
+// prediction
+const unsigned int gAmountOfMeasurementsRequired = 1;
+// The current number of interval measurements that have been taken.
+unsigned int gAmountOfMeasurementsTaken = 0;
+// The currently calculated speed
+double gCurrentSpeed;
+// The maximum amount of lines to be detected
+const unsigned int gMaxNumberOfMeasurements = 10;
+// Initial values of 0, 0 indicates that no valid measurement has been taken
+// yet. Size is always +1 of measurements required, 4 time staps -> 3 intervals.
+unsigned long gMeasurementMillis[gMaxNumberOfMeasurements + 1] = { 0 };
+// The length beween the lines to be detected
+const unsigned int gLengthBetweenMeasurements = 50;
+// Amount of ms the tracker sensor needs to return true for the signal to be
+// considered valid.
+const unsigned long gMinIntervalTimeMs = 3;
+// Amount of ms to wait until the next attempt to detect a line
+const unsigned int gDetectDelayTimeMs = 100;
+
+// The speed for the servo's
+const unsigned int gServoSpeed = 100; // Was 63
+
+void sendEstimatedSpeed(double aEstimatedSpeed);
 
 void setup()
 {
@@ -27,22 +85,125 @@ void setup()
   digitalWrite(M1, HIGH);
   digitalWrite(M2, HIGH);
 
-  analogWrite(E1, gServoSpeed);  // PWM Speed Control
-  analogWrite(E2, gServoSpeed);  // PWM Speed Control
+  analogWrite(E1, gServoSpeed); // PWM Speed Control
+  analogWrite(E2, gServoSpeed); // PWM Speed Control
 
-  initialiseRadio();
-  initialiseSensor(speedSensor, 2);
+  // Start NRF
+  radio.begin();
+  radio.setRetries(15, 15);
+  radio.openWritingPipe(rxAddr);
+  radio.stopListening();
+
+  // Setup time/delay, in which nothing is done. This allows for a period to
+  // move the AGV without already registering measurements.
+  while (!(millis() > (gStartMillis + gSetupPeriodMillis)))
+  {
+  }
+  gStartMillis = millis();
 }
 
 void loop()
 {
-  if (readSensor(speedSensor))
+  // If we receive a positive signal
+  if (digitalRead(TRACKER_SIGNAL_PIN))
   {
-    if (speedSensor.mCurrentSpeed_m_s > 0)
+    // Transition from off -> on
+    if (!gSignalActive)
     {
-      DEBUG(F("Current speed "));
-      DEBUGLNFLOAT(speedSensor.mCurrentSpeed_m_s, 4);
-      sendEstimatedSpeed(speedSensor.mCurrentSpeed_m_s);
+      gSignalActive = true;
+      unsigned long lCurrentTimeMs = millis();
+      unsigned long lEndSignalMs = millis();
+      bool lValidSignal = false;
+      // As long as the signal stays positive and the signal hasnt been
+      // considered valid yet
+      while (digitalRead(TRACKER_SIGNAL_PIN) && !lValidSignal)
+      {
+        lEndSignalMs = millis();
+        // Tracker sensor was positive for over gMinIntervalTimeMs, and thus is
+        // detecting a line (its not a false positive)
+        if ((lEndSignalMs - lCurrentTimeMs) > gMinIntervalTimeMs)
+        {
+          lValidSignal = true;
+        }
+      }
+      // Handle the signal
+      if (lValidSignal)
+      {
+        // Register start moment of current signal
+        gMeasurementMillis[gAmountOfOns] = lCurrentTimeMs;
+        gAmountOfOns++;
+        // If we detected 2 lines, we've measured 1 interval, 3 - 2 etc...
+        gAmountOfMeasurementsTaken = gAmountOfOns - 1;
+
+        DEBUG("Lines measured : ");
+        DEBUGLN(gAmountOfOns);
+
+        // An interval has been measured
+        if (gAmountOfMeasurementsTaken >= gAmountOfMeasurementsRequired)
+        {
+          // Calculate the average speed of the AGV
+          // Get distance
+          double lDistance =
+              (gAmountOfMeasurementsTaken * gLengthBetweenMeasurements);
+          // Get the time
+          double lSumIntervals = 0.0;
+          for (unsigned int i = 1; i < gAmountOfOns; i++)
+          {
+            lSumIntervals += gMeasurementMillis[i] - gMeasurementMillis[i - 1];
+            DEBUG("Interval");
+            DEBUG(i);
+            DEBUG(" : ");
+            DEBUGLN((gMeasurementMillis[i] - gMeasurementMillis[i - 1]));
+          }
+          DEBUG("Distance :");
+          DEBUGLN(lDistance);
+          DEBUG("Suminterval :");
+          DEBUGLN(lSumIntervals);
+          // Calculate the current speed in m/s
+          double lDistanceMeters = lDistance / 100;
+          double lTimeSeconds = lSumIntervals / 1000;
+          DEBUG("DistanceMeters :");
+          DEBUGLNFLOAT(lDistanceMeters, 8);
+          DEBUG("TimeSeconds :");
+          DEBUGLNFLOAT(lTimeSeconds, 8);
+          gCurrentSpeed = lDistanceMeters / lTimeSeconds;
+          DEBUG("Speed :");
+          DEBUGLNFLOAT(gCurrentSpeed, 8);
+          sendEstimatedSpeed(gCurrentSpeed);
+          // Wait with getting a new measurement until the end of the signal
+          while (digitalRead(TRACKER_SIGNAL_PIN))
+          {
+            // wait until low
+          }
+        }
+        else
+        {
+          // Wait with getting a new measurement until the end of the signal
+          delay(gDetectDelayTimeMs);
+        }
+      }
+      else
+      {
+        DEBUGLN("Invalid Signal");
+      }
+    }
+    else
+    {
+      gSignalActive = false;
     }
   }
+}
+
+/*
+ * Sends the estimated value over the NRF to the AGV gateway.
+ */
+void sendEstimatedSpeed(double aEstimatedSpeed)
+{
+  char lFloatBuffer[11]; // Buffer big enough for 10-character float
+  dtostrf(aEstimatedSpeed, 10, 8,
+          lFloatBuffer); // Leave room for too large numbers!
+  String lEstimatedSpeedString = "#S#" + String(lFloatBuffer);
+  radio.write(lEstimatedSpeedString.c_str(),
+              sizeof(lEstimatedSpeedString) + 12);
+  DEBUGLN("send");
 }
