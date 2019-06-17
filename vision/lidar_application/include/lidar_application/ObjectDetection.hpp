@@ -36,6 +36,11 @@ namespace lidar_application
      * will also be more detailed.
      */
     const unsigned int cDefaultAmountOfInitialScans = 1;
+
+    /**
+     * @brief Looprate (Hertz) of blocking run() function.
+     */
+    const unsigned int cDefaultLoopRate = 100;
   } // namespace objectdetection_constants
 
   class ObjectDetection
@@ -65,7 +70,7 @@ namespace lidar_application
      * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
      * equal to aMaxDistanceDifference_m, both these measurements are taken of
      * the same object.
-     * @param aIgnoreSmallObjects - When this is true, objects with less then 2
+     * @param aIgnoreSmallObjects - When this is true, objects with less than 2
      * adjacent measurements are ignored. This should
      * filter out thin real-life objects like a cable */
     ObjectDetection(const double& aMaxDistanceDifference_m,
@@ -116,7 +121,7 @@ namespace lidar_application
      * @brief Checks whether a measurement is different based on comparison with
      * mInitialScan. method uses getSurroundingDistances() and compares the
      * distance of aMeasurement with those. If difference between aMeasurement's
-     * distance and both surrounding distances is greater then
+     * distance and both surrounding distances is greater than
      * mMaxDistanceDifference_m, the measurement is considered 'different'.
      * Otherwise, the measurement could very well be in line with the measurents
      * of mInitialScan and the measurement won't be considered different.
@@ -140,12 +145,12 @@ namespace lidar_application
         getSurroundingDistances(const double aAngle) const;
 
     /**
-     * @brief Filters out any objects with a distance greater then
+     * @brief Filters out any objects with a distance greater than
      * mMaxReliableDistance_m
      * @param aObjectList - Objectlist in form (theta in radians, distance in
      * meters)
      * @return List of objects in same form as aObjectList, only without the
-     * objects that had a distance greater then mMaxReliableDistance_m
+     * objects that had a distance greater than mMaxReliableDistance_m
      */
     std::vector<std::pair<double, double>> filterFarObjects(
         const std::vector<std::pair<double, double>>& aObjectList) const;
@@ -156,9 +161,9 @@ namespace lidar_application
     void printPublishData() const;
 
     /**
-     * @brief Checkes wheter a given object is considered small.
+     * @brief Checkes whether a given object is considered small.
      * This is the case if the amount of measurements the object has
-     * is lower then mObjectMinNumberOfAdjacentMeasurements
+     * is lower than mObjectMinNumberOfAdjacentMeasurements
      */
     bool isSmallObject(const LidarData& lObject) const;
 
@@ -184,7 +189,7 @@ namespace lidar_application
     // Maximum distance that the lidar can reliable measure.
     const double mMaxReliableDistance_m;
 
-    /** If this boolean is true, objects require atleast multiple djacent
+    /** If this boolean is true, objects require atleast multiple adjacent
     measurements. this means that if just a single angle is considered
     different, this won't be registered as an object. This filters out really
     small objects like a cable */
