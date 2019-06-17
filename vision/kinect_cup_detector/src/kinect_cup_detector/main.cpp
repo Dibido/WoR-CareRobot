@@ -164,8 +164,10 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         lFoundCup.aSpeed = 0;
         lFoundCup.aWidth = 0.07;
 
-        lFoundCup.mX_m = distFromCenterXCM / 100;
-        lFoundCup.mY_m = distFromCenterYCM / 100;
+        // Since the kinect is positioned oposite of the robotarm so X=Y and
+        // Y=X.
+        lFoundCup.mX_m = distFromCenterYCM / 100;
+        lFoundCup.mY_m = distFromCenterXCM / 100;
         lFoundCup.mZ_m = 0.02;
 
         lFoundCup.timeOfArrival = ros::Time::now();
