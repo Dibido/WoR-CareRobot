@@ -4,6 +4,8 @@
 #include "environment_controller/IGoalProvider.hpp"
 #include "environment_controller/Position.hpp"
 #include "kinematica_msgs/Goal.h"
+
+#include "kinematica_msgs/Goal.h"
 #include "location_component/DetectAGV.hpp"
 #include "ros/ros.h"
 

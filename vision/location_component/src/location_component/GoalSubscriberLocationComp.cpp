@@ -14,13 +14,16 @@ namespace location_component
   {
   }
 
-  void GoalSubscriberLocationComp::goalCallback(const kinematica_msgs::GoalConstPtr& aMsg)
+  void GoalSubscriberLocationComp::goalCallback(
+      const kinematica_msgs::GoalConstPtr& aMsg)
   {
+
     try
     {
       if (!aMsg->staticCup)
       {
-        environment_controller::Position lPostition(aMsg->position.x, aMsg->position.y, aMsg->position.z);
+        environment_controller::Position lPostition(
+            aMsg->position.x, aMsg->position.y, aMsg->position.z);
         selectGoalPosition(lPostition);
       }
     }
@@ -33,7 +36,6 @@ namespace location_component
   /* virtual*/ void GoalSubscriberLocationComp::selectGoalPosition(
       const environment_controller::Position& aPosition)
   {
-
     mDetectAGV->setDetectObject(true);
   }
 

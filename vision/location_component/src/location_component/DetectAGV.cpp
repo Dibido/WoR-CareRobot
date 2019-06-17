@@ -37,8 +37,8 @@ namespace location_component
   void DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
   {
 
-    if(mDetectObject)
-      std::cout << "APP IS ACTIVE >>> " <<std::endl;
+    if (mDetectObject)
+      std::cout << "APP IS ACTIVE >>> " << std::endl;
 
     boost::optional<DetectedFrame> lDetectedFrame;
 
@@ -317,7 +317,16 @@ namespace location_component
 
   void DetectAGV::setDetectObject(bool aDetectObject)
   {
-    aDetectObject = aDetectObject;
+    if (aDetectObject)
+    {
+      ROS_DEBUG_STREAM("Location component is actively searching for a cup");
+    }
+    else
+    {
+      ROS_DEBUG_STREAM("Location component is not actively searching for a cup");
+    }
+
+    mDetectObject = aDetectObject;
   }
 
 } // namespace location_component
