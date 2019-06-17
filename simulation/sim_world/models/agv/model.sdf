@@ -44,8 +44,8 @@
 
     <plugin name="automated_guided_vehicle_plugin" filename="libsim_agv_plugin.so">
       <directionChangeInterval>30</directionChangeInterval>
-      <startPose>0.35 -5 1.05</startPose>
-      <endPose> 0.35 3 1.05 </endPose>
+      <startPose>0.45 -5 1.05</startPose>
+      <endPose> 0.45 3 1.05 </endPose>
     </plugin>
   </model>
 </sdf>

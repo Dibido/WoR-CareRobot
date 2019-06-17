@@ -42,7 +42,7 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.37 -5.03 1.07</pose>
+      <pose>0.47 -5.03 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
@@ -56,35 +56,49 @@
     <!-- </model> -->
 
     <model name="agv">
-      <pose>0.35 -5 1.05</pose>
+      <pose>0.55 -5 1.05</pose>
       <include>
 	      <uri>model://agv</uri>
       </include>
     </model>
 
     <model name="ultrasonic1">
-      <pose>0.10 -4 1.05 0 0 0</pose>
+      <pose>0.10 -4.75 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic2">
-      <pose>0.10 -3 1.05 0 0 0</pose>
+      <pose>0.10 -4.25 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic3">
-      <pose>0.10 -2 1.05 0 0 0</pose>
+      <pose>0.10 -3.75 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
     </model>
 
     <model name="ultrasonic4">
-      <pose>0.10 -1 1.05 0 0 0</pose>
+      <pose>0.10 -3.25 1.05 0 0 0</pose>
+      <include>
+        <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="ultrasonic5">
+      <pose>0.10 -2.75 1.05 0 0 0</pose>
+      <include>
+        <uri>model://hcsr04</uri>
+      </include>
+    </model>
+
+    <model name="ultrasonic6">
+      <pose>0.10 -2.25 1.05 0 0 0</pose>
       <include>
         <uri>model://hcsr04</uri>
       </include>
@@ -98,10 +112,10 @@
     </model>
 
 <model name="my_camera">
-      <pose>0.35 -4 1.8 0 1.570796 0</pose>
+      <pose>0.45 -1.72 1.8 0 1.570796 0</pose>
       <static>true</static>
       <link name="link">
-        <sensor name="webcam" type="camera">  
+        <sensor name="webcam" type="camera">
         <plugin name="webcam_plugin" filename="libgazebo_ros_camera.so" >
            <robotNamespace>camera_plugin</robotNamespace>
            <updateRate>30.0</updateRate>
