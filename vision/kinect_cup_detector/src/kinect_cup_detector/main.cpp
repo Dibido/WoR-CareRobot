@@ -149,7 +149,7 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         int distFromCenterY = (displayMatrix.rows / 2) - centerY;
         double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
         double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
-        distFromCenterXCM = -distFromCenterXCM;
+        // distFromCenterXCM = -distFromCenterXCM;
         distFromCenterYCM -= 70;
         distFromCenterYCM = -distFromCenterYCM;
         std::cout << "Centerx : " << distFromCenterXCM
