@@ -254,14 +254,17 @@ int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "rplidar_node");
 
-  std::string lSerialPort = "/dev/ttyUSB0";
+  std::string lPortPrefix = "/dev/";
+  std::string lSerialPort = "ttyUSB0";
 
   // Serial port is given as argument
   if (argc == 2)
   {
-    ROS_INFO("Setting serial port to: %s", argv[1]);
+    ROS_INFO("Setting serial port to: %s%s", lPortPrefix.c_str(), argv[1]);
     lSerialPort = argv[1];
   }
+
+  std::string lFullSerialPort = lPortPrefix.append(lSerialPort);
 
   // Global variables
   std::string channel_type;
@@ -283,7 +286,7 @@ int main(int argc, char* argv[])
   nh_private.param<std::string>("channel_type", channel_type, "serial");
   nh_private.param<std::string>("tcp_ip", tcp_ip, "192.168.0.7");
   nh_private.param<int>("tcp_port", tcp_port, 20108);
-  nh_private.param<std::string>("serial_port", serial_port, lSerialPort);
+  nh_private.param<std::string>("serial_port", serial_port, lFullSerialPort);
   nh_private.param<int>(
       "serial_baudrate", serial_baudrate,
       115200 /*256000*/); // ros run for A1 A2, change to 256000 if A3
