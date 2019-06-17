@@ -147,6 +147,7 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         int distFromCenterX = (displayMatrix.cols / 2) - centerX;
         int distFromCenterY = (displayMatrix.rows / 2) - centerY;
         double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
+        distFromCenterXCM += 3.0;
         double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
         // distFromCenterXCM = -distFromCenterXCM;
         distFromCenterYCM -= 70;
@@ -167,7 +168,7 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         // Y=X.
         lFoundCup.mX_m = distFromCenterYCM / 100;
         lFoundCup.mY_m = distFromCenterXCM / 100;
-        lFoundCup.mZ_m = 0.02;
+        lFoundCup.mZ_m = 0.00;
 
         lFoundCup.timeOfArrival = ros::Time::now();
         gCupPublisher.publish(lFoundCup);
