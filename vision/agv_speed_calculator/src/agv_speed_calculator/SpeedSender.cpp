@@ -11,7 +11,7 @@ void initialiseRadio()
 {
   // Start NRF
   radio.begin();
-  radio.setRetries(cRetryDelay, cRetryCount);
+  radio.setRetries(cRetryDelay_ns, cRetryCount);
   radio.openWritingPipe(cRxAddr);
   radio.stopListening();
 }
@@ -21,7 +21,7 @@ void initialiseRadio()
  */
 void sendEstimatedSpeed(double aEstimatedSpeed)
 {
-  gEstimatedSpeedString = "#S#" + String(aEstimatedSpeed, 8);
+  gEstimatedSpeedString = "#S#" + String(aEstimatedSpeed, cFloatPrecision);
   DEBUG(F("Send: "));
   DEBUGLN(gEstimatedSpeedString);
   DEBUG("Size: ");

@@ -18,7 +18,7 @@ void buttonLoop(Button& aButton)
     aButton.mChecking = true;
     aButton.mLastAction_ms = millis();
   }
-  else if (aButton.mLastAction_ms + gMinIntervalTimeMs < millis() &&
+  else if (aButton.mLastAction_ms + gMinIntervalTime_ms < millis() &&
            aButton.mChecking == true)
   {
     if (newState != aButton.mState)

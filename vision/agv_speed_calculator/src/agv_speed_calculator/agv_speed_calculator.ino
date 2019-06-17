@@ -27,8 +27,8 @@ void setup()
   digitalWrite(M1, HIGH);
   digitalWrite(M2, HIGH);
 
-  analogWrite(E1, gServoSpeed);  // PWM Speed Control
-  analogWrite(E2, gServoSpeed);  // PWM Speed Control
+  analogWrite(E1, gServoSpeed_pwm);  // PWM Speed Control
+  analogWrite(E2, gServoSpeed_pwm);  // PWM Speed Control
 
   initialiseRadio();
   initialiseSensor(speedSensor, 2);
