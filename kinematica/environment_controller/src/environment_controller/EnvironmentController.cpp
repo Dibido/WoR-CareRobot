@@ -11,9 +11,6 @@ namespace environment_controller
       const std::shared_ptr<controller::Context>& aContext)
       : mContext(aContext), mTfHandler(std::make_shared<TFHandler>())
   {
-    mTimer = mCallbackNode.createTimer(ros::Rate(cSensorTFPublishRate_hz),
-                                       &EnvironmentController::publishTFSensors,
-                                       this);
   }
 
   void EnvironmentController::provideObstacles(const Obstacles& aObstacles)
@@ -55,23 +52,30 @@ namespace environment_controller
   void EnvironmentController::registerSensor(const Sensor& aSensor)
   {
     mSensors.insert(std::make_pair(aSensor.sensorID(), aSensor.pose()));
+    mTfHandler->transform(aSensor.pose(), true, cGlobalFrame,
+                          std::string(cSensorFrame) +
+                              std::to_string(aSensor.sensorID()));
   }
 
-  Pose EnvironmentController::transformFrames(const uint8_t aSensorID)
+  Pose EnvironmentController::transformFrames(const std::string& aFrame)
   {
-    Pose lPose = mTfHandler->calculatePosition(
-        std::string(cSensorFrame) + std::to_string(aSensorID), cGlobalFrame);
+    Pose lPose = mTfHandler->calculatePosition(aFrame, cGlobalFrame);
     return lPose;
   }
 
-  void EnvironmentController::publishTFSensors(const ros::TimerEvent&)
+  void EnvironmentController::setObstacles(const Obstacles& aObstacles)
   {
-    for (std::map<uint8_t, Pose>::iterator lSensor = mSensors.begin();
-         lSensor != mSensors.end(); ++lSensor)
+    mObstacles.clear();
+    mObstacles = aObstacles;
+    Rotation lRotationTemp(0.0, 0.0, 0.0, 1.0);
+
+    for (uint8_t i = 0; i < aObstacles.size(); ++i)
     {
-      mTfHandler->transform(lSensor->second,
+      Pose lPose(aObstacles.at(i).position(), lRotationTemp);
+      mTfHandler->transform(lPose, false,
                             std::string(cSensorFrame) +
-                                std::to_string(lSensor->first));
+                                std::to_string(aObstacles.at(i).sensorId()),
+                            std::string(cObstacleFrame) + std::to_string(i));
     }
   }
 
@@ -84,4 +88,5 @@ namespace environment_controller
 
     return lSensor;
   }
+
 } // namespace environment_controller
