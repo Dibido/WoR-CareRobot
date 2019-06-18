@@ -23,7 +23,6 @@ namespace location_component
     const std::string cWebcamTopic = "/sensor/webcam";
     const std::string cAGVTopic = "/sensor/agv";
     const std::string cComponentName = "location_component";
-    const unsigned int cLoopRate = 10;
   } // namespace location_component_constants
 
   class LocationComponent

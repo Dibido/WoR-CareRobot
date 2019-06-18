@@ -60,7 +60,7 @@ add_executable(location_component
                 )
                 
 add_dependencies(location_component ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion -O2)
+target_compile_options(location_component PRIVATE -std=c++14 -Wall -Wextra -Wconversion)
 target_link_libraries(location_component ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!

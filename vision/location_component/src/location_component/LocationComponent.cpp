@@ -28,8 +28,6 @@ namespace location_component
     location_component::GoalSubscriberLocationComp lGoalSubscriber("/goal",
                                                                    mDetectAGV);
 
-    ros::Rate loop_rate(location_component_constants::cLoopRate);
-
     image_transport::ImageTransport lIt(mNodeHandle);
     const std::string cTopicName = location_component_constants::cWebcamTopic;
     image_transport::Subscriber sub =
