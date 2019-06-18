@@ -3,6 +3,7 @@
 
 #ifdef WIN32
 #include <crtdbg.h>
+
 #ifndef assert
 #define assert(x) _ASSERT(x)
 #endif

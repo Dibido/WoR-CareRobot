@@ -36,6 +36,7 @@
 
 #include "hal/abs_rxtx.h"
 
+
 namespace rp{ namespace arch{ namespace net{
 
 class raw_serial : public rp::hal::serial_rxtx
