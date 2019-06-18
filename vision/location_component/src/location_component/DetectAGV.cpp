@@ -36,10 +36,6 @@ namespace location_component
 
   void DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
   {
-
-    if (mDetectObject)
-      std::cout << "APP IS ACTIVE >>> " << std::endl;
-
     boost::optional<DetectedFrame> lDetectedFrame;
 
     // Here we will wait for the input from the GUI. If the user wants to pick
@@ -227,7 +223,14 @@ namespace location_component
       std::vector<cv::Point> lContoursWithPerspectiveCorrection(1);
       getContourMat(lDisFrame, lContoursWithPerspectiveCorrection);
 
-      lDetectedAGV.mAGVFrame = lDisFrame(lBoundRect);
+      cv::Mat lAGVCutOutMatrix = lDisFrame(lBoundRect);
+
+      if (lAGVCutOutMatrix.rows = 0 || lAGVCutOutMatrix.cols = 0)
+      {
+        return boost::optional<DetectedAGV>();
+      }
+
+      lDetectedAGV.mAGVFrame = lAGVCutOutMatrix;
 
       std::vector<cv::Point2f> lPoints, lPointInOriginalPerspective;
       lPoints.push_back(getMidPoint(lContoursWithPerspectiveCorrection));
@@ -323,7 +326,8 @@ namespace location_component
     }
     else
     {
-      ROS_DEBUG_STREAM("Location component is not actively searching for a cup");
+      ROS_DEBUG_STREAM(
+          "Location component is not actively searching for a cup");
     }
 
     mDetectObject = aDetectObject;
