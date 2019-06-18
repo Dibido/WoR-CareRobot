@@ -71,14 +71,17 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   {
     // Calibrate the position of the kinect
     calibrateKinectPosition();
-    int c = cv::waitKey(10);
-    if (c == 27) // Escape
+    if (mDebugMode)
     {
-      mCalibrated = true;
-    }
-    else
-    {
-      return;
+      int c = cv::waitKey(10);
+      if (c == 27) // Escape
+      {
+        mCalibrated = true;
+      }
+      else
+      {
+        return;
+      }
     }
   }
 
