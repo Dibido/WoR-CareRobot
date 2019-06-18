@@ -1,6 +1,7 @@
 #include "location_component/CupScanner.hpp"
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -13,8 +14,10 @@ namespace location_component
     return lRGB;
   }
 
-  CupScanner::CupScanner(FrameCalibration& aFrameCalibration)
-      : mFrameCalibration(aFrameCalibration)
+  CupScanner::CupScanner(FrameCalibration& aFrameCalibration,
+                         CupDetectionCalibration& aCupDetectionCalibration)
+      : mFrameCalibration(aFrameCalibration),
+        mCupDetectionCalibration(aCupDetectionCalibration)
   {
   }
 
@@ -92,6 +95,20 @@ namespace location_component
   bool CupScanner::detectCupFilled(const cv::Mat& aImage,
                                    const cv::Point& aCupMidpoint) const
   {
-    return false;
+    cv::Mat lMidpointColorBGR(1, 1, CV_8UC3);
+    lMidpointColorBGR.at<cv::Vec3b>(cv::Point(0, 0)) =
+        aImage.at<cv::Vec3b>(aCupMidpoint);
+
+    cv::Mat lMidpointColorHSV(1, 1, CV_8UC3);
+    cv::cvtColor(lMidpointColorBGR, lMidpointColorHSV, CV_BGR2HSV);
+
+    ROS_DEBUG_STREAM("Cup midpoint color: "
+                     << lMidpointColorHSV.at<cv::Vec3b>(cv::Point(0, 0)));
+    cv::Mat lMidpointColorBW(1, 1, CV_8UC1);
+    cv::inRange(
+        lMidpointColorHSV, mCupDetectionCalibration.mMinFilledCupColorHSV,
+        mCupDetectionCalibration.mMaxFilledCupColorHSV, lMidpointColorBW);
+
+    return lMidpointColorBW.at<uint8_t>(cv::Point(0, 0)) != 0;
   }
 } // namespace location_component

@@ -1,6 +1,7 @@
 #ifndef CUPSCANNER_HPP
 #define CUPSCANNER_HPP
 
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/FrameCalibration.hpp"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -23,7 +24,8 @@ namespace location_component
   class CupScanner
   {
       public:
-    CupScanner(FrameCalibration& aFrameCalibration);
+    CupScanner(FrameCalibration& aFrameCalibration,
+               CupDetectionCalibration& aCupDetectionCalibration);
     ~CupScanner() = default;
 
     /**
@@ -55,6 +57,7 @@ namespace location_component
 
       private:
     FrameCalibration& mFrameCalibration;
+    CupDetectionCalibration& mCupDetectionCalibration;
   };
 } // namespace location_component
 

@@ -37,8 +37,8 @@ namespace location_component
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
 
-    cv::Scalar mMinFilledCupColorHSV = cv::Scalar(20.0, 0.5, 0.0);
-    cv::Scalar mMaxFilledCupColorHSV = cv::Scalar(50.0, 1.0, 1.0);
+    cv::Scalar mMinFilledCupColorHSV = cv::Scalar(0, 150, 127);
+    cv::Scalar mMaxFilledCupColorHSV = cv::Scalar(180, 255, 255);
 
     bool mDebugStatus;
   };

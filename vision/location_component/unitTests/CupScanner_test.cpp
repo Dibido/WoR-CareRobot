@@ -9,6 +9,10 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 
+location_component::AGVFrameCalibration gAGVFrameCalibration(false);
+location_component::FrameCalibration gFrameCalibration(gAGVFrameCalibration);
+location_component::CupDetectionCalibration gCupDetectionCalibration(false);
+
 // Testing the fucntion getMidPoint
 TEST(CupScannerSuite, RecogniseMultipleCups)
 {
@@ -17,9 +21,8 @@ TEST(CupScannerSuite, RecogniseMultipleCups)
   cv::Mat lMat;
   lImage.copyTo(lMat);
 
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
-  location_component::FrameCalibration lFrameCalibration(lAGVFrameCalibration);
-  location_component::CupScanner lScanner(lFrameCalibration);
+  location_component::CupScanner lScanner(gFrameCalibration,
+                                          gCupDetectionCalibration);
 
   std::vector<location_component::DetectedCup> lCups =
       lScanner.detectCups(lImage, lMat);
@@ -34,9 +37,8 @@ TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
   cv::Mat lMat;
   lImage.copyTo(lMat);
 
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
-  location_component::FrameCalibration lFrameCalibration(lAGVFrameCalibration);
-  location_component::CupScanner lScanner(lFrameCalibration);
+  location_component::CupScanner lScanner(gFrameCalibration,
+                                          gCupDetectionCalibration);
 
   std::vector<location_component::DetectedCup> lCups =
       lScanner.detectCups(lImage, lMat);

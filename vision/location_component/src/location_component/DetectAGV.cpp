@@ -66,6 +66,9 @@ namespace location_component
           lCupLocation_m.y, ros::Time::now());
 
       ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+      ROS_INFO_STREAM(
+          "Cup is filled: " << std::to_string(
+              lDetectedFrame->mDetectedCups.at(lChosenCupIdx).mFilled));
       ROS_INFO_STREAM("Current time " << ros::Time::now());
       ROS_INFO_STREAM("Cup is expected to arrive at "
                       << lCupPredictedArrivalTime);
@@ -130,7 +133,7 @@ namespace location_component
 
         if (lCapture)
         {
-          CupScanner lCupScanner(mFrameCalibration);
+          CupScanner lCupScanner(mFrameCalibration, mCalibration);
           lDetectedFrame = DetectedFrame();
           lDetectedFrame->mDetectedCups =
               lCupScanner.detectCups(lDetectedAGV->mAGVFrame);

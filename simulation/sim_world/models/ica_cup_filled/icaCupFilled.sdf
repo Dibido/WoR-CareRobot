@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-<model name="ica_cup">
+<model name="ica_cup_filled">
     <link name="Cup-Body">
       <inertial>
 	      <pose>0.0 0.0 0.1 0 0 0</pose>
