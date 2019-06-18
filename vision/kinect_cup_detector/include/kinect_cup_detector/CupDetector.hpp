@@ -57,7 +57,7 @@ namespace kinect_cupdetector
 class CupDetector
 {
     public:
-  CupDetector();
+  CupDetector(bool aDebugMode);
   ~CupDetector() = default;
 
     private:
@@ -72,6 +72,8 @@ class CupDetector
   int mCenterCupX;
   int mCenterCupY;
 
+  // Debug mode
+  bool mDebugMode;
   // OpenCV values
   cv::Mat mDisplayMatrix;
   cv::Mat mDisplayHSV;

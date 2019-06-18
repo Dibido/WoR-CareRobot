@@ -1,9 +1,13 @@
 #include "kinect_cup_detector/CupDetector.hpp"
 
-CupDetector::CupDetector() : mCalibrated(false), mSendGoal(false)
+CupDetector::CupDetector(bool aDebugMode)
+    : mDebugMode(aDebugMode), mCalibrated(false), mSendGoal(false)
 {
   // Setup opencv
-  cv::namedWindow("result");
+  if (mDebugMode)
+  {
+    cv::namedWindow("result");
+  }
   image_transport::ImageTransport mImageTransport(mNodeHandle);
   image_transport::Publisher mPublisher;
   // Read from ROS topic
@@ -29,7 +33,10 @@ void CupDetector::calibrateKinectPosition()
   cv::line(mDisplayMatrix, cv::Point((mDisplayMatrix.cols / 2), 0),
            cv::Point((mDisplayMatrix.cols / 2), mDisplayMatrix.rows), lRedColor,
            4);
-  cv::imshow("result", mDisplayMatrix);
+  if (mDebugMode)
+  {
+    cv::imshow("result", mDisplayMatrix);
+  }
 }
 
 void CupDetector::goalCallback(const kinematica_msgs::GoalConstPtr& aMsg)
@@ -196,7 +203,10 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       mDisplayMatrix,
       cv::Point(mCenterPaperX - mCenterCupX, mCenterPaperY - mCenterCupY), 4,
       cv::Scalar(0, 0, 255), 3);
-  cv::imshow("result", mDisplayMatrix);
+  if (mDebugMode)
+  {
+    cv::imshow("result", mDisplayMatrix);
+  }
   int c = cv::waitKey(10);
   if (c == 27) // Escape
   {
