@@ -86,7 +86,9 @@ catkin_add_gtest(${PROJECT_NAME}_unit_tests
                   src/location_component/LocationComponent.cpp 
                   src/location_component/FrameCalibration.cpp 
                   src/location_component/AGVFrameCalibration.cpp 
-                  src/location_component/CupDetectionCalibration.cpp)
+                  src/location_component/CupDetectionCalibration.cpp
+                  src/location_component/GoalSubscriberLocationComp.cpp
+                  )
 
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} ${OpenCV_LIBS})
 add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})

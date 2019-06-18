@@ -21,5 +21,5 @@ TEST(DetectAGVSuite, CalibrateAGVFrame)
   unsigned int lTotal = lMat.rows * lMat.cols;
   unsigned int lblackPixels = lTotal - countNonZero(lMat);
   
-  EXPECT_EQ(10088580, lblackPixels);
+  EXPECT_EQ(10088925, lblackPixels);
 }
