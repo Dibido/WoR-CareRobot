@@ -15,7 +15,7 @@ namespace location_component
 
     // Camera position
     float mCameraPosX_m = 0.43f;
-    float mCameraPosY_m = -1.72f;
+    float mCameraPosY_m = -1.59f; //-1.72f;
     float mCameraPosZ_m = 0.58f;
 
     // Camera FOV
