@@ -33,6 +33,7 @@
  */
 
 #include "sdkcommon.h"
+
 #include <process.h>
 
 namespace rp

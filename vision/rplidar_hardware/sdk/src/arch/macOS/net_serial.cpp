@@ -32,10 +32,13 @@
  *
  */
 
-#include "arch/macOS/net_serial.h"
 #include "arch/macOS/arch_macOS.h"
-#include <sys/select.h>
+
+#include "arch/macOS/net_serial.h"
+
 #include <termios.h>
+
+#include <sys/select.h>
 
 namespace rp
 {

@@ -165,6 +165,7 @@ public:
     virtual u_result getHealth(rplidar_response_device_health_t & health, _u32 timeout = DEFAULT_TIMEOUT) = 0;
 
     /// Get the device information of the RPLIDAR include the serial number, firmware version, device model etc.
+
     /// 
     /// \param info          The device information returned from the RPLIDAR
     /// \param timeout       The operation timeout value (in millisecond) for the serial port communication  

@@ -32,8 +32,9 @@
  *
  */
 
-#include "net_serial.h"
 #include "sdkcommon.h"
+
+#include "net_serial.h"
 
 namespace rp
 {

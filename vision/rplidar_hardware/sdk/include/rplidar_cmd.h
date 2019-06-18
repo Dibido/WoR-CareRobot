@@ -36,6 +36,7 @@
 
 #include "rplidar_protocol.h"
 
+
 // Commands
 //-----------------------------------------
 

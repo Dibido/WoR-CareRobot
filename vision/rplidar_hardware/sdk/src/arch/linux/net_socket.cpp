@@ -6,14 +6,19 @@
  *  POXIS Implementation
  */
 
-#include "../../hal/socket.h"
 #include "sdkcommon.h"
 
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
+#include "../../hal/socket.h"
+
 #include <sys/socket.h>
+
+#include <netinet/in.h>
+
+#include <netinet/tcp.h>
+
+#include <arpa/inet.h>
+
+#include <netdb.h>
 
 namespace rp
 {
