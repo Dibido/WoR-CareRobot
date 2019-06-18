@@ -36,12 +36,6 @@ namespace environment_controller
      */
     virtual void provideSensor(const Sensor& aSensor);
 
-    /**
-     * @brief Function for listening to transforms
-     *
-     */
-    void transformListen(const ros::TimerEvent&);
-
       private:
     /**
      * @brief Callback function to construct a Pose object
@@ -51,7 +45,6 @@ namespace environment_controller
     void sensorCallback(const kinematica_msgs::SensorConstPtr& aMsg);
 
     ros::NodeHandle mHandle;
-    ros::Timer mTimer;
     ros::Subscriber mSubscriber;
     std::shared_ptr<EnvironmentController> mEnvironmentController;
   };

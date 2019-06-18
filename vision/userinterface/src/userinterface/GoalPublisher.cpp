@@ -19,6 +19,8 @@ namespace userinterface
     ros::spinOnce();
     // Create and fill message with aPosition.
     kinematica_msgs::Goal lMsg;
+
+    lMsg.staticCup = false;
     lMsg.position.x = aPosition.x_m();
     lMsg.position.y = aPosition.y_m();
     lMsg.position.z = aPosition.z_m();

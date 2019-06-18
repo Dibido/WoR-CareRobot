@@ -90,15 +90,16 @@ namespace environment_controller
     /**
      * @brief Transform sensor frame to world frame
      *
-     * @param aSensorID
+     * @param aFrame
      */
-    Pose transformFrames(const uint8_t aSensorID);
+    Pose transformFrames(const std::string& aFrame);
 
     /**
-     * @brief Publish transforms
+     * @brief Setter for incoming obstacles
      *
+     * @param aObstacles vector with obstacles
      */
-    void publishTFSensors(const ros::TimerEvent&);
+    void setObstacles(const Obstacles& aObstacles);
 
     /**
      * @brief Get the Sensor object
@@ -112,11 +113,11 @@ namespace environment_controller
 
       private:
     ros::NodeHandle mCallbackNode;
-    ros::Timer mTimer;
 
     std::shared_ptr<controller::Context> mContext;
     std::shared_ptr<TFHandler> mTfHandler;
     std::map<uint8_t, Pose> mSensors;
+    std::vector<Obstacle> mObstacles;
   };
 } // namespace environment_controller
 

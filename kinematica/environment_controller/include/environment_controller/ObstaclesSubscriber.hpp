@@ -31,12 +31,15 @@ namespace environment_controller
     /**
      * @brief Construct a new Obstacles Subscriber object
      *
+     * @param aSafetyController
+     * @param aEnvironmentController
      * @param aSubName
      *
      * @author Gianni Monteban
      */
     ObstaclesSubscriber(
         const std::shared_ptr<SafetyController>& aSafetyController,
+        const std::shared_ptr<EnvironmentController>& aEnvironmentController,
         const std::string& aSubName);
 
     /**
@@ -64,6 +67,7 @@ namespace environment_controller
 
       private:
     std::shared_ptr<SafetyController> mSafetyController;
+    std::shared_ptr<EnvironmentController> mEnvironmentController;
     ros::NodeHandle mHandle;
     ros::Subscriber mSubscriber;
     ros::NodeHandle mHandlePub;

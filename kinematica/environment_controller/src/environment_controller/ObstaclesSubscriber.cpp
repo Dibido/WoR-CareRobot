@@ -7,8 +7,10 @@ namespace environment_controller
 {
   ObstaclesSubscriber::ObstaclesSubscriber(
       const std::shared_ptr<SafetyController>& aSafetyController,
+      const std::shared_ptr<EnvironmentController>& aEnvironmentController,
       const std::string& aSubName)
       : mSafetyController(aSafetyController),
+        mEnvironmentController(aEnvironmentController),
         mSubscriber(mHandle.subscribe(
             aSubName,
             cQueue_size,
@@ -47,5 +49,6 @@ namespace environment_controller
   void ObstaclesSubscriber::passObstacles(const Obstacles& aObstacles)
   {
     mSafetyController->executeHardstopOnObstacleThreat(aObstacles);
+    mEnvironmentController->setObstacles(aObstacles);
   }
 } // namespace environment_controller

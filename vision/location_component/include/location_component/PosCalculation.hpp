@@ -2,6 +2,7 @@
 #define POSTCALCULATION_HPP
 
 #include "location_component/CupDetectionCalibration.hpp"
+#include <boost/optional.hpp>
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
 
@@ -16,8 +17,9 @@ namespace location_component
     /**
      * @brief Predicts the time when the cup arrives at the robot arm.
      */
-    ros::Time predictCupArrivalTime(float aCupLocationY_m,
-                                    ros::Time aCurrentTime) const;
+    boost::optional<ros::Time>
+        predictCupArrivalTime(float aCupLocationY_m,
+                              ros::Time aCurrentTime) const;
     /**
      * @brief Calculates the cup location.
      *
@@ -67,9 +69,8 @@ namespace location_component
 
     /**
      * @brief The most current speed of the AGV
-     *
      */
-    float mAGVSpeed_m_s = 0.220f;
+    float mAGVSpeed_m_s = 0.0f;
 
     CupDetectionCalibration mCalibration;
   };

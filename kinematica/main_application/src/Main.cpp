@@ -34,7 +34,7 @@ int main(int argc, char** argv)
       environment_controller::ObstaclesSubscriber(
           std::make_shared<environment_controller::SafetyController>(
               lSafetyController),
-          environment_controller::cObstacleTopicName);
+          lEnvironmentController, environment_controller::cObstacleTopicName);
 
   environment_controller::CupSubscriber lCupSubscriber =
       environment_controller::CupSubscriber(
