@@ -53,7 +53,7 @@ namespace location_component
       PosCalculation lPosCalculator(mCalibration);
       std::size_t lChosenCupIdx = 0;
       for (std::size_t lIdx = 0; lIdx < lDetectedFrame->mDetectedCups.size();
-           lIdx++)
+           ++lIdx)
       {
         if (lDetectedFrame->mDetectedCups.at(lIdx).mFilled)
         {
