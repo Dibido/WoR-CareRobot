@@ -130,6 +130,7 @@ namespace controller
     kinematics::Configuration mCurrentConfiguration;
     kinematics::Configuration mGoalConfiguration;
     std::shared_ptr<State> mCurrentState;
+    std::shared_ptr<State> mHistoryState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
     environment_controller::Position mDropPosition;

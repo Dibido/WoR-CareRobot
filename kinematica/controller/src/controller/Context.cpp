@@ -73,9 +73,7 @@ namespace controller
     mCurrentStateMutex.lock();
     mCurrentState->doActivity(this);
     mCurrentStateMutex.unlock();
-    while (!(typeid(*mCurrentState) == typeid(EmergencyStop) ||
-             typeid(*mCurrentState) == typeid(Ready)) &&
-           ros::ok())
+    while (!(typeid(*mCurrentState) == typeid(Ready)) && ros::ok())
     {
       mHardStopMutex.unlock();
       mCurrentStateMutex.lock();
@@ -83,6 +81,7 @@ namespace controller
       mCurrentStateMutex.unlock();
       mHardStopMutex.lock();
     }
+    mHardStopMutex.unlock();
   }
 
   void Context::foundCup(const environment_controller::Cup& aCup)
@@ -93,19 +92,19 @@ namespace controller
   void Context::hardStop(bool aStop)
   {
     std::lock_guard<std::mutex> lHardLock(mHardStopMutex);
+    mFeedbackDone.notify_all();
+    mWaitForRelease.notify_all();
     std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
+    {
+      mHistoryState = mCurrentState;
       setState(std::make_shared<EmergencyStop>());
+      ROS_WARN("STOP");
+    }
     else
     {
-      if (ros::Time::now() > mCup.timeOfArrival())
-      {
-        setState(std::make_shared<Init>());
-      }
-      else
-      {
-        setState(std::make_shared<Move>());
-      }
+      mCurrentState = mHistoryState;
+      ROS_WARN("RELEASE");
     }
   }
 

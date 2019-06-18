@@ -85,12 +85,6 @@ void publish_scan(ros::Publisher* pub,
   scan_msg.angle_increment =
       (scan_msg.angle_max - scan_msg.angle_min) / ( double )(node_count - 1);
 
-  for (size_t i = 0; i < node_count; ++i)
-  {
-    std::cout << "Angle: " << std::to_string(DEG2RAD(getAngle(nodes[i])))
-              << std::endl;
-  }
-
   scan_msg.scan_time = scan_time;
   scan_msg.time_increment = scan_time / ( double )(node_count - 1);
   scan_msg.range_min = 0.15;
