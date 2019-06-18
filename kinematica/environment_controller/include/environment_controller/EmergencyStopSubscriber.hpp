@@ -37,7 +37,7 @@ namespace environment_controller
      *
      * @param aStop
      */
-    virtual void selectEmergencyStop(const bool& aStop);
+    virtual void selectEmergencyStop(const bool aStop);
 
       private:
     /**

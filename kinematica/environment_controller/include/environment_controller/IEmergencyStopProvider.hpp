@@ -24,7 +24,7 @@ namespace environment_controller
      *
      * @param bool aStop true or false to stop the robotarm
      */
-    virtual void selectEmergencyStop(const bool& aStop) = 0;
+    virtual void selectEmergencyStop(const bool aStop) = 0;
   };
 
 } // namespace environment_controller
