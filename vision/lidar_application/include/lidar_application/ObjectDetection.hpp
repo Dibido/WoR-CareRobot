@@ -83,6 +83,11 @@ namespace lidar_application
 
     ~ObjectDetection() = default;
 
+    /**
+     * @brief initialise the lidar. It will do an initial amount of scan
+     * iterations. When that is done it will publish his position.
+     *
+     */
     void init();
 
     /**
@@ -100,7 +105,11 @@ namespace lidar_application
      */
     virtual void detectObjects();
 
-    void publishPosition();
+    /**
+     * @brief Publish the posistion as specifcied in mSensor.
+     *
+     */
+    * / void publishPosition();
 
     /**
      * @brief Function converts data in vector format (theta, distance) to
