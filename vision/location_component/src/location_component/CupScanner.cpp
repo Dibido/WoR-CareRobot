@@ -73,12 +73,12 @@ namespace location_component
     for (size_t lIdx = 0; lIdx < lContours.size(); lIdx++)
     {
       DetectedCup lDetectedCup;
-      lDetectedCup.mFilled = false;
       lDetectedCup.mRadius = 5.0;
       cv::Moments lMu = cv::moments(lContours[lIdx]);
       cv::Point lCentroid{ ( int )(lMu.m10 / lMu.m00),
                            ( int )(lMu.m01 / lMu.m00) };
       lDetectedCup.mMidpoint = lCentroid;
+      lDetectedCup.mFilled = detectCupFilled(aImage, lCentroid);
       lDetectedCups.push_back(lDetectedCup);
     }
 
@@ -89,4 +89,9 @@ namespace location_component
     return lDetectedCups;
   }
 
+  bool CupScanner::detectCupFilled(const cv::Mat& aImage,
+                                   const cv::Point& aCupMidpoint) const
+  {
+    return false;
+  }
 } // namespace location_component

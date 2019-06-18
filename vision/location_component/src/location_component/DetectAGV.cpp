@@ -40,40 +40,49 @@ namespace location_component
         detectFrame(aFrame, aDisplayFrame);
     if (lDetectedFrame)
     {
-      PosCalculation lPosCalculator(mCalibration);
-      for (const auto& detectedCup : lDetectedFrame->mDetectedCups)
+      if (lDetectedFrame->mDetectedCups.size() == 0)
       {
-        cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
-            // Cup midpoint is taken from within the bounding rectangle,
-            // so add the top-left corner of the bounding rectangle to the
-            // position.
-            detectedCup.mMidpoint +
-                lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
-            lDetectedFrame->mAGVFrameSize);
-        ros::Time lCupPredictedArrivalTime =
-            mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
-                                                 ros::Time::now());
-
-        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
-        ROS_INFO_STREAM("Current time " << ros::Time::now());
-        ROS_INFO_STREAM("Cup is expected to arrive at "
-                        << lCupPredictedArrivalTime);
-
-        if (mRosServiceCup)
+        return;
+      }
+      PosCalculation lPosCalculator(mCalibration);
+      std::size_t lChosenCupIdx = 0;
+      for (std::size_t lIdx = 0; lIdx < lDetectedFrame->mDetectedCups.size();
+           lIdx++)
+      {
+        if (lDetectedFrame->mDetectedCups.at(lIdx).mFilled)
         {
-          environment_controller::Object lObject(
-              environment_controller::Position(
-                  lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
-              mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
-              mCalibration.mCupDiameter_m, M_PI * -0.5f,
-              mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
-
-          environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
-
-          mRosServiceCup->passCup(lCup);
+          lChosenCupIdx = lIdx;
         }
       }
 
+      cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
+          // Cup midpoint is taken from within the bounding rectangle,
+          // so add the top-left corner of the bounding rectangle to the
+          // position.
+          lDetectedFrame->mDetectedCups.at(lChosenCupIdx).mMidpoint +
+              lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
+          lDetectedFrame->mAGVFrameSize);
+      ros::Time lCupPredictedArrivalTime = mPosCalculator.predictCupArrivalTime(
+          lCupLocation_m.y, ros::Time::now());
+
+      ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+      ROS_INFO_STREAM("Current time " << ros::Time::now());
+      ROS_INFO_STREAM("Cup is expected to arrive at "
+                      << lCupPredictedArrivalTime);
+
+      if (mRosServiceCup)
+      {
+        environment_controller::Object lObject(
+            environment_controller::Position(
+                lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
+            mCalibration.mCupHeight_m, mCalibration.mCupDiameter_m,
+            mCalibration.mCupDiameter_m, M_PI * -0.5f,
+            mPosCalculator.getAGVSpeed_m_s(), ros::Time::now(), 0);
+
+        environment_controller::Cup lCup(lObject, lCupPredictedArrivalTime);
+
+        mRosServiceCup->passCup(lCup);
+      }
       ROS_INFO_STREAM("AGV found at: " << mPosCalculator.calculateAGVLocation(
                           lDetectedFrame->mDetectedAGV.mMidpoint,
                           lDetectedFrame->mAGVFrameSize));

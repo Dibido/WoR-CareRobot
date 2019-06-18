@@ -43,6 +43,16 @@ namespace location_component
      */
     std::vector<DetectedCup> detectCups(const cv::Mat& aImage) const;
 
+    /**
+     * @brief Detects whether a cup is filled or not.
+     *
+     * @param aImage The image on which the cup is present.
+     * @param aCupMidpoint The midpoint of the cup on the image.
+     * @return Whether the cup is filled.
+     */
+    bool detectCupFilled(const cv::Mat& aImage,
+                         const cv::Point& aCupMidpoint) const;
+
       private:
     FrameCalibration& mFrameCalibration;
   };

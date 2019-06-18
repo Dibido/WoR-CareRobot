@@ -1,6 +1,8 @@
 #ifndef CUP_DETECTION_CALIBRATION_HPP
 #define CUP_DETECTION_CALIBRATION_HPP
 
+#include <opencv2/opencv.hpp>
+
 namespace location_component
 {
   struct CupDetectionCalibration
@@ -34,6 +36,9 @@ namespace location_component
     float mAGVDepth_m = 0.552f;
     float mAGVWidth_m = 0.350f;
     float mAGVHeight_m = 0.400f;
+
+    cv::Scalar mMinFilledCupColorHSV = cv::Scalar(20.0, 0.5, 0.0);
+    cv::Scalar mMaxFilledCupColorHSV = cv::Scalar(50.0, 1.0, 1.0);
 
     bool mDebugStatus;
   };
