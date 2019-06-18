@@ -5,8 +5,9 @@ int main(int argc, char** argv)
   // Setup ROS
   ros::init(argc, argv, "kinect_cup_detector");
   // Create CupDetector
-  if (argc == 2 && argv[1] == "-d")
+  if (argc == 2 && std::string(argv[1]) == std::string("-d"))
   {
+    std::cout << "Started in debug mode." << std::endl;
     CupDetector lCupDetector(true);
     // Handle the incoming messages
     while (ros::ok())
