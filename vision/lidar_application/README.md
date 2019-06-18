@@ -16,3 +16,8 @@ calling the lidar application with argumens would be 'rosrun lidar_application l
 
 - Third argument: Amount of 360-scans performed by the lidar that are needed for initialscandata. Any following regular scans will always be compared to initialscandata. Lidar takes about 10 360-scans per second. 10 has also proven to be a good default. If the number is lower, the initialisation-time will be lower but the data will also be less detailed. If the number is higher, the initialisation-time will be longer but the initialscandata will also be more detailed.
 
+- Fourth argument: Id of the sensor.
+  
+- Fifth argument: Position of the sensor in meters. Specify the x, y and z like this 0-0-0.
+
+- Sixth argument: Rotation of the sensor. Specify the role, pitch and jaw like this 0-0-0.

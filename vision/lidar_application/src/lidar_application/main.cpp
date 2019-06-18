@@ -1,10 +1,17 @@
 #include "environment_controller/Sensor.hpp"
 #include "lidar_application/ObjectDetection.hpp"
 #include <iostream>
+#include <regex>
 #include <ros/console.h>
 #include <ros/ros.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <vector>
+
+bool isNumber(std::string aToken)
+{
+  return std::regex_match(
+      aToken, std::regex(("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?")));
+}
 
 std::vector<double> stringToDoubleVector(const std::string& aString,
                                          const std::string& aDelimiter)
@@ -13,12 +20,17 @@ std::vector<double> stringToDoubleVector(const std::string& aString,
   size_t pos = 0;
   std::string lToken;
   std::string lString = aString;
-  while ((pos = aString.find(aDelimiter)) != std::string::npos)
+  while ((pos = lString.find(aDelimiter)) != std::string::npos)
   {
-    lToken = aString.substr(0, pos);
+    lToken = lString.substr(0, pos);
     returnValue.push_back(stod(lToken));
-    lString.erase(0, pos + aString.length());
+    lString.erase(0, pos + 1);
   }
+  if (isNumber(lString))
+  {
+    returnValue.push_back(stod(lString));
+  }
+
   return returnValue;
 }
 
@@ -48,72 +60,84 @@ int main(int argc, char** argv)
 
   // Read commandline arguments, README contains information about these
   // arguments and their effects.
-  if (argc >= 2)
-  {
-    ROS_INFO("Setting lMaxDifference_m to %s", argv[1]);
-    lMaxDifference_m = strtod(argv[1], NULL);
-  }
-  if (argc >= 3)
-  {
-    ROS_INFO("Setting lMinNumberAdjacentAngles to %s", argv[2]);
-    lMinNumberAdjacentAngles = std::stoi(argv[2]);
 
-    if (lMinNumberAdjacentAngles < 1)
+  if (argc >= 8)
+  {
+    throw std::invalid_argument(
+        "Too many arguments! max is 7. Please read the README for more "
+        "information.");
+  }
+  else
+  {
+    if (argc >= 2)
     {
-      throw std::range_error("lMinNumberAdjacentAngles must be >= 1");
+      ROS_INFO("Setting lMaxDifference_m to %s", argv[1]);
+      lMaxDifference_m = strtod(argv[1], NULL);
     }
-
-    // Specifying lMinNumberOfAdjacentAngles implies that we want to filter out
-    // small objects
-    lIgnoreSmallObjects = true;
-  }
-  if (argc >= 4)
-  {
-    ROS_INFO("Setting lNumberOfInitialScanRounds to %s", argv[3]);
-    lNumberOfInitialScanRounds = std::stoi(argv[3]);
-  }
-  if (argc >= 5)
-  {
-    ROS_INFO("Setting lSensorId %s", argv[4]);
-    const int value = std::stoi(argv[4]);
-
-    if (!(value >= std::numeric_limits<uint8_t>::min() &&
-          value <= std::numeric_limits<uint8_t>::max()))
+    if (argc >= 3)
     {
-      throw std::range_error("value does not fit uint8_t");
-    }
+      ROS_INFO("Setting lMinNumberAdjacentAngles to %s", argv[2]);
+      lMinNumberAdjacentAngles = std::stoi(argv[2]);
 
-    lSensorId = static_cast<uint8_t>(value);
-  }
-  if (argc >= 6)
-  {
-    ROS_INFO("Setting lPosition with x y z %s", argv[5]);
-    std::vector<double> values = stringToDoubleVector(argv[5], "-");
-    if (values.size() != 3)
+      if (lMinNumberAdjacentAngles < 1)
+      {
+        throw std::range_error("lMinNumberAdjacentAngles must be >= 1");
+      }
+
+      // Specifying lMinNumberOfAdjacentAngles implies that we want to filter
+      // out small objects
+      lIgnoreSmallObjects = true;
+    }
+    if (argc >= 4)
     {
-      throw std::invalid_argument("Expected 3 values for lPosition");
+      ROS_INFO("Setting lNumberOfInitialScanRounds to %s", argv[3]);
+      lNumberOfInitialScanRounds = std::stoi(argv[3]);
     }
-
-    lPosition = environment_controller::Position(values.at(0), values.at(1),
-                                                 values.at(2));
-  }
-  if (argc == 7)
-  {
-    ROS_INFO("Setting lRotation with role pitch jaw %s", argv[6]);
-
-    std::vector<double> values = stringToDoubleVector(argv[6], "-");
-    if (values.size() != 3)
+    if (argc >= 5)
     {
-      throw std::invalid_argument("Expected 3 values for lPosition");
+      ROS_INFO("Setting lSensorId %s", argv[4]);
+      const int value = std::stoi(argv[4]);
+
+      if (!(value >= std::numeric_limits<uint8_t>::min() &&
+            value <= std::numeric_limits<uint8_t>::max()))
+      {
+        throw std::range_error("value does not fit uint8_t");
+      }
+
+      lSensorId = static_cast<uint8_t>(value);
     }
+    if (argc >= 6)
+    {
+      ROS_INFO("Setting lPosition with x y z %s", argv[5]);
+      std::vector<double> values = stringToDoubleVector(argv[5], "-");
+      if (values.size() != 3)
+      {
+        throw std::invalid_argument("Expected 3 values for lPosition");
+      }
 
-    tf2::Quaternion lQuaternion;
-    lQuaternion.setRPY(0, 0, 0);
-    lQuaternion.normalize();
+      std::cout << values.at(0) << " " << values.at(1) << " " << values.at(2)
+                << std::endl;
+      lPosition = environment_controller::Position(values.at(0), values.at(1),
+                                                   values.at(2));
+    }
+    if (argc == 7)
+    {
+      ROS_INFO("Setting lRotation with role pitch jaw %s", argv[6]);
 
-    lRotation = environment_controller::Rotation(
-        lQuaternion.getX(), lQuaternion.getY(), lQuaternion.getZ(),
-        lQuaternion.getW());
+      std::vector<double> values = stringToDoubleVector(argv[6], "-");
+      if (values.size() != 3)
+      {
+        throw std::invalid_argument("Expected 3 values for lPosition");
+      }
+
+      tf2::Quaternion lQuaternion;
+      lQuaternion.setRPY(0, 0, 0);
+      lQuaternion.normalize();
+
+      lRotation = environment_controller::Rotation(
+          lQuaternion.getX(), lQuaternion.getY(), lQuaternion.getZ(),
+          lQuaternion.getW());
+    }
   }
 
   const environment_controller::Pose lPose(lPosition, lRotation);
