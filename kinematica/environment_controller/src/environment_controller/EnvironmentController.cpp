@@ -47,6 +47,11 @@ namespace environment_controller
     mContext->provideDropPosition(aPosition);
   }
 
+  void EnvironmentController::provideDrop(const Position& aPosition)
+  {
+    mContext->providePatientPosition(aPosition);
+  }
+
   void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
   {
     mContext->provideReleaseTime(aReleaseTime_s);

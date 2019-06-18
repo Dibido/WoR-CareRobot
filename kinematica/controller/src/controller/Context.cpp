@@ -125,6 +125,13 @@ namespace controller
     mReleaseTime_s = aReleaseTime;
     mWaitForRelease.notify_all();
   }
+
+  void Context::providePatientPosition(
+      const environment_controller::Position& aPosition)
+  {
+    mPatientPosition = aPosition;
+  }
+
   void Context::provideDropPosition(
       const environment_controller::Position& aPosition)
   {

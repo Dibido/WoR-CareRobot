@@ -83,6 +83,14 @@ namespace controller
     void provideDropPosition(const environment_controller::Position& aPosition);
 
     /**
+     * @brief provide the drop position of the cup
+     *
+     * @param aPosition
+     */
+    void providePatientPosition(
+        const environment_controller::Position& aPosition);
+
+    /**
      * @brief getters & setters
      *
      */
