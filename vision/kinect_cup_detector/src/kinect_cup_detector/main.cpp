@@ -154,11 +154,11 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         kinematica_msgs::Cup lFoundCup;
         lFoundCup.aDepth = 0.07;
         lFoundCup.aDirection = 0;
-        lFoundCup.aHeight = 0.07;
+        lFoundCup.aHeight = 0.082;
         lFoundCup.aMeasurementTime = ros::Time::now();
         lFoundCup.aSensorId = 1;
         lFoundCup.aSpeed = 0;
-        lFoundCup.aWidth = 0.07;
+        lFoundCup.aWidth = 0.061;
         // Since the kinect is positioned oposite of the robotarm so X=Y and
         // Y=X.
         lFoundCup.mX_m = distFromCenterYCM / 100;
@@ -182,8 +182,6 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   }
   cv::circle(displayMatrix, cv::Point(centerX, centerY), 4,
              cv::Scalar(0, 0, 255), 3);
-  // cv::circle(displayMatrix, cv::Point(centerX, centerY), 4, cv::Scalar(0, 0,
-  // 255), 2);
   cv::imshow("result", displayMatrix);
   int c = cv::waitKey(10);
   if (c == 27) // Escape

@@ -79,7 +79,7 @@ int main(int argc, char** argv)
   libfreenect2::Frame undistorted(512, 424, 4), registered(512, 424, 4);
 
   // Get frames
-  while (true)
+  while (ros::ok())
   {
     if (!listener.waitForNewFrame(frames, 10 * 1000)) // 10 seconds
     {
