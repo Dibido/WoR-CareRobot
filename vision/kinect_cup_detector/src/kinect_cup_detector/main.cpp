@@ -88,8 +88,17 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   cv::Rect lBoundedRect;
   cv::RotatedRect lRotatedRect;
   cv::Mat mApproxImage;
-  int centerX;
-  int centerY;
+  cv::Mat mApproxImageCup;
+
+  cv::Mat mRegionOfInterest;
+  cv::Mat mRegionOfInterestHSV;
+  cv::Mat mRegionOfInterestMask;
+  std::vector<std::vector<cv::Point>> regionOfInterestContours;
+
+  int centerPaperX;
+  int centerPaperY;
+  int centerCupX;
+  int centerCupY;
   cv::Point2f lVertices[4];
   // Filter color
   cv::cvtColor(displayMatrix, displayHSV, CV_RGB2HSV);
@@ -103,72 +112,87 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     double mEpsilonMultiply = 0.03;
     double epsilon = mEpsilonMultiply * arcLength(contours.at(i), true);
     approxPolyDP(contours.at(i), mApproxImage, epsilon, true);
-    if (mApproxImage.size().height == 4)
+    if (mApproxImage.size().height == 4 && (contourArea(contours.at(i)) > 3000))
     {
-      if (contourArea(contours.at(i)) > 500)
+      // Get the number of pixels per cm (longest side of rectangle is 29cm)
+      lRotatedRect = cv::minAreaRect(contours.at(i));
+      // Get the biggest side
+      double lMaxDistance = 0;
+      lRotatedRect.points(lVertices);
+      for (int i = 0; i < 4; i++)
       {
-        // Get the number of pixels per cm (longest side of rectangle is 30cm)
-        lRotatedRect = cv::minAreaRect(contours.at(i));
-        // Get the biggest side
-        double lMaxDistance = 0;
-        lRotatedRect.points(lVertices);
-        for (int i = 0; i < 4; i++)
+        double lDistance =
+            ( double )cv::norm(lVertices[i] - lVertices[(i + 1) % 4]);
+        if (lDistance > lMaxDistance)
         {
-          double lDistance =
-              ( double )cv::norm(lVertices[i] - lVertices[(i + 1) % 4]);
-          if (lDistance > lMaxDistance)
-          {
-            lMaxDistance = ( double )lDistance;
-          }
+          lMaxDistance = ( double )lDistance;
         }
-        std::cout << "Pixels : " << lMaxDistance << std::endl;
-        double lPixelsPerCm = lMaxDistance / 29.0;
-        std::cout << "lPixelsPerCm : " << lPixelsPerCm << std::endl;
-        // Get the center of the rectangle in the frame
-        // Calculate center
-        cv::Moments currentmoments = cv::moments(contours.at(i));
-        centerX = ( int )(currentmoments.m10 / currentmoments.m00);
-        centerY = ( int )(currentmoments.m01 / currentmoments.m00);
-
-        /* TODO Find Cup on rectangle
-        cv::findContours(regionOfInterest, regionOfInterestContours, hierarchy,
-        CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0)); for (unsigned
-        int j = 0; j < regionOfInterestContours.size(); j++)
-        {
-          std::cout << "Contours.size : " << regionOfInterestContours.size() <<
-        std::endl;
-
-          // Calculate position and size (cup should be ~7cm)
-        }*/
-        // Determine position relative to the robotarm
-        int distFromCenterX = (displayMatrix.cols / 2) - centerX;
-        int distFromCenterY = (displayMatrix.rows / 2) - centerY;
-        double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
-        distFromCenterXCM += 3.0;
-        double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
-        distFromCenterYCM -= 70;
-        distFromCenterYCM = -distFromCenterYCM;
-        std::cout << "Centerx : " << distFromCenterXCM
-                  << " CenterY : " << distFromCenterYCM << std::endl;
-        // Send it to the location component
-        kinematica_msgs::Cup lFoundCup;
-        lFoundCup.aDepth = 0.07;
-        lFoundCup.aDirection = 0;
-        lFoundCup.aHeight = 0.082;
-        lFoundCup.aMeasurementTime = ros::Time::now();
-        lFoundCup.aSensorId = 1;
-        lFoundCup.aSpeed = 0;
-        lFoundCup.aWidth = 0.061;
-        // Since the kinect is positioned oposite of the robotarm so X=Y and
-        // Y=X.
-        lFoundCup.mX_m = distFromCenterYCM / 100;
-        lFoundCup.mY_m = distFromCenterXCM / 100;
-        lFoundCup.mZ_m = 0.00;
-
-        lFoundCup.timeOfArrival = ros::Time::now();
-        gCupPublisher.publish(lFoundCup);
-        ros::spinOnce();
       }
+      // std::cout << "Pixels : " << lMaxDistance << std::endl;
+      double lPixelsPerCm = lMaxDistance / 29.0;
+      // std::cout << "lPixelsPerCm : " << lPixelsPerCm << std::endl;
+      // Get the center of the rectangle in the frame
+      // Calculate center
+      cv::Moments currentmoments = cv::moments(contours.at(i));
+      centerPaperX = ( int )(currentmoments.m10 / currentmoments.m00);
+      centerPaperY = ( int )(currentmoments.m01 / currentmoments.m00);
+
+      // Find Cup on rectangle
+      mRegionOfInterest = displayMatrix(cv::boundingRect(contours.at(i)));
+      cv::cvtColor(mRegionOfInterest, mRegionOfInterestHSV, CV_RGB2HSV);
+      cv::inRange(mRegionOfInterestHSV, cv::Scalar(0, 100, 100),
+                  cv::Scalar(70, 255, 255), mRegionOfInterestMask);
+      cv::findContours(mRegionOfInterestMask, regionOfInterestContours,
+                       hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_TC89_L1);
+      for (unsigned int j = 0; j < regionOfInterestContours.size(); j++)
+      {
+        // std::cout << "Contours.size : " << regionOfInterestContours.size() <<
+        // std::endl;
+        if (contourArea(regionOfInterestContours.at(j)) > 50)
+        {
+          approxPolyDP(regionOfInterestContours.at(j), mApproxImageCup, epsilon,
+                       true);
+          // Get the center of the contour
+          cv::Moments lCurrentMoments =
+              cv::moments(regionOfInterestContours.at(j));
+          centerCupX = ( int )(lCurrentMoments.m10 / lCurrentMoments.m00);
+          centerCupY = ( int )(lCurrentMoments.m01 / lCurrentMoments.m00);
+          // Calculate difference from the center of the paper
+          centerCupX = (mRegionOfInterest.cols / 2) - centerCupX;
+          centerCupY = (mRegionOfInterest.rows / 2) - centerCupY;
+        }
+      }
+      // Determine position relative to the robotarm
+      int distFromCenterX =
+          (displayMatrix.cols / 2) - centerPaperX + centerCupX;
+      int distFromCenterY =
+          (displayMatrix.rows / 2) - centerPaperY + centerCupY;
+      double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
+      distFromCenterXCM += 3.0;
+      double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
+      distFromCenterYCM -= 70;
+      distFromCenterYCM = -distFromCenterYCM;
+      // std::cout << "Centerx : " << distFromCenterXCM << " CenterY : " <<
+      // distFromCenterYCM << std::endl; Send it to the location component
+      kinematica_msgs::Cup lFoundCup;
+      lFoundCup.aDepth = 0.07;
+      lFoundCup.aDirection = 0;
+      lFoundCup.aHeight = 0.082;
+      lFoundCup.aMeasurementTime = ros::Time::now();
+      lFoundCup.aSensorId = 1;
+      lFoundCup.aSpeed = 0;
+      lFoundCup.aWidth = 0.061;
+      // Since the kinect is positioned oposite of the robotarm so X=Y and
+      // Y=X.
+      lFoundCup.mX_m = distFromCenterYCM / 100;
+      lFoundCup.mY_m = distFromCenterXCM / 100;
+      lFoundCup.mZ_m = 0.00;
+
+      lFoundCup.timeOfArrival = ros::Time::now();
+      gCupPublisher.publish(lFoundCup);
+      ros::spinOnce();
+      std::cout << "FoundX : " << distFromCenterYCM / 100
+                << "FoundY : " << distFromCenterXCM / 100 << std::endl;
     }
   }
   // Show in a window
@@ -180,7 +204,8 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     cv::line(displayMatrix, lVertices[i], lVertices[(i + 1) % 4],
              cv::Scalar(0, 255, 0), 2);
   }
-  cv::circle(displayMatrix, cv::Point(centerX, centerY), 4,
+  cv::circle(displayMatrix,
+             cv::Point(centerPaperX - centerCupX, centerPaperY - centerCupY), 4,
              cv::Scalar(0, 0, 255), 3);
   cv::imshow("result", displayMatrix);
   int c = cv::waitKey(10);
@@ -189,4 +214,3 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     std::exit(0);
   }
 }
-//

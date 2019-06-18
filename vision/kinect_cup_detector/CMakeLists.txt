@@ -27,7 +27,6 @@ unit_test_framework
 )
 
 catkin_package(
-  INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp
   DEPENDS roscpp std_msgs message_runtime sensor_interfaces environment_controller cv_bridge image_transport)
 
