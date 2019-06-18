@@ -29,11 +29,11 @@ namespace environment_controller
 
       Sensor lSensor(aMsg->sensorID, lPose);
 
+      ROS_DEBUG("ADD sensor %i", lSensor.sensorID());
       provideSensor(lSensor);
     }
-    catch (const std::exception& lE)
+    catch (...)
     {
-      ROS_ERROR("%s", lE.what());
     }
   }
 
@@ -41,4 +41,5 @@ namespace environment_controller
   {
     mEnvironmentController->registerSensor(aSensor);
   }
+
 } // namespace environment_controller

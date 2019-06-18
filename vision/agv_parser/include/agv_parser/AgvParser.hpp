@@ -15,6 +15,7 @@
 #include <ros/ros.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 // Constants for the agv_parser
@@ -43,6 +44,7 @@ namespace agv_parser
      * /dev/ttyUSB0
      */
     AgvParser(std::string aPort);
+    AgvParser();
     virtual ~AgvParser();
 
     /**
@@ -76,7 +78,7 @@ namespace agv_parser
     // The io service
     boost::asio::io_service mIoService;
     // The serial port
-    boost::asio::serial_port mSerial;
+    boost::shared_ptr<boost::asio::serial_port> mSerial;
 
     // Ros variables
     ros::NodeHandlePtr mRosNode;

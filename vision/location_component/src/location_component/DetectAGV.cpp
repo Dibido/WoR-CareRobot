@@ -180,12 +180,21 @@ namespace location_component
       // The corners of the bounding rectangle around the AGV.
       std::vector<cv::Point2f> lEstimatedSquare;
 
-      for (size_t idx = 0; idx < cCornersOfObject; ++idx)
+      // Adjusting the first point of the square
+      unsigned int lIdxOffsetCornersOfObject = 0;
+      if (lContours.at(0).x > lContours.at(2).x)
       {
-        lAGVCorners.push_back(cv::Point2f(( float )lContours.at(idx).x,
-                                          ( float )lContours.at(idx).y));
+        lIdxOffsetCornersOfObject = 1;
+      }
 
-        lDetectedAGV.mCorners.push_back(lContours.at(idx));
+      for (size_t idx = lIdxOffsetCornersOfObject;
+           idx < cCornersOfObject + lIdxOffsetCornersOfObject; ++idx)
+      {
+        lAGVCorners.push_back(
+            cv::Point2f(( float )lContours.at(idx % cCornersOfObject).x,
+                        ( float )lContours.at(idx % cCornersOfObject).y));
+
+        lDetectedAGV.mCorners.push_back(lContours.at(idx % cCornersOfObject));
       }
 
       lEstimatedSquare.push_back(
@@ -281,6 +290,11 @@ namespace location_component
     unsigned int lAverageY = lSumY / ( unsigned int )aContours.size();
 
     return cv::Point(lAverageX, lAverageY);
+  }
+
+  float DetectAGV::getAGVSpeed() const
+  {
+    return mPosCalculator.getAGVSpeed_m_s();
   }
 
   void DetectAGV::setAGVSpeed(const location_component::AGV& aAGV)

@@ -67,9 +67,8 @@ namespace location_component
 
     /**
      * @brief The most current speed of the AGV
-     *
      */
-    float mAGVSpeed_m_s = 0.220f;
+    float mAGVSpeed_m_s = 0.0f;
 
     CupDetectionCalibration mCalibration;
   };

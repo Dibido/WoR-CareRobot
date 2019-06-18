@@ -42,7 +42,7 @@ namespace controller
         lConfiguration = aContext->configurationProvider()->inverseKinematics(
             lTrajectoryEndEffector, lConfiguration);
         if (isLogicNextConfiguration(lPreviousConfiguration, lConfiguration) ||
-            lIsLogicCount == 1 || lIsLogicCount > cMaxLogicConfigTries)
+            lIsLogicCount > cMaxLogicConfigTries)
         {
           if (lIsLogicCount > cMaxLogicConfigTries)
           {

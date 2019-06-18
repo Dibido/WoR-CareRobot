@@ -41,7 +41,7 @@ catkin_package(
     lidar_application)
 
 add_library(${PROJECT_NAME}_plugin SHARED
-        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp)
+        src/LidarPlugin.cpp ../../vision/lidar_application/src/lidar_application/LidarData.cpp src/CalculateData.cpp src/GenerateNoise.cpp)
 
 add_dependencies(${PROJECT_NAME}_plugin ${catkin_EXPORTED_TARGETS})
 
@@ -51,7 +51,7 @@ target_link_libraries(${PROJECT_NAME}_plugin
         RayPlugin)
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/LidarPlugin_UnitTests.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/CalculateData_UnitTests.cpp  unitTests/GenerateNoise_UnitTests.cpp unitTests/LidarPlugin_UnitTests.cpp )
 
 add_dependencies(${PROJECT_NAME}_unit_tests ${catkin_EXPORTED_TARGETS})
 

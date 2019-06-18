@@ -2,6 +2,7 @@
 # Edit at https://www.gitignore.io/?templates=qt,vim,ros,c++,cmake,eclipse,valgrind,qtcreator,visualstudiocode
 
 ### C++ ###
+
 # Prerequisites
 *.d
 
@@ -281,6 +282,8 @@ tags
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
+*.save
 
 # End of https://www.gitignore.io/api/qt,vim,ros,c++,cmake,eclipse,valgrind,qtcreator,visualstudiocode
 

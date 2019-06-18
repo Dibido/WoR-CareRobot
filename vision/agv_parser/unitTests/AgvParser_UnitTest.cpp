@@ -13,7 +13,7 @@
 TEST(AgvParser, AgvDataTooShort)
 {
   // Create with default port
-  agv_parser::AgvParser lAgvParser("/dev/ttyUSB0");
+  agv_parser::AgvParser lAgvParser;
   std::string lData = "#S#";
   try
   {
@@ -33,7 +33,7 @@ TEST(AgvParser, AgvDataTooShort)
 TEST(AgvParser, AgvDataWrongFormat)
 {
   // Create with default port
-  agv_parser::AgvParser lAgvParser("/dev/ttyUSB0");
+  agv_parser::AgvParser lAgvParser;
   std::string lData = "#a#0.23";
   try
   {
@@ -53,7 +53,7 @@ TEST(AgvParser, AgvDataWrongFormat)
 TEST(AgvParser, AgvDataWrongValue)
 {
   // Create with default port
-  agv_parser::AgvParser lAgvParser("/dev/ttyUSB0");
+  agv_parser::AgvParser lAgvParser;
   std::string lData = "#S#-2";
   try
   {
@@ -74,7 +74,7 @@ TEST(AgvParser, AgvDataCorrect)
 {
   // Create with default port
   const double lMaximumDeviation = 0.00005;
-  agv_parser::AgvParser lAgvParser("/dev/ttyUSB0");
+  agv_parser::AgvParser lAgvParser;
   std::string lData = "#S#0.232";
   float lAgvSpeed = lAgvParser.parseRecievedMessage(lData);
   EXPECT_NEAR(lAgvSpeed, 0.232, lMaximumDeviation);

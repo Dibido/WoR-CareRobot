@@ -13,9 +13,9 @@ namespace gazebo
   const std::string cLineDataTopic = "/sensor/sonar";
   const double cMinRange = 0.30;
   const double cMaxRange = 0.40;
-  const double cMaxlines = 4;
-  const double cDistanceBetweenlines = 1;
-  const double cInterval = 3;
+  const double cMaxlines = 6;
+  const double cDistanceBetweenlines = 0.5;
+  const double cInterval = 2.54;
 
   AutomatedGuidedVehiclePlugin::AutomatedGuidedVehiclePlugin()
       : mMovingForward(true),
@@ -51,7 +51,7 @@ namespace gazebo
 
     if (aMsg->range > cMinRange && aMsg->range < cMaxRange)
     {
-      if (mWhitelinedetected)
+      if (mWhitelineDetected)
       {
         mPreviousTime = ros::Time::now().toSec();
         if (mNumberofLines > 0)
@@ -71,11 +71,11 @@ namespace gazebo
           mNumberofLines = 0;
         }
       }
-      mWhitelinedetected = false;
+      mWhitelineDetected = false;
     }
     if (ros::Time::now().toSec() - mPreviousTime >= cInterval)
     {
-      mWhitelinedetected = true;
+      mWhitelineDetected = true;
     }
   }
 
