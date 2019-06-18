@@ -6,7 +6,7 @@
 #include <thread>
 
 // Local
-#include "controller/CloseGripper.hpp"
+#include "controller/CloseGripperCup.hpp"
 #include "controller/WaitForCup.hpp"
 namespace controller
 {
@@ -39,11 +39,16 @@ namespace controller
   {
     if (aContext->cup().timeOfArrival() <= ros::Time::now())
     {
-      aContext->setState(std::make_shared<CloseGripper>());
+      transition(aContext);
     }
   }
 
   void WaitForCup::exitAction(Context*)
   {
+  }
+
+  void WaitForCup::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<CloseGripperCup>());
   }
 } // namespace controller

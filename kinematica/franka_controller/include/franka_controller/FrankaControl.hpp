@@ -2,6 +2,7 @@
 #define FRANKA_CONTROL_HPP
 
 #include "FrankaConsts.hpp"
+#include "FrankaFeedback.hpp"
 #include <franka/exception.h>
 #include <franka/gripper.h>
 #include <franka/robot.h>
@@ -50,6 +51,7 @@ namespace franka_controller
     franka::Robot mRobot;
     franka::Gripper mGripper;
     bool mStop;
+    FrankaFeedback mFeedback;
   };
 } // namespace franka_controller
 #endif // FRANKA_CONTROL_HPP

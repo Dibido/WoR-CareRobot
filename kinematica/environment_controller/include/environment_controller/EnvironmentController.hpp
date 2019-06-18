@@ -66,6 +66,14 @@ namespace environment_controller
     void provideGoal(const Position& aPosition);
 
     /**
+     * @brief provide the drop position where a grabbed cup needs to be placed
+     * on the table
+     *
+     * @param aPosition
+     */
+    void provideDrop(const Position& aPosition);
+
+    /**
      * @brief provide the time after which the cup will be released
      *
      * @param aReleaseTime_s in seconds
@@ -100,6 +108,8 @@ namespace environment_controller
      * @return const Sensor
      */
     const Sensor getSensor(const uint8_t aSensorID) const;
+
+    void frankaDoneMoving(bool aDone);
 
       private:
     ros::NodeHandle mCallbackNode;

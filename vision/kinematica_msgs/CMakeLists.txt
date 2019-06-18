@@ -56,6 +56,7 @@ add_message_files(
   Cup.msg
   Sensor.msg
   ReleaseTime.msg
+  EmergencyStop.msg
 )
 
 ## Generate services in the 'srv' folder

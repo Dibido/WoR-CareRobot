@@ -41,7 +41,7 @@ namespace controller
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void entryAction(Context* aContext) override;
+    virtual void entryAction(Context* aContext);
 
     /**
      * @brief doActivity is continiously being called while the system is in the
@@ -66,7 +66,15 @@ namespace controller
      */
     void exitAction(Context* aContext) override;
 
-      private:
+    /**
+     * @brief implements the transition to the next state
+     *
+     * @param aContext is an object which gives the states an interface to the
+     * "outside world".
+     */
+    virtual void transition(Context* aContext);
+
+      protected:
     TrajectoryProvider mTrajectoryProvider;
     std::queue<kinematics::Configuration> mTrajectory;
     ros::Time mArrivalTime;

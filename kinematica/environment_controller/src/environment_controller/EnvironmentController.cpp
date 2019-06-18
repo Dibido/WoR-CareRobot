@@ -44,6 +44,11 @@ namespace environment_controller
     mContext->provideDropPosition(aPosition);
   }
 
+  void EnvironmentController::provideDrop(const Position& aPosition)
+  {
+    mContext->providePatientPosition(aPosition);
+  }
+
   void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
   {
     mContext->provideReleaseTime(aReleaseTime_s);
@@ -89,4 +94,8 @@ namespace environment_controller
     return lSensor;
   }
 
+  void EnvironmentController::frankaDoneMoving(bool aDone)
+  {
+    mContext->frankaDone(aDone);
+  }
 } // namespace environment_controller

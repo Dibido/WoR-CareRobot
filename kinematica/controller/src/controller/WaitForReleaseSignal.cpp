@@ -1,5 +1,5 @@
 #include "controller/WaitForReleaseSignal.hpp"
-#include "controller/ReleaseCup.hpp"
+#include "controller/OpenGripperPatient.hpp"
 #include <thread>
 
 namespace controller
@@ -21,10 +21,15 @@ namespace controller
     }
     std::this_thread::sleep_for(
         std::chrono::seconds(aContext->releaseTime_s()));
-    aContext->setState(std::make_shared<ReleaseCup>());
+        transition(aContext);
   }
 
   void WaitForReleaseSignal::exitAction(Context*)
   {
+  }
+
+  void WaitForReleaseSignal::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<OpenGripperPatient>());
   }
 } // namespace controller

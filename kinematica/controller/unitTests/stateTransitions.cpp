@@ -5,7 +5,7 @@
 #include "controller/Move.hpp"
 #include "controller/MoveToDropLocation.hpp"
 #include "controller/Ready.hpp"
-#include "controller/ReleaseCup.hpp"
+#include "controller/OpenGripper.hpp"
 #include "controller/TrajectoryProvider.hpp"
 #include "controller/WaitForCup.hpp"
 #include "controller/WaitForReleaseSignal.hpp"
@@ -77,7 +77,7 @@ TEST(StateTransition, WaitForCupToGripper)
   lContext->hardStop(true);
 }
 
-TEST(StateTransition, WaitForReleaseSignalToReleaseCup)
+TEST(StateTransition, WaitForReleaseSignalToOpenGripper)
 {
   controller::Context* lContext = new controller::Context();
   lContext->setState(std::make_shared<controller::WaitForReleaseSignal>());
@@ -85,7 +85,7 @@ TEST(StateTransition, WaitForReleaseSignalToReleaseCup)
             typeid(controller::WaitForReleaseSignal));
   lContext->provideReleaseTime(1);
   lContext->currentState()->doActivity(lContext);
-  EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::ReleaseCup));
+  EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::OpenGripper));
   lContext->hardStop(true);
 }
 

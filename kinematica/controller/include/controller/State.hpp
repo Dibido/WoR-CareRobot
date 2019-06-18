@@ -55,6 +55,12 @@ namespace controller
      * "outside world".
      */
     virtual void exitAction(Context* aContext) = 0;
+
+    /**
+     * @brief the transition of this state to the next state
+     *
+     */
+    virtual void transition(Context* aContext) = 0;
   };
 } // namespace controller
 #endif // STATE_HPP

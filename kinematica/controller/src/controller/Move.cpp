@@ -1,7 +1,7 @@
 #include "controller/Move.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/Init.hpp"
-#include "controller/ReleaseCup.hpp"
+#include "controller/OpenGripper.hpp"
 #include "controller/WaitForCup.hpp"
 #include "kinematics/EndEffector.hpp"
 #include "robotcontroller/RobotControlPublisher.hpp"
@@ -30,16 +30,10 @@ namespace controller
 
   void Move::doActivity(Context* aContext)
   {
-    int64_t lMovementDuration_ns =
-        mArrivalTime.toNSec() - ros::Time::now().toNSec();
-    if (lMovementDuration_ns > 0)
-    {
-      std::this_thread::sleep_for(
-          std::chrono::nanoseconds(lMovementDuration_ns));
-    }
+
     if (mTrajectory.size() == 0)
     {
-      aContext->setState(std::make_shared<WaitForCup>());
+      transition(aContext);
       return;
     }
     else
@@ -47,8 +41,6 @@ namespace controller
       kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
       aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
       aContext->currentConfiguration() = aContext->goalConfiguration();
-      mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
-          aContext, lTargetConfiguration);
       aContext->goalConfiguration() = lTargetConfiguration;
       ROS_DEBUG(
           "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",
@@ -58,9 +50,16 @@ namespace controller
           lTargetConfiguration[6]);
       mTrajectory.pop();
     }
+    std::unique_lock<std::mutex> lLock(aContext->feedbackMutex());
+    aContext->feedbackDone().wait(lLock);
   }
 
   void Move::exitAction(Context*)
   {
+  }
+
+  void Move::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<WaitForCup>());
   }
 } // namespace controller

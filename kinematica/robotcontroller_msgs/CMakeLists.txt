@@ -51,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
    Control.msg
    Gripper.msg
    Stop.msg
+   FrankaFeedback.msg
  )
 
 ## Generate services in the 'srv' folder

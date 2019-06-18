@@ -16,10 +16,15 @@ namespace controller
 
   void SoftStop::doActivity(Context* aContext)
   {
-    aContext->setState(std::make_shared<Init>());
+    transition(aContext);
   }
 
   void SoftStop::exitAction(Context*)
   {
+  }
+
+  void SoftStop::transition(Context* aContext)
+  {
+    aContext->setState(std::make_shared<Init>());
   }
 } // namespace controller

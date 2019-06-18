@@ -2,9 +2,9 @@
 #define POSTCALCULATION_HPP
 
 #include "location_component/CupDetectionCalibration.hpp"
+#include <boost/optional.hpp>
 #include <opencv2/opencv.hpp>
 #include <ros/ros.h>
-#include <boost/optional.hpp>
 
 namespace location_component
 {
@@ -17,8 +17,9 @@ namespace location_component
     /**
      * @brief Predicts the time when the cup arrives at the robot arm.
      */
-    boost::optional<ros::Time> predictCupArrivalTime(float aCupLocationY_m,
-                                    ros::Time aCurrentTime) const;
+    boost::optional<ros::Time>
+        predictCupArrivalTime(float aCupLocationY_m,
+                              ros::Time aCurrentTime) const;
     /**
      * @brief Calculates the cup location.
      *

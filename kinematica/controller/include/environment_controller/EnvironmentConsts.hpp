@@ -10,7 +10,10 @@ namespace environment_controller
   const uint8_t cRate = 10;
   const std::string cObstacleTopicName = "/detected_objects";
   const std::string cCupTopicName = "/location/cup";
+  const std::string cFrankaFeedback = "/feedback/franka";
   const std::string cGoalPositionTopicName = "goal";
+  const std::string cDropPositionTopicName = "droplocation";
+  const std::string cEmergencyStopTopicName = "emergencystop";
   const std::string cReleaseTimeTopicName = "release_time";
   const std::string cSensorTopicName = "sensor";
   const std::string cGlobalFrame = "world";

@@ -44,7 +44,7 @@ namespace controller
      * WaitForCup.
      *
      * @param aContext is an object which gives the states an interface to the
-     * "outside world".
+     * "outside world". 
      */
     void doActivity(Context* aContext) override;
     /**
@@ -58,6 +58,13 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* aContext) override;
+
+    /**
+     * @brief
+     *
+     * @param aContext
+     */
+    virtual void transition(Context* aContext);
   };
 } // namespace controller
 #endif // WAIT_FOR_CUP_HPP

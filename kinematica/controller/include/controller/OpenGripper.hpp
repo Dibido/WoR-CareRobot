@@ -1,5 +1,5 @@
-#ifndef RELEASE_CUP_HPP
-#define RELEASE_CUP_HPP
+#ifndef OPEN_GRIPPER_HPP
+#define OPEN_GRIPPER_HPP
 
 // Local
 #include "Context.hpp"
@@ -7,26 +7,26 @@
 namespace controller
 {
   /**
-   * @class ReleaseCup
+   * @class OpenGripper
    *
-   * @brief ReleaseCup is the class which represents the ReleaseCup state.
+   * @brief OpenGripper is the class which represents the OpenGripper state.
    *
    */
-  class ReleaseCup : public State
+  class OpenGripper : public State
   {
       public:
     /**
-     * @brief Construct a new ReleaseCup object
+     * @brief Construct a new OpenGripper object
      *
      */
-    ReleaseCup();
+    OpenGripper();
     /**
-     * @brief Destroy the ReleaseCup object
+     * @brief Destroy the OpenGripper object
      *
      */
-    ~ReleaseCup();
+    ~OpenGripper();
     /**
-     * @brief entryAction is being called when the ReleaseCup state is being
+     * @brief entryAction is being called when the OpenGripper state is being
      * entered.
      *
      * @details The entryAction will calculate the time it takes to open the
@@ -42,7 +42,7 @@ namespace controller
 
     /**
      * @brief doActivity is continiously being called while the system is in the
-     * ReleaseCup.
+     * OpenGripper.
      *
      * @details The doActivity function will check whether the time it
      * takes to open the gripper has passed. Once the time it took to open the
@@ -53,7 +53,7 @@ namespace controller
      */
     void doActivity(Context* aContext) override;
     /**
-     * @brief exitAction is being called when the ReleaseCup state is being
+     * @brief exitAction is being called when the OpenGripper state is being
      * exited.
      *
      * @details At this moment the exitAction is not used.
@@ -63,8 +63,10 @@ namespace controller
      */
     void exitAction(Context* aContext) override;
 
+    virtual void transition(Context* aContext);
+
       private:
     ros::Time mReleaseTime;
   };
 } // namespace controller
-#endif // RELEASE_CUP_HPP
+#endif // OPEN_GRIPPER_HPP
