@@ -44,7 +44,7 @@ namespace location_component
 
     // Here we will wait for the input from the GUI. If the user wants to pick
     // up a moving cup this boolean will be true.
-    if (mDetectObject)
+    if (mDetectObject || mCalibration.mDebugStatus)
     {
       lDetectedFrame = detectFrame(aFrame, aDisplayFrame);
     }

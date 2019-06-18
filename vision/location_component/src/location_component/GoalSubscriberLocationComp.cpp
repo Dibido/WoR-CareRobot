@@ -17,7 +17,6 @@ namespace location_component
   void GoalSubscriberLocationComp::goalCallback(
       const kinematica_msgs::GoalConstPtr& aMsg)
   {
-
     try
     {
       if (!aMsg->staticCup)
@@ -36,7 +35,7 @@ namespace location_component
   /* virtual*/ void GoalSubscriberLocationComp::selectGoalPosition(
       const environment_controller::Position& aPosition)
   {
-    // Position isn't used bit needed for the interface
+    // Position isn't used but used to prevent a warning
     aPosition.x_m();
 
     // Changing the boolean to let the location component know to look for an

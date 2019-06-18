@@ -22,8 +22,8 @@ namespace location_component
     /**
      * @brief Construct a new Goal Subscriber object
      *
-     * @param aTopicName
-     * @param aController
+     * @param aTopicName - The name of the topic u want to subscribe to
+     * @param aController - Shared_ptr of the object that the developer want to influence
      */
     GoalSubscriberLocationComp(
         const std::string& aTopicName,
