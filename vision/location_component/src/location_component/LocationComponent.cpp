@@ -33,12 +33,8 @@ namespace location_component
     const std::string cTopicName = location_component_constants::cWebcamTopic;
     image_transport::Subscriber sub =
         lIt.subscribe(cTopicName, 1, &LocationComponent::imageCallBack, this);
-
-    while (ros::ok())
-    {
-      loop_rate.sleep();
-      ros::spinOnce();
-    }
+    
+    ros::spin();
   }
 
   void LocationComponent::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
