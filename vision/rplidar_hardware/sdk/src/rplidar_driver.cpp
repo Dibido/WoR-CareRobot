@@ -35,15 +35,24 @@
 #include "sdkcommon.h"
 
 #include "hal/abs_rxtx.h"
-#include "hal/assert.h"
-#include "hal/event.h"
-#include "hal/locker.h"
-#include "hal/socket.h"
+
 #include "hal/thread.h"
+
 #include "hal/types.h"
-#include "rplidar_driver_TCP.h"
+
+#include "hal/assert.h"
+
+#include "hal/locker.h"
+
+#include "hal/socket.h"
+
+#include "hal/event.h"
+
 #include "rplidar_driver_impl.h"
+
 #include "rplidar_driver_serial.h"
+
+#include "rplidar_driver_TCP.h"
 
 #include <algorithm>
 

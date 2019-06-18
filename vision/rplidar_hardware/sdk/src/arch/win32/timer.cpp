@@ -33,7 +33,9 @@
  */
 
 #include "sdkcommon.h"
+
 #include <mmsystem.h>
+
 #pragma comment(lib, "Winmm.lib")
 
 namespace rp

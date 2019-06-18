@@ -33,33 +33,48 @@
  */
 
 #include "arch/linux/arch_linux.h"
-#include <assert.h>
+
 #include <stdio.h>
+
 #include <stdlib.h>
+
 #include <string.h>
+
 #include <unistd.h>
+
+#include <assert.h>
+
 // linux specific
 
 #include <errno.h>
+
 #include <fcntl.h>
 
-#include "arch/linux/net_serial.h"
-#include "hal/types.h"
-#include <sys/select.h>
 #include <time.h>
 
+#include "hal/types.h"
+
+#include "arch/linux/net_serial.h"
+
+#include <sys/select.h>
+
 #include <algorithm>
+
 //__GNUC__
 #if defined(__GNUC__)
 // for Linux extension
 #include <asm/ioctls.h>
+
 #include <asm/termbits.h>
+
 #include <sys/ioctl.h>
+
 extern "C" int tcflush(int fildes, int queue_selector);
 #else
 // for other standard UNIX
-#include <sys/ioctl.h>
 #include <termios.h>
+
+#include <sys/ioctl.h>
 
 #endif
 
