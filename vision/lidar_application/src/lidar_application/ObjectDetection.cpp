@@ -2,21 +2,55 @@
 
 namespace lidar_application
 {
+  ObjectDetection::ObjectDetection()
+      : mInitialized(false),
+        mMaxDistanceDifference_m(
+            objectdetection_constants::cDefaultMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(false),
+        mObjectMinNumberOfAdjacentMeasurements(
+            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+        mAmountOfInitialScansRequired(
+            objectdetection_constants::cDefaultAmountOfInitialScans)
+  {
+  }
 
-  ObjectDetection::ObjectDetection(double aMaxDistanceDifference_m,
-                                   bool aIgnoreSmallObjects)
+  ObjectDetection::ObjectDetection(const double& aMaxDistanceDifference_m)
       : mInitialized(false),
         mMaxDistanceDifference_m(aMaxDistanceDifference_m),
         mMaxReliableDistance_m(
             objectdetection_constants::cMaxReliableDistance_m),
-        mIgnoreSmallObjects(aIgnoreSmallObjects)
+        mIgnoreSmallObjects(false),
+        mObjectMinNumberOfAdjacentMeasurements(
+            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+        mAmountOfInitialScansRequired(
+            objectdetection_constants::cDefaultAmountOfInitialScans)
+  {
+  }
+
+  ObjectDetection::ObjectDetection(
+      const double& aMaxDistanceDifference_m,
+      bool aIgnoreSmallObjects,
+      const unsigned int& aObjectMinNumberOfAdjacentAngles,
+      const unsigned int& aAmountOfInitialScansRequired)
+      : mInitialized(false),
+        mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+        mMaxReliableDistance_m(
+            objectdetection_constants::cMaxReliableDistance_m),
+        mIgnoreSmallObjects(aIgnoreSmallObjects),
+        mObjectMinNumberOfAdjacentMeasurements(
+            aObjectMinNumberOfAdjacentAngles),
+        mAmountOfInitialScansRequired(aAmountOfInitialScansRequired)
   {
   }
 
   void ObjectDetection::run()
   {
     // Hertz rate of 100, max 10 ms in between cycles
-    ros::Rate lRate(100);
+    ros::Rate lRate(objectdetection_constants::cDefaultLoopRate);
+
+    unsigned int lInitialScanIterations = 0;
 
     while (ros::ok())
     {
@@ -35,8 +69,14 @@ namespace lidar_application
         }
         else
         {
-          mInitialScan = mDataHandler.getLidarData();
-          mInitialized = true;
+          mInitialScan.addLidarData(mDataHandler.getLidarData().mMeasurements);
+
+          lInitialScanIterations++;
+
+          if (lInitialScanIterations >= mAmountOfInitialScansRequired)
+          {
+            mInitialized = true;
+          }
         }
       }
       lRate.sleep();
@@ -97,27 +137,22 @@ namespace lidar_application
                     mMostRecentScan.mMeasurements.begin()->first)
             {
               // If we want to ignore small objects, and objectsize is lower
-              // then required
-              if (mIgnoreSmallObjects &&
-                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   objectdetection_constants::
-                       cObjectMinNumberOfAdjacentMeasurements))
+              // than required
+              if (mIgnoreSmallObjects && isSmallObject(lObject))
               {
                 lObject.reset();
               }
               else
               {
                 lBeginRangeObject = lObject;
+                lObject.reset();
               }
             }
             else // Not the first object
             {
               // If we want to ignore small objects, and objectsize is lower
-              // then required
-              if (mIgnoreSmallObjects &&
-                  (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                   objectdetection_constants::
-                       cObjectMinNumberOfAdjacentMeasurements))
+              // than required
+              if (mIgnoreSmallObjects && isSmallObject(lObject))
               {
                 lObject.reset();
               }
@@ -125,6 +160,7 @@ namespace lidar_application
               {
                 // Add centerpoint of this object to list
                 lObjectList.push_back(getAverageMeasurement(lObject));
+                lObject.reset();
               }
             }
 
@@ -145,12 +181,9 @@ namespace lidar_application
               lObject.mMeasurements.begin()->first ==
                   mMostRecentScan.mMeasurements.begin()->first)
           {
-            // If we want to ignore small objects, and objectsize is lower then
+            // If we want to ignore small objects, and objectsize is lower than
             // required
-            if (mIgnoreSmallObjects &&
-                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 objectdetection_constants::
-                     cObjectMinNumberOfAdjacentMeasurements))
+            if (mIgnoreSmallObjects && isSmallObject(lObject))
             {
               lObject.reset();
             }
@@ -161,12 +194,9 @@ namespace lidar_application
           }
           else // Not begin range object
           {
-            // If we want to ignore small objects, and objectsize is lower then
+            // If we want to ignore small objects, and objectsize is lower than
             // required
-            if (mIgnoreSmallObjects &&
-                (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-                 objectdetection_constants::
-                     cObjectMinNumberOfAdjacentMeasurements))
+            if (mIgnoreSmallObjects && isSmallObject(lObject))
             {
               lObject.reset();
             }
@@ -195,7 +225,7 @@ namespace lidar_application
         // If the last measurement of this object, is close to the first
         // measurement of the object detected in the beginning of the range
         std::pair<double, double> lObjectsLastMeasurement =
-            *(lObject.mMeasurements.end()--);
+            (*lObject.mMeasurements.rbegin());
 
         if (std::abs(lObjectsLastMeasurement.second -
                      lBeginRangeObject.mMeasurements.begin()->second) <=
@@ -211,11 +241,9 @@ namespace lidar_application
           lObjectList.push_back(getAverageMeasurement(lBeginRangeObject));
         }
 
-        // If we want to ignore small objects, and objectsize is lower then
+        // If we want to ignore small objects, and objectsize is lower than
         // required
-        if (mIgnoreSmallObjects &&
-            (static_cast<unsigned int>(lObject.mMeasurements.size()) <
-             objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements))
+        if (mIgnoreSmallObjects && isSmallObject(lObject))
         {
           lObject.reset();
         }
@@ -333,31 +361,35 @@ namespace lidar_application
 
     auto lIterator = mInitialScan.mMeasurements.lower_bound(aAngle);
 
-    // If there doesn't exist a key with a equal or higher value then aAngle:
+    auto lLastElementIterator = mInitialScan.mMeasurements.rbegin();
+
+    // If there doesn't exist a key with a equal or higher value than aAngle:
     if ((lIterator->first == 0.0) && lIterator->second == 0.0)
     {
       // It will probably be a value close to the maximum of 2 * PI
 
       // Take the highest angle as lower neighbour
-      lLowerNeighbourDistance_m = (--mInitialScan.mMeasurements.end())->second;
+      lLowerNeighbourDistance_m = (lLastElementIterator)->second;
 
       // Take the lowest angle as upper neighbour
       lUpperNeighbourDistance_m = mInitialScan.mMeasurements.begin()->second;
     }
-    else // There has been found a key with a equal or higher value then aAngle:
+    else // There has been found a key with a equal or higher value than aAngle:
     {
       lUpperNeighbourDistance_m = lIterator->second;
 
-      // If there exists a lower angle, use that. Otherwise take the highest
-      // angle as lower neighbour.
+      // If there exists a lower angle, use that.
       if (!(lIterator == mInitialScan.mMeasurements.begin()))
       {
-        lLowerNeighbourDistance_m = (--lIterator)->second;
+        auto lPreviousElementIterator = lIterator;
+        --lPreviousElementIterator;
+
+        lLowerNeighbourDistance_m = lPreviousElementIterator->second;
       }
+      // Otherwise take the highest angle as lower neighbour.
       else
       {
-        lLowerNeighbourDistance_m =
-            (--mInitialScan.mMeasurements.end())->second;
+        lLowerNeighbourDistance_m = (lLastElementIterator)->second;
       }
     }
 
@@ -392,5 +424,17 @@ namespace lidar_application
       ROS_INFO("(%f, %f)", lPair.first, lPair.second);
     }
     ROS_INFO("----------------------");
+  }
+
+  bool ObjectDetection::isSmallObject(const LidarData& lObject) const
+  {
+    if (lObject.mMeasurements.size() < mObjectMinNumberOfAdjacentMeasurements)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 } // namespace lidar_application

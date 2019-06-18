@@ -16,7 +16,7 @@ namespace location_component
     // Color spectrum AGV low
     const double cHLow = 70.0;
     const double cSLow = 130.0;
-    const double cVLow = 0.0;
+    const double cVLow = 70.0;
 
     // Color spectrum AGV high
     const double cHHigh = 170.0;

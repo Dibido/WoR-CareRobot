@@ -142,7 +142,7 @@ TEST(PosCalculationSuite, CupArrivalTimePrediction)
   ros::Time lCurrentTime = ros::Time(10);
 
   ros::Time lCupPredictedArrivalTime =
-      lPosCalculator.predictCupArrivalTime(lCupPositionY_m, lCurrentTime);
+      *(lPosCalculator.predictCupArrivalTime(lCupPositionY_m, lCurrentTime));
 
   // 2.0 m between the cup and the arm divided by 0.25 m/s = 8.0s until the cup
   // arrives at the robotarm.

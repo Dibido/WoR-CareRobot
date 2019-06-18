@@ -21,21 +21,19 @@ namespace location_component
         mNodeHandle, aCupDetectionCalibration, aAGVFrameCalibration);
 
     // Subscribe to the AGV topic for receaving the speed
-    location_component::AGVSubscriber mSubscriber(
+    location_component::AGVSubscriber lAGVSubscriber(
         location_component_constants::cAGVTopic, mDetectAGV);
 
-    ros::Rate loop_rate(location_component_constants::cLoopRate);
+    // Subscribe to the goal topic for receaving the user prefrence
+    location_component::GoalSubscriberLocationComp lGoalSubscriber("/goal",
+                                                                   mDetectAGV);
 
     image_transport::ImageTransport lIt(mNodeHandle);
     const std::string cTopicName = location_component_constants::cWebcamTopic;
     image_transport::Subscriber sub =
         lIt.subscribe(cTopicName, 1, &LocationComponent::imageCallBack, this);
 
-    while (ros::ok())
-    {
-      loop_rate.sleep();
-      ros::spinOnce();
-    }
+    ros::spin();
   }
 
   void LocationComponent::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
@@ -46,10 +44,15 @@ namespace location_component
       cv::Mat displayMatrix;
 
       cv_bridge::toCvShare(aMsg, "bgr8")->image.copyTo(srcMatrix);
-      mDetectAGV->detectUpdate(srcMatrix, displayMatrix);
+      srcMatrix.copyTo(displayMatrix);
 
-      int c = cv::waitKey(10);
-      if (c == 27)
+      if (srcMatrix.rows > 0 && srcMatrix.cols > 0)
+      {
+        mDetectAGV->detectUpdate(srcMatrix, displayMatrix);
+      }
+
+      int lwaitKey = cv::waitKey(10);
+      if (lwaitKey == 27)
       {
         std::exit(0);
       }
