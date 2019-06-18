@@ -225,7 +225,7 @@ namespace location_component
 
       cv::Mat lAGVCutOutMatrix = lDisFrame(lBoundRect);
 
-      if (lAGVCutOutMatrix.rows = 0 || lAGVCutOutMatrix.cols = 0)
+      if (lAGVCutOutMatrix.rows == 0 || lAGVCutOutMatrix.cols == 0)
       {
         return boost::optional<DetectedAGV>();
       }

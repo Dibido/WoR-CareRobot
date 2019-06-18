@@ -25,7 +25,7 @@ namespace location_component
     if (mAGVSpeed_m_s == 0.0f)
     {
       ROS_WARN("No AGV speed was set. Delaying cup pickup indefinitely.");
-      lTimeToArm_s = ( float )INT_MAX;
+      lTimeToArm_s = 65000;
     }
     else
     {
