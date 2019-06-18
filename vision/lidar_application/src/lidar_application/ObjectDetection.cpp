@@ -1,47 +1,51 @@
 #include "lidar_application/ObjectDetection.hpp"
+#include "lidar_application/SensorPublisher.hpp"
 
 namespace lidar_application
 {
-  ObjectDetection::ObjectDetection()
-      : mInitialized(false),
-        mMaxDistanceDifference_m(
-            objectdetection_constants::cDefaultMaxDistanceDifference_m),
-        mMaxReliableDistance_m(
-            objectdetection_constants::cMaxReliableDistance_m),
-        mIgnoreSmallObjects(false),
-        mObjectMinNumberOfAdjacentMeasurements(
-            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
-        mAmountOfInitialScansRequired(
-            objectdetection_constants::cDefaultAmountOfInitialScans)
-  {
-  }
+  // ObjectDetection::ObjectDetection()
+  //     : mIsInitialized(false),
+  //       mMaxDistanceDifference_m(
+  //           objectdetection_constants::cDefaultMaxDistanceDifference_m),
+  //       mMaxReliableDistance_m(
+  //           objectdetection_constants::cMaxReliableDistance_m),
+  //       mIgnoreSmallObjects(false),
+  //       mObjectMinNumberOfAdjacentMeasurements(
+  //           objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+  //       mAmountOfInitialScansRequired(
+  //           objectdetection_constants::cDefaultAmountOfInitialScans)
+  // {
+  // }
 
-  ObjectDetection::ObjectDetection(const double& aMaxDistanceDifference_m)
-      : mInitialized(false),
-        mMaxDistanceDifference_m(aMaxDistanceDifference_m),
-        mMaxReliableDistance_m(
-            objectdetection_constants::cMaxReliableDistance_m),
-        mIgnoreSmallObjects(false),
-        mObjectMinNumberOfAdjacentMeasurements(
-            objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
-        mAmountOfInitialScansRequired(
-            objectdetection_constants::cDefaultAmountOfInitialScans)
-  {
-  }
+  // ObjectDetection::ObjectDetection(const double& aMaxDistanceDifference_m)
+  //     : mIsInitialized(false),
+  //       mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+  //       mMaxReliableDistance_m(
+  //           objectdetection_constants::cMaxReliableDistance_m),
+  //       mIgnoreSmallObjects(false),
+  //       mObjectMinNumberOfAdjacentMeasurements(
+  //           objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
+  //       mAmountOfInitialScansRequired(
+  //           objectdetection_constants::cDefaultAmountOfInitialScans)
+  // {
+  // }
 
   ObjectDetection::ObjectDetection(
+      const environment_controller::Sensor& aSensor,
       const double& aMaxDistanceDifference_m,
       bool aIgnoreSmallObjects,
       const unsigned int& aObjectMinNumberOfAdjacentAngles,
       const unsigned int& aAmountOfInitialScansRequired)
-      : mInitialized(false),
+      : mIsInitialized(false),
+        mSensor(aSensor),
         mMaxDistanceDifference_m(aMaxDistanceDifference_m),
         mMaxReliableDistance_m(
             objectdetection_constants::cMaxReliableDistance_m),
         mIgnoreSmallObjects(aIgnoreSmallObjects),
         mObjectMinNumberOfAdjacentMeasurements(
             aObjectMinNumberOfAdjacentAngles),
-        mAmountOfInitialScansRequired(aAmountOfInitialScansRequired)
+        mAmountOfInitialScansRequired(aAmountOfInitialScansRequired),
+        publisher(mNode, "/sensor", 100)
   {
   }
 
@@ -50,37 +54,42 @@ namespace lidar_application
     // Hertz rate of 100, max 10 ms in between cycles
     ros::Rate lRate(objectdetection_constants::cDefaultLoopRate);
 
-    unsigned int lInitialScanIterations = 0;
-
     while (ros::ok())
     {
       ros::spinOnce();
-
       if (mDataHandler.isNewDataAvailable())
       {
-        if (mInitialized)
+        if (mIsInitialized)
         {
           mMostRecentScan = mDataHandler.getLidarData();
-
           detectObjects();
-
           mDataHandler.publishData(mDetectedObjects,
                                    objectdetection_constants::cLidarHeight_m);
         }
         else
         {
-          mInitialScan.addLidarData(mDataHandler.getLidarData().mMeasurements);
-
-          lInitialScanIterations++;
-
-          if (lInitialScanIterations >= mAmountOfInitialScansRequired)
-          {
-            mInitialized = true;
-          }
+          init();
         }
       }
       lRate.sleep();
     }
+  }
+
+  void ObjectDetection::init()
+  {
+    mInitialScan.addLidarData(mDataHandler.getLidarData().mMeasurements);
+    mInitialScanIterations++;
+    if (mInitialScanIterations >= mAmountOfInitialScansRequired)
+    {
+      publishPosition();
+      mIsInitialized = true;
+    }
+  }
+
+  void ObjectDetection::publishPosition()
+  {
+    ROS_INFO("PUBLISH_POSITION");
+    publisher.provideSensor(mSensor);
   }
 
   void ObjectDetection::detectObjects()

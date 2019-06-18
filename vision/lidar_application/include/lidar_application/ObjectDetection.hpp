@@ -1,8 +1,10 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
+#include "environment_controller/Sensor.hpp"
 #include "lidar_application/DataHandler.hpp"
 #include "lidar_application/LidarData.hpp"
+#include "lidar_application/SensorPublisher.hpp"
 #include <cmath>
 #include <map>
 #include <math.h>
@@ -49,7 +51,7 @@ namespace lidar_application
     /**
      * @brief Default constructor
      */
-    ObjectDetection();
+    // ObjectDetection();
 
     /**
      * @brief Constructor
@@ -60,7 +62,7 @@ namespace lidar_application
      * equal to aMaxDistanceDifference_m, both these measurements are taken of
      * the same object.
      */
-    ObjectDetection(const double& aMaxDistanceDifference_m);
+    // ObjectDetection(const double& aMaxDistanceDifference_m);
 
     /**
      * @brief Constructor
@@ -73,12 +75,15 @@ namespace lidar_application
      * @param aIgnoreSmallObjects - When this is true, objects with less than 2
      * adjacent measurements are ignored. This should
      * filter out thin real-life objects like a cable */
-    ObjectDetection(const double& aMaxDistanceDifference_m,
+    ObjectDetection(const environment_controller::Sensor& aSensor,
+                    const double& aMaxDistanceDifference_m,
                     bool aIgnoreSmallObjects,
                     const unsigned int& aObjectMinNumberOfAdjacentAngles,
                     const unsigned int& aAmountOfInitialScansRequired);
 
     ~ObjectDetection() = default;
+
+    void init();
 
     /**
      * @brief Run function, blocking function that handles all logic
@@ -94,6 +99,8 @@ namespace lidar_application
      * objects, with angle and distance to each centerpoint of an object.
      */
     virtual void detectObjects();
+
+    void publishPosition();
 
     /**
      * @brief Function converts data in vector format (theta, distance) to
@@ -167,7 +174,11 @@ namespace lidar_application
      */
     bool isSmallObject(const LidarData& lObject) const;
 
-    bool mInitialized;
+    ros::NodeHandle mNode;
+    bool mIsInitialized;
+    SensorPublisher publisher;
+    const environment_controller::Sensor mSensor;
+    unsigned int mInitialScanIterations = 0;
 
     // Contains the data of the first 360 degrees scan, set during
     // initialization.

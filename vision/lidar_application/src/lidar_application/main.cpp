@@ -1,3 +1,4 @@
+#include "environment_controller/Sensor.hpp"
 #include "lidar_application/ObjectDetection.hpp"
 #include <iostream>
 #include <ros/console.h>
@@ -48,8 +49,17 @@ int main(int argc, char** argv)
     lNumberOfInitialScanRounds = std::stoi(argv[3]);
   }
 
+  const uint8_t lSensorId = 0;
+  const environment_controller::Position lPosition(
+      0.0 /*x in m */, 0.0 /*y in m */, 0.0 /*z in m */);
+  const environment_controller::Rotation lRotation(0.0 /*x*/, 0.0 /*y*/,
+                                                   0.0 /*z*/, 0.0 /*w*/);
+  const environment_controller::Pose lPose(lPosition, lRotation);
+  const environment_controller::Sensor lSensor(lSensorId, lPose);
+
   lidar_application::ObjectDetection lObjectDetector(
-      lMaxDifference_m, lIgnoreSmallObjects, lMinNumberAdjacentAngles,
+      lSensor, lMaxDifference_m, lIgnoreSmallObjects, lMinNumberAdjacentAngles,
       lNumberOfInitialScanRounds);
+
   lObjectDetector.run();
 }
