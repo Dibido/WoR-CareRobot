@@ -29,7 +29,7 @@ namespace environment_controller
     }
   }
 
-  void EmergencyStopSubscriber::selectEmergencyStop(const bool& aStop)
+  void EmergencyStopSubscriber::selectEmergencyStop(const bool aStop)
   {
     mEnvironmentController->executeHardstop(aStop);
   }
