@@ -135,6 +135,7 @@ src/environment_controller/DropTableSubscriber.cpp
 src/environment_controller/ReleaseTimeSubscriber.cpp 
 src/environment_controller/SensorSubscriber.cpp
 src/environment_controller/TFHandler.cpp
+src/environment_controller/EmergencyStopSubscriber.cpp
 )
 
 add_dependencies(lib_environment_controller

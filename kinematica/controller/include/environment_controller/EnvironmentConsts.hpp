@@ -12,7 +12,8 @@ namespace environment_controller
   const std::string cObstacleTopicName = "/detected_objects";
   const std::string cCupTopicName = "/location/cup";
   const std::string cGoalPositionTopicName = "goal";
-  const std::string cDropPositionTopicName = "dropLocation";
+  const std::string cDropPositionTopicName = "droplocation";
+  const std::string cEmergencyStopTopicName = "emergencystop";
   const std::string cReleaseTimeTopicName = "release_time";
   const std::string cSensorTopicName = "sensor";
   const std::string cGlobalFrame = "world";

@@ -1,6 +1,7 @@
 #include "controller/Context.hpp"
 #include "environment_controller/CupSubscriber.hpp"
 #include "environment_controller/DropTableSubscriber.hpp"
+#include "environment_controller/EmergencyStopSubscriber.hpp"
 #include "environment_controller/EnvironmentConsts.hpp"
 #include "environment_controller/EnvironmentController.hpp"
 #include "environment_controller/GoalSubscriber.hpp"
@@ -46,6 +47,11 @@ int main(int argc, char** argv)
   environment_controller::DropTableSubscriber lDropTableSubscriber =
       environment_controller::DropTableSubscriber(
           environment_controller::cDropPositionTopicName,
+          lEnvironmentController);
+
+  environment_controller::EmergencyStopSubscriber lEmergencyStopSubscriber =
+      environment_controller::EmergencyStopSubscriber(
+          environment_controller::cEmergencyStopTopicName,
           lEnvironmentController);
 
   environment_controller::ReleaseTimeSubscriber lReleaseTimeSubscriber =
