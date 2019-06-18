@@ -106,8 +106,8 @@ namespace location_component
                      << lMidpointColorHSV.at<cv::Vec3b>(cv::Point(0, 0)));
     cv::Mat lMidpointColorBW(1, 1, CV_8UC1);
     cv::inRange(
-        lMidpointColorHSV, mCupDetectionCalibration.mMinFilledCupColorHSV,
-        mCupDetectionCalibration.mMaxFilledCupColorHSV, lMidpointColorBW);
+        lMidpointColorHSV, mCupDetectionCalibration.cMinFilledCupColorHSV,
+        mCupDetectionCalibration.cMaxFilledCupColorHSV, lMidpointColorBW);
 
     return lMidpointColorBW.at<uint8_t>(cv::Point(0, 0)) != 0;
   }
