@@ -3,6 +3,24 @@
 #include <iostream>
 #include <ros/console.h>
 #include <ros/ros.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <vector>
+
+std::vector<double> stringToDoubleVector(const std::string& aString,
+                                         const std::string& aDelimiter)
+{
+  std::vector<double> returnValue;
+  size_t pos = 0;
+  std::string lToken;
+  std::string lString = aString;
+  while ((pos = aString.find(aDelimiter)) != std::string::npos)
+  {
+    lToken = aString.substr(0, pos);
+    returnValue.push_back(stod(lToken));
+    lString.erase(0, pos + aString.length());
+  }
+  return returnValue;
+}
 
 int main(int argc, char** argv)
 {
@@ -21,6 +39,12 @@ int main(int argc, char** argv)
 
   // False per default, more information in ObjectDetection.hpp
   bool lIgnoreSmallObjects = false;
+
+  uint8_t lSensorId = 0;
+  environment_controller::Position lPosition(0.0 /*x in m */, 0.0 /*y in m */,
+                                             0.0 /*z in m */);
+  environment_controller::Rotation lRotation(0.0 /*x*/, 0.0 /*y*/, 0.0 /*z*/,
+                                             1.0 /*w*/);
 
   // Read commandline arguments, README contains information about these
   // arguments and their effects.
@@ -43,17 +67,55 @@ int main(int argc, char** argv)
     // small objects
     lIgnoreSmallObjects = true;
   }
-  if (argc == 4)
+  if (argc >= 4)
   {
     ROS_INFO("Setting lNumberOfInitialScanRounds to %s", argv[3]);
     lNumberOfInitialScanRounds = std::stoi(argv[3]);
   }
+  if (argc >= 5)
+  {
+    ROS_INFO("Setting lSensorId %s", argv[4]);
+    const int value = std::stoi(argv[4]);
 
-  const uint8_t lSensorId = 0;
-  const environment_controller::Position lPosition(
-      0.0 /*x in m */, 0.0 /*y in m */, 0.0 /*z in m */);
-  const environment_controller::Rotation lRotation(0.0 /*x*/, 0.0 /*y*/,
-                                                   0.0 /*z*/, 0.0 /*w*/);
+    if (!(value >= std::numeric_limits<uint8_t>::min() &&
+          value <= std::numeric_limits<uint8_t>::max()))
+    {
+      throw std::range_error("value does not fit uint8_t");
+    }
+
+    lSensorId = static_cast<uint8_t>(value);
+  }
+  if (argc >= 6)
+  {
+    ROS_INFO("Setting lPosition with x y z %s", argv[5]);
+    std::vector<double> values = stringToDoubleVector(argv[5], "-");
+    if (values.size() != 3)
+    {
+      throw std::invalid_argument("Expected 3 values for lPosition");
+    }
+
+    lPosition = environment_controller::Position(values.at(0), values.at(1),
+                                                 values.at(2));
+  }
+  if (argc == 7)
+  {
+    ROS_INFO("Setting lRotation with role pitch jaw %s", argv[6]);
+
+    std::vector<double> values = stringToDoubleVector(argv[6], "-");
+    if (values.size() != 3)
+    {
+      throw std::invalid_argument("Expected 3 values for lPosition");
+    }
+
+    tf2::Quaternion lQuaternion;
+    lQuaternion.setRPY(0, 0, 0);
+    lQuaternion.normalize();
+
+    lRotation = environment_controller::Rotation(
+        lQuaternion.getX(), lQuaternion.getY(), lQuaternion.getZ(),
+        lQuaternion.getW());
+  }
+
   const environment_controller::Pose lPose(lPosition, lRotation);
   const environment_controller::Sensor lSensor(lSensorId, lPose);
 
