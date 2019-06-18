@@ -8,7 +8,7 @@
 namespace lidar_application
 {
   /**
-   * @brief Class the sensor topic subscriber
+   * @brief Class Publisher for publishing sensordata to the /sensor topic
    *
    */
   class SensorPublisher : public environment_controller::ISensorProvider
@@ -17,8 +17,9 @@ namespace lidar_application
     /**
      * @brief Construct a new Sensor Publisher object
      *
-     * @param aTopicName
-     * @param aController Environment controller shared pointer
+     * @param aHandle Nodehandler
+     * @param aTopic
+     * @param aQueue_size
      */
     SensorPublisher(ros::NodeHandle& aHandle,
                     const std::string& aTopic,
@@ -31,7 +32,7 @@ namespace lidar_application
     virtual ~SensorPublisher() = default;
 
     /**
-     * @brief Passes the Sensor data struct to the EnvironmentController
+     * @brief Publishes the Sensor struct object to the /sensor topic
      *
      * @param aSensor Sensor struct object
      */

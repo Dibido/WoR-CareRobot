@@ -1,10 +1,17 @@
 <launch>
-<arg name="agv" value="/dev/ttyUSB0" />
-<!-- <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" output="screen"/> -->
+  <arg name="webcam" default="2" doc="Id of video input to use for capturing a moving AGV"/>
+  <arg name="agv" default="/dev/ttyUSB0" doc="Port that is connected to the agv_gateway arduino"/>
+  <arg name="max_variation" default="0.20" doc="This describes the max difference in meters that adjacent measurement angles may differ, to still be considered as measurement angles of the same object."/>
+  <arg name="lidar_certainty" default="3" doc="Describes the minimum amount of adjacent measurements that must conflict with initial scandata to conclude there is a moving object."/>
+  <arg name="lidar_init" default="10" doc="Amount of 360-scans performed by the lidar that are needed for initialscandata."/>
+  <arg name="lidar_usb" default="ttyUSB1" doc="USB port that is connected  to lidar."/>
+  
+  <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" args="$(max_variation) $(lidar_certainty) $(lidar_init)" output="screen"/>
+  <node name="rplidar_hardware" pkg="rplidar_hardware" type="node" args="$(lidar_usb)" output="screen"/>
   <node name="location_component" pkg="location_component" type="location_component" output="screen"/>
   <node name="franka_controller" pkg="franka_controller" type="franka_control" output="screen"/>
-<!--  <node name="webcam_driver" pkg="webcam_driver" type="webcam_driver" args="-2"/> -->
-  <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" args="$(arg agv)" output="screen"/>
+  <node name="webcam_driver" pkg="webcam_driver" type="webcam_driver" args="-$(webcam)" output="screen"/>
+  <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" args="$(agv)" output="screen"/>
   <node name="main_application" pkg="main_application" type="main_application" output="screen" />
   <node name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
 </launch>
