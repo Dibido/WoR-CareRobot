@@ -40,6 +40,5 @@ MISO -> D12
 SCK -> D13
 
 ## Known problems
-* The lines are sometimes detected two times or not at all.  
-This happens because after a certain amount of time (50ms) a line is determined to be detected and the line does not end before the 50ms is elapsed for a new line causing it to be detected twice.  
-Sometimes lines are not detected at all because the time has not elapsed.
+
+* Sometimes a message is not sent or received by the NRF. Increasing the time between each transmission decreases the chance of this happening

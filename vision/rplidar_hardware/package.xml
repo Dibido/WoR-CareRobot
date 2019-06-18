@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>rplidar_hardware</name>
+  <version>0.1.0</version>
+  <description>RPLidar hardware implementation</description>
+
+  <maintainer email="i.hulsman@student.han.nl">Ivo Hulsman</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rosconsole</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rosconsole</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_srvs</run_depend>
+  <build_depend>sensor_interfaces</build_depend>
+
+</package>

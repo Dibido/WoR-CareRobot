@@ -131,6 +131,12 @@ namespace location_component
      */
     void setAGVSpeed(const location_component::AGV& aAGV);
 
+    /**
+     * @brief This function will set the variable mDetectObject
+     *
+     */
+    void setDetectObject(bool aDetectObject);
+
       private:
     boost::optional<DetectedAGV> mPrevDetectedAGV;
     cv::Mat mCapturedFrame;
@@ -138,6 +144,7 @@ namespace location_component
     location_component::PosCalculation mPosCalculator;
     CupDetectionCalibration mCalibration;
     FrameCalibration mFrameCalibration;
+    bool mDetectObject = false;
   };
 } // namespace location_component
 

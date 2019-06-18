@@ -36,7 +36,7 @@ include_directories(
 
 
 #Main application
-add_executable(${PROJECT_NAME}_main src/${PROJECT_NAME}/main.cpp src/${PROJECT_NAME}/ObjectDetection.cpp src/${PROJECT_NAME}/DataHandler.cpp src/${PROJECT_NAME}/LidarData.cpp)
+add_executable(${PROJECT_NAME}_main src/${PROJECT_NAME}/main.cpp src/${PROJECT_NAME}/ObjectDetection.cpp src/${PROJECT_NAME}/DataHandler.cpp src/${PROJECT_NAME}/LidarData.cpp src/${PROJECT_NAME}/SensorPublisher.cpp)
 
 add_dependencies(${PROJECT_NAME}_main ${catkin_EXPORTED_TARGETS})
 
