@@ -85,9 +85,12 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   std::vector<cv::Vec4i> hierarchy;
   cv::Mat displayHSV;
   cv::Mat lColorMask;
+  cv::Rect lBoundedRect;
+  cv::RotatedRect lRotatedRect;
   cv::Mat mApproxImage;
   int centerX;
   int centerY;
+  cv::Point2f lVertices[4];
   // Filter color
   cv::cvtColor(displayMatrix, displayHSV, CV_RGB2HSV);
   cv::inRange(displayHSV, cv::Scalar(0, 100, 100), cv::Scalar(70, 255, 255),
@@ -95,7 +98,6 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   // Find contours
   cv::findContours(lColorMask, contours, hierarchy, CV_RETR_TREE,
                    CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-  // Make rectangle area of interest
   for (unsigned int i = 0; i < contours.size(); i++)
   {
     double mEpsilonMultiply = 0.03;
@@ -106,19 +108,19 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       if (contourArea(contours.at(i)) > 500)
       {
         // Get the number of pixels per cm (longest side of rectangle is 30cm)
-        cv::Rect lBoundedRect = cv::boundingRect(contours.at(i));
+        lRotatedRect = cv::minAreaRect(contours.at(i));
         // Get the biggest side
         double lMaxDistance = 0;
-        cv::Point2f lVertices[4];
-        if (lBoundedRect.height > lBoundedRect.width)
+        lRotatedRect.points(lVertices);
+        for (int i = 0; i < 4; i++)
         {
-          lMaxDistance = lBoundedRect.height;
+          double lDistance =
+              ( double )cv::norm(lVertices[i] - lVertices[(i + 1) % 4]);
+          if (lDistance > lMaxDistance)
+          {
+            lMaxDistance = ( double )lDistance;
+          }
         }
-        else
-        {
-          lMaxDistance = lBoundedRect.width;
-        }
-
         std::cout << "Pixels : " << lMaxDistance << std::endl;
         double lPixelsPerCm = lMaxDistance / 29.0;
         std::cout << "lPixelsPerCm : " << lPixelsPerCm << std::endl;
@@ -127,12 +129,7 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         cv::Moments currentmoments = cv::moments(contours.at(i));
         centerX = ( int )(currentmoments.m10 / currentmoments.m00);
         centerY = ( int )(currentmoments.m01 / currentmoments.m00);
-        cv::circle(displayMatrix, cv::Point(centerX, centerY), 4,
-                   cv::Scalar(0, 0, 255), 3);
-        cv::circle(displayMatrix, cv::Point(centerX, centerY), 4,
-                   cv::Scalar(0, 0, 255), 2);
-        std::cout << "Centerx : " << centerX << " CenterY : " << centerY
-                  << std::endl;
+
         /* TODO Find Cup on rectangle
         cv::findContours(regionOfInterest, regionOfInterestContours, hierarchy,
         CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0)); for (unsigned
@@ -149,7 +146,6 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
         distFromCenterXCM += 3.0;
         double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
-        // distFromCenterXCM = -distFromCenterXCM;
         distFromCenterYCM -= 70;
         distFromCenterYCM = -distFromCenterYCM;
         std::cout << "Centerx : " << distFromCenterXCM
@@ -163,7 +159,6 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         lFoundCup.aSensorId = 1;
         lFoundCup.aSpeed = 0;
         lFoundCup.aWidth = 0.07;
-
         // Since the kinect is positioned oposite of the robotarm so X=Y and
         // Y=X.
         lFoundCup.mX_m = distFromCenterYCM / 100;
@@ -178,6 +173,17 @@ void imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   }
   // Show in a window
   cv::cvtColor(displayHSV, displayMatrix, cv::COLOR_HSV2RGB);
+  cv::rectangle(displayMatrix, lBoundedRect.tl(), lBoundedRect.br(),
+                cv::Scalar(0, 0, 255), 2, 8, 0);
+  for (int i = 0; i < 4; i++)
+  {
+    cv::line(displayMatrix, lVertices[i], lVertices[(i + 1) % 4],
+             cv::Scalar(0, 255, 0), 2);
+  }
+  cv::circle(displayMatrix, cv::Point(centerX, centerY), 4,
+             cv::Scalar(0, 0, 255), 3);
+  // cv::circle(displayMatrix, cv::Point(centerX, centerY), 4, cv::Scalar(0, 0,
+  // 255), 2);
   cv::imshow("result", displayMatrix);
   int c = cv::waitKey(10);
   if (c == 27) // Escape
