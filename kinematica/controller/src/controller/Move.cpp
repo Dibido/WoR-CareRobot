@@ -30,13 +30,7 @@ namespace controller
 
   void Move::doActivity(Context* aContext)
   {
-    int64_t lMovementDuration_ns =
-        mArrivalTime.toNSec() - ros::Time::now().toNSec();
-    if (lMovementDuration_ns > 0)
-    {
-      std::this_thread::sleep_for(
-          std::chrono::nanoseconds(lMovementDuration_ns));
-    }
+
     if (mTrajectory.size() == 0)
     {
       transition(aContext);
@@ -47,8 +41,6 @@ namespace controller
       kinematics::Configuration& lTargetConfiguration = mTrajectory.front();
       aContext->robotControl()->publish(cSpeedFactor, lTargetConfiguration);
       aContext->currentConfiguration() = aContext->goalConfiguration();
-      mArrivalTime = mTrajectoryProvider.calculateArrivalTime(
-          aContext, lTargetConfiguration);
       aContext->goalConfiguration() = lTargetConfiguration;
       ROS_DEBUG(
           "Move to \n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f\n- %.4f",
@@ -58,6 +50,8 @@ namespace controller
           lTargetConfiguration[6]);
       mTrajectory.pop();
     }
+    std::unique_lock<std::mutex> lLock(aContext->feedbackMutex());
+    aContext->feedbackDone().wait(lLock);
   }
 
   void Move::exitAction(Context*)

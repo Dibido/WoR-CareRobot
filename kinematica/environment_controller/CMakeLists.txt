@@ -9,6 +9,7 @@ add_compile_options(-std=c++14 -Wall -Wextra -Wconversion -O0)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   kinematica_msgs
+  robotcontroller_msgs
   message_generation
   roscpp
   std_msgs
@@ -109,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES lib_environment_controller
-  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs controller
+  CATKIN_DEPENDS kinematica_msgs roscpp std_msgs controller robotcontroller_msgs
 #  DEPENDS system_lib
 )
 
@@ -136,6 +137,7 @@ src/environment_controller/ReleaseTimeSubscriber.cpp
 src/environment_controller/SensorSubscriber.cpp
 src/environment_controller/TFHandler.cpp
 src/environment_controller/EmergencyStopSubscriber.cpp
+src/franka_controller/FrankaFeedback.cpp
 )
 
 add_dependencies(lib_environment_controller

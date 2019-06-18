@@ -6,7 +6,7 @@ namespace franka_controller
 {
 
   FrankaControl::FrankaControl(const std::string& anIp)
-      : mRobot(anIp), mGripper(anIp), mStop(false)
+      : mRobot(anIp), mGripper(anIp), mStop(false), mFeedback(cTopicName)
   {
     mRobot.setCollisionBehavior(
         { { 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0 } },
@@ -32,15 +32,17 @@ namespace franka_controller
     }
     catch (const franka::Exception& lE)
     {
-
-      if (typeid(lE) != typeid(franka::ControlException))
+      std::string lString(lE.what());
+      std::size_t lPos = lString.find(cCartasian);
+      ROS_ERROR(lE.what());
+      if (lPos == std::string::npos)
       {
+
         mRobot.automaticErrorRecovery();
         executeMovement(aConfig, aSpeedFactor);
       }
-
-      ROS_ERROR(lE.what());
     }
+    mFeedback.pubFeedback(true);
   }
 
   void FrankaControl::moveGripper(double aWidth, double aSpeedFactor)
@@ -53,6 +55,7 @@ namespace franka_controller
     {
       ROS_ERROR(lE.what());
     }
+    mFeedback.pubFeedback(true);
   }
 
   void FrankaControl::stopRobot(bool aStop)

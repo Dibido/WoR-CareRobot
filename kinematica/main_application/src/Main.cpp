@@ -9,6 +9,7 @@
 #include "environment_controller/ReleaseTimeSubscriber.hpp"
 #include "environment_controller/SafetyController.hpp"
 #include "environment_controller/SensorSubscriber.hpp"
+#include "franka_controller/FrankaFeedback.hpp"
 #include "ros/ros.h"
 #include <memory>
 #include <stdlib.h>
@@ -62,6 +63,10 @@ int main(int argc, char** argv)
   environment_controller::SensorSubscriber lSensorSubscriber =
       environment_controller::SensorSubscriber(
           environment_controller::cSensorTopicName, lEnvironmentController);
+
+  franka_controller::FrankaFeedback lFrankaFeedback =
+      franka_controller::FrankaFeedback(environment_controller::cFrankaFeedback,
+                                        lEnvironmentController);
 
   ros::spin();
 

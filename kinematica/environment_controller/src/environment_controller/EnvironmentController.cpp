@@ -89,4 +89,9 @@ namespace environment_controller
 
     return lSensor;
   }
+
+  void EnvironmentController::frankaDoneMoving(bool aDone)
+  {
+    mContext->frankaDone(aDone);
+  }
 } // namespace environment_controller

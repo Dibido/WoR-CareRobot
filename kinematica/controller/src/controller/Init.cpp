@@ -21,6 +21,7 @@ namespace controller
 
   void Init::doActivity(Context* aContext)
   {
+    ros::Duration(cSafeWaitTime_s).sleep();
     aContext->goalConfiguration() = kinematics::Configuration();
     aContext->goalConfiguration().setTheta(3, -M_PI_2 - M_PI_4);
     aContext->goalConfiguration().setTheta(4, -M_PI_2);

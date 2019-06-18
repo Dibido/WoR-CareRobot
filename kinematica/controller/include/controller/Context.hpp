@@ -90,6 +90,8 @@ namespace controller
     void providePatientPosition(
         const environment_controller::Position& aPosition);
 
+    void frankaDone(bool aDone);
+
     /**
      * @brief getters & setters
      *
@@ -108,8 +110,10 @@ namespace controller
     environment_controller::Position& dropPosition();
     environment_controller::Position& patientPosition();
     std::condition_variable& waitForRelease();
+    std::condition_variable& feedbackDone();
     int16_t& releaseTime_s();
     std::mutex& releaseMutex();
+    std::mutex& feedbackMutex();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -132,10 +136,12 @@ namespace controller
     environment_controller::Position mPatientPosition;
     int16_t mReleaseTime_s;
     std::condition_variable mWaitForRelease;
+    std::condition_variable mFeedbackDone;
 
     std::mutex mCurrentStateMutex;
     std::mutex mReleaseMutex;
     std::mutex mHardStopMutex;
+    std::mutex mFeedbackMutex;
   };
 } // namespace controller
 #endif // Context_HPP

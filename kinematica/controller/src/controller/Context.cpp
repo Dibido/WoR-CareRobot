@@ -52,7 +52,6 @@ namespace controller
   {
     mGraph->addObstacle(cRobotObstacle);
     mGraph->addObstacle(cFloorObstacle);
-    ros::Duration(cSafeWaitTime_s).sleep();
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
     mCurrentState->doActivity(this);
@@ -110,12 +109,16 @@ namespace controller
     }
   }
 
-  void Context::provideObstacles(
-      const environment_controller::Obstacles& aObstacles)
+  void Context::provideObstacles(const environment_controller::Obstacles&)
   {
-    for (const environment_controller::Obstacle& lObstacle : aObstacles)
+  }
+
+  void Context::frankaDone(bool aDone)
+  {
+    if (aDone)
     {
-      // TODO environment_controller Obstacle to planning obstalce
+      std::unique_lock<std::mutex> lLock(mFeedbackMutex);
+      mFeedbackDone.notify_all();
     }
   }
 
@@ -210,6 +213,11 @@ namespace controller
     return mWaitForRelease;
   }
 
+  std::condition_variable& Context::feedbackDone()
+  {
+    return mFeedbackDone;
+  }
+
   int16_t& Context::releaseTime_s()
   {
     return mReleaseTime_s;
@@ -218,5 +226,10 @@ namespace controller
   std::mutex& Context::releaseMutex()
   {
     return mReleaseMutex;
+  }
+
+  std::mutex& Context::feedbackMutex()
+  {
+    return mFeedbackMutex;
   }
 } // namespace controller

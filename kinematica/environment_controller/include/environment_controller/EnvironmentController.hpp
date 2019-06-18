@@ -108,6 +108,8 @@ namespace environment_controller
      */
     const Sensor getSensor(const uint8_t aSensorID) const;
 
+    void frankaDoneMoving(bool aDone);
+
       private:
     ros::NodeHandle mCallbackNode;
     ros::Timer mTimer;
