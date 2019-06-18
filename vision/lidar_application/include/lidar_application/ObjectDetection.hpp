@@ -49,22 +49,6 @@ namespace lidar_application
   {
       public:
     /**
-     * @brief Default constructor
-     */
-    // ObjectDetection();
-
-    /**
-     * @brief Constructor
-     * @param aMaxDistanceDifference_m - This variable describes the max amount
-     * of difference in meters between two adjacent measurements to still assume
-     * its the same object. Example: [Theta => Distance] [0.0 => 1.5],
-     * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
-     * equal to aMaxDistanceDifference_m, both these measurements are taken of
-     * the same object.
-     */
-    // ObjectDetection(const double& aMaxDistanceDifference_m);
-
-    /**
      * @brief Constructor
      * @param aMaxDistanceDifference_m - This variable describes the max amount
      * of difference in meters between two adjacent measurements to still assume
