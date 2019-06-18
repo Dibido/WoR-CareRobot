@@ -132,7 +132,7 @@ namespace location_component
     void setAGVSpeed(const location_component::AGV& aAGV);
 
     /**
-     * @brief 
+     * @brief This function will set the variable mDetectObject
      * 
      */
     void setDetectObject(bool aDetectObject);

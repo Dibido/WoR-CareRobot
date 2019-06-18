@@ -38,8 +38,7 @@ namespace location_component
   {
     boost::optional<DetectedFrame> lDetectedFrame;
 
-    // Here we will wait for the input from the GUI. If the user wants to pick
-    // up a moving cup this boolean will be true.
+    // If the user wants to pick up a moving cup this boolean will be true.
     if (mDetectObject || mCalibration.mDebugStatus)
     {
       lDetectedFrame = detectFrame(aFrame, aDisplayFrame);
@@ -57,16 +56,24 @@ namespace location_component
             detectedCup.mMidpoint +
                 lDetectedFrame->mDetectedAGV.mBoundRect.tl(),
             lDetectedFrame->mAGVFrameSize);
-        ros::Time lCupPredictedArrivalTime =
+
+        boost::optional<ros::Time> lpredictCupArrival =
             mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
                                                  ros::Time::now());
 
-        ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
-        ROS_INFO_STREAM("Current time " << ros::Time::now());
-        ROS_INFO_STREAM("Cup is expected to arrive at "
-                        << lCupPredictedArrivalTime);
+        ros::Time lCupPredictedArrivalTime;
 
-        if (mRosServiceCup)
+        if (lpredictCupArrival)
+        {
+          lCupPredictedArrivalTime = *lpredictCupArrival;
+
+          ROS_INFO_STREAM("Cup found at: " << lCupLocation_m);
+          ROS_INFO_STREAM("Current time " << ros::Time::now());
+          ROS_INFO_STREAM("Cup is expected to arrive at "
+                          << lCupPredictedArrivalTime);
+        }
+
+        if (mRosServiceCup && lpredictCupArrival)
         {
           environment_controller::Object lObject(
               environment_controller::Position(

@@ -4,7 +4,6 @@
 #include "location_component/AGVSubscriber.hpp"
 #include "location_component/GoalSubscriberLocationComp.hpp"
 
-
 #include "std_msgs/String.h"
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>

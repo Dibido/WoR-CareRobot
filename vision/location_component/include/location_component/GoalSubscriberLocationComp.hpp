@@ -4,8 +4,6 @@
 #include "environment_controller/IGoalProvider.hpp"
 #include "environment_controller/Position.hpp"
 #include "kinematica_msgs/Goal.h"
-
-#include "kinematica_msgs/Goal.h"
 #include "location_component/DetectAGV.hpp"
 #include "ros/ros.h"
 
@@ -15,15 +13,17 @@ namespace location_component
    * @brief  Class for the Goal position subscriber
    *
    */
-  class GoalSubscriberLocationComp : public environment_controller::IGoalProvider
+  class GoalSubscriberLocationComp
+      : public environment_controller::IGoalProvider
   {
 
       public:
     /**
      * @brief Construct a new Goal Subscriber object
      *
-     * @param aTopicName - The name of the topic u want to subscribe to
-     * @param aController - Shared_ptr of the object that the developer want to influence
+     * @param aTopicName - The name of the topic the developer wants to subscribe to
+     * @param aDetectAGV - Shared_ptr of the object that the developer want to
+     * influence
      */
     GoalSubscriberLocationComp(
         const std::string& aTopicName,
@@ -35,6 +35,11 @@ namespace location_component
      */
     virtual ~GoalSubscriberLocationComp() = default;
 
+    /**
+     * @brief Pure virtual function for passing the goal position
+     *
+     * @param aPosition Data object which consists of an x,y and z
+     */
     virtual void
         selectGoalPosition(const environment_controller::Position& aPosition);
 
