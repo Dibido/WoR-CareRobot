@@ -33,11 +33,11 @@ namespace franka_controller
     catch (const franka::Exception& lE)
     {
 
-      if (typeid(lE) != typeid(franka::ControlException))
-      {
-        mRobot.automaticErrorRecovery();
-        executeMovement(aConfig, aSpeedFactor);
-      }
+      // if (typeid(lE) != typeid(franka::ControlException))
+      // {
+      mRobot.automaticErrorRecovery();
+      executeMovement(aConfig, aSpeedFactor);
+      // }
 
       ROS_ERROR(lE.what());
     }
