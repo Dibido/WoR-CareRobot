@@ -3,33 +3,6 @@
 
 namespace lidar_application
 {
-  // ObjectDetection::ObjectDetection()
-  //     : mIsInitialized(false),
-  //       mMaxDistanceDifference_m(
-  //           objectdetection_constants::cDefaultMaxDistanceDifference_m),
-  //       mMaxReliableDistance_m(
-  //           objectdetection_constants::cMaxReliableDistance_m),
-  //       mIgnoreSmallObjects(false),
-  //       mObjectMinNumberOfAdjacentMeasurements(
-  //           objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
-  //       mAmountOfInitialScansRequired(
-  //           objectdetection_constants::cDefaultAmountOfInitialScans)
-  // {
-  // }
-
-  // ObjectDetection::ObjectDetection(const double& aMaxDistanceDifference_m)
-  //     : mIsInitialized(false),
-  //       mMaxDistanceDifference_m(aMaxDistanceDifference_m),
-  //       mMaxReliableDistance_m(
-  //           objectdetection_constants::cMaxReliableDistance_m),
-  //       mIgnoreSmallObjects(false),
-  //       mObjectMinNumberOfAdjacentMeasurements(
-  //           objectdetection_constants::cObjectMinNumberOfAdjacentMeasurements),
-  //       mAmountOfInitialScansRequired(
-  //           objectdetection_constants::cDefaultAmountOfInitialScans)
-  // {
-  // }
-
   ObjectDetection::ObjectDetection(
       const environment_controller::Sensor& aSensor,
       const double& aMaxDistanceDifference_m,

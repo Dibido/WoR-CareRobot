@@ -16,22 +16,22 @@ bool isNumber(std::string aToken)
 std::vector<double> stringToDoubleVector(const std::string& aString,
                                          const std::string& aDelimiter)
 {
-  std::vector<double> returnValue;
-  size_t pos = 0;
+  std::vector<double> lReturnValue;
+  size_t lPos = 0;
   std::string lToken;
   std::string lString = aString;
-  while ((pos = lString.find(aDelimiter)) != std::string::npos)
+  while ((lPos = lString.find(aDelimiter)) != std::string::npos)
   {
-    lToken = lString.substr(0, pos);
-    returnValue.push_back(stod(lToken));
-    lString.erase(0, pos + 1);
+    lToken = lString.substr(0, lPos);
+    lReturnValue.push_back(stod(lToken));
+    lString.erase(0, lPos + 1);
   }
   if (isNumber(lString))
   {
-    returnValue.push_back(stod(lString));
+    lReturnValue.push_back(stod(lString));
   }
 
-  return returnValue;
+  return lReturnValue;
 }
 
 int main(int argc, char** argv)
