@@ -51,6 +51,9 @@ namespace location_component
     /**
      * @brief Calls the detectFrame function, and if an AGV and cups have been
      * detected, sends a message.
+     *
+     * @return True if the function did successfully find an AGV and false if
+     * not. This boolean is primarily used for unit testing
      */
     bool detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame);
 

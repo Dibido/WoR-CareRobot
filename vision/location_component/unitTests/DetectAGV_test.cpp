@@ -118,9 +118,9 @@ TEST(DetectAGVSuite, AGVSpeed)
   lAGVDetector.setAGVSpeed(lAGV);
   lAGVDetector.setDetectObject(true);
 
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
-  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageRight, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_TRUE(lAGVDetector.detectUpdate(lImageRight, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageRight, lMat));
   
 }
 
@@ -144,8 +144,8 @@ TEST(DetectAGVSuite, inactiveMode)
   lAGVDetector.setAGVSpeed(lAGV);
 
   //The DetectObject is not set to true
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageRight, lMat));  
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageRight, lMat));  
 }
 
 TEST(DetectAGVSuite, AGVDrivingFromLeftAndViceVersa)
@@ -167,11 +167,11 @@ TEST(DetectAGVSuite, AGVDrivingFromLeftAndViceVersa)
   lAGVDetector.setAGVSpeed(lAGV);
   lAGVDetector.setDetectObject(true);
 
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
-  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_TRUE(lAGVDetector.detectUpdate(lImageRight, lMat));
 
   lAGVDetector.setDetectObject(true);
-  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_TRUE(lAGVDetector.detectUpdate(lImageLeft, lMat));
 }
 
 TEST(DetectAGVSuite, LocationComponentSetToInactiveAfterDetection)
@@ -193,9 +193,9 @@ TEST(DetectAGVSuite, LocationComponentSetToInactiveAfterDetection)
   lAGVDetector.setAGVSpeed(lAGV);
   lAGVDetector.setDetectObject(true);
 
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
-  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_TRUE(lAGVDetector.detectUpdate(lImageRight, lMat));
 
   //Checking if the application is set to inactive
-  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
 }

@@ -98,7 +98,6 @@ namespace location_component
 
       if (mRosServiceCup && lCupPredictedArrivalTime)
       {
-        std::cout << "test2>> " << std::endl;
         environment_controller::Object lObject(
             environment_controller::Position(
                 lCupLocation_m.x, mCalibration.mArmY_m, lCupLocation_m.z),
