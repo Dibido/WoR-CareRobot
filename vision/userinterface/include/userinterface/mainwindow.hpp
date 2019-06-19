@@ -2,7 +2,9 @@
 #define MAINWINDOW_HPP
 
 #include "environment_controller/Position.hpp"
+#include "userinterface/CupSubscriber.hpp"
 #include "userinterface/GoalPublisher.hpp"
+#include "userinterface/ProgressScreen.hpp"
 #include "userinterface/ReleaseTimePublisher.hpp"
 #include <QApplication>
 #include <QElapsedTimer>
@@ -55,6 +57,7 @@ class MainWindow : public QMainWindow
   void on_water_btn_clicked();
 
     private:
+  ProgressScreen progressWindow;
   /**
    * @brief The UI object for QT. See: https://doc.qt.io/qt-5/qmainwindow.html.
    */
