@@ -120,5 +120,82 @@ TEST(DetectAGVSuite, AGVSpeed)
 
   EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
   EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageRight, lMat));
   
+}
+
+
+TEST(DetectAGVSuite, inactiveMode)
+{
+  cv::Mat lImageLeft =
+      cv::imread(getImagePath("Test_picture_agv_left.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lImageRight =
+      cv::imread(getImagePath("Test_picture_agv_right.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lMat;
+
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
+  location_component::AGV lAGV(5.0);
+  lAGVDetector.setAGVSpeed(lAGV);
+
+  //The DetectObject is not set to true
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageRight, lMat));  
+}
+
+TEST(DetectAGVSuite, AGVDrivingFromLeftAndViceVersa)
+{
+  cv::Mat lImageLeft =
+      cv::imread(getImagePath("Test_picture_agv_left.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lImageRight =
+      cv::imread(getImagePath("Test_picture_agv_right.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lMat;
+
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
+  location_component::AGV lAGV(5.0);
+  lAGVDetector.setAGVSpeed(lAGV);
+  lAGVDetector.setDetectObject(true);
+
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
+
+  lAGVDetector.setDetectObject(true);
+  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageLeft, lMat));
+}
+
+TEST(DetectAGVSuite, LocationComponentSetToInactiveAfterDetection)
+{
+  cv::Mat lImageLeft =
+      cv::imread(getImagePath("Test_picture_agv_left.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lImageRight =
+      cv::imread(getImagePath("Test_picture_agv_right.jpg"), cv::IMREAD_COLOR);
+
+  cv::Mat lMat;
+
+  location_component::CupDetectionCalibration lCupDetectionCalibration(false);
+  location_component::AGVFrameCalibration lAGVFrameCalibration(false);
+  location_component::DetectAGV lAGVDetector(lCupDetectionCalibration,
+                                             lAGVFrameCalibration);
+
+  location_component::AGV lAGV(5.0);
+  lAGVDetector.setAGVSpeed(lAGV);
+  lAGVDetector.setDetectObject(true);
+
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
+  EXPECT_EQ(1, lAGVDetector.detectUpdate(lImageRight, lMat));
+
+  //Checking if the application is set to inactive
+  EXPECT_EQ(0, lAGVDetector.detectUpdate(lImageLeft, lMat));
 }
