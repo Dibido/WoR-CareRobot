@@ -45,7 +45,7 @@ void CupDetector::goalCallback(const kinematica_msgs::GoalConstPtr& aMsg)
   // If the static goal is requested we send it
   try
   {
-    if (aMsg->staticCup)
+    if (aMsg->staticGoal)
     {
       mSendGoal = true;
     }
