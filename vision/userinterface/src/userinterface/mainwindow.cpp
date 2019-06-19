@@ -5,6 +5,11 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+
+  QTimer* timer = new QTimer(this);
+  connect(timer, &QTimer::timeout, this,
+          QOverload<>::of(&MainWindow::returnToMain));
+  timer->start(100);
 }
 
 MainWindow::~MainWindow()
@@ -56,5 +61,13 @@ void MainWindow::onWaterBtnClicked(bool aStaticCup)
     // Reset mMsgSent variable to reset button state and allow consecutive
     // executions.
     mGoalPublisher.mMsgSent = false;
+  }
+}
+
+void MainWindow::returnToMain()
+{
+  if (!isVisible() && !progressWindow.isVisible())
+  {
+    show();
   }
 }

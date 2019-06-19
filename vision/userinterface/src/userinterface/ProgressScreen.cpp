@@ -78,7 +78,7 @@ void ProgressScreen::updateProgress()
         std::string("De gripper laat los over ") +
         std::to_string(static_cast<int>(lSecondsLeft) + 1) +
         std::string(" seconden")));
-    if (lSecondsLeft == 0)
+    if (lSecondsLeft < 0.15)
     {
       mCupSubscriber.resetAll();
       hide();

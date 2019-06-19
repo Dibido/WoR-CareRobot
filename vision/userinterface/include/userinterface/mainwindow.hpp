@@ -86,6 +86,8 @@ class MainWindow : public QMainWindow
   void resetMainText();
 
   void onWaterBtnClicked(bool staticCup);
+
+  void returnToMain();
 };
 
 #endif // MAINWINDOW_HPP
