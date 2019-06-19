@@ -81,6 +81,8 @@ void ProgressScreen::updateProgress()
     if (lSecondsLeft < 0.15)
     {
       // mCupSubscriber.resetAll();
+      ui->ProgressBar->show();
+      ui->TimeLabel->show();
       hide();
     }
   }
@@ -91,5 +93,6 @@ void ProgressScreen::updateProgress()
     ui->StatusLabel->setText(QString(
         "Uw beker staat klaar, druk op \n de knop loslaten om verder te gaan"));
     ui->ProgressBar->hide();
+    ui->TimeLabel->hide();
   }
 }

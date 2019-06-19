@@ -62,8 +62,8 @@ namespace userinterface
   void CupSubscriber::resetAll()
   {
     resetArrivalTime();
-    bool enabled = 0;
-    bool mFirstMsgRead = 0;
+    enabled = 0;
+    mFirstMsgRead = 0;
   }
 
   ros::Time CupSubscriber::getArrivalTime()
