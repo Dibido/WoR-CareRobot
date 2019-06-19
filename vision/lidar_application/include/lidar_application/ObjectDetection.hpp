@@ -174,7 +174,28 @@ namespace lidar_application
     bool mIsInitialized;
     SensorPublisher mPublisher;
     const environment_controller::Sensor mSensor;
-    unsigned int mInitialScanIterations = 0;
+    // Maximum difference allowed between adjacent/previous measurements for
+    // them to be considered as measurements of the same object.
+    const double mMaxDistanceDifference_m;
+    /** If this boolean is true, objects require atleast multiple adjacent
+    measurements. this means that if just a single angle is considered
+    different, this won't be registered as an object. This filters out really
+    small objects like a cable */
+    bool mIgnoreSmallObjects;
+    unsigned int mInitialScanIterations;
+    // Maximum distance that the lidar can reliable measure.
+    const double mMaxReliableDistance_m;
+    /** Amount of adjacent measurements that must be off (compared to
+     * mInitialScan), for it to be considered an object. By setting a minimum of
+     * 2-3+, small objects like a cable will most likely be filtered out if
+     * mIgnoreSmallObjects is true
+     */
+    const unsigned int mObjectMinNumberOfAdjacentMeasurements;
+    /**
+     * @brief Amount of full 360 scans that will be used as initialscandata. The
+     * higher the number, the more detailed info mInitialScan will have.
+     */
+    const unsigned int mAmountOfInitialScansRequired;
 
     // Contains the data of the first 360 degrees scan, set during
     // initialization.
@@ -188,32 +209,6 @@ namespace lidar_application
     std::vector<std::pair<double, double>> mDetectedObjects;
 
     DataHandler mDataHandler;
-
-    // Maximum difference allowed between adjacent/previous measurements for
-    // them to be considered as measurements of the same object.
-    const double mMaxDistanceDifference_m;
-
-    // Maximum distance that the lidar can reliable measure.
-    const double mMaxReliableDistance_m;
-
-    /** If this boolean is true, objects require atleast multiple adjacent
-    measurements. this means that if just a single angle is considered
-    different, this won't be registered as an object. This filters out really
-    small objects like a cable */
-    bool mIgnoreSmallObjects;
-
-    /** Amount of adjacent measurements that must be off (compared to
-     * mInitialScan), for it to be considered an object. By setting a minimum of
-     * 2-3+, small objects like a cable will most likely be filtered out if
-     * mIgnoreSmallObjects is true
-     */
-    const unsigned int mObjectMinNumberOfAdjacentMeasurements;
-
-    /**
-     * @brief Amount of full 360 scans that will be used as initialscandata. The
-     * higher the number, the more detailed info mInitialScan will have.
-     */
-    const unsigned int mAmountOfInitialScansRequired;
   };
 } // namespace lidar_application
 

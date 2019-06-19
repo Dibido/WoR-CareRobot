@@ -13,15 +13,16 @@ namespace lidar_application
       const unsigned int& aObjectMinNumberOfAdjacentAngles,
       const unsigned int& aAmountOfInitialScansRequired)
       : mIsInitialized(false),
+        mPublisher(mNode, cSensorTopicName, cSensorPublisherQueueSize),
         mSensor(aSensor),
         mMaxDistanceDifference_m(aMaxDistanceDifference_m),
+        mIgnoreSmallObjects(aIgnoreSmallObjects),
+        mInitialScanIterations(0),
         mMaxReliableDistance_m(
             objectdetection_constants::cMaxReliableDistance_m),
-        mIgnoreSmallObjects(aIgnoreSmallObjects),
         mObjectMinNumberOfAdjacentMeasurements(
             aObjectMinNumberOfAdjacentAngles),
-        mAmountOfInitialScansRequired(aAmountOfInitialScansRequired),
-        mPublisher(mNode, cSensorTopicName, cSensorPublisherQueueSize)
+        mAmountOfInitialScansRequired(aAmountOfInitialScansRequired)
   {
   }
 
