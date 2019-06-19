@@ -172,7 +172,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="juice_btn">
+        <widget class="QToolButton" name="static_glass_btn">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -193,7 +193,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Beker fris</string>
+          <string>Beker Statisch</string>
          </property>
          <property name="icon">
           <iconset resource="../../drawable/resources.qrc">
@@ -211,7 +211,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="food_btn">
+        <widget class="QToolButton" name="return_btn">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
