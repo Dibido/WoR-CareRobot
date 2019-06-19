@@ -9,6 +9,10 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 
+location_component::AGVFrameCalibration gAGVFrameCalibration(false);
+location_component::FrameCalibration gFrameCalibration(gAGVFrameCalibration);
+location_component::CupDetectionCalibration gCupDetectionCalibration(false);
+
 // Testing the fucntion getMidPoint
 TEST(CupScannerSuite, RecogniseMultipleCups)
 {
@@ -17,9 +21,8 @@ TEST(CupScannerSuite, RecogniseMultipleCups)
   cv::Mat lMat;
   lImage.copyTo(lMat);
 
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
-  location_component::FrameCalibration lFrameCalibration(lAGVFrameCalibration);
-  location_component::CupScanner lScanner(lFrameCalibration);
+  location_component::CupScanner lScanner(gFrameCalibration,
+                                          gCupDetectionCalibration);
 
   std::vector<location_component::DetectedCup> lCups =
       lScanner.detectCups(lImage, lMat);
@@ -34,9 +37,8 @@ TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
   cv::Mat lMat;
   lImage.copyTo(lMat);
 
-  location_component::AGVFrameCalibration lAGVFrameCalibration(true);
-  location_component::FrameCalibration lFrameCalibration(lAGVFrameCalibration);
-  location_component::CupScanner lScanner(lFrameCalibration);
+  location_component::CupScanner lScanner(gFrameCalibration,
+                                          gCupDetectionCalibration);
 
   std::vector<location_component::DetectedCup> lCups =
       lScanner.detectCups(lImage, lMat);
@@ -52,4 +54,26 @@ TEST(CupScannerSuite, RecogniseMultipleCupsPositions)
 
   EXPECT_EQ(lCups.at(3).mMidpoint.x, 411);
   EXPECT_EQ(lCups.at(3).mMidpoint.y, 248);
+}
+
+TEST(CupScannerSuite, RecogniseMultipleCupsFilled)
+{
+  cv::Mat lImage =
+      cv::imread(getImagePath("Test_picture_cups.png"), cv::IMREAD_COLOR);
+  cv::Mat lMat;
+  lImage.copyTo(lMat);
+
+  location_component::CupScanner lScanner(gFrameCalibration,
+                                          gCupDetectionCalibration);
+
+  std::vector<location_component::DetectedCup> lCups =
+      lScanner.detectCups(lImage, lMat);
+
+  EXPECT_EQ(lCups.at(0).mFilled, true);
+
+  EXPECT_EQ(lCups.at(1).mFilled, false);
+
+  EXPECT_EQ(lCups.at(2).mFilled, true);
+
+  EXPECT_EQ(lCups.at(3).mFilled, false);
 }

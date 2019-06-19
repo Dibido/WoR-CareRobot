@@ -157,7 +157,7 @@
           <string>Beker water</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../drawable/resources.qrc">
            <normaloff>:/new/icons/Glas_water.png</normaloff>:/new/icons/Glas_water.png</iconset>
          </property>
          <property name="iconSize">
@@ -196,7 +196,7 @@
           <string>Beker Statisch</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../drawable/resources.qrc">
            <normaloff>:/new/icons/Glas_cola.png</normaloff>:/new/icons/Glas_cola.png</iconset>
          </property>
          <property name="iconSize">
@@ -230,7 +230,7 @@
           <string>Beker terugbrengen</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../drawable/resources.qrc">
            <normaloff>:/new/icons/Glas_empty.png</normaloff>:/new/icons/Glas_empty.png</iconset>
          </property>
          <property name="iconSize">
@@ -267,6 +267,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../../drawable/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

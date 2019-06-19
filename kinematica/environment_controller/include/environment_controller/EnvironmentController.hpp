@@ -52,6 +52,15 @@ namespace environment_controller
     void executeHardstop(bool hardstop);
 
     /**
+     * @brief execute softstop Will pass along the executeSoftstop to the
+     * controller
+     *
+     * @param softstop If softstop is true a softstop has to be executed. If
+     * softstop is false the sotftstop has to be lifted.
+     */
+    void executeSoftstop(bool softstop);
+
+    /**
      * @brief provide the cup position so the robot can move
      *
      * @param aCup the cup to move to
