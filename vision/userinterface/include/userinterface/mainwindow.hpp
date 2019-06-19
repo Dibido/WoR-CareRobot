@@ -54,10 +54,13 @@ class MainWindow : public QMainWindow
     private slots:
 
   /**
-   * @brief This method is called when the water button is clicked. For now, it
-   * launches Gazebo to show the demo.
+   * @brief This method is called when the water button is clicked.
    */
   void on_water_btn_clicked();
+  /**
+   * @brief This method is called when the static water button is clicked.
+   */
+  void on_static_glass_btn_clicked();
 
     private:
   ProgressScreen progressWindow;
@@ -81,6 +84,8 @@ class MainWindow : public QMainWindow
   void releaseGlass();
 
   void resetMainText();
+
+  void onWaterBtnClicked(bool staticCup);
 };
 
 #endif // MAINWINDOW_HPP
