@@ -77,12 +77,15 @@ namespace controller
     while (!(typeid(*mCurrentState) == typeid(Ready)) && ros::ok())
     {
       mHardStopMutex.unlock();
+      mSoftStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
       mCurrentStateMutex.unlock();
       mHardStopMutex.lock();
+      mSoftStopMutex.lock();
     }
     mHardStopMutex.unlock();
+    mSoftStopMutex.unlock();
   }
 
   void Context::foundCup(const environment_controller::Cup& aCup)

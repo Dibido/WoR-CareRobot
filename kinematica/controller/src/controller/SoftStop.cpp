@@ -15,9 +15,8 @@ namespace controller
     aContext->robotStop()->publish(true);
   }
 
-  void SoftStop::doActivity(Context* aContext)
+  void SoftStop::doActivity(Context*)
   {
-    transition(aContext);
   }
 
   void SoftStop::exitAction(Context* aContext)
@@ -25,8 +24,7 @@ namespace controller
     aContext->robotStop()->publish(false);
   }
 
-  void SoftStop::transition(Context* aContext)
+  void SoftStop::transition(Context*)
   {
-    aContext->setState(std::make_shared<Init>());
   }
 } // namespace controller
