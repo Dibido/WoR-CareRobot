@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>191</width>
-     <height>131</height>
+     <height>141</height>
     </rect>
    </property>
    <property name="text">
@@ -82,6 +82,19 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ReleaseBtn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>191</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>BEKER LOS</string>
    </property>
   </widget>
  </widget>

@@ -7,6 +7,8 @@ ProgressScreen::ProgressScreen(QWidget* parent)
 {
   ui->setupUi(this);
 
+  ui->ReleaseBtn->hide();
+
   QPixmap lPix(":/new/icons/Noodstop.png");
   QIcon lIcon(lPix);
   ui->EmergencyBtn->setIcon(lIcon);
@@ -75,5 +77,11 @@ void ProgressScreen::updateProgress()
         std::string("De gripper laat los over ") +
         std::to_string(static_cast<int>(lSecondsLeft) + 1) +
         std::string(" seconden")));
+  }
+  if (ui->ProgressBar->value() == 100)
+  {
+    ui->ReleaseBtn->show();
+    ui->StatusLabel->setText(QString(
+        "Uw beker staat klaar, druk op \n de knop loslaten om verder te gaan"));
   }
 }
