@@ -37,7 +37,7 @@ namespace environment_controller
      *
      * @param aPosition
      */
-    virtual void selectGoalPosition(const Position& aPosition);
+    virtual void selectGoalPosition(const Position& aPosition, bool staticGoal = true);
 
       private:
     /**

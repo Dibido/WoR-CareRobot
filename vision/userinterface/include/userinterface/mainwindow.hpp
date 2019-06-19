@@ -2,11 +2,14 @@
 #define MAINWINDOW_HPP
 
 #include "environment_controller/Position.hpp"
+#include "userinterface/CupSubscriber.hpp"
 #include "userinterface/GoalPublisher.hpp"
+#include "userinterface/ProgressScreen.hpp"
 #include "userinterface/ReleaseTimePublisher.hpp"
 #include <QApplication>
 #include <QElapsedTimer>
 #include <QMainWindow>
+#include <QToolButton>
 
 namespace Ui
 {
@@ -19,6 +22,8 @@ namespace Ui
 
     // Cross button icon size
     const uint8_t c_CrossBtnSize_m = 130;
+
+    const uint8_t cStaticGlassBtnSize_pixels = 130;
 
   } // namespace ui_constants
 
@@ -49,12 +54,16 @@ class MainWindow : public QMainWindow
     private slots:
 
   /**
-   * @brief This method is called when the water button is clicked. For now, it
-   * launches Gazebo to show the demo.
+   * @brief This method is called when the water button is clicked.
    */
   void on_water_btn_clicked();
+  /**
+   * @brief This method is called when the static water button is clicked.
+   */
+  void on_static_glass_btn_clicked();
 
     private:
+  ProgressScreen progressWindow;
   /**
    * @brief The UI object for QT. See: https://doc.qt.io/qt-5/qmainwindow.html.
    */
@@ -69,6 +78,16 @@ class MainWindow : public QMainWindow
    * @brief ReleaseTimePublisher used in this class.
    */
   userinterface::ReleaseTimePublisher mReleaseTimePublisher;
+
+  void changeToReleaseButton(QToolButton*& lButton);
+
+  void releaseGlass();
+
+  void resetMainText();
+
+  void onWaterBtnClicked(bool staticCup);
+
+  void returnToMain();
 };
 
 #endif // MAINWINDOW_HPP
