@@ -1,8 +1,11 @@
 #include "lidar_application/ObjectDetection.hpp"
 #include "lidar_application/SensorPublisher.hpp"
 
+const cSensorTopicName = "/sensor";
+
 namespace lidar_application
 {
+
   ObjectDetection::ObjectDetection(
       const environment_controller::Sensor& aSensor,
       const double& aMaxDistanceDifference_m,
@@ -18,7 +21,7 @@ namespace lidar_application
         mObjectMinNumberOfAdjacentMeasurements(
             aObjectMinNumberOfAdjacentAngles),
         mAmountOfInitialScansRequired(aAmountOfInitialScansRequired),
-        mPublisher(mNode, "/sensor", 100)
+        mPublisher(mNode, cSensorTopicName, 100)
   {
   }
 
