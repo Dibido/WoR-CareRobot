@@ -33,6 +33,21 @@ namespace environment_controller
     }
   }
 
+  void EnvironmentController::executeSoftstop(bool softstop)
+  {
+    if (typeid(*mContext->currentState()) ==
+            typeid(controller::EmergencyStop) &&
+        softstop == false)
+    {
+      mContext->softStop(softstop);
+    }
+    else if (softstop == true && typeid(*mContext->currentState()) !=
+                                     typeid(controller::EmergencyStop))
+    {
+      mContext->softStop(softstop);
+    }
+  }
+
   void EnvironmentController::provideCup(const Cup& aCup)
   {
     mContext->foundCup(aCup);
@@ -42,6 +57,7 @@ namespace environment_controller
   void EnvironmentController::provideGoal(const Position& aPosition)
   {
     mContext->provideDropPosition(aPosition);
+    std::thread(&controller::Context::run, mContext).detach();
   }
 
   void EnvironmentController::provideDrop(const Position& aPosition)

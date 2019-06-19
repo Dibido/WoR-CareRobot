@@ -62,6 +62,13 @@ namespace controller
     void hardStop(bool aStop);
 
     /**
+     * @brief stop the robotarm
+     *
+     * @param aStop
+     */
+    void softStop(bool aStop);
+
+    /**
      * @brief present obstacles that are found
      *
      * @param aObstacles
@@ -142,6 +149,7 @@ namespace controller
     std::mutex mCurrentStateMutex;
     std::mutex mReleaseMutex;
     std::mutex mHardStopMutex;
+    std::mutex mSoftStopMutex;
     std::mutex mFeedbackMutex;
   };
 } // namespace controller

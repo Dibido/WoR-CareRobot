@@ -5,6 +5,7 @@
 #include "controller/Move.hpp"
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
+#include "controller/SoftStop.hpp"
 #include "environment_controller/Position.hpp"
 #include <chrono>
 #include <iostream>
@@ -76,12 +77,15 @@ namespace controller
     while (!(typeid(*mCurrentState) == typeid(Ready)) && ros::ok())
     {
       mHardStopMutex.unlock();
+      mSoftStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
       mCurrentStateMutex.unlock();
       mHardStopMutex.lock();
+      mSoftStopMutex.lock();
     }
     mHardStopMutex.unlock();
+    mSoftStopMutex.unlock();
   }
 
   void Context::foundCup(const environment_controller::Cup& aCup)
@@ -100,6 +104,25 @@ namespace controller
       mHistoryState = mCurrentState;
       setState(std::make_shared<EmergencyStop>());
       ROS_WARN("STOP");
+    }
+    else
+    {
+      mCurrentState = mHistoryState;
+      ROS_WARN("RELEASE");
+    }
+  }
+
+  void Context::softStop(bool aStop)
+  {
+    std::lock_guard<std::mutex> lSoftLock(mSoftStopMutex);
+    mFeedbackDone.notify_all();
+    mWaitForRelease.notify_all();
+    std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
+    if (aStop)
+    {
+      mHistoryState = mCurrentState;
+      setState(std::make_shared<SoftStop>());
+      ROS_WARN("SOFTSTOP");
     }
     else
     {
