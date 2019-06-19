@@ -6,6 +6,8 @@ ProgressScreen::ProgressScreen(QWidget* parent)
 {
   ui->setupUi(this);
 
+  ui->ReleaseBtn->hide();
+
   QPixmap lPix(":/new/icons/Noodstop.png");
   QIcon lIcon(lPix);
   ui->EmergencyBtn->setIcon(lIcon);
@@ -57,5 +59,12 @@ void ProgressScreen::updateProgress()
               << std::endl;
     std::cout << "Arrival Time: "
               << std::to_string(mCupSubscriber.getArrivalTime()) << std::endl;
+  }
+
+  if (ui->ProgressBar->value() == 100)
+  {
+    ui->ReleaseBtn->show();
+    ui->StatusLabel->setText(QString(
+        "Uw beker staat klaar, druk op \n de knop loslaten om verder te gaan"));
   }
 }
