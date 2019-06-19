@@ -5,13 +5,11 @@ namespace userinterface
 {
   CupSubscriber::CupSubscriber()
       : mSubscriber(
-            mHandle.subscribe("cup",
+            mHandle.subscribe("/location/cup",
                               10,
                               &userinterface::CupSubscriber::cupCallback,
                               this))
   {
-    std::cout << "TEST" << std::endl;
-
     std::thread lSpinThread(threadRosSpin);
     lSpinThread.detach();
   }
@@ -34,16 +32,10 @@ namespace userinterface
   {
     try
     {
-      //      Position lPos(aMsg->mX_m, aMsg->mY_m, aMsg->mZ_m);
-      //      Object lObj(lPos, aMsg->aHeight, aMsg->aWidth, aMsg->aDepth,
-      //                  aMsg->aDirection, aMsg->aSpeed,
-      //                  aMsg->aMeasurementTime, aMsg->aSensorId);
-      //      Cup lCup(lObj, aMsg->timeOfArrival);
       if (enabled)
       {
-        std::cout << std::to_string(aMsg->timeOfArrival.toSec()) << std::endl;
         mStartingTime = ros::Time::now().toSec();
-        if (mCupArrivalTime == 0)
+        if (mCupArrivalTime == 0.0)
         {
           mFirstMsgRead = true;
         }

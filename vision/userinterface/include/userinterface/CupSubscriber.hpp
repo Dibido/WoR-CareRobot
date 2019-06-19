@@ -31,8 +31,8 @@ namespace userinterface
     }
     bool enabled = 0;
     bool mFirstMsgRead = 0;
-    double mStartingTime = 0.00;
-    double mCupArrivalTime = 0.00;
+    double mStartingTime = 0.0;
+    double mCupArrivalTime = 0.0;
   };
 
 } // namespace userinterface
