@@ -48,6 +48,9 @@ namespace location_component
       private:
     /**
      * @brief Detects whether a cup is filled or not.
+     *        A cup is filled if the color at the midpoint is within the HSV
+     * ranges defined by the CupDetectionCalibration. Currently, this means if
+     * the midpoint of the cup is not white/unsaturated, it is filled.
      *
      * @param aImage The image on which the cup is present.
      * @param aCupMidpoint The midpoint of the cup on the image.
