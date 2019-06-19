@@ -7,6 +7,8 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <vector>
 
+const std::string cArgDelimiter = "#";
+
 bool isNumber(std::string aToken)
 {
   return std::regex_match(
@@ -109,14 +111,11 @@ int main(int argc, char** argv)
     if (argc >= 6)
     {
       ROS_INFO("Setting lPosition with x y z %s", argv[5]);
-      std::vector<double> values = stringToDoubleVector(argv[5], "-");
+      std::vector<double> values = stringToDoubleVector(argv[5], cArgDelimiter);
       if (values.size() != 3)
       {
         throw std::invalid_argument("Expected 3 values for lPosition");
       }
-
-      std::cout << values.at(0) << " " << values.at(1) << " " << values.at(2)
-                << std::endl;
       lPosition = environment_controller::Position(values.at(0), values.at(1),
                                                    values.at(2));
     }
@@ -124,7 +123,7 @@ int main(int argc, char** argv)
     {
       ROS_INFO("Setting lRotation with role pitch jaw %s", argv[6]);
 
-      std::vector<double> values = stringToDoubleVector(argv[6], "-");
+      std::vector<double> values = stringToDoubleVector(argv[6], cArgDelimiter);
       if (values.size() != 3)
       {
         throw std::invalid_argument("Expected 3 values for lPosition");

@@ -18,7 +18,7 @@ namespace lidar_application
         mObjectMinNumberOfAdjacentMeasurements(
             aObjectMinNumberOfAdjacentAngles),
         mAmountOfInitialScansRequired(aAmountOfInitialScansRequired),
-        publisher(mNode, "/sensor", 100)
+        mPublisher(mNode, "/sensor", 100)
   {
   }
 
@@ -62,7 +62,7 @@ namespace lidar_application
   void ObjectDetection::publishPosition()
   {
     ROS_INFO("PUBLISH_POSITION");
-    publisher.provideSensor(mSensor);
+    mPublisher.provideSensor(mSensor);
   }
 
   void ObjectDetection::detectObjects()

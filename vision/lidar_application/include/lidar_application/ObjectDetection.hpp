@@ -169,7 +169,7 @@ namespace lidar_application
 
     ros::NodeHandle mNode;
     bool mIsInitialized;
-    SensorPublisher publisher;
+    SensorPublisher mPublisher;
     const environment_controller::Sensor mSensor;
     unsigned int mInitialScanIterations = 0;
 
