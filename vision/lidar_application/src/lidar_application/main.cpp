@@ -1,40 +1,13 @@
 #include "environment_controller/Sensor.hpp"
 #include "lidar_application/ObjectDetection.hpp"
+#include "lidar_application/Utility.hpp"
 #include <iostream>
-#include <regex>
 #include <ros/console.h>
 #include <ros/ros.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <vector>
 
 const std::string cArgDelimiter = "#";
-
-bool isNumber(std::string aToken)
-{
-  return std::regex_match(
-      aToken, std::regex(("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?")));
-}
-
-std::vector<double> stringToDoubleVector(const std::string& aString,
-                                         const std::string& aDelimiter)
-{
-  std::vector<double> lReturnValue;
-  size_t lPos = 0;
-  std::string lToken;
-  std::string lString = aString;
-  while ((lPos = lString.find(aDelimiter)) != std::string::npos)
-  {
-    lToken = lString.substr(0, lPos);
-    lReturnValue.push_back(stod(lToken));
-    lString.erase(0, lPos + 1);
-  }
-  if (isNumber(lString))
-  {
-    lReturnValue.push_back(stod(lString));
-  }
-
-  return lReturnValue;
-}
 
 int main(int argc, char** argv)
 {
@@ -81,6 +54,12 @@ int main(int argc, char** argv)
       ROS_INFO("Setting lMinNumberAdjacentAngles to %s", argv[2]);
       lMinNumberAdjacentAngles = std::stoi(argv[2]);
 
+      if (!utility::isNumber(argv[2]))
+      {
+        throw std::invalid_argument(
+            "Value of lMinNumberAdjacentAngles is not a number.");
+      }
+
       if (lMinNumberAdjacentAngles < 1)
       {
         throw std::range_error("lMinNumberAdjacentAngles must be >= 1");
@@ -93,25 +72,43 @@ int main(int argc, char** argv)
     if (argc >= 4)
     {
       ROS_INFO("Setting lNumberOfInitialScanRounds to %s", argv[3]);
+
+      if (!utility::isNumber(argv[3]))
+      {
+        throw std::invalid_argument(
+            "Value of lNumberOfInitialScanRounds is not a number.");
+      }
+
       lNumberOfInitialScanRounds = std::stoi(argv[3]);
     }
     if (argc >= 5)
     {
       ROS_INFO("Setting lSensorId %s", argv[4]);
-      const int value = std::stoi(argv[4]);
 
-      if (!(value >= std::numeric_limits<uint8_t>::min() &&
-            value <= std::numeric_limits<uint8_t>::max()))
+      if (!utility::isNumber(argv[4]))
       {
-        throw std::range_error("value does not fit uint8_t");
+        throw std::invalid_argument("Value of sensor id is not a number.");
       }
 
-      lSensorId = static_cast<uint8_t>(value);
+      const int cValue = std::stoi(argv[4]);
+
+      if (!(cValue >= std::numeric_limits<uint8_t>::min() &&
+            cValue <= std::numeric_limits<uint8_t>::max()))
+      {
+        throw std::range_error(
+            "Value of sensor id " + std::to_string(cValue) +
+            " does not fit uint8_t range " +
+            std::to_string(std::numeric_limits<uint8_t>::min()) + " - " +
+            std::to_string(std::numeric_limits<uint8_t>::max()));
+      }
+
+      lSensorId = static_cast<uint8_t>(cValue);
     }
     if (argc >= 6)
     {
       ROS_INFO("Setting lPosition with x y z %s", argv[5]);
-      std::vector<double> values = stringToDoubleVector(argv[5], cArgDelimiter);
+      std::vector<double> values =
+          utility::stringToDoubleVector(argv[5], cArgDelimiter);
       if (values.size() != 3)
       {
         throw std::invalid_argument("Expected 3 values for lPosition");
@@ -121,9 +118,10 @@ int main(int argc, char** argv)
     }
     if (argc == 7)
     {
-      ROS_INFO("Setting lRotation with role pitch jaw %s", argv[6]);
+      ROS_INFO("Setting lRotation with roll pitch yaw %s", argv[6]);
 
-      std::vector<double> values = stringToDoubleVector(argv[6], cArgDelimiter);
+      std::vector<double> values =
+          utility::stringToDoubleVector(argv[6], cArgDelimiter);
       if (values.size() != 3)
       {
         throw std::invalid_argument("Expected 3 values for lPosition");

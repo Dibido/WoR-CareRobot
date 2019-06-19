@@ -92,10 +92,11 @@ namespace lidar_application
     virtual void detectObjects();
 
     /**
-     * @brief Publish the posistion as specifcied in mSensor.
+     * @brief Publish the posistion as specifcied in mSensor on the on the
+     * "/sensor" topic.
      *
      */
-    * / void publishPosition();
+    void publishPosition();
 
     /**
      * @brief Function converts data in vector format (theta, distance) to

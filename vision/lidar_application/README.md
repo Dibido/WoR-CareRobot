@@ -20,4 +20,4 @@ calling the lidar application with argumens would be 'rosrun lidar_application l
   
 - Fifth argument: Position of the sensor in meters. Specify the x, y and z like this 0#0#0.
 
-- Sixth argument: Rotation of the sensor. Specify the role, pitch and jaw like this 0#0#0.
+- Sixth argument: Rotation of the sensor. Specify the roll, pitch and yaw like this 0#0#0.
