@@ -83,6 +83,10 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         return;
       }
     }
+    else
+    {
+      mCalibrated = true;
+    }
   }
 
   // Filter color
