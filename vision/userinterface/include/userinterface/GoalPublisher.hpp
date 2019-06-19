@@ -19,6 +19,12 @@ namespace userinterface
     const double cDemoGoalZ_m = 0.10;
     const environment_controller::Position
         mDemoPos(cDemoGoalX_m, cDemoGoalY_m, cDemoGoalZ_m);
+    const double cDemoReturnGoalX_m = 0.30;
+    const double cDemoReturnGoalY_m = 0.10;
+    const double cDemoReturnGoalZ_m = 0.05;
+    const environment_controller::Position mDemoReturnPos(cDemoReturnGoalX_m,
+                                                          cDemoReturnGoalY_m,
+                                                          cDemoReturnGoalZ_m);
     const uint8_t cReleaseTime_s = 5;
   } // namespace goal_constants
 
@@ -37,7 +43,7 @@ namespace userinterface
   class GoalPublisher : public environment_controller::IGoalProvider
   {
       public:
-    GoalPublisher();
+    GoalPublisher(const std::string& aTopicName);
     virtual ~GoalPublisher();
 
     /**

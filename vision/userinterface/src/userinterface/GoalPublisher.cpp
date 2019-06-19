@@ -2,11 +2,11 @@
 
 namespace userinterface
 {
-  GoalPublisher::GoalPublisher() : mMsgSent(false)
+  GoalPublisher::GoalPublisher(const std::string& aTopicName) : mMsgSent(false)
   {
     ros::NodeHandle goalPublisherNodeHandle;
-    mChatter_pub =
-        goalPublisherNodeHandle.advertise<kinematica_msgs::Goal>("goal", 1000);
+    mChatter_pub = goalPublisherNodeHandle.advertise<kinematica_msgs::Goal>(
+        aTopicName, 1000);
   }
 
   GoalPublisher::~GoalPublisher()
