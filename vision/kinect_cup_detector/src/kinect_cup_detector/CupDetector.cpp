@@ -176,18 +176,18 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       if (mSendGoal)
       {
         kinematica_msgs::Cup lFoundCup;
-        lFoundCup.aDepth = 0.07;
-        lFoundCup.aDirection = 0;
-        lFoundCup.aHeight = 0.082;
+        lFoundCup.aDepth = kinect_cupdetector::cCupDepth;
+        lFoundCup.aDirection = kinect_cupdetector::cCupDirection;
+        lFoundCup.aHeight = kinect_cupdetector::cCupHeight;
         lFoundCup.aMeasurementTime = ros::Time::now();
-        lFoundCup.aSensorId = 1;
-        lFoundCup.aSpeed = 0;
-        lFoundCup.aWidth = 0.061;
+        lFoundCup.aSensorId = kinect_cupdetector::cSensorId;
+        lFoundCup.aSpeed = kinect_cupdetector::cSpeed;
+        lFoundCup.aWidth = kinect_cupdetector::cCupWidth;
         // Since the kinect is positioned oposite of the robotarm so X=Y and
         // Y=X.
         lFoundCup.mX_m = distFromCenterYCM / 100;
         lFoundCup.mY_m = distFromCenterXCM / 100;
-        lFoundCup.mZ_m = 0.02;
+        lFoundCup.mZ_m = kinect_cupdetector::cCupZPos;
         lFoundCup.timeOfArrival = ros::Time::now();
         mCupPublisher.publish(lFoundCup);
         ros::spinOnce();

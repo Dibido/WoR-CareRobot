@@ -51,7 +51,7 @@ namespace kinect_cupdetector
   const int cSensorId = 1;
   const int cSpeed = 0;
   const double cCupWidth = 0.061;
-  const double cCupZPos = 0.00;
+  const double cCupZPos = 0.02;
   const double cCupGrippperSize = 16.0;
   const double cCupGrippperWidth = 2.0;
 } // namespace kinect_cupdetector
