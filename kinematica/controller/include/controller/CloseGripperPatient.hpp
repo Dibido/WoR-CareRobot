@@ -29,6 +29,8 @@ namespace controller
      *
      */
     virtual ~CloseGripperPatient() = default;
+
+    virtual void entryAction(Context* aContext);
     virtual void transition(Context* aContext);
 
       private:

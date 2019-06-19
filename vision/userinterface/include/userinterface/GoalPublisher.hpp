@@ -20,8 +20,8 @@ namespace userinterface
     const environment_controller::Position
         mDemoPos(cDemoGoalX_m, cDemoGoalY_m, cDemoGoalZ_m);
     const double cDemoReturnGoalX_m = 0.30;
-    const double cDemoReturnGoalY_m = 0.10;
-    const double cDemoReturnGoalZ_m = 0.05;
+    const double cDemoReturnGoalY_m = 0.30;
+    const double cDemoReturnGoalZ_m = 0.10;
     const environment_controller::Position mDemoReturnPos(cDemoReturnGoalX_m,
                                                           cDemoReturnGoalY_m,
                                                           cDemoReturnGoalZ_m);

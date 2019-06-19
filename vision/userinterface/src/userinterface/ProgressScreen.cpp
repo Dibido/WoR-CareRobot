@@ -35,7 +35,6 @@ void ProgressScreen::on_ReleaseBtn_clicked()
       userinterface::goal_constants::cReleaseTime_s);
 
   gripperOpenCommandTime = ros::Time::now();
-  std::cout << "test" << std::endl;
 }
 
 void ProgressScreen::setActive(bool aValue)
@@ -54,18 +53,16 @@ bool ProgressScreen::getActive()
 
 void ProgressScreen::updateProgress()
 {
-  if (mCupSubscriber.getArrivalTime() == 0)
-  {
+    if(mCupSubscriber.getArrivalTime() < ros::Time::now())
+    {
     ui->ProgressBar->setValue(0);
-  }
-  else
-  {
+    }
     double lProgressPercentage =
-        (ros::Time::now().toSec() - mCupSubscriber.getStartingTime()) /
-        (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime()) *
+        (ros::Time::now() - mCupSubscriber.getStartingTime()).toSec() /
+        (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime()).toSec() *
         100.0;
     ui->ProgressBar->setValue(static_cast<int>(lProgressPercentage));
-  }
+  
 
   if ((ros::Time::now() - gripperOpenCommandTime).toSec() < 0 ||
       (ros::Time::now() - gripperOpenCommandTime).toSec() >
@@ -83,15 +80,16 @@ void ProgressScreen::updateProgress()
         std::string(" seconden")));
     if (lSecondsLeft < 0.15)
     {
-      mCupSubscriber.resetAll();
+      // mCupSubscriber.resetAll();
       hide();
     }
   }
-  if (ui->ProgressBar->value() == 100)
+  if (ui->ProgressBar->value() >= 95)
   {
     mCupSubscriber.resetArrivalTime();
     ui->ReleaseBtn->show();
     ui->StatusLabel->setText(QString(
         "Uw beker staat klaar, druk op \n de knop loslaten om verder te gaan"));
+    ui->ProgressBar->hide();
   }
 }

@@ -6,7 +6,7 @@ namespace userinterface
   CupSubscriber::CupSubscriber()
       : mSubscriber(
             mHandle.subscribe("/location/cup",
-                              10,
+                              1000,
                               &userinterface::CupSubscriber::cupCallback,
                               this))
   {
@@ -21,7 +21,7 @@ namespace userinterface
   CupSubscriber::CupSubscriber(const std::string& aTopicName)
       : mSubscriber(
             mHandle.subscribe(aTopicName,
-                              10,
+                              1000,
                               &userinterface::CupSubscriber::cupCallback,
                               this))
 
@@ -34,12 +34,8 @@ namespace userinterface
     {
       if (enabled)
       {
-        mStartingTime = ros::Time::now().toSec();
-        if (mCupArrivalTime == 0.0)
-        {
-          mFirstMsgRead = true;
-        }
-        mCupArrivalTime = aMsg->timeOfArrival.toSec();
+        mStartingTime = ros::Time::now();
+	mCupArrivalTime = aMsg->timeOfArrival;
       }
     }
     catch (const std::exception& e)
@@ -59,8 +55,8 @@ namespace userinterface
 
   void CupSubscriber::resetArrivalTime()
   {
-    mCupArrivalTime = 0.0;
-    mStartingTime = 0.0;
+    // mCupArrivalTime = 0.0;
+    // mStartingTime = 0.0;
   }
 
   void CupSubscriber::resetAll()
@@ -70,12 +66,12 @@ namespace userinterface
     bool mFirstMsgRead = 0;
   }
 
-  uint16_t CupSubscriber::getArrivalTime()
+  ros::Time CupSubscriber::getArrivalTime()
   {
     return mCupArrivalTime;
   }
 
-  double CupSubscriber::getStartingTime()
+  ros::Time CupSubscriber::getStartingTime()
   {
     return mStartingTime;
   }
