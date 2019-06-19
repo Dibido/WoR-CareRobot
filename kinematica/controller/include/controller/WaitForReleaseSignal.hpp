@@ -13,7 +13,7 @@ namespace controller
    * WaitForReleaseSignal state.
    *
    * @details The class will wait for a release message and wait the time
-   * specified in the message before transiting to the ReleaseCup state.
+   * specified in the message before transiting to the OpenGripper state.
    *
    */
   class WaitForReleaseSignal : public State
@@ -63,6 +63,13 @@ namespace controller
      * "outside world".
      */
     void exitAction(Context* aContext) override;
+
+    /**
+     * @brief
+     *
+     * @param aContext
+     */
+    virtual void transition(Context* aContext);
   };
 } // namespace controller
 #endif // WAIT_FOR_RELEASE_SIGNAL

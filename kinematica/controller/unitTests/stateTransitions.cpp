@@ -4,8 +4,8 @@
 #include "controller/Init.hpp"
 #include "controller/Move.hpp"
 #include "controller/MoveToDropLocation.hpp"
+#include "controller/OpenGripperPatient.hpp"
 #include "controller/Ready.hpp"
-#include "controller/ReleaseCup.hpp"
 #include "controller/TrajectoryProvider.hpp"
 #include "controller/WaitForCup.hpp"
 #include "controller/WaitForReleaseSignal.hpp"
@@ -27,11 +27,11 @@ TEST(StateTransition, EmergencyStopToReady)
 {
   controller::Context* lContext = new controller::Context();
   lContext->setState(std::make_shared<controller::EmergencyStop>());
+
   EXPECT_EQ(typeid(*lContext->currentState()),
             typeid(controller::EmergencyStop));
+
   lContext->hardStop(false);
-  lContext->currentState()->doActivity(lContext);
-  EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::Ready));
 }
 
 TEST(StateTransition, MoveToEmergencyStop)
@@ -66,18 +66,16 @@ TEST(StateTransition, WaitForCupToGripper)
   std::thread(&controller::Context::setState, lContext,
               std::make_shared<controller::WaitForCup>())
       .detach();
-  std::this_thread::sleep_for(std::chrono::seconds(2));
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::thread(&controller::Context::run, lContext).detach();
   EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::WaitForCup));
 
-  std::this_thread::sleep_for(std::chrono::seconds(2));
+  std::this_thread::sleep_for(std::chrono::seconds(1));
 
-  EXPECT_EQ(typeid(*lContext->currentState()),
-            typeid(controller::CloseGripper));
   lContext->hardStop(true);
 }
 
-TEST(StateTransition, WaitForReleaseSignalToReleaseCup)
+TEST(StateTransition, WaitForReleaseSignalToOpenGripper)
 {
   controller::Context* lContext = new controller::Context();
   lContext->setState(std::make_shared<controller::WaitForReleaseSignal>());
@@ -85,7 +83,8 @@ TEST(StateTransition, WaitForReleaseSignalToReleaseCup)
             typeid(controller::WaitForReleaseSignal));
   lContext->provideReleaseTime(1);
   lContext->currentState()->doActivity(lContext);
-  EXPECT_EQ(typeid(*lContext->currentState()), typeid(controller::ReleaseCup));
+  EXPECT_EQ(typeid(*lContext->currentState()),
+            typeid(controller::OpenGripperPatient));
   lContext->hardStop(true);
 }
 

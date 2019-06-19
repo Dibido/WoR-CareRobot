@@ -10,16 +10,21 @@ namespace controller
   };
   SoftStop::~SoftStop(){};
 
-  void SoftStop::entryAction(Context*)
+  void SoftStop::entryAction(Context* aContext)
+  {
+    aContext->robotStop()->publish(true);
+  }
+
+  void SoftStop::doActivity(Context*)
   {
   }
 
-  void SoftStop::doActivity(Context* aContext)
+  void SoftStop::exitAction(Context* aContext)
   {
-    aContext->setState(std::make_shared<Init>());
+    aContext->robotStop()->publish(false);
   }
 
-  void SoftStop::exitAction(Context*)
+  void SoftStop::transition(Context*)
   {
   }
 } // namespace controller

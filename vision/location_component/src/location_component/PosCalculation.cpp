@@ -17,11 +17,12 @@ namespace location_component
   {
   }
 
-  boost::optional<ros::Time> PosCalculation::predictCupArrivalTime(float aCupLocationY_m,
-                                                  ros::Time aCurrentTime) const
+  boost::optional<ros::Time>
+      PosCalculation::predictCupArrivalTime(float aCupLocationY_m,
+                                            ros::Time aCurrentTime) const
   {
     boost::optional<ros::Time> returnValue;
-    
+
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
     float lTimeToArm_s;
     if (mAGVSpeed_m_s == 0.0f)

@@ -33,6 +33,21 @@ namespace environment_controller
     }
   }
 
+  void EnvironmentController::executeSoftstop(bool softstop)
+  {
+    if (typeid(*mContext->currentState()) ==
+            typeid(controller::EmergencyStop) &&
+        softstop == false)
+    {
+      mContext->softStop(softstop);
+    }
+    else if (softstop == true && typeid(*mContext->currentState()) !=
+                                     typeid(controller::EmergencyStop))
+    {
+      mContext->softStop(softstop);
+    }
+  }
+
   void EnvironmentController::provideCup(const Cup& aCup)
   {
     mContext->foundCup(aCup);
@@ -42,6 +57,12 @@ namespace environment_controller
   void EnvironmentController::provideGoal(const Position& aPosition)
   {
     mContext->provideDropPosition(aPosition);
+  }
+
+  void EnvironmentController::provideDrop(const Position& aPosition)
+  {
+    mContext->providePatientPosition(aPosition);
+    std::thread(&controller::Context::run, mContext).detach();
   }
 
   void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
@@ -89,4 +110,8 @@ namespace environment_controller
     return lSensor;
   }
 
+  void EnvironmentController::frankaDoneMoving(bool aDone)
+  {
+    mContext->frankaDone(aDone);
+  }
 } // namespace environment_controller

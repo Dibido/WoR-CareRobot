@@ -6,12 +6,12 @@
   <arg name="lidar_init" default="10" doc="Amount of 360-scans performed by the lidar that are needed for initialscandata."/>
   <arg name="lidar_usb" default="ttyUSB1" doc="USB port that is connected  to lidar."/>
   
-  <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" args="$(max_variation) $(lidar_certainty) $(lidar_init)" output="screen"/>
-  <node name="rplidar_hardware" pkg="rplidar_hardware" type="node" args="$(lidar_usb)" output="screen"/>
+  <node name="lidar_application_main" pkg="lidar_application" type="lidar_application_main" args="$(arg max_variation) $(arg lidar_certainty) $(arg lidar_init)" output="screen"/>
+  <node name="rplidar_hardware" pkg="rplidar_hardware" type="node" args="$(arg lidar_usb)" output="screen"/>
   <node name="location_component" pkg="location_component" type="location_component" output="screen"/>
   <node name="franka_controller" pkg="franka_controller" type="franka_control" output="screen"/>
-  <node name="webcam_driver" pkg="webcam_driver" type="webcam_driver" args="-$(webcam)" output="screen"/>
-  <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" args="$(agv)" output="screen"/>
+  <node name="webcam_driver" pkg="webcam_driver" type="webcam_driver" args="-$(arg webcam)" output="screen"/>
+  <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" args="$(arg agv)" output="screen"/>
   <node name="main_application" pkg="main_application" type="main_application" output="screen" />
   <node name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
 </launch>

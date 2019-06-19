@@ -62,6 +62,13 @@ namespace controller
     void hardStop(bool aStop);
 
     /**
+     * @brief stop the robotarm
+     *
+     * @param aStop
+     */
+    void softStop(bool aStop);
+
+    /**
      * @brief present obstacles that are found
      *
      * @param aObstacles
@@ -83,6 +90,16 @@ namespace controller
     void provideDropPosition(const environment_controller::Position& aPosition);
 
     /**
+     * @brief provide the drop position of the cup
+     *
+     * @param aPosition
+     */
+    void providePatientPosition(
+        const environment_controller::Position& aPosition);
+
+    void frankaDone(bool aDone);
+
+    /**
      * @brief getters & setters
      *
      */
@@ -98,9 +115,12 @@ namespace controller
     robotcontroller::GripperData& gripperData();
     std::shared_ptr<State>& currentState();
     environment_controller::Position& dropPosition();
+    environment_controller::Position& patientPosition();
     std::condition_variable& waitForRelease();
+    std::condition_variable& feedbackDone();
     int16_t& releaseTime_s();
     std::mutex& releaseMutex();
+    std::mutex& feedbackMutex();
 
       private:
     std::shared_ptr<planning::Graph> mGraph;
@@ -117,15 +137,20 @@ namespace controller
     kinematics::Configuration mCurrentConfiguration;
     kinematics::Configuration mGoalConfiguration;
     std::shared_ptr<State> mCurrentState;
+    std::shared_ptr<State> mHistoryState;
     environment_controller::Cup mCup;
     robotcontroller::GripperData mGripperData;
     environment_controller::Position mDropPosition;
+    environment_controller::Position mPatientPosition;
     int16_t mReleaseTime_s;
     std::condition_variable mWaitForRelease;
+    std::condition_variable mFeedbackDone;
 
     std::mutex mCurrentStateMutex;
     std::mutex mReleaseMutex;
     std::mutex mHardStopMutex;
+    std::mutex mSoftStopMutex;
+    std::mutex mFeedbackMutex;
   };
 } // namespace controller
 #endif // Context_HPP

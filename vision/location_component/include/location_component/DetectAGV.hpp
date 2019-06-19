@@ -133,7 +133,7 @@ namespace location_component
 
     /**
      * @brief This function will set the variable mDetectObject
-     * 
+     *
      */
     void setDetectObject(bool aDetectObject);
 

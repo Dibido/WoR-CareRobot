@@ -65,9 +65,12 @@ namespace controller
      */
     void exitAction(Context* aContext) override;
 
+    virtual void transition(Context* aContext);
+
       private:
     ros::Time mGripperCloseTime;
   };
+  
 
 } // namespace controller
 #endif // CLOSE_GRIPPER_HPP

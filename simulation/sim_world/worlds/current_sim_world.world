@@ -42,21 +42,21 @@
     </model>
 
     <model name="cup_model">
-      <pose>0.47 -5.03 1.07</pose>
+      <pose>0.50 -5.03 1.07</pose>
       <include>
         <uri>model://ica_cup</uri>
       </include>
     </model>
 
-    <!-- <model name="cup_model"> -->
-    <!--   <pose>0.35 -4.89 1.07</pose> -->
-    <!--   <include> -->
-    <!--     <uri>model://ica_cup</uri> -->
-    <!--   </include> -->
-    <!-- </model> -->
+    <model name="cup_model">
+      <pose>0.39 -5.03 1.07</pose>
+      <include>
+        <uri>model://ica_cup_filled</uri>
+      </include>
+    </model>
 
     <model name="agv">
-      <pose>0.55 -5 1.05</pose>
+      <pose>0.45 -5 1.05</pose>
       <include>
 	      <uri>model://agv</uri>
       </include>

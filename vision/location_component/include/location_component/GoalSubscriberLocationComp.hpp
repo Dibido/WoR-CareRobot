@@ -21,7 +21,8 @@ namespace location_component
     /**
      * @brief Construct a new Goal Subscriber object
      *
-     * @param aTopicName - The name of the topic the developer wants to subscribe to
+     * @param aTopicName - The name of the topic the developer wants to
+     * subscribe to
      * @param aDetectAGV - Shared_ptr of the object that the developer want to
      * influence
      */

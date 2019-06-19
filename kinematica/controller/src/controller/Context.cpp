@@ -5,6 +5,7 @@
 #include "controller/Move.hpp"
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
+#include "controller/SoftStop.hpp"
 #include "environment_controller/Position.hpp"
 #include <chrono>
 #include <iostream>
@@ -47,11 +48,11 @@ namespace controller
             ros::Time(0))),
         mGripperData(0.0, 0.0),
         mDropPosition(0.0, 0.0, 0.0),
+        mPatientPosition(0.0, 0.0, 0.0),
         mReleaseTime_s(-1)
   {
     mGraph->addObstacle(cRobotObstacle);
     mGraph->addObstacle(cFloorObstacle);
-    ros::Duration(cSafeWaitTime_s).sleep();
     setState(std::make_shared<Init>());
     mCurrentState->doActivity(this);
     mCurrentState->doActivity(this);
@@ -73,16 +74,18 @@ namespace controller
     mCurrentStateMutex.lock();
     mCurrentState->doActivity(this);
     mCurrentStateMutex.unlock();
-    while (!(typeid(*mCurrentState) == typeid(EmergencyStop) ||
-             typeid(*mCurrentState) == typeid(Ready)) &&
-           ros::ok())
+    while (!(typeid(*mCurrentState) == typeid(Ready)) && ros::ok())
     {
       mHardStopMutex.unlock();
+      mSoftStopMutex.unlock();
       mCurrentStateMutex.lock();
       mCurrentState->doActivity(this);
       mCurrentStateMutex.unlock();
       mHardStopMutex.lock();
+      mSoftStopMutex.lock();
     }
+    mHardStopMutex.unlock();
+    mSoftStopMutex.unlock();
   }
 
   void Context::foundCup(const environment_controller::Cup& aCup)
@@ -93,28 +96,51 @@ namespace controller
   void Context::hardStop(bool aStop)
   {
     std::lock_guard<std::mutex> lHardLock(mHardStopMutex);
+    mFeedbackDone.notify_all();
+    mWaitForRelease.notify_all();
     std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
+    {
+      mHistoryState = mCurrentState;
       setState(std::make_shared<EmergencyStop>());
+      ROS_WARN("STOP");
+    }
     else
     {
-      if (ros::Time::now() > mCup.timeOfArrival())
-      {
-        setState(std::make_shared<Init>());
-      }
-      else
-      {
-        setState(std::make_shared<Move>());
-      }
+      mCurrentState = mHistoryState;
+      ROS_WARN("RELEASE");
     }
   }
 
-  void Context::provideObstacles(
-      const environment_controller::Obstacles& aObstacles)
+  void Context::softStop(bool aStop)
   {
-    for (const environment_controller::Obstacle& lObstacle : aObstacles)
+    std::lock_guard<std::mutex> lSoftLock(mSoftStopMutex);
+    mFeedbackDone.notify_all();
+    mWaitForRelease.notify_all();
+    std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
+    if (aStop)
     {
-      // TODO environment_controller Obstacle to planning obstalce
+      mHistoryState = mCurrentState;
+      setState(std::make_shared<SoftStop>());
+      ROS_WARN("SOFTSTOP");
+    }
+    else
+    {
+      mCurrentState = mHistoryState;
+      ROS_WARN("RELEASE");
+    }
+  }
+
+  void Context::provideObstacles(const environment_controller::Obstacles&)
+  {
+  }
+
+  void Context::frankaDone(bool aDone)
+  {
+    if (aDone)
+    {
+      std::unique_lock<std::mutex> lLock(mFeedbackMutex);
+      mFeedbackDone.notify_all();
     }
   }
 
@@ -124,6 +150,13 @@ namespace controller
     mReleaseTime_s = aReleaseTime;
     mWaitForRelease.notify_all();
   }
+
+  void Context::providePatientPosition(
+      const environment_controller::Position& aPosition)
+  {
+    mPatientPosition = aPosition;
+  }
+
   void Context::provideDropPosition(
       const environment_controller::Position& aPosition)
   {
@@ -193,9 +226,18 @@ namespace controller
     return mDropPosition;
   }
 
+  environment_controller::Position& Context::patientPosition()
+  {
+    return mPatientPosition;
+  }
   std::condition_variable& Context::waitForRelease()
   {
     return mWaitForRelease;
+  }
+
+  std::condition_variable& Context::feedbackDone()
+  {
+    return mFeedbackDone;
   }
 
   int16_t& Context::releaseTime_s()
@@ -206,5 +248,10 @@ namespace controller
   std::mutex& Context::releaseMutex()
   {
     return mReleaseMutex;
+  }
+
+  std::mutex& Context::feedbackMutex()
+  {
+    return mFeedbackMutex;
   }
 } // namespace controller
