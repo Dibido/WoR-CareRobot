@@ -1,15 +1,19 @@
 #include "controller/Context.hpp"
+#include "controller/CloseGripper.hpp"
 #include "controller/ControllerConsts.hpp"
 #include "controller/EmergencyStop.hpp"
 #include "controller/Init.hpp"
 #include "controller/Move.hpp"
 #include "controller/PowerOff.hpp"
 #include "controller/Ready.hpp"
+#include "controller/WaitForCup.hpp"
 #include "environment_controller/Position.hpp"
 #include <chrono>
 #include <iostream>
 #include <ros/ros.h>
 #include <thread>
+
+#include <typeinfo>
 
 namespace controller
 {
@@ -97,9 +101,17 @@ namespace controller
     std::lock_guard<std::mutex> lCurrentStateMutex(mCurrentStateMutex);
     if (aStop)
     {
-      mHistoryState = mCurrentState;
-      setState(std::make_shared<EmergencyStop>());
-      ROS_WARN("STOP");
+      if (typeid(*mCurrentState) == typeid(controller::WaitForCup) ||
+          typeid(*mCurrentState) == typeid(controller::CloseGripper))
+      {
+        ROS_INFO("Ignoring hardstop");
+      }
+      else
+      {
+        mHistoryState = mCurrentState;
+        setState(std::make_shared<EmergencyStop>());
+        ROS_WARN("STOP");
+      }
     }
     else
     {
