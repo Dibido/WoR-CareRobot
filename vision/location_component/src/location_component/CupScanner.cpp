@@ -1,6 +1,7 @@
 #include "location_component/CupScanner.hpp"
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
+#include <ros/ros.h>
 
 namespace location_component
 {
@@ -13,8 +14,10 @@ namespace location_component
     return lRGB;
   }
 
-  CupScanner::CupScanner(FrameCalibration& aFrameCalibration)
-      : mFrameCalibration(aFrameCalibration)
+  CupScanner::CupScanner(FrameCalibration& aFrameCalibration,
+                         CupDetectionCalibration& aCupDetectionCalibration)
+      : mFrameCalibration(aFrameCalibration),
+        mCupDetectionCalibration(aCupDetectionCalibration)
   {
   }
 
@@ -73,12 +76,12 @@ namespace location_component
     for (size_t lIdx = 0; lIdx < lContours.size(); lIdx++)
     {
       DetectedCup lDetectedCup;
-      lDetectedCup.mFilled = false;
       lDetectedCup.mRadius = 5.0;
       cv::Moments lMu = cv::moments(lContours[lIdx]);
       cv::Point lCentroid{ ( int )(lMu.m10 / lMu.m00),
                            ( int )(lMu.m01 / lMu.m00) };
       lDetectedCup.mMidpoint = lCentroid;
+      lDetectedCup.mFilled = detectCupFilled(aImage, lCentroid);
       lDetectedCups.push_back(lDetectedCup);
     }
 
@@ -89,4 +92,23 @@ namespace location_component
     return lDetectedCups;
   }
 
+  bool CupScanner::detectCupFilled(const cv::Mat& aImage,
+                                   const cv::Point& aCupMidpoint) const
+  {
+    cv::Mat lMidpointColorBGR(1, 1, CV_8UC3);
+    lMidpointColorBGR.at<cv::Vec3b>(cv::Point(0, 0)) =
+        aImage.at<cv::Vec3b>(aCupMidpoint);
+
+    cv::Mat lMidpointColorHSV(1, 1, CV_8UC3);
+    cv::cvtColor(lMidpointColorBGR, lMidpointColorHSV, CV_BGR2HSV);
+
+    ROS_DEBUG_STREAM("Cup midpoint color: "
+                     << lMidpointColorHSV.at<cv::Vec3b>(cv::Point(0, 0)));
+    cv::Mat lMidpointColorBW(1, 1, CV_8UC1);
+    cv::inRange(
+        lMidpointColorHSV, mCupDetectionCalibration.cMinFilledCupColorHSV,
+        mCupDetectionCalibration.cMaxFilledCupColorHSV, lMidpointColorBW);
+
+    return lMidpointColorBW.at<uint8_t>(cv::Point(0, 0)) != 0;
+  }
 } // namespace location_component
