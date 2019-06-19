@@ -1,7 +1,8 @@
 #ifndef PROGRESSSCREEN_HPP
 #define PROGRESSSCREEN_HPP
 
-#include "CupSubscriber.hpp"
+#include "userinterface/CupSubscriber.hpp"
+#include "userinterface/ReleaseTimePublisher.hpp"
 #include <QTimer>
 #include <QWidget>
 #include <ros/ros.h>
@@ -27,6 +28,10 @@ class ProgressScreen : public QWidget
   Ui::ProgressScreen* ui;
   const std::string mCupTopic = "cup";
   userinterface::CupSubscriber mCupSubscriber;
+  /**
+   * @brief ReleaseTimePublisher used in this class.
+   */
+  userinterface::ReleaseTimePublisher mReleaseTimePublisher;
   bool active = 0;
   ros::Time gripperOpenCommandTime;
   bool getActive();

@@ -31,6 +31,9 @@ ProgressScreen::~ProgressScreen()
 
 void ProgressScreen::on_ReleaseBtn_clicked()
 {
+  mReleaseTimePublisher.selectReleaseTime(
+      userinterface::goal_constants::cReleaseTime_s);
+
   gripperOpenCommandTime = ros::Time::now();
   std::cout << "test" << std::endl;
 }
