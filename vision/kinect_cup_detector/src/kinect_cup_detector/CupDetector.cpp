@@ -163,6 +163,8 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
       // Subtract the gripper size from the Y position
       distFromCenterXCM -= kinect_cupdetector::cCupGrippperSize / 2;
+      // Add the width of the gripper to the end position
+      distFromCenterYCM += kinect_cupdetector::cCupGrippperWidth;
       // Subtract the calibrated distance from the robotarm
       distFromCenterYCM -= kinect_cupdetector::cYDistanceFromRobotarm;
       // Invert the Y since the robotarm is on the other side of the kinect
@@ -181,7 +183,7 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         // Y=X.
         lFoundCup.mX_m = distFromCenterYCM / 100;
         lFoundCup.mY_m = distFromCenterXCM / 100;
-        lFoundCup.mZ_m = 0.00;
+        lFoundCup.mZ_m = 0.02;
         lFoundCup.timeOfArrival = ros::Time::now();
         mCupPublisher.publish(lFoundCup);
         ros::spinOnce();
