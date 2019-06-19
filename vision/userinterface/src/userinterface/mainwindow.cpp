@@ -42,6 +42,8 @@ void MainWindow::sendReturnLocation()
 {
   mGoalPublisher.selectGoalPosition(
       userinterface::goal_constants::mDemoReturnPos, false);
+  mReleaseTimePublisher.selectReleaseTime(
+      userinterface::goal_constants::cReleaseTime_s);
 }
 
 void MainWindow::onWaterBtnClicked(bool aStaticCup)
@@ -70,10 +72,6 @@ void MainWindow::onWaterBtnClicked(bool aStaticCup)
     // Start an QElapsedTimer, to check the elapsed time.
     QElapsedTimer lTimer;
     lTimer.start();
-
-    // Send the release time msg.
-    mReleaseTimePublisher.selectReleaseTime(
-        userinterface::goal_constants::cReleaseTime_s);
 
     // Reset mMsgSent variable to reset button state and allow consecutive
     // executions.
