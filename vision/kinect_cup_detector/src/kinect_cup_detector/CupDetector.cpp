@@ -161,12 +161,12 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       // Convert the distances from pixels to centimeters
       double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
       double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
+      // Subtract the gripper size from the Y position
+      distFromCenterXCM -= cCupGrippperSize / 2;
       // Subtract the calibrated distance from the robotarm
       distFromCenterYCM -= kinect_cupdetector::cYDistanceFromRobotarm;
       // Invert the Y since the robotarm is on the other side of the kinect
       distFromCenterYCM = -distFromCenterYCM;
-      // std::cout << "Centerx : " << distFromCenterXCM << " CenterY : " <<
-      // distFromCenterYCM << std::endl; Send it to the location component
       if (mSendGoal)
       {
         kinematica_msgs::Cup lFoundCup;
