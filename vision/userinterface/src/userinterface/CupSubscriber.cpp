@@ -57,6 +57,12 @@ namespace userinterface
     enabled = aValue;
   }
 
+  void CupSubscriber::resetArrivalTime()
+  {
+    mCupArrivalTime = 0.0;
+    mStartingTime = 0.0;
+  }
+
   uint16_t CupSubscriber::getArrivalTime()
   {
     return mCupArrivalTime;

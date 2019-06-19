@@ -19,6 +19,7 @@ namespace userinterface
     void passCup(const environment_controller::Cup& aCup);
 
     void setEnabled(bool aValue);
+    void resetArrivalTime();
     uint16_t getArrivalTime();
     double getStartingTime();
 

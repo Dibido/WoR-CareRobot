@@ -34,6 +34,7 @@ void ProgressScreen::on_ReleaseBtn_clicked()
   gripperOpenCommandTime = ros::Time::now();
   std::cout << "test" << std::endl;
 }
+
 void ProgressScreen::setActive(bool aValue)
 {
   active = aValue;
@@ -56,10 +57,11 @@ void ProgressScreen::updateProgress()
   }
   else
   {
-    ui->ProgressBar->setValue(
+    double lProgressPercentage =
         (ros::Time::now().toSec() - mCupSubscriber.getStartingTime()) /
         (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime()) *
-        100.0);
+        100.0;
+    ui->ProgressBar->setValue(static_cast<int>(lProgressPercentage));
   }
 
   if ((ros::Time::now() - gripperOpenCommandTime).toSec() < 0 ||
@@ -79,6 +81,7 @@ void ProgressScreen::updateProgress()
   }
   if (ui->ProgressBar->value() == 100)
   {
+    mCupSubscriber.resetArrivalTime();
     ui->ReleaseBtn->show();
     ui->StatusLabel->setText(QString(
         "Uw beker staat klaar, druk op \n de knop loslaten om verder te gaan"));
