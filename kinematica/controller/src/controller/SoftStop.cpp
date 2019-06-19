@@ -10,8 +10,9 @@ namespace controller
   };
   SoftStop::~SoftStop(){};
 
-  void SoftStop::entryAction(Context*)
+  void SoftStop::entryAction(Context* aContext)
   {
+    aContext->robotStop()->publish(true);
   }
 
   void SoftStop::doActivity(Context* aContext)
@@ -19,8 +20,9 @@ namespace controller
     transition(aContext);
   }
 
-  void SoftStop::exitAction(Context*)
+  void SoftStop::exitAction(Context* aContext)
   {
+    aContext->robotStop()->publish(false);
   }
 
   void SoftStop::transition(Context* aContext)
