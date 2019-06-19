@@ -114,7 +114,7 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       double lMaxDistance = 0;
 
       mRotatedRect.points(mRectangleVertices);
-      for (int i = 0; i < mRectangleVertices.size(); i++)
+      for (int i = 0; i < 4; i++)
       {
         double lDistance = ( double )cv::norm(mRectangleVertices[i] -
                                               mRectangleVertices[(i + 1) % 4]);
@@ -193,7 +193,7 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         lFoundCup.mZ_m = kinect_cupdetector::cCupZPos;
         lFoundCup.timeOfArrival =
             ros::Time::now() +
-            ros::Duration(kinect_cupdetector::cCup PickupTime_S);
+            ros::Duration(kinect_cupdetector::cCupPickupTime_S);
         mCupPublisher.publish(lFoundCup);
         ros::spinOnce();
         // we sent the goal, now we wait
