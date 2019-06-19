@@ -18,8 +18,10 @@ class ProgressScreen : public QWidget
     public:
   explicit ProgressScreen(QWidget* parent = nullptr);
   ~ProgressScreen();
-  void on_ReleaseBtn_clicked();
   void setActive(bool aValue);
+
+    private slots:
+  void on_ReleaseBtn_clicked();
 
     private:
   Ui::ProgressScreen* ui;

@@ -3,7 +3,9 @@
 #include "userinterface/GoalPublisher.hpp"
 
 ProgressScreen::ProgressScreen(QWidget* parent)
-    : QWidget(parent), ui(new Ui::ProgressScreen), gripperOpenCommandTime(0, 0)
+    : QWidget(parent),
+      ui(new Ui::ProgressScreen),
+      gripperOpenCommandTime(INT_MAX - 1, 0)
 {
   ui->setupUi(this);
 
@@ -29,8 +31,8 @@ ProgressScreen::~ProgressScreen()
 
 void ProgressScreen::on_ReleaseBtn_clicked()
 {
-  std::cout << "Clicked" << std::endl;
-  ui->StatusLabel->setText(QString("TESTTEST"));
+  gripperOpenCommandTime = ros::Time::now();
+  std::cout << "test" << std::endl;
 }
 void ProgressScreen::setActive(bool aValue)
 {
@@ -38,7 +40,6 @@ void ProgressScreen::setActive(bool aValue)
   if (active)
   {
     mCupSubscriber.setEnabled(true);
-    gripperOpenCommandTime = ros::Time::now();
   }
 }
 
@@ -59,13 +60,6 @@ void ProgressScreen::updateProgress()
         (ros::Time::now().toSec() - mCupSubscriber.getStartingTime()) /
         (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime()) *
         100.0);
-
-    std::cout << "Starting Time: "
-              << std::to_string(mCupSubscriber.getStartingTime()) << std::endl;
-    std::cout << "Current Time: " << std::to_string(ros::Time::now().toSec())
-              << std::endl;
-    std::cout << "Arrival Time: "
-              << std::to_string(mCupSubscriber.getArrivalTime()) << std::endl;
   }
 
   if ((ros::Time::now() - gripperOpenCommandTime).toSec() < 0 ||
