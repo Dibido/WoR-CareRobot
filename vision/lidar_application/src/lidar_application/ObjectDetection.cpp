@@ -1,10 +1,10 @@
 #include "lidar_application/ObjectDetection.hpp"
 #include "lidar_application/SensorPublisher.hpp"
 
-const cSensorTopicName = "/sensor";
-
 namespace lidar_application
 {
+  const std::string cSensorTopicName = "/sensor";
+  const uint16_t cSensorPublisherQueueSize = 100;
 
   ObjectDetection::ObjectDetection(
       const environment_controller::Sensor& aSensor,
@@ -21,7 +21,7 @@ namespace lidar_application
         mObjectMinNumberOfAdjacentMeasurements(
             aObjectMinNumberOfAdjacentAngles),
         mAmountOfInitialScansRequired(aAmountOfInitialScansRequired),
-        mPublisher(mNode, cSensorTopicName, 100)
+        mPublisher(mNode, cSensorTopicName, cSensorPublisherQueueSize)
   {
   }
 
@@ -54,7 +54,7 @@ namespace lidar_application
   void ObjectDetection::init()
   {
     mInitialScan.addLidarData(mDataHandler.getLidarData().mMeasurements);
-    mInitialScanIterations++;
+    ++mInitialScanIterations;
     if (mInitialScanIterations >= mAmountOfInitialScansRequired)
     {
       publishPosition();

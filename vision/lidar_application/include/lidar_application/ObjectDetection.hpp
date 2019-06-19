@@ -68,8 +68,10 @@ namespace lidar_application
     ~ObjectDetection() = default;
 
     /**
-     * @brief initialise the lidar. It will do an initial amount of scan
-     * iterations. When that is done it will publish his position.
+     * @brief initialise the lidar.
+     * it will do an initial scan till the mAmountOfInitialScansRequired is
+     * reached each time this function is called. If that is reached it will
+     * publish itself with the data in mSensor.
      *
      */
     void init();
