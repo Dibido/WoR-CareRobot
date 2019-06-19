@@ -1371,7 +1371,7 @@ namespace rp
         _is_previous_HqdataRdy = true;
       }
       //*******************************************HQ
-      //support********************************//
+      // support********************************//
 
       static _u32 _varbitscale_decode(_u32 scaled, _u32& scaleLevel)
       {

@@ -17,22 +17,25 @@ namespace location_component
   {
   }
 
-  ros::Time PosCalculation::predictCupArrivalTime(float aCupLocationY_m,
-                                                  ros::Time aCurrentTime) const
+  boost::optional<ros::Time>
+      PosCalculation::predictCupArrivalTime(float aCupLocationY_m,
+                                            ros::Time aCurrentTime) const
   {
+    boost::optional<ros::Time> returnValue;
+
     float lDistanceToArm_m = std::fabs(mCalibration.mArmY_m - aCupLocationY_m);
     float lTimeToArm_s;
     if (mAGVSpeed_m_s == 0.0f)
     {
       ROS_WARN("No AGV speed was set. Delaying cup pickup indefinitely.");
-      lTimeToArm_s = ( float )INT_MAX;
+      return boost::optional<ros::Time>();
     }
     else
     {
       lTimeToArm_s = lDistanceToArm_m / mAGVSpeed_m_s;
     }
-    aCurrentTime = aCurrentTime + ros::Duration(lTimeToArm_s);
-    return aCurrentTime;
+    returnValue = aCurrentTime + ros::Duration(lTimeToArm_s);
+    return returnValue;
   }
 
   cv::Point3f PosCalculation::calculateCupLocation(cv::Point aCupScreenPos,
@@ -108,9 +111,6 @@ namespace location_component
     {
       throw std::range_error("AGV speed cannot be lower than zero");
     }
-
-    std::cout << "speed: " << aAGVSpeed_m_s << std::endl;
-
     mAGVSpeed_m_s = aAGVSpeed_m_s;
   }
 

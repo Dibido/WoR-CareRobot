@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-<model name="ica_cup">
+<model name="ica_cup_filled">
     <link name="Cup-Body">
       <inertial>
 	      <pose>0.0 0.0 0.1 0 0 0</pose>
@@ -48,7 +48,7 @@
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>1 1 1 1</emissive>
+            <emissive>0.82 0.24 0.05 1</emissive>
         </material>
 	      <pose>0 0 0 0 0 0</pose>
         <geometry>

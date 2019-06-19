@@ -2,6 +2,8 @@
 #define LOCATION_COMPONENT_HPP
 
 #include "location_component/AGVSubscriber.hpp"
+#include "location_component/GoalSubscriberLocationComp.hpp"
+
 #include "std_msgs/String.h"
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -21,7 +23,6 @@ namespace location_component
     const std::string cWebcamTopic = "/sensor/webcam";
     const std::string cAGVTopic = "/sensor/agv";
     const std::string cComponentName = "location_component";
-    const unsigned int cLoopRate = 10;
   } // namespace location_component_constants
 
   class LocationComponent

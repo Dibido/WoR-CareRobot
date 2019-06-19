@@ -616,7 +616,7 @@ namespace rp
           //::setsockopt(_socket_fd, IPPROTO_TCP, TCP_QUICKACK,  (const char
           //*)1, sizeof(int));
           //::setsockopt(_socket_fd, IPPROTO_TCP, TCP_QUICKACK, (int[]){1},
-          //sizeof(int))
+          // sizeof(int))
           if (ans == SOCKET_ERROR)
           {
             recv_len = 0;
