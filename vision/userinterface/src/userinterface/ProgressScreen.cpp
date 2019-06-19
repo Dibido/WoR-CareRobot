@@ -1,8 +1,9 @@
 #include "userinterface/ProgressScreen.hpp"
 #include "ui_ProgressScreen.h"
+#include "userinterface/GoalPublisher.hpp"
 
 ProgressScreen::ProgressScreen(QWidget* parent)
-    : QWidget(parent), ui(new Ui::ProgressScreen)
+    : QWidget(parent), ui(new Ui::ProgressScreen), gripperOpenCommandTime(0, 0)
 {
   ui->setupUi(this);
 
@@ -30,6 +31,7 @@ void ProgressScreen::setActive(bool aValue)
   if (active)
   {
     mCupSubscriber.setEnabled(true);
+    gripperOpenCommandTime = ros::Time::now();
   }
 }
 
@@ -57,5 +59,21 @@ void ProgressScreen::updateProgress()
               << std::endl;
     std::cout << "Arrival Time: "
               << std::to_string(mCupSubscriber.getArrivalTime()) << std::endl;
+  }
+
+  if ((ros::Time::now() - gripperOpenCommandTime).toSec() < 0 ||
+      (ros::Time::now() - gripperOpenCommandTime).toSec() >
+          userinterface::goal_constants::cReleaseTime_s)
+  {
+    ui->StatusLabel->setText(QString("Uw bestelling is onderweg"));
+  }
+  else
+  {
+    double lSecondsLeft = userinterface::goal_constants::cReleaseTime_s +
+                          (gripperOpenCommandTime - ros::Time::now()).toSec();
+    ui->StatusLabel->setText(QString::fromStdString(
+        std::string("De gripper laat los over ") +
+        std::to_string(static_cast<int>(lSecondsLeft) + 1) +
+        std::string(" seconden")));
   }
 }

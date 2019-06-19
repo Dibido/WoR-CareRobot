@@ -2,9 +2,9 @@
 #define PROGRESSSCREEN_HPP
 
 #include "CupSubscriber.hpp"
-#include "ros/ros.h"
 #include <QTimer>
 #include <QWidget>
+#include <ros/ros.h>
 
 namespace Ui
 {
@@ -25,6 +25,7 @@ class ProgressScreen : public QWidget
   const std::string mCupTopic = "cup";
   userinterface::CupSubscriber mCupSubscriber;
   bool active = 0;
+  ros::Time gripperOpenCommandTime;
   bool getActive();
   void updateProgress();
 };
