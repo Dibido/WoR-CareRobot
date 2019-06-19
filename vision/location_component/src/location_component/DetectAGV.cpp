@@ -34,8 +34,9 @@ namespace location_component
   {
   }
 
-  void DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
+  bool DetectAGV::detectUpdate(const cv::Mat& aFrame, cv::Mat& aDisplayFrame)
   {
+    bool lStatus = false;
     boost::optional<DetectedFrame> lDetectedFrame;
 
     // If the user wants to pick up a moving cup this boolean will be true.
@@ -48,8 +49,9 @@ namespace location_component
     {
       if (lDetectedFrame->mDetectedCups.size() == 0)
       {
-        return;
+        return false;
       }
+
       PosCalculation lPosCalculator(mCalibration);
       std::size_t lChosenCupIdx = 0;
       for (std::size_t lIdx = 0; lIdx < lDetectedFrame->mDetectedCups.size();
@@ -60,7 +62,6 @@ namespace location_component
           lChosenCupIdx = lIdx;
         }
       }
-
       cv::Point3f lCupLocation_m = lPosCalculator.calculateCupLocation(
           // Cup midpoint is taken from within the bounding rectangle,
           // so add the top-left corner of the bounding rectangle to the
@@ -76,15 +77,23 @@ namespace location_component
       boost::optional<ros::Time> lCupPredictedArrivalTime =
           mPosCalculator.predictCupArrivalTime(lCupLocation_m.y,
                                                ros::Time::now());
+
       if (lCupPredictedArrivalTime)
       {
         ROS_INFO_STREAM("Current time " << ros::Time::now());
         ROS_INFO_STREAM("Cup is expected to arrive at "
                         << *lCupPredictedArrivalTime);
+        lStatus = true;
       }
       else
       {
         ROS_WARN_STREAM("No AGV speed received. Cannot predict arrival time.");
+        lStatus = false;
+      }
+
+      if (lCupPredictedArrivalTime)
+      {
+        setDetectObject(false);
       }
 
       if (mRosServiceCup && lCupPredictedArrivalTime)
@@ -104,6 +113,7 @@ namespace location_component
                           lDetectedFrame->mDetectedAGV.mMidpoint,
                           lDetectedFrame->mAGVFrameSize));
     }
+    return lStatus;
   }
 
   boost::optional<DetectedFrame> DetectAGV::detectFrame(const cv::Mat& aFrame,
@@ -182,7 +192,6 @@ namespace location_component
     std::vector<cv::Point> lContours(1);
 
     getContourMat(aFrame, lContours);
-
     cv::Rect lBoundRect;
 
     if (mCalibration.mDebugStatus)

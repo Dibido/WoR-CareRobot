@@ -8,6 +8,7 @@
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "location_component_unit_test");
+  ros::Time::init();
   testing::InitGoogleTest(&argc, argv);
   // ros::init(argc, argv, "tester");
   // ros::NodeHandle nh;
