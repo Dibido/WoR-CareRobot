@@ -57,12 +57,12 @@ namespace environment_controller
   void EnvironmentController::provideGoal(const Position& aPosition)
   {
     mContext->provideDropPosition(aPosition);
-    std::thread(&controller::Context::run, mContext).detach();
   }
 
   void EnvironmentController::provideDrop(const Position& aPosition)
   {
     mContext->providePatientPosition(aPosition);
+    std::thread(&controller::Context::run, mContext).detach();
   }
 
   void EnvironmentController::provideReleaseTime(const uint8_t aReleaseTime_s)
