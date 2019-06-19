@@ -53,30 +53,13 @@ void MainWindow::onWaterBtnClicked(bool aStaticCup)
   progressWindow.show();
   hide();
 
-  // If the goal msg hasn't been sent, do so to initiate the pickup sequence.
-  if (mGoalPublisher.mMsgSent == false)
-  {
-    // Create and send the message
-    mGoalPublisher.selectGoalPosition(userinterface::goal_constants::mDemoPos,
-                                      aStaticCup);
+  // Create and send the message
+  mGoalPublisher.selectGoalPosition(userinterface::goal_constants::mDemoPos,
+                                    aStaticCup);
 
-    // Mark msg as sent and change button to next step (see below)
-    mGoalPublisher.mMsgSent = true;
-    return;
-  }
-
-  // If the goal msg has been sent but the release time msg hasn't, follow this
-  // step.
-  if (mGoalPublisher.mMsgSent == true)
-  {
-    // Start an QElapsedTimer, to check the elapsed time.
-    QElapsedTimer lTimer;
-    lTimer.start();
-
-    // Reset mMsgSent variable to reset button state and allow consecutive
-    // executions.
-    mGoalPublisher.mMsgSent = false;
-  }
+  // Mark msg as sent and change button to next step (see below)
+  mGoalPublisher.mMsgSent = true;
+  return;
 }
 
 void MainWindow::returnToMain()
