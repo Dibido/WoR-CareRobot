@@ -61,6 +61,10 @@ class MainWindow : public QMainWindow
    * @brief This method is called when the static water button is clicked.
    */
   void on_static_glass_btn_clicked();
+  /**
+   * @brief This method is called when the return water button is clicked.
+   */
+  void on_return_btn_clicked();
 
     private:
   ProgressScreen progressWindow;
@@ -73,6 +77,11 @@ class MainWindow : public QMainWindow
    * @brief GoalPublisher used in this class.
    */
   userinterface::GoalPublisher mGoalPublisher;
+
+  /**
+   * @brief The dropLocation GoalPublisher used in this class.
+   */
+  userinterface::GoalPublisher mDropLocationPublisher;
 
   /**
    * @brief ReleaseTimePublisher used in this class.
@@ -88,6 +97,8 @@ class MainWindow : public QMainWindow
   void onWaterBtnClicked(bool staticCup);
 
   void returnToMain();
+
+  void sendReturnLocation();
 };
 
 #endif // MAINWINDOW_HPP
