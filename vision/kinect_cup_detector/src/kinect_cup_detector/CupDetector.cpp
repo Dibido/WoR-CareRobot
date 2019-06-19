@@ -6,7 +6,7 @@ CupDetector::CupDetector(bool aDebugMode)
   // Setup opencv
   if (mDebugMode)
   {
-    cv::namedWindow("result");
+    cv::namedWindow(kinect_cupdetector::cResultWindowName);
   }
   image_transport::ImageTransport mImageTransport(mNodeHandle);
   image_transport::Publisher mPublisher;
@@ -17,7 +17,8 @@ CupDetector::CupDetector(bool aDebugMode)
   mSubscriber = mImageTransport.subscribe(kinect_cupdetector::cKinectImageTopic,
                                           1, &CupDetector::imageCallBack, this);
   mCupPublisher = mNodeHandle.advertise<kinematica_msgs::Cup>(
-      environment_controller::cCupTopicName, 1000);
+      environment_controller::cCupTopicName,
+      kinect_cupdetector::cMaxMesageQueueSize);
 }
 
 void CupDetector::calibrateKinectPosition()
@@ -73,8 +74,8 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     calibrateKinectPosition();
     if (mDebugMode)
     {
-      int c = cv::waitKey(10);
-      if (c == 27) // Escape
+      int c = cv::waitKey(kinect_cupdetector::cEscapePressWaitTimeMS);
+      if (c == kinect_cupdetector::cEscapeButtonCode) // Escape
       {
         mCalibrated = true;
       }
@@ -185,28 +186,31 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         lFoundCup.aWidth = kinect_cupdetector::cCupWidth;
         // Since the kinect is positioned oposite of the robotarm so X=Y and
         // Y=X.
-        lFoundCup.mX_m = distFromCenterYCM / 100;
-        lFoundCup.mY_m = distFromCenterXCM / 100;
+        lFoundCup.mX_m =
+            distFromCenterYCM / kinect_cupdetector::cCentimeterToMeter;
+        lFoundCup.mY_m =
+            distFromCenterXCM / kinect_cupdetector::cCentimeterToMeter;
         lFoundCup.mZ_m = kinect_cupdetector::cCupZPos;
         lFoundCup.timeOfArrival = ros::Time::now();
         mCupPublisher.publish(lFoundCup);
         ros::spinOnce();
         // we sent the goal, now we wait
-        std::cout << "!!! --- SENT THE CUP POSITION --- !!!" << std::endl;
+        ROS_DEBUG("!!! --- SENT THE CUP POSITION --- !!!");
         mSendGoal = false;
       }
-      std::cout << "FoundX : " << distFromCenterYCM / 100
-                << "FoundY : " << distFromCenterXCM / 100 << std::endl;
+      ROS_DEBUG("FoundX : %f FoundY : %f",
+                (distFromCenterYCM / kinect_cupdetector::cCentimeterToMeter),
+                (distFromCenterXCM / kinect_cupdetector::cCentimeterToMeter));
     }
   }
   // Show in a window
   cv::cvtColor(mDisplayHSV, mDisplayMatrix, cv::COLOR_HSV2RGB);
-  // cv::rectangle(mDisplayMatrix, mRotatedRect.tl(), mRotatedRect.br(),
-  // cv::Scalar(0, 0, 255), 2, 8, 0);
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < kinect_cupdetector::cRectangleCornercount; i++)
   {
-    cv::line(mDisplayMatrix, mRectangleVertices[i],
-             mRectangleVertices[(i + 1) % 4], cv::Scalar(0, 255, 0), 2);
+    cv::line(
+        mDisplayMatrix, mRectangleVertices[i],
+        mRectangleVertices[(i + 1) % kinect_cupdetector::cRectangleCornercount],
+        cv::Scalar(0, 255, 0), 2);
   }
   cv::circle(
       mDisplayMatrix,
@@ -215,10 +219,10 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
   if (mDebugMode)
   {
     cv::imshow("result", mDisplayMatrix);
-  }
-  int c = cv::waitKey(10);
-  if (c == 27) // Escape
-  {
-    std::exit(0);
+    int c = cv::waitKey(kinect_cupdetector::cEscapePressWaitTimeMS);
+    if (c == kinect_cupdetector::cEscapeButtonCode) // Escape
+    {
+      std::exit(0);
+    }
   }
 }

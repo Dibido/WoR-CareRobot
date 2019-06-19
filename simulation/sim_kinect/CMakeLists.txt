@@ -36,7 +36,7 @@ catkin_package(
         roscpp
         gazebo_ros
         sensor_interfaces
-        
+        environment_controller
         )
 
 include_directories(
@@ -45,9 +45,7 @@ include_directories(
         ${GAZEBO_INCLUDE_DIRS}
         ${catkin_INCLUDE_DIRS})
 
-add_library(${PROJECT_NAME}_plugin SHARED src/KinectPlugin.cpp 
-                                          ../../kinematica/controller/src/environment_controller/Position.cpp
-                                          ../../kinematica/controller/src/environment_controller/Object.cpp)
+add_library(${PROJECT_NAME}_plugin SHARED src/KinectPlugin.cpp)
 
 target_link_libraries(${PROJECT_NAME}_plugin
         ${GAZEBO_LIBRARIES}

@@ -37,6 +37,7 @@ namespace kinect_cupdetector
   // The minimum contour size of the paper in pixels
   const int cMinRectangleContourSize = 3000;
   const double cEpsilonMultiply = 0.03;
+  const int cCentimeterToMeter = 100;
   // The longest side of the paper
   const double cRectangleLongestSideLength = 29.0;
   // The mininmum size of the detcted cup contour in pixels
@@ -54,6 +55,10 @@ namespace kinect_cupdetector
   const double cCupZPos = 0.02;
   const double cCupGrippperSize = 16.0;
   const double cCupGrippperWidth = 2.0;
+  const int cEscapePressWaitTimeMS = 10;
+  const int cEscapeButtonCode = 27;
+  const std::string cResultWindowName = "result";
+  const int cMaxMesageQueueSize = 1000;
 } // namespace kinect_cupdetector
 
 class CupDetector

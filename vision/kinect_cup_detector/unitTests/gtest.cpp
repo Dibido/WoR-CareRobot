@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  ros::init(argc, argv, "AgvParser_Tester");
+  ros::init(argc, argv, "kinect_cup_detector_test");
   ros::NodeHandle nh;
   return RUN_ALL_TESTS();
 }

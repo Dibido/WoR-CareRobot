@@ -10,19 +10,13 @@ int main(int argc, char** argv)
     std::cout << "Started in debug mode." << std::endl;
     CupDetector lCupDetector(true);
     // Handle the incoming messages
-    while (ros::ok())
-    {
-      ros::spinOnce();
-    }
+    ros::spin();
   }
   else
   {
     CupDetector lCupDetector(false);
     // Handle the incoming messages
-    while (ros::ok())
-    {
-      ros::spinOnce();
-    }
+    ros::spin();
   }
   return 0;
 }
