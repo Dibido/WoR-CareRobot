@@ -116,6 +116,14 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/freenect2
 make
 make install
 ```
+5. Set the correct permissions:
+```
+sudo cp ../platform/linux/udev/90-kinect2.rules /etc/udev/rules.d/
+```
+then replug the kinect.
+
+For platform specific information:
+https://github.com/OpenKinect/libfreenect2/blob/master/README.md
 
 ## Running simulation guide
 
