@@ -191,7 +191,9 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         lFoundCup.mY_m =
             distFromCenterXCM / kinect_cupdetector::cCentimeterToMeter;
         lFoundCup.mZ_m = kinect_cupdetector::cCupZPos;
-        lFoundCup.timeOfArrival = ros::Time::now();
+        lFoundCup.timeOfArrival =
+            ros::Time::now() +
+            ros::Duration(kinect_cupdetector::cCupPickupTime_S);
         mCupPublisher.publish(lFoundCup);
         ros::spinOnce();
         // we sent the goal, now we wait

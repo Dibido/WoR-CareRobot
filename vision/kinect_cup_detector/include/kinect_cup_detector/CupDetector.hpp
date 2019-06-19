@@ -59,6 +59,7 @@ namespace kinect_cupdetector
   const int cEscapeButtonCode = 27;
   const std::string cResultWindowName = "result";
   const int cMaxMesageQueueSize = 1000;
+  const int cCupPickupTime_S = 5;
 } // namespace kinect_cupdetector
 
 class CupDetector
