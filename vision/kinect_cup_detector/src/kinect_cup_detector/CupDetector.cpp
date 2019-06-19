@@ -162,7 +162,7 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
       double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
       // Subtract the gripper size from the Y position
-      distFromCenterXCM -= kinect_cupdetector::cCupGrippperSize / 2;
+      // distFromCenterXCM -= kinect_cupdetector::cCupGrippperSize / 2;
       // Subtract the calibrated distance from the robotarm
       distFromCenterYCM -= kinect_cupdetector::cYDistanceFromRobotarm;
       // Invert the Y since the robotarm is on the other side of the kinect
