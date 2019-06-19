@@ -27,6 +27,11 @@ ProgressScreen::~ProgressScreen()
   delete ui;
 }
 
+void ProgressScreen::on_ReleaseBtn_clicked()
+{
+  std::cout << "Clicked" << std::endl;
+  ui->StatusLabel->setText(QString("TESTTEST"));
+}
 void ProgressScreen::setActive(bool aValue)
 {
   active = aValue;
