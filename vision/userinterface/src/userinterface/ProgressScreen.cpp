@@ -78,6 +78,11 @@ void ProgressScreen::updateProgress()
         std::string("De gripper laat los over ") +
         std::to_string(static_cast<int>(lSecondsLeft) + 1) +
         std::string(" seconden")));
+    if (lSecondsLeft == 0)
+    {
+      mCupSubscriber.resetAll();
+      hide();
+    }
   }
   if (ui->ProgressBar->value() == 100)
   {

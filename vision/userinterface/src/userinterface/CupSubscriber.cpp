@@ -63,6 +63,13 @@ namespace userinterface
     mStartingTime = 0.0;
   }
 
+  void CupSubscriber::resetAll()
+  {
+    resetArrivalTime();
+    bool enabled = 0;
+    bool mFirstMsgRead = 0;
+  }
+
   uint16_t CupSubscriber::getArrivalTime()
   {
     return mCupArrivalTime;
