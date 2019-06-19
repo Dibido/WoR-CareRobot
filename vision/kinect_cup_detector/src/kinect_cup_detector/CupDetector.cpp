@@ -153,8 +153,8 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         }
       }
       // Determine the cup position relative to the center of the paper
-      int lCupPaperPositionX = mCenterPaperX + mCenterCupX;
-      int lCupPaperPositionY = mCenterPaperY + mCenterCupY;
+      int lCupPaperPositionX = mCenterPaperX - mCenterCupX;
+      int lCupPaperPositionY = mCenterPaperY - mCenterCupY;
       // Determine position relative to the middle of the screen
       int distFromCenterX = (mDisplayMatrix.cols / 2) - lCupPaperPositionX;
       int distFromCenterY = (mDisplayMatrix.rows / 2) - lCupPaperPositionY;
