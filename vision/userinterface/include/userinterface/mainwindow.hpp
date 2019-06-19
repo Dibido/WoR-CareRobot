@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QElapsedTimer>
 #include <QMainWindow>
+#include <QToolButton>
 
 namespace Ui
 {
@@ -19,6 +20,8 @@ namespace Ui
 
     // Cross button icon size
     const uint8_t c_CrossBtnSize_m = 130;
+
+    const uint8_t cStaticGlassBtnSize_pixels = 130;
 
   } // namespace ui_constants
 
@@ -54,6 +57,10 @@ class MainWindow : public QMainWindow
    */
   void on_water_btn_clicked();
 
+  void on_static_glass_btn_clicked();
+
+  void on_return_btn_clicked();
+
     private:
   /**
    * @brief The UI object for QT. See: https://doc.qt.io/qt-5/qmainwindow.html.
@@ -69,6 +76,12 @@ class MainWindow : public QMainWindow
    * @brief ReleaseTimePublisher used in this class.
    */
   userinterface::ReleaseTimePublisher mReleaseTimePublisher;
+
+  void changeToReleaseButton(QToolButton*& lButton);
+
+  void releaseGlass();
+
+  void resetMainText();
 };
 
 #endif // MAINWINDOW_HPP

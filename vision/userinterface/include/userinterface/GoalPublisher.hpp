@@ -45,8 +45,9 @@ namespace userinterface
      * will be sent to the given topic.
      * @param aPosition
      */
-    virtual void selectGoalPosition(
-        const environment_controller::Position& aPosition) override;
+    virtual void
+        selectGoalPosition(const environment_controller::Position& aPosition,
+                           bool astaticGoal) override;
 
     /**
      * @brief State boolean to store if the msg has been sent.

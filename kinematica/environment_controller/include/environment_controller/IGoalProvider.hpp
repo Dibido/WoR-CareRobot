@@ -24,7 +24,8 @@ namespace environment_controller
      *
      * @param aPosition Data object which consists of an x,y and z
      */
-    virtual void selectGoalPosition(const Position& aPosition) = 0;
+    virtual void selectGoalPosition(const Position& aPosition,
+                                    bool astaticGoal) = 0;
   };
 
 } // namespace environment_controller
