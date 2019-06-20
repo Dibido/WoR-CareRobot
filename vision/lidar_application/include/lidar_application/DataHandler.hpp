@@ -32,7 +32,7 @@ namespace lidar_application
     DataHandler(const std::string& aReceiveTopic,
                 const std::string& aPublishTopic);
 
-    ~DataHandler() = default;
+    virtual ~DataHandler() = default;
 
     bool isNewDataAvailable() const;
 

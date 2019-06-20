@@ -60,7 +60,6 @@ TEST(DataHandler, GetNewData)
   // There should be no 'new' data available
   EXPECT_FALSE(lDataHandler.isNewDataAvailable());
 }
-
 TEST(DataHandler, PublishData)
 {
   DataHandlerDerived lDataHandler;
