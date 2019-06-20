@@ -79,8 +79,11 @@ int main(int argc, char** argv)
   libfreenect2::Frame undistorted(512, 424, 4), registered(512, 424, 4);
 
   // Get frames
+  ros::Rate lRateLimit(10); // 10 hz
   while (ros::ok())
   {
+    // Ratelimit to 10Hz
+
     if (!listener.waitForNewFrame(frames, 10 * 1000)) // 10 seconds
     {
       std::cout << "timeout!" << std::endl;
@@ -106,6 +109,8 @@ int main(int argc, char** argv)
     mPublisher.publish(lMsg);
     // Release the frame
     listener.release(frames);
+
+    lRateLimit.sleep();
   }
   dev->stop();
   dev->close();

@@ -90,92 +90,94 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     }
   }
 
-  // Filter color
-  cv::cvtColor(mDisplayMatrix, mDisplayHSV, CV_RGB2HSV);
-  cv::inRange(mDisplayHSV, kinect_cupdetector::cMinHSVRectangeValues,
-              kinect_cupdetector::cMaxHSVRectangeValues, mColorMask);
-  // Find contours
-  cv::findContours(mColorMask, mImageContours, mImageHierarchy, CV_RETR_TREE,
-                   CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-  // Find the correct contour
-  for (unsigned int i = 0; i < mImageContours.size(); i++)
+  if (mSendGoal)
   {
-    double lEpsilon = kinect_cupdetector::cEpsilonMultiply *
-                      cv::arcLength(mImageContours.at(i), true);
-    approxPolyDP(mImageContours.at(i), mApproxImage, lEpsilon, true);
-    if (mApproxImage.size().height ==
-            kinect_cupdetector::cRectangleCornercount &&
-        (contourArea(mImageContours.at(i)) >
-         kinect_cupdetector::cMinRectangleContourSize))
+    // Filter color
+    cv::cvtColor(mDisplayMatrix, mDisplayHSV, CV_RGB2HSV);
+    cv::inRange(mDisplayHSV, kinect_cupdetector::cMinHSVRectangeValues,
+                kinect_cupdetector::cMaxHSVRectangeValues, mColorMask);
+    // Find contours
+    cv::findContours(mColorMask, mImageContours, mImageHierarchy, CV_RETR_TREE,
+                     CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    // Find the correct contour
+    for (unsigned int i = 0; i < mImageContours.size(); i++)
     {
-      // Get the number of pixels per cm (longest side of rectangle is 29cm)
-      mRotatedRect = cv::minAreaRect(mImageContours.at(i));
-      // Get the biggest side
-      double lMaxDistance = 0;
+      double lEpsilon = kinect_cupdetector::cEpsilonMultiply *
+                        cv::arcLength(mImageContours.at(i), true);
+      approxPolyDP(mImageContours.at(i), mApproxImage, lEpsilon, true);
+      if (mApproxImage.size().height ==
+              kinect_cupdetector::cRectangleCornercount &&
+          (contourArea(mImageContours.at(i)) >
+           kinect_cupdetector::cMinRectangleContourSize))
+      {
+        // Get the number of pixels per cm (longest side of rectangle is 29cm)
+        mRotatedRect = cv::minAreaRect(mImageContours.at(i));
+        // Get the biggest side
+        double lMaxDistance = 0;
 
-      mRotatedRect.points(mRectangleVertices);
-      for (int i = 0; i < 4; i++)
-      {
-        double lDistance = ( double )cv::norm(mRectangleVertices[i] -
-                                              mRectangleVertices[(i + 1) % 4]);
-        if (lDistance > lMaxDistance)
+        mRotatedRect.points(mRectangleVertices);
+        for (int i = 0; i < 4; i++)
         {
-          lMaxDistance = ( double )lDistance;
+          double lDistance = ( double )cv::norm(
+              mRectangleVertices[i] - mRectangleVertices[(i + 1) % 4]);
+          if (lDistance > lMaxDistance)
+          {
+            lMaxDistance = ( double )lDistance;
+          }
         }
-      }
-      double lPixelsPerCm =
-          lMaxDistance / kinect_cupdetector::cRectangleLongestSideLength;
-      // Get the center of the rectangle in the frame
-      // Calculate center
-      cv::Moments lRectangleMoments = cv::moments(mImageContours.at(i));
-      mCenterPaperX = ( int )(lRectangleMoments.m10 / lRectangleMoments.m00);
-      mCenterPaperY = ( int )(lRectangleMoments.m01 / lRectangleMoments.m00);
+        double lPixelsPerCm =
+            lMaxDistance / kinect_cupdetector::cRectangleLongestSideLength;
+        // Get the center of the rectangle in the frame
+        // Calculate center
+        cv::Moments lRectangleMoments = cv::moments(mImageContours.at(i));
+        mCenterPaperX = ( int )(lRectangleMoments.m10 / lRectangleMoments.m00);
+        mCenterPaperY = ( int )(lRectangleMoments.m01 / lRectangleMoments.m00);
 
-      // Find Cup on rectangle
-      mRegionOfInterest =
-          mDisplayMatrix(cv::boundingRect(mImageContours.at(i)));
-      cv::cvtColor(mRegionOfInterest, mRegionOfInterestHSV, CV_RGB2HSV);
-      cv::inRange(
-          mRegionOfInterestHSV, kinect_cupdetector::cMinHSVRectangeValues,
-          kinect_cupdetector::cMaxHSVRectangeValues, mRegionOfInterestMask);
-      cv::findContours(mRegionOfInterestMask, mRegionOfInterestContours,
-                       mImageHierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_TC89_L1);
-      for (unsigned int j = 0; j < mRegionOfInterestContours.size(); j++)
-      {
-        if (contourArea(mRegionOfInterestContours.at(j)) >
-            kinect_cupdetector::cMinCupContourSize)
+        // Find Cup on rectangle
+        mRegionOfInterest =
+            mDisplayMatrix(cv::boundingRect(mImageContours.at(i)));
+        cv::cvtColor(mRegionOfInterest, mRegionOfInterestHSV, CV_RGB2HSV);
+        cv::inRange(
+            mRegionOfInterestHSV, kinect_cupdetector::cMinHSVRectangeValues,
+            kinect_cupdetector::cMaxHSVRectangeValues, mRegionOfInterestMask);
+        cv::findContours(mRegionOfInterestMask, mRegionOfInterestContours,
+                         mImageHierarchy, CV_RETR_CCOMP,
+                         CV_CHAIN_APPROX_TC89_L1);
+        for (unsigned int j = 0; j < mRegionOfInterestContours.size(); j++)
         {
-          approxPolyDP(mRegionOfInterestContours.at(j), mApproxImageCup,
-                       lEpsilon, true);
-          // Get the center of the contour
-          cv::Moments lCupMoments =
-              cv::moments(mRegionOfInterestContours.at(j));
-          mCenterCupX = ( int )(lCupMoments.m10 / lCupMoments.m00);
-          mCenterCupY = ( int )(lCupMoments.m01 / lCupMoments.m00);
-          // Calculate difference from the center of the paper
-          mCenterCupX = (mRegionOfInterest.cols / 2) - mCenterCupX;
-          mCenterCupY = (mRegionOfInterest.rows / 2) - mCenterCupY;
+          if (contourArea(mRegionOfInterestContours.at(j)) >
+              kinect_cupdetector::cMinCupContourSize)
+          {
+            approxPolyDP(mRegionOfInterestContours.at(j), mApproxImageCup,
+                         lEpsilon, true);
+            // Get the center of the contour
+            cv::Moments lCupMoments =
+                cv::moments(mRegionOfInterestContours.at(j));
+            mCenterCupX = ( int )(lCupMoments.m10 / lCupMoments.m00);
+            mCenterCupY = ( int )(lCupMoments.m01 / lCupMoments.m00);
+            // Calculate difference from the center of the paper
+            mCenterCupX = (mRegionOfInterest.cols / 2) - mCenterCupX;
+            mCenterCupY = (mRegionOfInterest.rows / 2) - mCenterCupY;
+          }
         }
-      }
-      // Determine the cup position relative to the center of the paper
-      int lCupPaperPositionX = mCenterPaperX - mCenterCupX;
-      int lCupPaperPositionY = mCenterPaperY - mCenterCupY;
-      // Determine position relative to the middle of the screen
-      int distFromCenterX = (mDisplayMatrix.cols / 2) - lCupPaperPositionX;
-      int distFromCenterY = (mDisplayMatrix.rows / 2) - lCupPaperPositionY;
-      // Convert the distances from pixels to centimeters
-      double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
-      double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
-      // Subtract the gripper size from the Y position
-      distFromCenterXCM += kinect_cupdetector::cCupGrippperSize / 3;
-      // Add the width of the gripper to the end position
-      distFromCenterYCM -= kinect_cupdetector::cCupGrippperWidth;
-      // Subtract the calibrated distance from the robotarm
-      distFromCenterYCM -= kinect_cupdetector::cYDistanceFromRobotarm;
-      // Invert the Y since the robotarm is on the other side of the kinect
-      distFromCenterYCM = -distFromCenterYCM;
-      if (mSendGoal)
-      {
+        // Determine the cup position relative to the center of the paper
+        int lCupPaperPositionX = mCenterPaperX - mCenterCupX;
+        int lCupPaperPositionY = mCenterPaperY - mCenterCupY;
+        // Determine position relative to the middle of the screen
+        int distFromCenterX = (mDisplayMatrix.cols / 2) - lCupPaperPositionX;
+        int distFromCenterY = (mDisplayMatrix.rows / 2) - lCupPaperPositionY;
+        // Convert the distances from pixels to centimeters
+        double distFromCenterXCM = distFromCenterX / lPixelsPerCm;
+        double distFromCenterYCM = distFromCenterY / lPixelsPerCm;
+        // Subtract the gripper size from the Y position
+        distFromCenterXCM += kinect_cupdetector::cCupGrippperSize / 3;
+        // Add the width of the gripper to the end position
+        distFromCenterYCM -= kinect_cupdetector::cCupGrippperWidth;
+        // Subtract the calibrated distance from the robotarm
+        distFromCenterYCM -= kinect_cupdetector::cYDistanceFromRobotarm;
+        // Invert the Y since the robotarm is on the other side of the kinect
+        distFromCenterYCM = -distFromCenterYCM;
+
         kinematica_msgs::Cup lFoundCup;
         lFoundCup.aDepth = kinect_cupdetector::cCupDepth;
         lFoundCup.aDirection = kinect_cupdetector::cCupDirection;
@@ -199,10 +201,10 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
         // we sent the goal, now we wait
         ROS_DEBUG("!!! --- SENT THE CUP POSITION --- !!!");
         mSendGoal = false;
+        ROS_DEBUG("FoundX : %f FoundY : %f",
+                  (distFromCenterYCM / kinect_cupdetector::cCentimeterToMeter),
+                  (distFromCenterXCM / kinect_cupdetector::cCentimeterToMeter));
       }
-      ROS_DEBUG("FoundX : %f FoundY : %f",
-                (distFromCenterYCM / kinect_cupdetector::cCentimeterToMeter),
-                (distFromCenterXCM / kinect_cupdetector::cCentimeterToMeter));
     }
   }
   // Show in a window
