@@ -44,7 +44,7 @@ target_link_libraries(${PROJECT_NAME}_main ${catkin_LIBRARIES})
 
 
 #Only the first gtest.cpp file has a main, the second, third .. fifth should and must not have a main function!
-catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/ObjectDetection_Unittests.cpp unitTests/DataHandler_Unittests.cpp unitTests/LidarData_Unittests.cpp src/${PROJECT_NAME}/ObjectDetection.cpp src/${PROJECT_NAME}/DataHandler.cpp src/${PROJECT_NAME}/LidarData.cpp)
+catkin_add_gtest(${PROJECT_NAME}_unit_tests unitTests/gtest.cpp unitTests/ObjectDetection_Unittests.cpp unitTests/DataHandler_Unittests.cpp unitTests/LidarData_Unittests.cpp src/${PROJECT_NAME}/SensorPublisher.cpp src/${PROJECT_NAME}/ObjectDetection.cpp src/${PROJECT_NAME}/DataHandler.cpp src/${PROJECT_NAME}/LidarData.cpp)
 target_link_libraries(${PROJECT_NAME}_unit_tests ${catkin_LIBRARIES} gmock)
   
 if(CODE_COVERAGE)

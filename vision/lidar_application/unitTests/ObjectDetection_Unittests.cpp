@@ -21,6 +21,13 @@ namespace objectdetection_unittest_constants
   // 10 has proven to be a good default, 10 cycles of the lidar takes about a
   // second see ObjectDetection.hpp
   const unsigned int cNumberOfInitialScanRounds = 10;
+
+  const environment_controller::Sensor
+      cSensor(0,
+              environment_controller::Pose(
+                  environment_controller::Position(0, 0, 0),
+                  environment_controller::Rotation(0, 0, 0, 1)));
+
 } // namespace objectdetection_unittest_constants
 
 TEST(ObjectDetection, detectObjects_singleObject)
@@ -28,8 +35,8 @@ TEST(ObjectDetection, detectObjects_singleObject)
   double lMaxDistanceDifference_m = 0.2;
 
   ObjectDetection lObjectDetection(
-      lMaxDistanceDifference_m, true,
-      objectdetection_unittest_constants::cMinNumberAdjacentAngles,
+      objectdetection_unittest_constants::cSensor, lMaxDistanceDifference_m,
+      true, objectdetection_unittest_constants::cMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
 
   // Adding initial scan of area
@@ -41,7 +48,7 @@ TEST(ObjectDetection, detectObjects_singleObject)
   lInitialScanData.addLidarData(4.0, 1.0);
 
   lObjectDetection.mInitialScan = lInitialScanData;
-  lObjectDetection.mInitialized = true;
+  lObjectDetection.mIsInitialized = true;
 
   // New scan data, with distance on angle 1.0 2.0 and 3.0 being closer.
   LidarData lNewScanData;
@@ -70,7 +77,8 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
   // Different value compared to scenario 1
   double lMaxDistanceDifference_m = 0.1;
 
-  ObjectDetection lObjectDetection(lMaxDistanceDifference_m);
+  ObjectDetection lObjectDetection(objectdetection_unittest_constants::cSensor,
+                                   lMaxDistanceDifference_m, false, 3, 10);
 
   // Adding initial scan of area
   LidarData lInitialScanData;
@@ -81,7 +89,7 @@ TEST(ObjectDetection, detectObjects_multipleObjects)
   lInitialScanData.addLidarData(0.4, 1.04);
 
   lObjectDetection.mInitialScan = lInitialScanData;
-  lObjectDetection.mInitialized = true;
+  lObjectDetection.mIsInitialized = true;
 
   // New scan data, with distance on angle 1.0 2.0 and 3.0 being closer.
   LidarData lNewScanData;
@@ -111,13 +119,17 @@ TEST(ObjectDetection, ignoreSmallObjects)
   const unsigned int lMinNumberAdjacentAngles = 3;
 
   bool lIgnoreSmallObjects = false;
+
   ObjectDetection lObjectDetectionAllObjects(
-      lMaxDifference_m, lIgnoreSmallObjects, lMinNumberAdjacentAngles,
+      objectdetection_unittest_constants::cSensor, lMaxDifference_m,
+      lIgnoreSmallObjects, lMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
 
   lIgnoreSmallObjects = true;
+
   ObjectDetection lObjectDetectionIgnoreSmallObjects(
-      lMaxDifference_m, lIgnoreSmallObjects, lMinNumberAdjacentAngles,
+      objectdetection_unittest_constants::cSensor, lMaxDifference_m,
+      lIgnoreSmallObjects, lMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
 
   std::map<double, double> lInitialSamples;
@@ -166,6 +178,7 @@ TEST(ObjectDetection, ignoreSmallObjects)
 TEST(ObjectDetection, getSurroundingDistances_Exceptions)
 {
   ObjectDetection lObjectDetection(
+      objectdetection_unittest_constants::cSensor,
       objectdetection_unittest_constants::cMaxDifference_m, true,
       objectdetection_unittest_constants::cMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
@@ -190,7 +203,8 @@ TEST(ObjectDetection, getSurroundingDistances_Exceptions)
 TEST(ObjectDetection, getSurroundingDistances_Default)
 {
   ObjectDetection lObjectDetection(
-      objectdetection_unittest_constants::cMaxDifference_m);
+      objectdetection_unittest_constants::cSensor,
+      objectdetection_unittest_constants::cMaxDifference_m, false, 3, 10);
 
   // mInitialScan is used to compare values with.
   lObjectDetection.mInitialScan.addLidarData(0.0, 1.00);
@@ -214,8 +228,8 @@ TEST(ObjectDetection, isAngleDifferent)
   const double cMaxDistanceDifference_m = 0.2;
 
   ObjectDetection lObjectDetection(
-      cMaxDistanceDifference_m, true,
-      objectdetection_unittest_constants::cMinNumberAdjacentAngles,
+      objectdetection_unittest_constants::cSensor, cMaxDistanceDifference_m,
+      true, objectdetection_unittest_constants::cMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
 
   // mInitialScan is used to compare values with.
@@ -225,7 +239,7 @@ TEST(ObjectDetection, isAngleDifferent)
   lObjectDetection.mInitialScan.addLidarData(0.3, 4.03);
   lObjectDetection.mInitialScan.addLidarData(0.4, 1.04);
 
-  lObjectDetection.mInitialized = true;
+  lObjectDetection.mIsInitialized = true;
 
   // Measurement (angle in radians => distance in meters)
   std::pair<double, double> lMeasurement =
@@ -251,6 +265,7 @@ TEST(ObjectDetection, isAngleDifferent)
 TEST(ObjectDetection, convertVectorsTo2D)
 {
   ObjectDetection lObjectDetection(
+      objectdetection_unittest_constants::cSensor,
       objectdetection_unittest_constants::cMaxDifference_m, true,
       objectdetection_unittest_constants::cMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
@@ -289,6 +304,7 @@ TEST(ObjectDetection, convertVectorsTo2D)
 TEST(ObjectDetection, getAverageMeasurement)
 {
   ObjectDetection lObjectDetection(
+      objectdetection_unittest_constants::cSensor,
       objectdetection_unittest_constants::cMaxDifference_m, true,
       objectdetection_unittest_constants::cMinNumberAdjacentAngles,
       objectdetection_unittest_constants::cNumberOfInitialScanRounds);
