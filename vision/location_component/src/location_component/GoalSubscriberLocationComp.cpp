@@ -19,7 +19,7 @@ namespace location_component
   {
     try
     {
-      if (!aMsg->staticCup)
+      if (!aMsg->staticGoal)
       {
         environment_controller::Position lPostition(
             aMsg->position.x, aMsg->position.y, aMsg->position.z);

@@ -1,6 +1,7 @@
 #ifndef CUPSCANNER_HPP
 #define CUPSCANNER_HPP
 
+#include "location_component/CupDetectionCalibration.hpp"
 #include "location_component/FrameCalibration.hpp"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -23,7 +24,8 @@ namespace location_component
   class CupScanner
   {
       public:
-    CupScanner(FrameCalibration& aFrameCalibration);
+    CupScanner(FrameCalibration& aFrameCalibration,
+               CupDetectionCalibration& aCupDetectionCalibration);
     ~CupScanner() = default;
 
     /**
@@ -44,7 +46,21 @@ namespace location_component
     std::vector<DetectedCup> detectCups(const cv::Mat& aImage) const;
 
       private:
+    /**
+     * @brief Detects whether a cup is filled or not.
+     *        A cup is filled if the color at the midpoint is within the HSV
+     * ranges defined by the CupDetectionCalibration. Currently, this means if
+     * the midpoint of the cup is not white/unsaturated, it is filled.
+     *
+     * @param aImage The image on which the cup is present.
+     * @param aCupMidpoint The midpoint of the cup on the image.
+     * @return Whether the cup is filled.
+     */
+    bool detectCupFilled(const cv::Mat& aImage,
+                         const cv::Point& aCupMidpoint) const;
+
     FrameCalibration& mFrameCalibration;
+    CupDetectionCalibration& mCupDetectionCalibration;
   };
 } // namespace location_component
 

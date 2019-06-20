@@ -44,12 +44,12 @@
         </surface>
       </collision>
       <visual name="visual">
-        <material> 
+        <material>
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
             <emissive>1 1 1 1</emissive>
-        </material> 
+        </material>
 	      <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>

@@ -31,6 +31,6 @@ namespace environment_controller
 
   void EmergencyStopSubscriber::selectEmergencyStop(const bool aStop)
   {
-    mEnvironmentController->executeHardstop(aStop);
+    mEnvironmentController->executeSoftstop(aStop);
   }
 } // namespace environment_controller

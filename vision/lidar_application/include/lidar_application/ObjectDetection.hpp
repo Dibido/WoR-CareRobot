@@ -1,8 +1,10 @@
 #ifndef OBJECTDETECTION_H_
 #define OBJECTDETECTION_H_
 
+#include "environment_controller/Sensor.hpp"
 #include "lidar_application/DataHandler.hpp"
 #include "lidar_application/LidarData.hpp"
+#include "lidar_application/SensorPublisher.hpp"
 #include <cmath>
 #include <map>
 #include <math.h>
@@ -47,22 +49,6 @@ namespace lidar_application
   {
       public:
     /**
-     * @brief Default constructor
-     */
-    ObjectDetection();
-
-    /**
-     * @brief Constructor
-     * @param aMaxDistanceDifference_m - This variable describes the max amount
-     * of difference in meters between two adjacent measurements to still assume
-     * its the same object. Example: [Theta => Distance] [0.0 => 1.5],
-     * [1.0, 1.6]. The difference in meters here is 0.1, if that is under or
-     * equal to aMaxDistanceDifference_m, both these measurements are taken of
-     * the same object.
-     */
-    ObjectDetection(const double& aMaxDistanceDifference_m);
-
-    /**
      * @brief Constructor
      * @param aMaxDistanceDifference_m - This variable describes the max amount
      * of difference in meters between two adjacent measurements to still assume
@@ -73,12 +59,22 @@ namespace lidar_application
      * @param aIgnoreSmallObjects - When this is true, objects with less than 2
      * adjacent measurements are ignored. This should
      * filter out thin real-life objects like a cable */
-    ObjectDetection(const double& aMaxDistanceDifference_m,
+    ObjectDetection(const environment_controller::Sensor& aSensor,
+                    const double& aMaxDistanceDifference_m,
                     bool aIgnoreSmallObjects,
                     const unsigned int& aObjectMinNumberOfAdjacentAngles,
                     const unsigned int& aAmountOfInitialScansRequired);
 
     ~ObjectDetection() = default;
+
+    /**
+     * @brief initialise the lidar.
+     * it will do an initial scan till the mAmountOfInitialScansRequired is
+     * reached each time this function is called. If that is reached it will
+     * publish itself with the data in mSensor.
+     *
+     */
+    void init();
 
     /**
      * @brief Run function, blocking function that handles all logic
@@ -94,6 +90,13 @@ namespace lidar_application
      * objects, with angle and distance to each centerpoint of an object.
      */
     virtual void detectObjects();
+
+    /**
+     * @brief Publish the posistion as specifcied in mSensor on the on the
+     * "/sensor" topic.
+     *
+     */
+    void publishPosition();
 
     /**
      * @brief Function converts data in vector format (theta, distance) to
@@ -167,7 +170,32 @@ namespace lidar_application
      */
     bool isSmallObject(const LidarData& lObject) const;
 
-    bool mInitialized;
+    ros::NodeHandle mNode;
+    bool mIsInitialized;
+    SensorPublisher mPublisher;
+    const environment_controller::Sensor mSensor;
+    // Maximum difference allowed between adjacent/previous measurements for
+    // them to be considered as measurements of the same object.
+    const double mMaxDistanceDifference_m;
+    /** If this boolean is true, objects require atleast multiple adjacent
+    measurements. this means that if just a single angle is considered
+    different, this won't be registered as an object. This filters out really
+    small objects like a cable */
+    bool mIgnoreSmallObjects;
+    unsigned int mInitialScanIterations;
+    // Maximum distance that the lidar can reliable measure.
+    const double mMaxReliableDistance_m;
+    /** Amount of adjacent measurements that must be off (compared to
+     * mInitialScan), for it to be considered an object. By setting a minimum of
+     * 2-3+, small objects like a cable will most likely be filtered out if
+     * mIgnoreSmallObjects is true
+     */
+    const unsigned int mObjectMinNumberOfAdjacentMeasurements;
+    /**
+     * @brief Amount of full 360 scans that will be used as initialscandata. The
+     * higher the number, the more detailed info mInitialScan will have.
+     */
+    const unsigned int mAmountOfInitialScansRequired;
 
     // Contains the data of the first 360 degrees scan, set during
     // initialization.
@@ -181,32 +209,6 @@ namespace lidar_application
     std::vector<std::pair<double, double>> mDetectedObjects;
 
     DataHandler mDataHandler;
-
-    // Maximum difference allowed between adjacent/previous measurements for
-    // them to be considered as measurements of the same object.
-    const double mMaxDistanceDifference_m;
-
-    // Maximum distance that the lidar can reliable measure.
-    const double mMaxReliableDistance_m;
-
-    /** If this boolean is true, objects require atleast multiple adjacent
-    measurements. this means that if just a single angle is considered
-    different, this won't be registered as an object. This filters out really
-    small objects like a cable */
-    bool mIgnoreSmallObjects;
-
-    /** Amount of adjacent measurements that must be off (compared to
-     * mInitialScan), for it to be considered an object. By setting a minimum of
-     * 2-3+, small objects like a cable will most likely be filtered out if
-     * mIgnoreSmallObjects is true
-     */
-    const unsigned int mObjectMinNumberOfAdjacentMeasurements;
-
-    /**
-     * @brief Amount of full 360 scans that will be used as initialscandata. The
-     * higher the number, the more detailed info mInitialScan will have.
-     */
-    const unsigned int mAmountOfInitialScansRequired;
   };
 } // namespace lidar_application
 
