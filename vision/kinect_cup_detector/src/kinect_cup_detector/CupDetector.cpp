@@ -89,7 +89,6 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
       mCalibrated = true;
     }
   }
-
   if (mSendGoal)
   {
     // Filter color
@@ -208,20 +207,23 @@ void CupDetector::imageCallBack(const sensor_msgs::ImageConstPtr& aMsg)
     }
   }
   // Show in a window
-  cv::cvtColor(mDisplayHSV, mDisplayMatrix, cv::COLOR_HSV2RGB);
-  for (int i = 0; i < kinect_cupdetector::cRectangleCornercount; i++)
-  {
-    cv::line(
-        mDisplayMatrix, mRectangleVertices[i],
-        mRectangleVertices[(i + 1) % kinect_cupdetector::cRectangleCornercount],
-        cv::Scalar(0, 255, 0), 2);
-  }
-  cv::circle(
-      mDisplayMatrix,
-      cv::Point(mCenterPaperX - mCenterCupX, mCenterPaperY - mCenterCupY), 4,
-      cv::Scalar(0, 0, 255), 3);
   if (mDebugMode)
   {
+    if (mDisplayHSV.cols > 0 && mDisplayHSV.rows > 0)
+    {
+      cv::cvtColor(mDisplayHSV, mDisplayMatrix, cv::COLOR_HSV2RGB);
+    }
+    for (int i = 0; i < kinect_cupdetector::cRectangleCornercount; i++)
+    {
+      cv::line(mDisplayMatrix, mRectangleVertices[i],
+               mRectangleVertices[(i + 1) %
+                                  kinect_cupdetector::cRectangleCornercount],
+               cv::Scalar(0, 255, 0), 2);
+    }
+    cv::circle(
+        mDisplayMatrix,
+        cv::Point(mCenterPaperX - mCenterCupX, mCenterPaperY - mCenterCupY), 4,
+        cv::Scalar(0, 0, 255), 3);
     cv::imshow("result", mDisplayMatrix);
     int c = cv::waitKey(kinect_cupdetector::cEscapePressWaitTimeMS);
     if (c == kinect_cupdetector::cEscapeButtonCode) // Escape
