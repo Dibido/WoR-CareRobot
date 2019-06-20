@@ -29,7 +29,9 @@ namespace environment_controller
     }
   }
 
-  void DropTableSubscriber::selectGoalPosition(const Position& aPosition)
+  void DropTableSubscriber::selectGoalPosition(
+      const Position& aPosition,
+      __attribute__((unused)) bool aStaticGoal)
   {
     mEnvironmentController->provideDrop(aPosition);
   }

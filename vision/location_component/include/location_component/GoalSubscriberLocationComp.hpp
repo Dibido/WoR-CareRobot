@@ -42,7 +42,8 @@ namespace location_component
      * @param aPosition Data object which consists of an x,y and z
      */
     virtual void
-        selectGoalPosition(const environment_controller::Position& aPosition);
+        selectGoalPosition(const environment_controller::Position& aPosition,
+                           bool staticGoal = true);
 
       private:
     /**

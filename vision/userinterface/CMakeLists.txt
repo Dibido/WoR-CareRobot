@@ -119,9 +119,9 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-qt5_wrap_cpp (moc_sources src/userinterface/main.cpp src/userinterface/mainwindow.cpp include/userinterface/mainwindow.hpp)
-qt5_wrap_ui (uic_sources src/userinterface/mainwindow.ui)
-set(Srcs src/userinterface/main.cpp src/userinterface/mainwindow.cpp src/userinterface/mainwindow.ui drawable/resources.qrc src/userinterface/GoalPublisher.cpp src/userinterface/ReleaseTimePublisher.cpp)
+qt5_wrap_cpp (moc_sources src/userinterface/main.cpp src/userinterface/mainwindow.cpp include/userinterface/mainwindow.hpp include/userinterface/ProgressScreen.hpp include/userinterface/CupSubscriber.hpp)
+qt5_wrap_ui (uic_sources src/userinterface/mainwindow.ui src/userinterface/ProgressScreen.ui)
+set(Srcs src/userinterface/main.cpp src/userinterface/mainwindow.cpp src/userinterface/mainwindow.ui drawable/resources.qrc src/userinterface/GoalPublisher.cpp src/userinterface/ReleaseTimePublisher.cpp src/userinterface/ProgressScreen.cpp src/userinterface/CupSubscriber.cpp)
 list(APPEND Srcs ${moc_sources} ${uic_sources})
 
 set(CMAKE_AUTOMOC ON)

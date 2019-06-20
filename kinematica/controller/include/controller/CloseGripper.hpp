@@ -40,7 +40,7 @@ namespace controller
      * @param aContext is an object which gives the states an interface to the
      * "outside world".
      */
-    void entryAction(Context* aContext) override;
+    virtual void entryAction(Context* aContext);
 
     /**
      * @brief doActivity is continiously being called while the system is in the
