@@ -14,6 +14,6 @@
   <node name="agv_parser" pkg="agv_parser" type="agv_parser_main" args="$(arg agv)" output="screen"/>
   <node name="main_application" pkg="main_application" type="main_application" output="screen" />
   <node name="userinterface" pkg="userinterface" type="userinterface" output="screen" />
-  <node name="kinect_driver" pkg="kinect_driver" type="kinect_driver" />
-  <node name="kinect_cup_detector" pkg="kinect_cup_detector" type="kinect_cup_detector" />
+<!--  <node name="kinect_driver" pkg="kinect_driver" type="kinect_driver" />
+  <node name="kinect_cup_detector" pkg="kinect_cup_detector" type="kinect_cup_detector" /> -->
 </launch>

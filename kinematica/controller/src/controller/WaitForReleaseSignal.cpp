@@ -18,10 +18,14 @@ namespace controller
     {
       std::unique_lock<std::mutex> lLock(aContext->releaseMutex());
       aContext->waitForRelease().wait(lLock);
+      if (aContext->releaseTime_s() == -1)
+      {
+        return;
+      }
     }
     std::this_thread::sleep_for(
         std::chrono::seconds(aContext->releaseTime_s()));
-        transition(aContext);
+    transition(aContext);
   }
 
   void WaitForReleaseSignal::exitAction(Context*)
