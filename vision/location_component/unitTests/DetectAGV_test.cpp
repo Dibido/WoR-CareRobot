@@ -121,9 +121,7 @@ TEST(DetectAGVSuite, AGVSpeed)
   EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
   EXPECT_TRUE(lAGVDetector.detectUpdate(lImageRight, lMat));
   EXPECT_FALSE(lAGVDetector.detectUpdate(lImageRight, lMat));
-  
 }
-
 
 TEST(DetectAGVSuite, inactiveMode)
 {
@@ -143,9 +141,9 @@ TEST(DetectAGVSuite, inactiveMode)
   location_component::AGV lAGV(5.0);
   lAGVDetector.setAGVSpeed(lAGV);
 
-  //The DetectObject is not set to true
+  // The DetectObject is not set to true
   EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
-  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageRight, lMat));  
+  EXPECT_FALSE(lAGVDetector.detectUpdate(lImageRight, lMat));
 }
 
 TEST(DetectAGVSuite, AGVDrivingFromLeftAndViceVersa)
@@ -196,6 +194,6 @@ TEST(DetectAGVSuite, LocationComponentSetToInactiveAfterDetection)
   EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
   EXPECT_TRUE(lAGVDetector.detectUpdate(lImageRight, lMat));
 
-  //Checking if the application is set to inactive
+  // Checking if the application is set to inactive
   EXPECT_FALSE(lAGVDetector.detectUpdate(lImageLeft, lMat));
 }
