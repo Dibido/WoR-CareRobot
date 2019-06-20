@@ -35,7 +35,7 @@ namespace userinterface
       if (enabled)
       {
         mStartingTime = ros::Time::now();
-	mCupArrivalTime = aMsg->timeOfArrival;
+        mCupArrivalTime = aMsg->timeOfArrival;
       }
     }
     catch (const std::exception& e)
@@ -55,8 +55,8 @@ namespace userinterface
 
   void CupSubscriber::resetArrivalTime()
   {
-    // mCupArrivalTime = 0.0;
-    // mStartingTime = 0.0;
+    mCupArrivalTime = ros::Time(0, 0);
+    mStartingTime = ros::Time(0, 0);
   }
 
   void CupSubscriber::resetAll()

@@ -88,16 +88,23 @@ class MainWindow : public QMainWindow
    */
   userinterface::ReleaseTimePublisher mReleaseTimePublisher;
 
-  void changeToReleaseButton(QToolButton*& lButton);
-
-  void releaseGlass();
-
-  void resetMainText();
-
+  /**
+   * @brief Initiates the sequence of picking up the cup.
+   *
+   * @param staticCup Whether to detect a static cup or a moving cup from the
+   * AGV.
+   */
   void onWaterBtnClicked(bool staticCup);
 
+  /**
+   * @brief Checks whether the progress screen is hidden, and if so, un-hides
+   * the main window.
+   */
   void returnToMain();
 
+  /**
+   * @brief Initiates the returning of the cup sequence.
+   */
   void sendReturnLocation();
 };
 

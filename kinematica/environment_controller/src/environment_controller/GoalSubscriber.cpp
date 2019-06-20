@@ -28,8 +28,9 @@ namespace environment_controller
     }
   }
 
-  void GoalSubscriber::selectGoalPosition(const Position& aPosition,
-                                          bool)
+  void GoalSubscriber::selectGoalPosition(
+      const Position& aPosition,
+      __attribute__((unused)) bool aStaticGoal)
   {
     mEnvironmentController->provideGoal(aPosition);
   }

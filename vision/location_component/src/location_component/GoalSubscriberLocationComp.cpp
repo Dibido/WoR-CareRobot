@@ -34,7 +34,7 @@ namespace location_component
 
   /* virtual*/ void GoalSubscriberLocationComp::selectGoalPosition(
       const environment_controller::Position& aPosition,
-      bool)
+      __attribute__((unused)) bool aStaticGoal)
   {
     // Position isn't used but used to prevent a warning
     aPosition.x_m();

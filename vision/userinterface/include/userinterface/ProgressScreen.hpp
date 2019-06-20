@@ -33,8 +33,18 @@ class ProgressScreen : public QWidget
    */
   userinterface::ReleaseTimePublisher mReleaseTimePublisher;
   bool active = 0;
+  /**
+   * @brief The time when the gripper open command was published.
+   */
   ros::Time gripperOpenCommandTime;
+  /**
+   * @brief Returns whether the progress screen is active.
+   */
   bool getActive();
+  /**
+   * @brief The update progress callback. Runs periodically to update the
+   * progress bar and check the status.
+   */
   void updateProgress();
 };
 

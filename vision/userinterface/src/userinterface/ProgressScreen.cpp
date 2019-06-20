@@ -53,16 +53,19 @@ bool ProgressScreen::getActive()
 
 void ProgressScreen::updateProgress()
 {
-    if(mCupSubscriber.getArrivalTime() < ros::Time::now())
-    {
+  if (mCupSubscriber.getArrivalTime() < ros::Time::now())
+  {
     ui->ProgressBar->setValue(0);
-    }
+  }
+  else
+  {
     double lProgressPercentage =
         (ros::Time::now() - mCupSubscriber.getStartingTime()).toSec() /
-        (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime()).toSec() *
+        (mCupSubscriber.getArrivalTime() - mCupSubscriber.getStartingTime())
+            .toSec() *
         100.0;
     ui->ProgressBar->setValue(static_cast<int>(lProgressPercentage));
-  
+  }
 
   if ((ros::Time::now() - gripperOpenCommandTime).toSec() < 0 ||
       (ros::Time::now() - gripperOpenCommandTime).toSec() >
@@ -78,7 +81,8 @@ void ProgressScreen::updateProgress()
         std::string("De gripper laat los over ") +
         std::to_string(static_cast<int>(lSecondsLeft) + 1) +
         std::string(" seconden")));
-    if (lSecondsLeft < 0.15)
+    const double cSecondsLeftToHide = 0.15;
+    if (lSecondsLeft < cSecondsLeftToHide)
     {
       // mCupSubscriber.resetAll();
       ui->ProgressBar->show();
@@ -86,7 +90,10 @@ void ProgressScreen::updateProgress()
       hide();
     }
   }
-  if (ui->ProgressBar->value() >= 95)
+
+  // If the progress bar is full, show that the cup is ready.
+  const int cProgressBarFullValue = 95;
+  if (ui->ProgressBar->value() >= cProgressBarFullValue)
   {
     mCupSubscriber.resetArrivalTime();
     ui->ReleaseBtn->show();
