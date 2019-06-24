@@ -10,8 +10,7 @@ namespace gazebo
     GazeboRosOpenniKinect::Load(sensor, sdf);
   }
 
-  void KinectPlugin::passObstacles(
-      const environment_controller::Obstacles& aObstacles)
+  void KinectPlugin::passObstacles(const environment_controller::Obstacles&)
   {
   }
 

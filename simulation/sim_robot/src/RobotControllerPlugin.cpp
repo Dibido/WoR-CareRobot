@@ -28,7 +28,12 @@ namespace gazebo
   std::string cSdfJointMaxRad = "max_rad";
   std::string cSdfJointMaxVel = "max_vel";
 
-  RobotControllerPlugin::RobotControllerPlugin() : mUpdateRate(0), mStop(false)
+  RobotControllerPlugin::RobotControllerPlugin()
+      : mUpdateRate(0),
+        mStop(false),
+        mMoveRobot(false),
+        mMoveGripper(false),
+        mFeedbackPub("/feedback/franka")
   {
 
     ROS_DEBUG("The Servo plugin is attached to model");
@@ -101,9 +106,20 @@ namespace gazebo
   {
     // Update joint states to gazebo. This update function is called every
     // millisecond
+    bool lDone = true;
     for (auto& joint : mChannelJointMap)
     {
       joint.second.update();
+      if (joint.second.getTargetPos() != joint.second.getCurrentPos())
+      {
+        lDone = false;
+      }
+    }
+    if (lDone && (mMoveRobot || mMoveGripper))
+    {
+      mMoveRobot = false;
+      mMoveGripper = false;
+      mFeedbackPub.pubFeedback(lDone);
     }
   }
 
@@ -126,6 +142,7 @@ namespace gazebo
         moveJointTheta(c);
       }
     }
+    mMoveRobot = true;
   }
 
   void RobotControllerPlugin::parseStopCallback(
@@ -160,6 +177,7 @@ namespace gazebo
 
     mChannelJointMap.at(robotcontrollerplugin::gripperJoint)
         .moveTheta(lWidth, lSpeedfactor, /*time*/ 0, mUpdateRate);
+    mMoveGripper = true;
   }
 
   // PRIVATE

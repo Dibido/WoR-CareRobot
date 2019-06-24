@@ -44,7 +44,7 @@ namespace userinterface
     }
   }
 
-  void CupSubscriber::passCup(const environment_controller::Cup& aCup)
+  void CupSubscriber::passCup(const environment_controller::Cup&)
   {
   }
 

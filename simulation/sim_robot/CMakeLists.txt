@@ -58,9 +58,10 @@ include_directories(
 		${Boost_LIBRARY_DIRS})
 
 add_library(${PROJECT_NAME}_plugin
-	src/RobotControllerPlugin.cpp
-	src/Command.cpp
-	src/CommandParser.cpp
+  src/RobotControllerPlugin.cpp
+  src/FrankaFeedback.cpp
+  src/Command.cpp
+  src/CommandParser.cpp
   src/JointController.cpp
   src/ControlData.cpp
   src/StopData.cpp)
