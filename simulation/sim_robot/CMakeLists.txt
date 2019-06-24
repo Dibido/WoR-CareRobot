@@ -60,8 +60,8 @@ include_directories(
 add_library(${PROJECT_NAME}_plugin
   src/RobotControllerPlugin.cpp
   src/FrankaFeedback.cpp
-	src/Command.cpp
-	src/CommandParser.cpp
+  src/Command.cpp
+  src/CommandParser.cpp
   src/JointController.cpp
   src/ControlData.cpp
   src/StopData.cpp)
