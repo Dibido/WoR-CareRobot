@@ -18,6 +18,7 @@
 #include "Command.hpp"
 #include "CommandParser.hpp"
 #include "ControlData.hpp"
+#include "FrankaFeedback.hpp"
 #include "IRobotControl.hpp"
 #include "IRobotStop.hpp"
 #include "JointController.hpp"
@@ -145,10 +146,13 @@ namespace gazebo
     event::ConnectionPtr mUpdateConnection;
     double mUpdateRate;
     bool mStop;
+    bool mMoveRobot;
+    bool mMoveGripper;
 
     // Variables
     commands::CommandParser mParser;
     std::map<jointChannel_t, JointController> mChannelJointMap;
+    franka_controller::FrankaFeedback mFeedbackPub;
   };
 
   GZ_REGISTER_MODEL_PLUGIN(RobotControllerPlugin)
