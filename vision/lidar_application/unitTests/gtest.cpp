@@ -18,7 +18,7 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
 
   std::vector<std::pair<std::string, std::string>> lRemappings;
-  ros::init(lRemappings, "ObjectDetection");
+  ros::init(argc, argv, "ObjectDetection");
 
   return RUN_ALL_TESTS();
 }
