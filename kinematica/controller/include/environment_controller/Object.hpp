@@ -3,6 +3,7 @@
 
 #include "environment_controller/Position.hpp"
 #include "ros/time.h"
+#include <vector>
 
 namespace environment_controller
 {
