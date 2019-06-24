@@ -1,6 +1,5 @@
 // Bring in my package's API, which is what I'm testing
 // Bring in gtest
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <ros/console.h>
@@ -17,7 +16,6 @@ int main(int argc, char** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
 
-  std::vector<std::pair<std::string, std::string>> lRemappings;
   ros::init(argc, argv, "ObjectDetection");
 
   return RUN_ALL_TESTS();
